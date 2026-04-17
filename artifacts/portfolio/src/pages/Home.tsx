@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Navbar } from "@/components/Navbar";
@@ -82,79 +83,81 @@ import wf71 from "@assets/Screenshot_2026-04-02_at_3.58.29_AM_1776460016100.png"
 import wf72 from "@assets/Screenshot_2026-04-02_at_3.58.39_AM_1776460016101.png";
 import profilePic from "@assets/my_profile_pic_1776459432094.jpg";
 
-const workflows = [
-  { img: wf1, title: "Automated Video Creation Pipeline", desc: "End-to-end automation from form submission to video generation and email delivery" },
-  { img: wf2, title: "n8n Workflow Backup System", desc: "Scheduled backup of all n8n workflows to Google Drive with version tracking" },
-  { img: wf3, title: "Twitter Sentiment Analyzer", desc: "AI-powered social media monitoring with automated Slack notifications" },
-  { img: wf4, title: "AI Website Chatbot", desc: "Vector store-powered Q&A bot trained on website content using Supabase + OpenAI" },
-  { img: wf5, title: "Appointment Booking System", desc: "Cal.com integration for automated slot checking and booking via webhook" },
-  { img: wf6, title: "AI Video Resume Generator", desc: "Resume-to-video automation with HeyGen AI avatars (male/female voices)" },
-  { img: wf7, title: "Course Deal Alert Bot", desc: "Scheduled scraper that finds 50%+ discounts and sends Telegram notifications" },
-  { img: wf8, title: "n8n AI Customer Support Agent", desc: "AI agent with inventory, orders, and return policy tools using Airtable" },
-  { img: wf9, title: "Zep Memory AI Agent", desc: "AI agent with persistent memory using Zep + Google Sheets as data source" },
-  { img: wf10, title: "HubSpot to Gmail Ticket Notifier", desc: "Webhook-triggered HubSpot ticket creation with Gmail notification" },
-  { img: wf11, title: "AI Call Transcript Analyzer", desc: "Automated analysis of transcripts using OpenAI structured output" },
-  { img: wf12, title: "AI Lead Generation System", desc: "Apify-powered lead scraping with AI outreach email generation and human approval" },
-  { img: wf13, title: "Insurance Renewal Alert System", desc: "Airtable-based system to check and alert on expiring insurance policies" },
-  { img: wf14, title: "Multi-Platform Social Media Automation", desc: "AI content generation and auto-posting to LinkedIn, Twitter, and Instagram" },
-  { img: wf15, title: "Lead Capture to Google Sheets", desc: "Webhook-triggered lead capture with Google Sheets storage and email notification" },
-  { img: wf16, title: "WhatsApp Order Notification Bot", desc: "Automated order status alerts sent directly to customers via WhatsApp Business API" },
-  { img: wf17, title: "AI Email Outreach Sequencer", desc: "Multi-step cold email campaign automation with AI-personalized content and follow-ups" },
-  { img: wf18, title: "Airtable Project Management System", desc: "Fully automated project tracker with task assignments, deadline reminders, and status updates" },
-  { img: wf19, title: "E-commerce Inventory Sync", desc: "Real-time inventory sync between Shopify, Airtable, and Google Sheets with low-stock alerts" },
-  { img: wf20, title: "AI Blog Content Pipeline", desc: "Automated research-to-publish workflow that generates, formats, and posts SEO blog content" },
-  { img: wf21, title: "Client Onboarding Automation", desc: "End-to-end client welcome flow: contract signing, welcome email, and folder creation" },
-  { img: wf22, title: "Slack Team Digest Bot", desc: "Daily AI-generated team digest summarizing tasks, updates, and blockers from multiple tools" },
-  { img: wf23, title: "Google Forms to CRM Pipeline", desc: "Instant lead capture from Google Forms into Airtable CRM with Slack and email alerts" },
-  { img: wf24, title: "Stripe Payment to Airtable Logger", desc: "Auto-log every Stripe payment event into Airtable with client and invoice details" },
-  { img: wf25, title: "Automated Contract Generator", desc: "Trigger-based PDF contract generation and delivery via email on new client sign-up" },
-  { img: wf26, title: "RSS Feed to LinkedIn Publisher", desc: "Scheduled scraping of niche RSS feeds with AI rewriting and auto-publishing to LinkedIn" },
-  { img: wf27, title: "Multi-Step Nurture Email Sequence", desc: "Behavior-triggered drip email system for lead nurturing across a 7-day funnel" },
-  { img: wf28, title: "YouTube Video Repurposing Bot", desc: "Auto-transcribe YouTube videos and repurpose them into Twitter threads and LinkedIn posts" },
-  { img: wf29, title: "Notion to Airtable Sync", desc: "Bidirectional sync keeping Notion pages and Airtable records aligned in real time" },
-  { img: wf30, title: "AI Customer Feedback Analyzer", desc: "Collect, categorize, and score customer feedback using OpenAI with Airtable storage" },
-  { img: wf31, title: "Automated Invoice Reminder System", desc: "Smart overdue invoice detection with tiered email reminders and Slack alerts" },
-  { img: wf32, title: "Webinar Registration Workflow", desc: "Automated Zoom webinar registration, confirmation email, and 24-hour reminder sequence" },
-  { img: wf33, title: "Team Timesheet Tracker", desc: "Weekly timesheet collection via Typeform with automatic Airtable logging and manager summaries" },
-  { img: wf34, title: "AI-Powered FAQ Responder", desc: "Webhook-triggered FAQ bot that answers common questions using an AI-trained knowledge base" },
-  { img: wf35, title: "Conditional Branching Workflow", desc: "IF/true/false logic with merged outputs for dynamic, multi-path automation in Make.com" },
-  { img: wf36, title: "Scheduled API to Airtable & Discord", desc: "Scheduled HTTP polling with conditional routing to Airtable records and Discord alerts" },
-  { img: wf37, title: "AI Employee Onboarding System", desc: "Form-triggered AI agent that provisions Jira accounts and Slack channels based on role" },
-  { img: wf38, title: "Slack RAG Knowledge Bot", desc: "Chat-triggered AI agent with Qdrant vector store for company knowledge base Q&A" },
-  { img: wf39, title: "AI Cold Email Personalization System", desc: "Google Sheets lead list → domain extraction → AI-personalized outreach with Instantly delivery" },
-  { img: wf40, title: "Google Workspace User Provisioning", desc: "Form submission auto-creates Google Workspace accounts, Jira users, and Slack profiles" },
-  { img: wf41, title: "Telegram AI Study Assistant", desc: "Complex Telegram bot with Google Drive file ingestion, vector embeddings, and AI Q&A" },
-  { img: wf42, title: "Gmail PDF Attachment Parser", desc: "Dual-trigger workflow that fetches and parses PDF attachments from Gmail into structured data" },
-  { img: wf43, title: "Email Attachment Data Extractor", desc: "Gmail trigger merges attachments and runs PDF parsing for automated document processing" },
-  { img: wf44, title: "Groq-Powered AI Webhook Agent", desc: "Webhook-triggered AI Tools Agent using Groq with Brave search and persistent simple memory" },
-  { img: wf45, title: "Microsoft SQL Data Router", desc: "SQL query results split through dual switch logic, merged and processed for downstream output" },
-  { img: wf46, title: "Automated Withdrawal Status Notifier", desc: "Login-triggered withdrawal polling with status-based Telegram notifications across multiple states" },
-  { img: wf47, title: "Error-Aware Email Draft System", desc: "Dual-trigger (scheduled + error) workflow that generates Gmail drafts with custom field mapping" },
-  { img: wf48, title: "Multi-Tool Gemini AI Agent", desc: "AI agent connected to YouTube, GitHub, Hacker News, Gmail, Strava, and Google Calendar tools" },
-  { img: wf49, title: "Bulk Email Templating System", desc: "Customer datastore loop generates both per-item text emails and consolidated HTML digest emails" },
-  { img: wf50, title: "AI Appointment Booking Agent", desc: "Webhook-powered Gemini 2.5 agent checks calendar availability and creates Google Calendar events" },
-  { img: wf51, title: "AI Video Content Factory", desc: "Deepseek + ElevenLabs pipeline that generates transcripts, audio, AI images, and uploads to Sheets" },
-  { img: wf52, title: "YouTube Transcript Summarizer Bot", desc: "Webhook fetches YouTube transcripts, GPT-4o-mini summarizes them, and sends results to Telegram" },
-  { img: wf53, title: "Farmer Registration API System", desc: "Multi-branch n8n API handling new registrations, profile updates, and deactivations with PostgreSQL" },
-  { img: wf54, title: "Invoice Notification System", desc: "Webhook-triggered Make.com scenario using Twilio, Gmail, and Airtable for payment alerts" },
-  { img: wf55, title: "Lead Enrichment & HubSpot CRM", desc: "Webhook captures leads, enriches data via Apollo, upserts to HubSpot, and notifies the team" },
-  { img: wf56, title: "AI Resume Parser to Airtable", desc: "Resume submission trigger extracts PDF data with OpenAI and creates a structured Airtable record" },
-  { img: wf57, title: "Interview Scheduler with Google Calendar", desc: "Airtable trigger checks interview status and auto-creates Google Calendar events with email alerts" },
-  { img: wf58, title: "Shopify Order to Sheets & Slack", desc: "Shopify event trigger appends order data to Google Sheets and posts a Slack notification instantly" },
-  { img: wf59, title: "n8n Workflow Backup to Google Drive", desc: "Scheduled loop exports all n8n workflows as files and organises them into Google Drive subfolders" },
-  { img: wf60, title: "Twitter Sentiment Analyzer", desc: "Scheduled Apify scraper runs AI sentiment analysis on tweets and alerts on negative posts via Slack" },
-  { img: wf61, title: "Website Chatbot with Supabase RAG", desc: "Scrapes website content, stores embeddings in Supabase, and powers a live Q&A chat agent" },
-  { img: wf62, title: "Cal.com Appointment Booking Bot", desc: "Webhook checks available Cal.com slots and books appointments based on user request type" },
-  { img: wf63, title: "AI Video Resume Generator", desc: "Uploads resume and photo, extracts data with OpenAI, and generates male/female HeyGen avatar videos" },
-  { img: wf64, title: "HeyGen Video Resume (Alternate Flow)", desc: "Extended resume-to-video pipeline with gender detection, wait loop, and Google Sheets storage" },
-  { img: wf65, title: "Course Deal Alert Bot", desc: "Scheduled browser scraper finds 50%+ discounts, checks for duplicates, and sends Telegram alerts" },
-  { img: wf66, title: "AI Customer Support Agent", desc: "Chat-triggered AI agent with Airtable tools for inventory lookups, orders, and return policy queries" },
-  { img: wf67, title: "Zep Memory AI Support Agent", desc: "AI agent with persistent Zep memory reads orders and inventory from Google Sheets on demand" },
-  { img: wf68, title: "HubSpot Ticket to Gmail Notifier", desc: "HubSpot webhook creates a support ticket and sends an instant Gmail notification to the team" },
-  { img: wf69, title: "AI Call Transcript Analyzer", desc: "Scheduled Google Sheets loop sends transcripts to OpenAI structured output and stores results" },
-  { img: wf70, title: "AI Lead Generation System", desc: "Form-triggered Apify lead scraper with AI email generation, human approval step, and Gmail delivery" },
-  { img: wf71, title: "Insurance Renewal Alert System", desc: "Daily Airtable check flags expired records and sends renewal alert emails automatically" },
-  { img: wf72, title: "Multi-Platform Social Media Automation", desc: "Three-trigger pipeline generates AI content and auto-posts to LinkedIn, Twitter, and Instagram" },
+type WorkflowTag = "n8n" | "Make.com" | "AI Agents" | "Airtable";
+
+const workflows: { img: string; title: string; desc: string; tag: WorkflowTag }[] = [
+  { img: wf1,  tag: "n8n",       title: "Automated Video Creation Pipeline",      desc: "End-to-end automation from form submission to video generation and email delivery" },
+  { img: wf2,  tag: "n8n",       title: "n8n Workflow Backup System",              desc: "Scheduled backup of all n8n workflows to Google Drive with version tracking" },
+  { img: wf3,  tag: "n8n",       title: "Twitter Sentiment Analyzer",              desc: "AI-powered social media monitoring with automated Slack notifications" },
+  { img: wf4,  tag: "AI Agents", title: "AI Website Chatbot",                      desc: "Vector store-powered Q&A bot trained on website content using Supabase + OpenAI" },
+  { img: wf5,  tag: "n8n",       title: "Appointment Booking System",              desc: "Cal.com integration for automated slot checking and booking via webhook" },
+  { img: wf6,  tag: "AI Agents", title: "AI Video Resume Generator",               desc: "Resume-to-video automation with HeyGen AI avatars (male/female voices)" },
+  { img: wf7,  tag: "n8n",       title: "Course Deal Alert Bot",                   desc: "Scheduled scraper that finds 50%+ discounts and sends Telegram notifications" },
+  { img: wf8,  tag: "AI Agents", title: "n8n AI Customer Support Agent",           desc: "AI agent with inventory, orders, and return policy tools using Airtable" },
+  { img: wf9,  tag: "AI Agents", title: "Zep Memory AI Agent",                     desc: "AI agent with persistent memory using Zep + Google Sheets as data source" },
+  { img: wf10, tag: "n8n",       title: "HubSpot to Gmail Ticket Notifier",        desc: "Webhook-triggered HubSpot ticket creation with Gmail notification" },
+  { img: wf11, tag: "AI Agents", title: "AI Call Transcript Analyzer",             desc: "Automated analysis of transcripts using OpenAI structured output" },
+  { img: wf12, tag: "AI Agents", title: "AI Lead Generation System",               desc: "Apify-powered lead scraping with AI outreach email generation and human approval" },
+  { img: wf13, tag: "Airtable",  title: "Insurance Renewal Alert System",          desc: "Airtable-based system to check and alert on expiring insurance policies" },
+  { img: wf14, tag: "n8n",       title: "Multi-Platform Social Media Automation",  desc: "AI content generation and auto-posting to LinkedIn, Twitter, and Instagram" },
+  { img: wf15, tag: "n8n",       title: "Lead Capture to Google Sheets",           desc: "Webhook-triggered lead capture with Google Sheets storage and email notification" },
+  { img: wf16, tag: "n8n",       title: "WhatsApp Order Notification Bot",         desc: "Automated order status alerts sent directly to customers via WhatsApp Business API" },
+  { img: wf17, tag: "n8n",       title: "AI Email Outreach Sequencer",             desc: "Multi-step cold email campaign automation with AI-personalized content and follow-ups" },
+  { img: wf18, tag: "Airtable",  title: "Airtable Project Management System",      desc: "Fully automated project tracker with task assignments, deadline reminders, and status updates" },
+  { img: wf19, tag: "Airtable",  title: "E-commerce Inventory Sync",               desc: "Real-time inventory sync between Shopify, Airtable, and Google Sheets with low-stock alerts" },
+  { img: wf20, tag: "AI Agents", title: "AI Blog Content Pipeline",                desc: "Automated research-to-publish workflow that generates, formats, and posts SEO blog content" },
+  { img: wf21, tag: "n8n",       title: "Client Onboarding Automation",            desc: "End-to-end client welcome flow: contract signing, welcome email, and folder creation" },
+  { img: wf22, tag: "AI Agents", title: "Slack Team Digest Bot",                   desc: "Daily AI-generated team digest summarizing tasks, updates, and blockers from multiple tools" },
+  { img: wf23, tag: "Airtable",  title: "Google Forms to CRM Pipeline",            desc: "Instant lead capture from Google Forms into Airtable CRM with Slack and email alerts" },
+  { img: wf24, tag: "Airtable",  title: "Stripe Payment to Airtable Logger",       desc: "Auto-log every Stripe payment event into Airtable with client and invoice details" },
+  { img: wf25, tag: "n8n",       title: "Automated Contract Generator",            desc: "Trigger-based PDF contract generation and delivery via email on new client sign-up" },
+  { img: wf26, tag: "AI Agents", title: "RSS Feed to LinkedIn Publisher",          desc: "Scheduled scraping of niche RSS feeds with AI rewriting and auto-publishing to LinkedIn" },
+  { img: wf27, tag: "n8n",       title: "Multi-Step Nurture Email Sequence",       desc: "Behavior-triggered drip email system for lead nurturing across a 7-day funnel" },
+  { img: wf28, tag: "AI Agents", title: "YouTube Video Repurposing Bot",           desc: "Auto-transcribe YouTube videos and repurpose them into Twitter threads and LinkedIn posts" },
+  { img: wf29, tag: "Airtable",  title: "Notion to Airtable Sync",                 desc: "Bidirectional sync keeping Notion pages and Airtable records aligned in real time" },
+  { img: wf30, tag: "AI Agents", title: "AI Customer Feedback Analyzer",           desc: "Collect, categorize, and score customer feedback using OpenAI with Airtable storage" },
+  { img: wf31, tag: "n8n",       title: "Automated Invoice Reminder System",       desc: "Smart overdue invoice detection with tiered email reminders and Slack alerts" },
+  { img: wf32, tag: "n8n",       title: "Webinar Registration Workflow",           desc: "Automated Zoom webinar registration, confirmation email, and 24-hour reminder sequence" },
+  { img: wf33, tag: "Airtable",  title: "Team Timesheet Tracker",                  desc: "Weekly timesheet collection via Typeform with automatic Airtable logging and manager summaries" },
+  { img: wf34, tag: "AI Agents", title: "AI-Powered FAQ Responder",                desc: "Webhook-triggered FAQ bot that answers common questions using an AI-trained knowledge base" },
+  { img: wf35, tag: "Make.com",  title: "Conditional Branching Workflow",          desc: "IF/true/false logic with merged outputs for dynamic, multi-path automation in Make.com" },
+  { img: wf36, tag: "n8n",       title: "Scheduled API to Airtable & Discord",     desc: "Scheduled HTTP polling with conditional routing to Airtable records and Discord alerts" },
+  { img: wf37, tag: "AI Agents", title: "AI Employee Onboarding System",           desc: "Form-triggered AI agent that provisions Jira accounts and Slack channels based on role" },
+  { img: wf38, tag: "AI Agents", title: "Slack RAG Knowledge Bot",                 desc: "Chat-triggered AI agent with Qdrant vector store for company knowledge base Q&A" },
+  { img: wf39, tag: "AI Agents", title: "AI Cold Email Personalization System",    desc: "Google Sheets lead list → domain extraction → AI-personalized outreach with Instantly delivery" },
+  { img: wf40, tag: "n8n",       title: "Google Workspace User Provisioning",      desc: "Form submission auto-creates Google Workspace accounts, Jira users, and Slack profiles" },
+  { img: wf41, tag: "AI Agents", title: "Telegram AI Study Assistant",             desc: "Complex Telegram bot with Google Drive file ingestion, vector embeddings, and AI Q&A" },
+  { img: wf42, tag: "n8n",       title: "Gmail PDF Attachment Parser",             desc: "Dual-trigger workflow that fetches and parses PDF attachments from Gmail into structured data" },
+  { img: wf43, tag: "n8n",       title: "Email Attachment Data Extractor",         desc: "Gmail trigger merges attachments and runs PDF parsing for automated document processing" },
+  { img: wf44, tag: "AI Agents", title: "Groq-Powered AI Webhook Agent",           desc: "Webhook-triggered AI Tools Agent using Groq with Brave search and persistent simple memory" },
+  { img: wf45, tag: "n8n",       title: "Microsoft SQL Data Router",               desc: "SQL query results split through dual switch logic, merged and processed for downstream output" },
+  { img: wf46, tag: "n8n",       title: "Automated Withdrawal Status Notifier",    desc: "Login-triggered withdrawal polling with status-based Telegram notifications across multiple states" },
+  { img: wf47, tag: "n8n",       title: "Error-Aware Email Draft System",          desc: "Dual-trigger (scheduled + error) workflow that generates Gmail drafts with custom field mapping" },
+  { img: wf48, tag: "AI Agents", title: "Multi-Tool Gemini AI Agent",              desc: "AI agent connected to YouTube, GitHub, Hacker News, Gmail, Strava, and Google Calendar tools" },
+  { img: wf49, tag: "Make.com",  title: "Bulk Email Templating System",            desc: "Customer datastore loop generates both per-item text emails and consolidated HTML digest emails" },
+  { img: wf50, tag: "AI Agents", title: "AI Appointment Booking Agent",            desc: "Webhook-powered Gemini 2.5 agent checks calendar availability and creates Google Calendar events" },
+  { img: wf51, tag: "AI Agents", title: "AI Video Content Factory",                desc: "Deepseek + ElevenLabs pipeline that generates transcripts, audio, AI images, and uploads to Sheets" },
+  { img: wf52, tag: "AI Agents", title: "YouTube Transcript Summarizer Bot",       desc: "Webhook fetches YouTube transcripts, GPT-4o-mini summarizes them, and sends results to Telegram" },
+  { img: wf53, tag: "n8n",       title: "Farmer Registration API System",          desc: "Multi-branch n8n API handling new registrations, profile updates, and deactivations with PostgreSQL" },
+  { img: wf54, tag: "Make.com",  title: "Invoice Notification System",             desc: "Webhook-triggered Make.com scenario using Twilio, Gmail, and Airtable for payment alerts" },
+  { img: wf55, tag: "n8n",       title: "Lead Enrichment & HubSpot CRM",          desc: "Webhook captures leads, enriches data via Apollo, upserts to HubSpot, and notifies the team" },
+  { img: wf56, tag: "AI Agents", title: "AI Resume Parser to Airtable",            desc: "Resume submission trigger extracts PDF data with OpenAI and creates a structured Airtable record" },
+  { img: wf57, tag: "Airtable",  title: "Interview Scheduler with Google Calendar",desc: "Airtable trigger checks interview status and auto-creates Google Calendar events with email alerts" },
+  { img: wf58, tag: "n8n",       title: "Shopify Order to Sheets & Slack",         desc: "Shopify event trigger appends order data to Google Sheets and posts a Slack notification instantly" },
+  { img: wf59, tag: "n8n",       title: "n8n Workflow Backup to Google Drive",     desc: "Scheduled loop exports all n8n workflows as files and organises them into Google Drive subfolders" },
+  { img: wf60, tag: "AI Agents", title: "AI Twitter Sentiment Monitor",            desc: "Scheduled Apify scraper runs AI sentiment analysis on tweets and alerts on negative posts via Slack" },
+  { img: wf61, tag: "AI Agents", title: "Website Chatbot with Supabase RAG",      desc: "Scrapes website content, stores embeddings in Supabase, and powers a live Q&A chat agent" },
+  { img: wf62, tag: "n8n",       title: "Cal.com Slot Checker & Booking Bot",     desc: "Webhook checks available Cal.com slots and books appointments based on user request type" },
+  { img: wf63, tag: "AI Agents", title: "HeyGen AI Video Resume Builder",         desc: "Uploads resume and photo, extracts data with OpenAI, and generates male/female HeyGen avatar videos" },
+  { img: wf64, tag: "AI Agents", title: "HeyGen Video Resume (Alternate Flow)",   desc: "Extended resume-to-video pipeline with gender detection, wait loop, and Google Sheets storage" },
+  { img: wf65, tag: "n8n",       title: "Udemy Course Deal Scraper Bot",          desc: "Scheduled browser scraper finds 50%+ discounts, checks for duplicates, and sends Telegram alerts" },
+  { img: wf66, tag: "AI Agents", title: "Airtable-Powered AI Support Agent",      desc: "Chat-triggered AI agent with Airtable tools for inventory lookups, orders, and return policy queries" },
+  { img: wf67, tag: "AI Agents", title: "Zep Long-Term Memory AI Agent",          desc: "AI agent with persistent Zep memory reads orders and inventory from Google Sheets on demand" },
+  { img: wf68, tag: "n8n",       title: "HubSpot Webhook to Gmail Notifier",      desc: "HubSpot webhook creates a support ticket and sends an instant Gmail notification to the team" },
+  { img: wf69, tag: "AI Agents", title: "Batch Call Transcript Analyzer",         desc: "Scheduled Google Sheets loop sends transcripts to OpenAI structured output and stores results" },
+  { img: wf70, tag: "AI Agents", title: "Apify-Powered AI Lead Outreach System",  desc: "Form-triggered Apify lead scraper with AI email generation, human approval step, and Gmail delivery" },
+  { img: wf71, tag: "Airtable",  title: "Airtable Insurance Renewal Alerts",      desc: "Daily Airtable check flags expired records and sends renewal alert emails automatically" },
+  { img: wf72, tag: "n8n",       title: "3-Platform Social Media Auto-Poster",    desc: "Three-trigger pipeline generates AI content and auto-posts to LinkedIn, Twitter, and Instagram" },
 ];
 
 const services = [
@@ -197,6 +200,120 @@ const staggerContainer = {
     }
   }
 };
+
+const TAG_CONFIG: Record<WorkflowTag | "All", { label: string; color: string; dot: string }> = {
+  "All":       { label: "All",       color: "bg-primary/10 text-primary border-primary/30",          dot: "bg-primary" },
+  "n8n":       { label: "n8n",       color: "bg-[#FF6D5A]/10 text-[#d14a37] border-[#FF6D5A]/30",    dot: "bg-[#FF6D5A]" },
+  "Make.com":  { label: "Make.com",  color: "bg-purple-100 text-purple-700 border-purple-200",        dot: "bg-purple-500" },
+  "AI Agents": { label: "AI Agents", color: "bg-indigo-100 text-indigo-700 border-indigo-200",        dot: "bg-indigo-500" },
+  "Airtable":  { label: "Airtable",  color: "bg-amber-100 text-amber-700 border-amber-200",           dot: "bg-amber-500" },
+};
+
+const CARD_TAG_STYLE: Record<WorkflowTag, string> = {
+  "n8n":       "bg-[#FF6D5A]/10 text-[#d14a37]",
+  "Make.com":  "bg-purple-100 text-purple-700",
+  "AI Agents": "bg-indigo-100 text-indigo-700",
+  "Airtable":  "bg-amber-100 text-amber-700",
+};
+
+function WorkflowShowcase() {
+  const [activeFilter, setActiveFilter] = useState<WorkflowTag | "All">("All");
+
+  const filters = (["All", "n8n", "Make.com", "AI Agents", "Airtable"] as const);
+
+  const filtered = activeFilter === "All"
+    ? workflows
+    : workflows.filter(w => w.tag === activeFilter);
+
+  const countFor = (tag: WorkflowTag | "All") =>
+    tag === "All" ? workflows.length : workflows.filter(w => w.tag === tag).length;
+
+  return (
+    <section className="py-24 bg-background overflow-hidden">
+      <div className="container mx-auto px-4 md:px-8">
+        <motion.div
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
+          className="text-center max-w-2xl mx-auto mb-10"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Proven Systems</h2>
+          <p className="text-lg text-muted-foreground">A look inside the engine. Real systems built for real businesses.</p>
+        </motion.div>
+
+        {/* Filter Tabs */}
+        <motion.div
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}
+          className="flex flex-wrap justify-center gap-3 mb-12"
+        >
+          {filters.map(tag => {
+            const cfg = TAG_CONFIG[tag];
+            const isActive = activeFilter === tag;
+            return (
+              <button
+                key={tag}
+                onClick={() => setActiveFilter(tag)}
+                className={`relative flex items-center gap-2 px-5 py-2.5 rounded-full border font-medium text-sm transition-all duration-200 shadow-sm hover:shadow-md ${
+                  isActive
+                    ? `${cfg.color} shadow-md scale-105`
+                    : "bg-white border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                }`}
+              >
+                <span className={`w-2 h-2 rounded-full shrink-0 ${isActive ? cfg.dot : "bg-muted-foreground/40"}`} />
+                {cfg.label}
+                <span className={`ml-1 text-xs px-1.5 py-0.5 rounded-full font-semibold ${isActive ? "bg-white/50" : "bg-muted"}`}>
+                  {countFor(tag)}
+                </span>
+                {isActive && (
+                  <motion.span
+                    layoutId="filter-active-pill"
+                    className="absolute inset-0 rounded-full border-2 border-current opacity-30 pointer-events-none"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </motion.div>
+
+        {/* Grid */}
+        <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((wf) => (
+              <motion.div
+                key={wf.img}
+                layout
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.88 }}
+                transition={{ duration: 0.25 }}
+              >
+                <Card className="overflow-hidden h-full group bg-white border-border/50 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-muted border-b border-border/50">
+                    <img
+                      src={wf.img}
+                      alt={wf.title}
+                      className="object-cover object-top w-full h-full group-hover:scale-105 group-hover:blur-[2px] transition-all duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <Button variant="secondary" className="rounded-full pointer-events-none">View Details</Button>
+                    </div>
+                    <span className={`absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded-full ${CARD_TAG_STYLE[wf.tag]}`}>
+                      {wf.tag}
+                    </span>
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-primary transition-colors">{wf.title}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{wf.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
 
@@ -343,41 +460,7 @@ export default function Home() {
         </section>
 
         {/* 5. WORKFLOW SHOWCASE */}
-        <section className="py-24 bg-background overflow-hidden">
-          <div className="container mx-auto px-4 md:px-8">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Proven Systems</h2>
-              <p className="text-lg text-muted-foreground">A look inside the engine. Real systems built for real businesses.</p>
-            </motion.div>
-
-            <motion.div 
-              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
-            >
-              {workflows.map((wf, i) => (
-                <motion.div variants={fadeIn} key={i}>
-                  <Card className="overflow-hidden h-full group bg-white border-border/50 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
-                    <div className="relative aspect-[4/3] overflow-hidden bg-muted border-b border-border/50">
-                      <img 
-                        src={wf.img} 
-                        alt={wf.title} 
-                        className="object-cover object-top w-full h-full group-hover:scale-105 group-hover:blur-[2px] transition-all duration-500"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                        <Button variant="secondary" className="rounded-full pointer-events-none">View Details</Button>
-                      </div>
-                    </div>
-                    <CardContent className="p-6">
-                      <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-primary transition-colors">{wf.title}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{wf.desc}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+        <WorkflowShowcase />
 
         {/* 6. VIDEO TESTIMONIALS CAROUSEL */}
         <section className="py-24 bg-white border-y border-border/50">
