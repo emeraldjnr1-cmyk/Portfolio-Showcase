@@ -23,6 +23,26 @@ import wf12 from "@assets/Screenshot_2026-04-02_at_3.58.16_AM_1776404406309.png"
 import wf13 from "@assets/Screenshot_2026-04-02_at_3.58.29_AM_1776404406309.png";
 import wf14 from "@assets/Screenshot_2026-04-02_at_3.58.39_AM_1776404406310.png";
 import wf15 from "@assets/Screenshot_2026-04-02_at_3.58.52_AM_1776404406310.png";
+import wf16 from "@assets/Screenshot_2026-04-06_at_4.29.55_PM_1776459171184.png";
+import wf17 from "@assets/Screenshot_2026-04-06_at_4.30.22_PM_1776459171183.png";
+import wf18 from "@assets/Screenshot_2026-04-06_at_4.30.41_PM_1776459171182.png";
+import wf19 from "@assets/Screenshot_2026-04-06_at_4.30.49_PM_1776459171182.png";
+import wf20 from "@assets/Screenshot_2026-04-06_at_4.34.04_PM_1776459171182.png";
+import wf21 from "@assets/Screenshot_2026-04-06_at_4.38.44_PM_1776459171181.png";
+import wf22 from "@assets/Screenshot_2026-04-06_at_4.38.59_PM_1776459171174.png";
+import wf23 from "@assets/Screenshot_2026-04-06_at_4.39.08_PM_1776459171177.png";
+import wf24 from "@assets/Screenshot_2026-04-06_at_4.39.17_PM_1776459171178.png";
+import wf25 from "@assets/Screenshot_2026-04-06_at_4.39.30_PM_1776459171178.png";
+import wf26 from "@assets/Screenshot_2026-04-06_at_4.39.37_PM_1776459171179.png";
+import wf27 from "@assets/Screenshot_2026-04-06_at_4.39.45_PM_1776459171179.png";
+import wf28 from "@assets/Screenshot_2026-04-06_at_4.39.56_PM_1776459171168.png";
+import wf29 from "@assets/Screenshot_2026-04-06_at_4.41.07_PM_1776459171169.png";
+import wf30 from "@assets/Screenshot_2026-04-06_at_4.41.34_PM_1776459171170.png";
+import wf31 from "@assets/Screenshot_2026-04-06_at_4.41.45_PM_1776459171171.png";
+import wf32 from "@assets/Screenshot_2026-04-06_at_4.41.51_PM_1776459171172.png";
+import wf33 from "@assets/Screenshot_2026-04-06_at_4.41.57_PM_1776459171172.png";
+import wf34 from "@assets/Screenshot_2026-04-06_at_4.42.05_PM_1776459171167.png";
+import profilePic from "@assets/my_profile_pic_1776459432094.jpg";
 
 const workflows = [
   { img: wf1, title: "Automated Video Creation Pipeline", desc: "End-to-end automation from form submission to video generation and email delivery" },
@@ -40,6 +60,25 @@ const workflows = [
   { img: wf13, title: "Insurance Renewal Alert System", desc: "Airtable-based system to check and alert on expiring insurance policies" },
   { img: wf14, title: "Multi-Platform Social Media Automation", desc: "AI content generation and auto-posting to LinkedIn, Twitter, and Instagram" },
   { img: wf15, title: "Lead Capture to Google Sheets", desc: "Webhook-triggered lead capture with Google Sheets storage and email notification" },
+  { img: wf16, title: "WhatsApp Order Notification Bot", desc: "Automated order status alerts sent directly to customers via WhatsApp Business API" },
+  { img: wf17, title: "AI Email Outreach Sequencer", desc: "Multi-step cold email campaign automation with AI-personalized content and follow-ups" },
+  { img: wf18, title: "Airtable Project Management System", desc: "Fully automated project tracker with task assignments, deadline reminders, and status updates" },
+  { img: wf19, title: "E-commerce Inventory Sync", desc: "Real-time inventory sync between Shopify, Airtable, and Google Sheets with low-stock alerts" },
+  { img: wf20, title: "AI Blog Content Pipeline", desc: "Automated research-to-publish workflow that generates, formats, and posts SEO blog content" },
+  { img: wf21, title: "Client Onboarding Automation", desc: "End-to-end client welcome flow: contract signing, welcome email, and folder creation" },
+  { img: wf22, title: "Slack Team Digest Bot", desc: "Daily AI-generated team digest summarizing tasks, updates, and blockers from multiple tools" },
+  { img: wf23, title: "Google Forms to CRM Pipeline", desc: "Instant lead capture from Google Forms into Airtable CRM with Slack and email alerts" },
+  { img: wf24, title: "Stripe Payment to Airtable Logger", desc: "Auto-log every Stripe payment event into Airtable with client and invoice details" },
+  { img: wf25, title: "Automated Contract Generator", desc: "Trigger-based PDF contract generation and delivery via email on new client sign-up" },
+  { img: wf26, title: "RSS Feed to LinkedIn Publisher", desc: "Scheduled scraping of niche RSS feeds with AI rewriting and auto-publishing to LinkedIn" },
+  { img: wf27, title: "Multi-Step Nurture Email Sequence", desc: "Behavior-triggered drip email system for lead nurturing across a 7-day funnel" },
+  { img: wf28, title: "YouTube Video Repurposing Bot", desc: "Auto-transcribe YouTube videos and repurpose them into Twitter threads and LinkedIn posts" },
+  { img: wf29, title: "Notion to Airtable Sync", desc: "Bidirectional sync keeping Notion pages and Airtable records aligned in real time" },
+  { img: wf30, title: "AI Customer Feedback Analyzer", desc: "Collect, categorize, and score customer feedback using OpenAI with Airtable storage" },
+  { img: wf31, title: "Automated Invoice Reminder System", desc: "Smart overdue invoice detection with tiered email reminders and Slack alerts" },
+  { img: wf32, title: "Webinar Registration Workflow", desc: "Automated Zoom webinar registration, confirmation email, and 24-hour reminder sequence" },
+  { img: wf33, title: "Team Timesheet Tracker", desc: "Weekly timesheet collection via Typeform with automatic Airtable logging and manager summaries" },
+  { img: wf34, title: "AI-Powered FAQ Responder", desc: "Webhook-triggered FAQ bot that answers common questions using an AI-trained knowledge base" },
 ];
 
 const services = [
@@ -125,7 +164,7 @@ export default function Home() {
               </motion.p>
               <motion.div variants={fadeIn} className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button size="lg" className="rounded-full text-base px-8 h-14 w-full sm:w-auto shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all group" asChild>
-                  <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/2348143046516" target="_blank" rel="noopener noreferrer">
                     <SiWhatsapp className="mr-2 w-5 h-5 group-hover:scale-110 transition-transform" /> Message Me on WhatsApp
                   </a>
                 </Button>
@@ -359,7 +398,7 @@ export default function Home() {
               
               <div className="w-48 h-48 md:w-72 md:h-72 rounded-[2rem] overflow-hidden bg-slate-100 shrink-0 border border-border shadow-inner rotate-3 hover:rotate-0 transition-transform duration-500 relative z-10">
                 <img 
-                  src="https://api.dicebear.com/7.x/initials/svg?seed=DP&backgroundColor=1F3A5F&textColor=ffffff" 
+                  src={profilePic}
                   alt="Denver Peter" 
                   className="w-full h-full object-cover"
                 />
@@ -394,12 +433,12 @@ export default function Home() {
               
               <motion.div variants={fadeIn} className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-10">
                 <Button size="lg" className="rounded-full bg-white text-primary hover:bg-white/90 hover:scale-105 h-16 px-10 text-lg w-full sm:w-auto shadow-2xl transition-all" asChild>
-                  <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/2348143046516" target="_blank" rel="noopener noreferrer">
                     <SiWhatsapp className="mr-3 w-6 h-6" /> Message Me on WhatsApp
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" className="rounded-full border-white/30 bg-white/5 hover:bg-white/20 text-white h-16 px-10 text-lg w-full sm:w-auto backdrop-blur-sm transition-all" asChild>
-                  <a href="https://t.me/DenverNoCode" target="_blank" rel="noopener noreferrer">
+                  <a href="https://t.me/+2348143046516" target="_blank" rel="noopener noreferrer">
                     <SiTelegram className="mr-3 w-6 h-6" /> Telegram
                   </a>
                 </Button>

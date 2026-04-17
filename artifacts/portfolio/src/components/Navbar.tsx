@@ -17,7 +17,7 @@ export function Navbar() {
         </div>
         <div className="flex items-center gap-4">
           <Button asChild variant="default" className="rounded-full px-6">
-            <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+            <a href="https://wa.me/2348143046516" target="_blank" rel="noopener noreferrer">
               Let's Talk
             </a>
           </Button>
