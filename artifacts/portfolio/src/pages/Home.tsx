@@ -61,6 +61,25 @@ import wf50 from "@assets/Screenshot_2026-04-13_at_5.32.58_AM_1776459909676.png"
 import wf51 from "@assets/Screenshot_2026-04-13_at_5.33.39_AM_1776459909680.png";
 import wf52 from "@assets/Screenshot_2026-04-13_at_5.34.01_AM_1776459909682.png";
 import wf53 from "@assets/Screenshot_2026-04-13_at_5.34.31_AM_1776459909669.png";
+import wf54 from "@assets/Screenshot_2026-04-01_at_1.56.30_AM_1776460016065.png";
+import wf55 from "@assets/Screenshot_2026-04-02_at_3.49.25_AM_1776460016078.png";
+import wf56 from "@assets/Screenshot_2026-04-02_at_3.49.36_AM_1776460016080.png";
+import wf57 from "@assets/Screenshot_2026-04-02_at_3.49.59_AM_1776460016081.png";
+import wf58 from "@assets/Screenshot_2026-04-02_at_3.50.12_AM_1776460016082.png";
+import wf59 from "@assets/Screenshot_2026-04-02_at_3.50.26_AM_1776460016082.png";
+import wf60 from "@assets/Screenshot_2026-04-02_at_3.50.38_AM_1776460016083.png";
+import wf61 from "@assets/Screenshot_2026-04-02_at_3.52.23_AM_1776460016084.png";
+import wf62 from "@assets/Screenshot_2026-04-02_at_3.52.39_AM_1776460016085.png";
+import wf63 from "@assets/Screenshot_2026-04-02_at_3.52.50_AM_1776460016086.png";
+import wf64 from "@assets/Screenshot_2026-04-02_at_3.56.05_AM_1776460016086.png";
+import wf65 from "@assets/Screenshot_2026-04-02_at_3.56.28_AM_1776460016093.png";
+import wf66 from "@assets/Screenshot_2026-04-02_at_3.56.36_AM_1776460016094.png";
+import wf67 from "@assets/Screenshot_2026-04-02_at_3.56.43_AM_1776460016095.png";
+import wf68 from "@assets/Screenshot_2026-04-02_at_3.56.54_AM_1776460016096.png";
+import wf69 from "@assets/Screenshot_2026-04-02_at_3.57.03_AM_1776460016098.png";
+import wf70 from "@assets/Screenshot_2026-04-02_at_3.58.16_AM_1776460016099.png";
+import wf71 from "@assets/Screenshot_2026-04-02_at_3.58.29_AM_1776460016100.png";
+import wf72 from "@assets/Screenshot_2026-04-02_at_3.58.39_AM_1776460016101.png";
 import profilePic from "@assets/my_profile_pic_1776459432094.jpg";
 
 const workflows = [
@@ -117,6 +136,25 @@ const workflows = [
   { img: wf51, title: "AI Video Content Factory", desc: "Deepseek + ElevenLabs pipeline that generates transcripts, audio, AI images, and uploads to Sheets" },
   { img: wf52, title: "YouTube Transcript Summarizer Bot", desc: "Webhook fetches YouTube transcripts, GPT-4o-mini summarizes them, and sends results to Telegram" },
   { img: wf53, title: "Farmer Registration API System", desc: "Multi-branch n8n API handling new registrations, profile updates, and deactivations with PostgreSQL" },
+  { img: wf54, title: "Invoice Notification System", desc: "Webhook-triggered Make.com scenario using Twilio, Gmail, and Airtable for payment alerts" },
+  { img: wf55, title: "Lead Enrichment & HubSpot CRM", desc: "Webhook captures leads, enriches data via Apollo, upserts to HubSpot, and notifies the team" },
+  { img: wf56, title: "AI Resume Parser to Airtable", desc: "Resume submission trigger extracts PDF data with OpenAI and creates a structured Airtable record" },
+  { img: wf57, title: "Interview Scheduler with Google Calendar", desc: "Airtable trigger checks interview status and auto-creates Google Calendar events with email alerts" },
+  { img: wf58, title: "Shopify Order to Sheets & Slack", desc: "Shopify event trigger appends order data to Google Sheets and posts a Slack notification instantly" },
+  { img: wf59, title: "n8n Workflow Backup to Google Drive", desc: "Scheduled loop exports all n8n workflows as files and organises them into Google Drive subfolders" },
+  { img: wf60, title: "Twitter Sentiment Analyzer", desc: "Scheduled Apify scraper runs AI sentiment analysis on tweets and alerts on negative posts via Slack" },
+  { img: wf61, title: "Website Chatbot with Supabase RAG", desc: "Scrapes website content, stores embeddings in Supabase, and powers a live Q&A chat agent" },
+  { img: wf62, title: "Cal.com Appointment Booking Bot", desc: "Webhook checks available Cal.com slots and books appointments based on user request type" },
+  { img: wf63, title: "AI Video Resume Generator", desc: "Uploads resume and photo, extracts data with OpenAI, and generates male/female HeyGen avatar videos" },
+  { img: wf64, title: "HeyGen Video Resume (Alternate Flow)", desc: "Extended resume-to-video pipeline with gender detection, wait loop, and Google Sheets storage" },
+  { img: wf65, title: "Course Deal Alert Bot", desc: "Scheduled browser scraper finds 50%+ discounts, checks for duplicates, and sends Telegram alerts" },
+  { img: wf66, title: "AI Customer Support Agent", desc: "Chat-triggered AI agent with Airtable tools for inventory lookups, orders, and return policy queries" },
+  { img: wf67, title: "Zep Memory AI Support Agent", desc: "AI agent with persistent Zep memory reads orders and inventory from Google Sheets on demand" },
+  { img: wf68, title: "HubSpot Ticket to Gmail Notifier", desc: "HubSpot webhook creates a support ticket and sends an instant Gmail notification to the team" },
+  { img: wf69, title: "AI Call Transcript Analyzer", desc: "Scheduled Google Sheets loop sends transcripts to OpenAI structured output and stores results" },
+  { img: wf70, title: "AI Lead Generation System", desc: "Form-triggered Apify lead scraper with AI email generation, human approval step, and Gmail delivery" },
+  { img: wf71, title: "Insurance Renewal Alert System", desc: "Daily Airtable check flags expired records and sends renewal alert emails automatically" },
+  { img: wf72, title: "Multi-Platform Social Media Automation", desc: "Three-trigger pipeline generates AI content and auto-posts to LinkedIn, Twitter, and Instagram" },
 ];
 
 const services = [
