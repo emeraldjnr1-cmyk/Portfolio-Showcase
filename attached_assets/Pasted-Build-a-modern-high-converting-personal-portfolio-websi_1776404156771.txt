@@ -1,0 +1,226 @@
+Build a modern, high-converting personal portfolio website for a no-code automation specialist.
+
+Name: Denver Peter  
+Brand Name: Denver No-Code Solutions  
+
+IMPORTANT:
+This is NOT an agency website. It must feel personal, expert-driven, and trustworthy.
+
+-----------------------------------
+🎯 GOAL OF THE WEBSITE
+-----------------------------------
+Convert visitors into leads via:
+- WhatsApp
+- Telegram
+
+Primary CTA everywhere:
+"Message Me on WhatsApp"
+
+-----------------------------------
+🎨 DESIGN SYSTEM (VERY IMPORTANT)
+-----------------------------------
+Use a clean, minimalist, premium UI with subtle animations.
+
+Color Palette:
+- Background: Soft Powder Blue / Duck Egg Blue (#E6F0F5 or similar)
+- Secondary Background: White (#FFFFFF)
+- CTA Buttons: Deep Teal / Slate Blue (#1F3A5F or similar)
+- Text: Charcoal (#333333)
+- Accent: Light Grey (#F5F5F5)
+
+Style:
+- Modern, clean, lots of whitespace
+- Smooth transitions and micro-animations
+- Rounded corners (soft UI)
+- Subtle shadows
+
+-----------------------------------
+🧱 WEBSITE STRUCTURE
+-----------------------------------
+
+1. HERO SECTION
+- Headline:
+"I Build Automation Systems That Save Time, Capture Leads, and Grow Your Business"
+
+- Subtext:
+"I help businesses automate their workflows using Airtable, Make.com, Zapier, and n8n — so you can focus on growth instead of repetitive tasks."
+
+- CTA Button:
+"Message Me on WhatsApp"
+
+- Add animated background or floating elements
+
+-----------------------------------
+
+2. PROBLEM SECTION (Hormozi Style)
+- Show pain points:
+"Manual work is slowing you down"
+"Leads are slipping through the cracks"
+"You’re wasting hours on repetitive tasks"
+
+- Then transition to:
+"I solve this with smart automation systems"
+
+-----------------------------------
+
+3. SERVICES SECTION (OUTCOME-BASED)
+
+Create cards with icons and hover animations:
+
+- Airtable CRM Development
+"Custom CRM systems to track, manage, and scale your leads"
+
+- Make.com Automation
+"Advanced workflow automation connecting all your tools"
+
+- Zapier Automation
+"Simple and reliable automation for everyday business processes"
+
+- n8n Automation
+"Flexible, powerful automation for advanced use cases"
+
+- Done-For-You Automation Systems
+"I build complete systems tailored to your business"
+
+- Automation Consulting
+"I help you design the best automation strategy for your workflow"
+
+-----------------------------------
+
+4. AUTOMATIONS CAPABILITIES SECTION
+
+Create a dynamic grid showing examples like:
+
+- Lead capture automation
+- WhatsApp chatbot automation
+- Email follow-ups
+- CRM automation
+- Appointment booking systems
+- Invoice & billing automation
+- Client onboarding systems
+- Document collection systems
+- Social media automation
+- API integrations
+- AI chatbot integrations
+
+Make this visually engaging with icons and animations.
+
+-----------------------------------
+
+5. DEMO / WORKFLOW SHOWCASE
+
+Create a section where I can upload:
+
+- Screenshots of Make.com workflows
+- Screenshots of n8n workflows
+
+Each item should have:
+- Title
+- Short description
+- Hover animation
+
+-----------------------------------
+
+6. VIDEO TESTIMONIALS (CAROUSEL)
+
+Create a smooth animated carousel that supports:
+
+- Client video testimonials
+- Auto-play (muted)
+- Navigation arrows
+- Dots indicator
+
+-----------------------------------
+
+7. CLIENT REVIEWS SECTION
+
+Generate a visually appealing section:
+
+- "Trusted by 50+ Clients Worldwide"
+- Show client names (placeholder data for now)
+- 5-star ratings
+- Short testimonial text
+
+Make it look premium and trustworthy.
+
+-----------------------------------
+
+8. HOW IT WORKS
+
+Simple 3-step process:
+
+1. Tell me your workflow
+2. I build your automation system
+3. You save time and scale
+
+Use icons + animation
+
+-----------------------------------
+
+9. ABOUT SECTION (PERSONAL BRAND)
+
+Include:
+
+"Hi, I’m Denver Peter.
+
+I’m a no-code automation specialist with over 4 years of experience helping businesses streamline their operations and grow through automation.
+
+I’ve worked with 50+ clients globally, delivered over 200 automation systems, and reached Level 2 Seller on Fiverr.
+
+I’m calm, easy to work with, and focused on delivering real value through smart systems that actually work."
+
+-----------------------------------
+
+10. FINAL CTA SECTION
+
+Strong closing:
+
+"Ready to automate your business?"
+
+Button:
+"Message Me on WhatsApp"
+
+Add urgency:
+"Limited availability for new projects"
+
+-----------------------------------
+
+11. FLOATING BUTTON
+
+Add floating WhatsApp button on all pages.
+
+-----------------------------------
+
+⚙️ FUNCTIONAL REQUIREMENTS
+-----------------------------------
+
+- Fully responsive (mobile-first)
+- Smooth animations (Framer Motion or CSS)
+- Fast loading
+- Clean code structure
+- Sections reusable
+
+-----------------------------------
+
+📌 PLACEHOLDER SUPPORT
+-----------------------------------
+
+Ensure I can easily replace:
+
+- Workflow screenshots
+- Video testimonials
+- Client names and reviews
+
+-----------------------------------
+
+🚀 EXTRA (IMPORTANT)
+
+Make the site feel:
+- Premium
+- Personal
+- Conversion-focused
+- Not generic
+
+-----------------------------------
+
+END OF PROMPT

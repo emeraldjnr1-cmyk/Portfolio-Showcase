@@ -25,3 +25,22 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+
+## Artifacts
+
+### Denver No-Code Solutions Portfolio (`artifacts/portfolio`)
+- **Type**: React + Vite (presentation-first, no backend)
+- **Preview path**: `/`
+- **Purpose**: Personal portfolio website for Denver Peter, no-code automation specialist
+- **Sections**: Hero, Problem, Services, Capabilities, Workflow Showcase, Video Testimonials, Client Reviews, How It Works, About, Final CTA
+- **CTAs**: WhatsApp + Telegram throughout — primary: wa.me/1234567890, Telegram: t.me/DenverNoCode
+- **Design**: Powder Blue (#E6F0F5), White, Deep Teal (#1F3A5F), Charcoal (#333333)
+- **Key deps**: framer-motion, embla-carousel-autoplay, lucide-react, react-icons
+- **Workflow screenshots**: Imported from attached_assets/ via @assets/ alias
+
+### To customize:
+- WhatsApp number: search `wa.me/1234567890` and replace with real number
+- Telegram handle: search `t.me/DenverNoCode` and replace with real handle
+- Profile photo: replace placeholder in About section
+- Video testimonials: swap placeholder cards with real video embeds in the carousel
+- Client reviews: update names/quotes in ClientReviews section
