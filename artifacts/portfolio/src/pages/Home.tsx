@@ -42,6 +42,25 @@ import wf31 from "@assets/Screenshot_2026-04-06_at_4.41.45_PM_1776459171171.png"
 import wf32 from "@assets/Screenshot_2026-04-06_at_4.41.51_PM_1776459171172.png";
 import wf33 from "@assets/Screenshot_2026-04-06_at_4.41.57_PM_1776459171172.png";
 import wf34 from "@assets/Screenshot_2026-04-06_at_4.42.05_PM_1776459171167.png";
+import wf35 from "@assets/Screenshot_2026-04-13_at_5.29.09_AM_1776459909686.png";
+import wf36 from "@assets/Screenshot_2026-04-13_at_5.29.23_AM_1776459909687.png";
+import wf37 from "@assets/Screenshot_2026-04-13_at_5.29.30_AM_1776459909687.png";
+import wf38 from "@assets/Screenshot_2026-04-13_at_5.29.46_AM_1776459909688.png";
+import wf39 from "@assets/Screenshot_2026-04-13_at_5.29.54_AM_1776459909689.png";
+import wf40 from "@assets/Screenshot_2026-04-13_at_5.30.04_AM_1776459909691.png";
+import wf41 from "@assets/Screenshot_2026-04-13_at_5.30.16_AM_1776459909683.png";
+import wf42 from "@assets/Screenshot_2026-04-13_at_5.30.22_AM_1776459909683.png";
+import wf43 from "@assets/Screenshot_2026-04-13_at_5.30.39_AM_1776459909684.png";
+import wf44 from "@assets/Screenshot_2026-04-13_at_5.30.44_AM_1776459909684.png";
+import wf45 from "@assets/Screenshot_2026-04-13_at_5.31.02_AM_1776459909685.png";
+import wf46 from "@assets/Screenshot_2026-04-13_at_5.31.09_AM_1776459909685.png";
+import wf47 from "@assets/Screenshot_2026-04-13_at_5.31.20_AM_1776459909672.png";
+import wf48 from "@assets/Screenshot_2026-04-13_at_5.32.01_AM_1776459909673.png";
+import wf49 from "@assets/Screenshot_2026-04-13_at_5.32.24_AM_1776459909674.png";
+import wf50 from "@assets/Screenshot_2026-04-13_at_5.32.58_AM_1776459909676.png";
+import wf51 from "@assets/Screenshot_2026-04-13_at_5.33.39_AM_1776459909680.png";
+import wf52 from "@assets/Screenshot_2026-04-13_at_5.34.01_AM_1776459909682.png";
+import wf53 from "@assets/Screenshot_2026-04-13_at_5.34.31_AM_1776459909669.png";
 import profilePic from "@assets/my_profile_pic_1776459432094.jpg";
 
 const workflows = [
@@ -79,6 +98,25 @@ const workflows = [
   { img: wf32, title: "Webinar Registration Workflow", desc: "Automated Zoom webinar registration, confirmation email, and 24-hour reminder sequence" },
   { img: wf33, title: "Team Timesheet Tracker", desc: "Weekly timesheet collection via Typeform with automatic Airtable logging and manager summaries" },
   { img: wf34, title: "AI-Powered FAQ Responder", desc: "Webhook-triggered FAQ bot that answers common questions using an AI-trained knowledge base" },
+  { img: wf35, title: "Conditional Branching Workflow", desc: "IF/true/false logic with merged outputs for dynamic, multi-path automation in Make.com" },
+  { img: wf36, title: "Scheduled API to Airtable & Discord", desc: "Scheduled HTTP polling with conditional routing to Airtable records and Discord alerts" },
+  { img: wf37, title: "AI Employee Onboarding System", desc: "Form-triggered AI agent that provisions Jira accounts and Slack channels based on role" },
+  { img: wf38, title: "Slack RAG Knowledge Bot", desc: "Chat-triggered AI agent with Qdrant vector store for company knowledge base Q&A" },
+  { img: wf39, title: "AI Cold Email Personalization System", desc: "Google Sheets lead list → domain extraction → AI-personalized outreach with Instantly delivery" },
+  { img: wf40, title: "Google Workspace User Provisioning", desc: "Form submission auto-creates Google Workspace accounts, Jira users, and Slack profiles" },
+  { img: wf41, title: "Telegram AI Study Assistant", desc: "Complex Telegram bot with Google Drive file ingestion, vector embeddings, and AI Q&A" },
+  { img: wf42, title: "Gmail PDF Attachment Parser", desc: "Dual-trigger workflow that fetches and parses PDF attachments from Gmail into structured data" },
+  { img: wf43, title: "Email Attachment Data Extractor", desc: "Gmail trigger merges attachments and runs PDF parsing for automated document processing" },
+  { img: wf44, title: "Groq-Powered AI Webhook Agent", desc: "Webhook-triggered AI Tools Agent using Groq with Brave search and persistent simple memory" },
+  { img: wf45, title: "Microsoft SQL Data Router", desc: "SQL query results split through dual switch logic, merged and processed for downstream output" },
+  { img: wf46, title: "Automated Withdrawal Status Notifier", desc: "Login-triggered withdrawal polling with status-based Telegram notifications across multiple states" },
+  { img: wf47, title: "Error-Aware Email Draft System", desc: "Dual-trigger (scheduled + error) workflow that generates Gmail drafts with custom field mapping" },
+  { img: wf48, title: "Multi-Tool Gemini AI Agent", desc: "AI agent connected to YouTube, GitHub, Hacker News, Gmail, Strava, and Google Calendar tools" },
+  { img: wf49, title: "Bulk Email Templating System", desc: "Customer datastore loop generates both per-item text emails and consolidated HTML digest emails" },
+  { img: wf50, title: "AI Appointment Booking Agent", desc: "Webhook-powered Gemini 2.5 agent checks calendar availability and creates Google Calendar events" },
+  { img: wf51, title: "AI Video Content Factory", desc: "Deepseek + ElevenLabs pipeline that generates transcripts, audio, AI images, and uploads to Sheets" },
+  { img: wf52, title: "YouTube Transcript Summarizer Bot", desc: "Webhook fetches YouTube transcripts, GPT-4o-mini summarizes them, and sends results to Telegram" },
+  { img: wf53, title: "Farmer Registration API System", desc: "Multi-branch n8n API handling new registrations, profile updates, and deactivations with PostgreSQL" },
 ];
 
 const services = [
