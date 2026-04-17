@@ -1,19 +1,11 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Navbar } from "@/components/Navbar";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
-import { ChevronRight, ArrowRight, Zap, Clock, Database, CheckCircle2, Play, Star } from "lucide-react";
+import { ArrowRight, Zap, Clock, Database, CheckCircle2, Star } from "lucide-react";
 import { SiAirtable, SiZapier, SiMake, SiN8N, SiTelegram, SiWhatsapp } from "react-icons/si";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
+import { VideoTestimonialCarousel } from "@/components/VideoTestimonialCarousel";
 
 // Workflow Assets
 import wf1 from "@assets/Screenshot_2026-04-06_at_4.25.22_PM_1776404337937.png";
@@ -75,12 +67,6 @@ const reviews = [
   { name: "Fatima A. — UAE", text: "I can finally focus on growing my business instead of copying and pasting data." }
 ];
 
-const videoTestimonials = [
-  { id: 1, name: "Sarah L.", quote: "Our onboarding time went from 3 days to 5 minutes." },
-  { id: 2, name: "Michael R.", quote: "Denver built a system that essentially runs our business." },
-  { id: 3, name: "Jessica K.", quote: "The Airtable CRM he built is a game-changer for our sales team." },
-  { id: 4, name: "Alex D.", quote: "Saved us a full-time hire. Highly recommend his services." }
-];
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -98,9 +84,6 @@ const staggerContainer = {
 };
 
 export default function Home() {
-  const autoplayPlugin = React.useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: true })
-  );
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-primary/20 scroll-smooth">
@@ -283,49 +266,21 @@ export default function Home() {
 
         {/* 6. VIDEO TESTIMONIALS CAROUSEL */}
         <section className="py-24 bg-white border-y border-border/50">
-          <div className="container mx-auto px-4 md:px-8 max-w-6xl">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Hear From Clients</h2>
-              <p className="text-lg text-muted-foreground">Real stories from businesses we've transformed.</p>
-            </div>
-            
-            <div className="px-10">
-              <Carousel
-                opts={{
-                  align: "start",
-                  loop: true,
-                }}
-                plugins={[autoplayPlugin.current]}
-                className="w-full"
-              >
-                <CarouselContent className="-ml-4 md:-ml-6">
-                  {videoTestimonials.map((testimonial) => (
-                    <CarouselItem key={testimonial.id} className="pl-4 md:pl-6 md:basis-1/2 lg:basis-1/3">
-                      <div className="group cursor-pointer">
-                        <div className="relative aspect-[9/16] bg-slate-100 rounded-3xl overflow-hidden mb-6 border border-border/80 shadow-sm group-hover:shadow-xl transition-all duration-500">
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 opacity-60 group-hover:opacity-80 transition-opacity" />
-                          <div className="absolute inset-0 flex items-center justify-center z-20">
-                            <div className="w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                              <Play className="w-6 h-6 ml-1" />
-                            </div>
-                          </div>
-                          {/* Placeholder image for video thumbnail */}
-                          <img 
-                            src={`https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmVzc2lvbmFsfGVufDB8fDB8fHww`}
-                            alt={`Testimonial from ${testimonial.name}`}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                          />
-                        </div>
-                        <h4 className="font-bold text-center text-xl mb-2">{testimonial.name}</h4>
-                        <p className="text-center text-muted-foreground italic px-4">"{testimonial.quote}"</p>
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="-left-4 md:-left-12 h-12 w-12 border-2" />
-                <CarouselNext className="-right-4 md:-right-12 h-12 w-12 border-2" />
-              </Carousel>
-            </div>
+          <div className="container mx-auto px-4 md:px-8 max-w-lg">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+            >
+              <motion.div variants={fadeIn} className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">Hear From Clients</h2>
+                <p className="text-lg text-muted-foreground">Real stories from businesses we've transformed.</p>
+              </motion.div>
+              <motion.div variants={fadeIn}>
+                <VideoTestimonialCarousel />
+              </motion.div>
+            </motion.div>
           </div>
         </section>
 
