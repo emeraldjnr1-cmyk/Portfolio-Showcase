@@ -365,20 +365,46 @@ function ReviewCard({ r }: { r: (typeof reviews)[number] }) {
   );
 }
 
+function FiverrBadge({ level, times, delay }: { level: string; times: string; delay: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24, rotate: -2 }}
+      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+      viewport={{ once: true, margin: "-10% 0px" }}
+      transition={{ duration: 0.6, ease: EASE, delay }}
+      className="group relative flex items-center gap-4 rounded-2xl border-2 border-black bg-white px-6 py-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_#1DBF73]"
+      data-cursor="hover"
+    >
+      {/* laurel seal */}
+      <div className="relative flex h-14 w-14 shrink-0 items-center justify-center">
+        <svg viewBox="0 0 56 56" className="absolute inset-0 h-full w-full" aria-hidden>
+          <circle cx="28" cy="28" r="26" fill="#1DBF73" opacity="0.12" />
+          <circle cx="28" cy="28" r="26" fill="none" stroke="#1DBF73" strokeWidth="2.5" />
+          <path d="M12 38c-3-5-3-12 0-17M44 38c3-5 3-12 0-17" fill="none" stroke="#1DBF73" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        <span className="relative font-display text-lg font-extrabold text-[#0E9F5D]">{level.replace("Level ", "L")}</span>
+      </div>
+      <div className="text-left">
+        <p className="font-display text-base font-extrabold leading-tight text-black">{level} Seller</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-black/45">Vetted on Fiverr · {times}</p>
+      </div>
+    </motion.div>
+  );
+}
+
 function ReviewsMarquee() {
   return (
     <section className="border-t border-black/10 py-28 md:py-36 overflow-hidden">
       <div className="mb-14 px-6 text-center md:px-12">
-        <Reveal>
-          <div className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-black/15 bg-white px-4 py-1.5 text-sm text-black/70">
-            <span className="font-bold text-black">Level 2 Seller</span> on Fiverr
-          </div>
-        </Reveal>
         <SplitWords
           as="h2"
           text="Trusted by 50+ clients worldwide."
           className="flex flex-wrap justify-center font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl"
         />
+        <div className="mx-auto mt-8 flex flex-wrap items-center justify-center gap-4">
+          <FiverrBadge level="Level 2" times="attained once" delay={0.1} />
+          <FiverrBadge level="Level 1" times="attained 3×" delay={0.22} />
+        </div>
       </div>
       <Marquee duration={45} className="mb-6">
         {reviews.slice(0, 3).map((r) => (
