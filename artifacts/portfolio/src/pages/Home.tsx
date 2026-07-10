@@ -133,7 +133,7 @@ function Hero({ ready }: { ready: boolean }) {
             transition={{ duration: 0.7, delay: 0.6, ease: EASE }}
             className="max-w-md text-lg leading-relaxed text-black/60"
           >
-            I'm <strong className="font-semibold text-black">Denver Peter</strong> — apps and websites shipped with{" "}
+            I'm <strong className="font-semibold text-black">Denver <span className="text-[#10B981]">Emerald</span> Peter</strong> — apps and websites shipped with{" "}
             <strong className="font-semibold text-black">Claude Code</strong>, and automation systems built on{" "}
             <strong className="font-semibold text-black">n8n, Make.com & Airtable</strong> that capture leads and run
             your operations on autopilot.
@@ -160,7 +160,7 @@ function Hero({ ready }: { ready: boolean }) {
             </Magnetic>
             <Magnetic strength={0.45}>
               <a
-                href="#work"
+                href="#websites"
                 className="inline-flex h-14 items-center rounded-full border border-black/25 px-8 font-display text-base font-bold text-black transition-all hover:border-black hover:bg-black hover:text-white"
                 data-cursor="hover"
               >
@@ -417,11 +417,11 @@ function About() {
           <Reveal>
             <span className="font-mono text-sm font-semibold text-primary">06 — About</span>
           </Reveal>
-          <SplitWords
-            as="h2"
-            text="Hi, I'm Denver Peter."
-            className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl"
-          />
+          <Reveal delay={0.1}>
+            <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
+              Hi, I'm Denver <span className="text-[#10B981]">Emerald</span> Peter.
+            </h2>
+          </Reveal>
           <Reveal delay={0.2}>
             <p className="mt-6 text-lg leading-relaxed text-black/60">
               An AI & automation specialist with <strong className="font-semibold text-black">4+ years</strong> helping
@@ -516,7 +516,9 @@ function Footer() {
           Denver<span className="text-[#84DEF9]">®</span>
         </div>
         <p className="text-sm text-white/50">Built with Claude Code. Systems that save time and grow businesses.</p>
-        <p className="text-sm text-white/30">© {new Date().getFullYear()} Denver Peter</p>
+        <p className="text-sm text-white/30">
+          © {new Date().getFullYear()} Denver <span className="text-[#10B981]">Emerald</span> Peter
+        </p>
       </div>
     </footer>
   );
@@ -538,8 +540,8 @@ export default function Home() {
         <Hero ready={ready} />
         <ToolStrip />
         <Stats />
-        <FeaturedWork />
         <WebProjectsSection />
+        <FeaturedWork />
         <TestimonialCinema />
         <Services />
         <Process />

@@ -102,7 +102,7 @@ export function WebProjectsSection() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-20 md:mb-28">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">02 — Websites & apps</span>
+            <span className="font-mono text-sm font-semibold text-primary">01 — Built with Claude Code</span>
           </Reveal>
           <SplitWords
             as="h2"
@@ -111,7 +111,8 @@ export function WebProjectsSection() {
           />
           <Reveal delay={0.25}>
             <p className="mt-6 max-w-xl text-lg text-black/55">
-              Dashboards, storefronts, booking flows, AI products — full builds, not templates.
+              Dashboards, storefronts, booking flows, AI products — and automations and AI agent systems too. Full
+              builds, not templates.
             </p>
           </Reveal>
         </div>

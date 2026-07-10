@@ -4,8 +4,8 @@ import { Magnetic } from "@/components/fx/Magnetic";
 import { WHATSAPP } from "@/data/portfolio";
 
 const LINKS = [
-  { label: "Work", href: "#work" },
-  { label: "Websites", href: "#websites" },
+  { label: "Claude Code", href: "#websites" },
+  { label: "Automations", href: "#work" },
   { label: "Services", href: "#services" },
   { label: "Clients", href: "#clients" },
   { label: "About", href: "#about" },

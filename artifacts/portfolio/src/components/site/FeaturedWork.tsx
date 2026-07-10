@@ -88,8 +88,10 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
   );
 }
 
-/** Full-screen player overlay. */
+/** Full-screen player overlay. Falls back to the workflow screenshot while the film is unavailable. */
 function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClose: () => void }) {
+  const [videoFailed, setVideoFailed] = useState(false);
+  useEffect(() => setVideoFailed(false), [project]);
   return (
     <AnimatePresence>
       {project && (
@@ -108,7 +110,24 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
             className="relative w-full max-w-5xl overflow-hidden rounded-2xl border-2 border-white/20 bg-[#F6F5F1]"
             onClick={(e) => e.stopPropagation()}
           >
-            <video src={project.video} poster={project.poster} autoPlay controls playsInline className="aspect-video w-full bg-black" />
+            {videoFailed ? (
+              <div className="relative">
+                <img src={project.img} alt={project.title} className="aspect-video w-full object-cover object-top" />
+                <span className="absolute left-4 top-4 rounded-full bg-black/70 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-md">
+                  Full film coming soon — system preview
+                </span>
+              </div>
+            ) : (
+              <video
+                src={project.video}
+                poster={project.poster}
+                autoPlay
+                controls
+                playsInline
+                onError={() => setVideoFailed(true)}
+                className="aspect-video w-full bg-black"
+              />
+            )}
             <div className="flex flex-wrap items-center justify-between gap-4 p-5">
               <div>
                 <h3 className="font-display text-lg font-bold text-black">{project.title}</h3>
@@ -248,7 +267,7 @@ export function FeaturedWork() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 md:mb-24">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">01 — Featured systems</span>
+            <span className="font-mono text-sm font-semibold text-primary">02 — Featured automation systems</span>
           </Reveal>
           <SplitWords
             as="h2"
