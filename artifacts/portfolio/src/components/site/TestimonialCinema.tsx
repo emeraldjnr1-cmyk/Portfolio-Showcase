@@ -79,7 +79,13 @@ export function TestimonialCinema() {
                   className="absolute inset-0"
                 >
                   <video
-                    ref={videoRef}
+                    // Callback ref: only capture on attach. AnimatePresence unmounts the
+                    // OLD slide after the new one mounts — a plain ref object would get
+                    // nulled by that late unmount, silently breaking the mute toggle for
+                    // every slide after the first.
+                    ref={(el) => {
+                      if (el) videoRef.current = el;
+                    }}
                     src={t.src}
                     muted
                     loop
