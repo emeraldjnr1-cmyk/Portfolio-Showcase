@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 import { MaskReveal } from "@/components/fx/ScrollFX";
 import { webProjects, WebProject } from "@/data/portfolio";
@@ -10,10 +10,20 @@ const POPS = ["#0015D4", "#F32317", "#FFCB41", "#FF8FCA", "#84DEF9", "#0015D4"];
 /** Big editorial row for the first four projects — image drifts with scroll (parallax). */
 function FeatureRow({ project, index }: { project: WebProject; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoOk, setVideoOk] = useState(true);
+  const inView = useInView(ref, { margin: "-15% 0px", amount: 0.4 });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const imgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
   const flip = index % 2 === 1;
   const pop = POPS[index % POPS.length];
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !project.video) return;
+    if (inView) v.play().catch(() => {});
+    else v.pause();
+  }, [inView, project.video]);
 
   return (
     <div ref={ref} className="grid items-center gap-8 md:grid-cols-12">
@@ -31,14 +41,38 @@ function FeatureRow({ project, index }: { project: WebProject; index: number }) 
           onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
         >
           <MaskReveal>
-            <motion.img
-              src={project.img}
-              alt={`${project.name} — ${project.kind}`}
-              loading="lazy"
-              style={{ y: imgY, scale: 1.12 }}
-              className="w-full object-cover transition-transform duration-700 group-hover:scale-[1.16]"
-            />
+            {project.video && videoOk ? (
+              <video
+                ref={videoRef}
+                src={project.video}
+                poster={project.poster}
+                muted
+                loop
+                playsInline
+                preload="none"
+                onError={() => setVideoOk(false)}
+                className="w-full transform-gpu"
+                style={{ backfaceVisibility: "hidden" }}
+              />
+            ) : (
+              <motion.img
+                src={project.img}
+                alt={`${project.name} — ${project.kind}`}
+                loading="lazy"
+                style={{ y: imgY, scale: 1.12 }}
+                className="w-full object-cover transition-transform duration-700 group-hover:scale-[1.16]"
+              />
+            )}
           </MaskReveal>
+          {project.video && videoOk && (
+            <button
+              onClick={() => { const v = videoRef.current; if (v) v.muted = !v.muted; }}
+              className="absolute bottom-4 right-4 rounded-full bg-black/70 px-4 py-2 text-xs font-bold text-white backdrop-blur-sm transition-colors hover:bg-primary"
+              aria-label="Toggle sound"
+            >
+              Sound on/off
+            </button>
+          )}
         </div>
         <div className="pointer-events-none absolute -bottom-5 left-6 font-display text-[5rem] font-extrabold leading-none text-stroke md:text-[7rem]">
           {String(index + 1).padStart(2, "0")}

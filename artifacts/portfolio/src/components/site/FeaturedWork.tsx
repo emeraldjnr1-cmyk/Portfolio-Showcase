@@ -51,7 +51,8 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
                 playsInline
                 preload="none"
                 onError={() => setVideoOk(false)}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                className="h-full w-full transform-gpu object-cover"
+                style={{ willChange: "auto", backfaceVisibility: "hidden" }}
               />
             ) : (
               <img

@@ -168,11 +168,13 @@ export interface WebProject {
   desc: string;
   stack: string[];
   img: string;
+  video?: string;
+  poster?: string;
 }
 
 export const webProjects: WebProject[] = [
-  { slug: "01-pulseboard", name: "Pulseboard", kind: "SaaS Analytics Dashboard", desc: "Dark-mode analytics with live KPI cards, revenue charts, and customer tables.", stack: ["React", "Charts", "Claude Code"], img: `${BASE}/webprojects/01-pulseboard.jpg` },
-  { slug: "02-nova-bank", name: "Nova", kind: "Fintech Landing Page", desc: "Mobile-banking product page with animated phone mockup and trust signals.", stack: ["React", "Tailwind", "Claude Code"], img: `${BASE}/webprojects/02-nova-bank.jpg` },
+  { slug: "01-pulseboard", name: "Pulseboard", kind: "SaaS Analytics Dashboard", desc: "Dark-mode analytics with live KPI cards, revenue charts, and customer tables.", stack: ["React", "Charts", "Claude Code"], img: `${BASE}/webprojects/01-pulseboard.jpg`, video: `${BASE}/videos/webproject-01.mp4`, poster: `${BASE}/videos/posters/webproject-01.jpg` },
+  { slug: "02-nova-bank", name: "Nova", kind: "Fintech Landing Page", desc: "Mobile-banking product page with animated phone mockup and trust signals.", stack: ["React", "Tailwind", "Claude Code"], img: `${BASE}/webprojects/02-nova-bank.jpg`, video: `${BASE}/videos/webproject-02.mp4`, poster: `${BASE}/videos/posters/webproject-02.jpg` },
   { slug: "03-atelier-store", name: "Atelier", kind: "E-commerce Storefront", desc: "Editorial furniture shop with a premium typographic hero and product grid.", stack: ["React", "Commerce", "Claude Code"], img: `${BASE}/webprojects/03-atelier-store.jpg` },
   { slug: "04-ember-restaurant", name: "Ember", kind: "Restaurant Website", desc: "Moody fine-dining site with reservations flow and menu marquee.", stack: ["React", "Tailwind", "Claude Code"], img: `${BASE}/webprojects/04-ember-restaurant.jpg` },
   { slug: "05-haven-realty", name: "Haven", kind: "Real Estate Platform", desc: "Property search with listing cards, filters, and an interactive map panel.", stack: ["React", "Maps", "Claude Code"], img: `${BASE}/webprojects/05-haven-realty.jpg` },
