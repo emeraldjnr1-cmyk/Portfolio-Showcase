@@ -82,22 +82,23 @@ export interface FeaturedProject {
   tag: WorkflowTag;
   tools: string[];
   result: string;
-  video: string;
-  poster: string;
+  stat: string;
+  video?: string;
+  poster?: string;
   img: string;
 }
 
 export const featured: FeaturedProject[] = [
-  { id: 1, title: "AI Video Resume Generator", desc: "Resume + photo in, HeyGen avatar video out. Gender detection, OpenAI extraction, auto-upload.", tag: "AI Agents", tools: ["OpenAI", "HeyGen", "Sheets", "n8n"], result: "Fully automated resume-to-video pipeline", video: `${BASE}/videos/project-01.mp4`, poster: `${BASE}/videos/posters/project-01.jpg`, img: wf6 },
-  { id: 2, title: "AI Lead Generation System", desc: "Apify scrapes prospects, AI writes personalized outreach, human approval gate, Gmail sends.", tag: "AI Agents", tools: ["Apify", "OpenAI", "Gmail", "n8n"], result: "Full sales pipeline on autopilot", video: `${BASE}/videos/project-02.mp4`, poster: `${BASE}/videos/posters/project-02.jpg`, img: wf12 },
-  { id: 3, title: "RAG Website Chatbot", desc: "Scrapes site content, stores embeddings in Supabase, powers a live Q&A chat agent.", tag: "AI Agents", tools: ["Supabase", "OpenAI", "n8n"], result: "24/7 AI-powered customer support", video: `${BASE}/videos/project-03.mp4`, poster: `${BASE}/videos/posters/project-03.jpg`, img: wf4 },
-  { id: 4, title: "Slack RAG Knowledge Bot", desc: "Qdrant vector store ingests company docs. Instant AI answers in Slack with citations.", tag: "AI Agents", tools: ["Qdrant", "OpenAI", "Slack"], result: "Instant access to company knowledge", video: `${BASE}/videos/project-04.mp4`, poster: `${BASE}/videos/posters/project-04.jpg`, img: wf38 },
-  { id: 5, title: "AI Video Content Factory", desc: "Deepseek scripts, ElevenLabs audio, AI images — a full content pipeline into Sheets.", tag: "AI Agents", tools: ["Deepseek", "ElevenLabs", "Sheets"], result: "Content production at scale", video: `${BASE}/videos/project-05.mp4`, poster: `${BASE}/videos/posters/project-05.jpg`, img: wf51 },
-  { id: 6, title: "Multi-Tool Gemini Agent", desc: "One AI agent wired to YouTube, GitHub, Hacker News, Gmail, Strava, and Calendar.", tag: "AI Agents", tools: ["Gemini", "GitHub", "Gmail", "Calendar"], result: "One agent, six platforms", video: `${BASE}/videos/project-06.mp4`, poster: `${BASE}/videos/posters/project-06.jpg`, img: wf48 },
-  { id: 7, title: "Client Onboarding Automation", desc: "Contract auto-generated, welcome email sent, Drive folders created, CRM updated.", tag: "n8n", tools: ["Gmail", "Drive", "CRM", "n8n"], result: "Zero manual steps for new clients", video: `${BASE}/videos/project-07.mp4`, poster: `${BASE}/videos/posters/project-07.jpg`, img: wf21 },
-  { id: 8, title: "Multi-Platform Social Media", desc: "AI generates content, formats per platform, auto-posts to LinkedIn, Twitter, Instagram.", tag: "n8n", tools: ["OpenAI", "LinkedIn", "Twitter", "Instagram"], result: "3 platforms, zero manual posting", video: `${BASE}/videos/project-08.mp4`, poster: `${BASE}/videos/posters/project-08.jpg`, img: wf14 },
-  { id: 9, title: "Lead Enrichment & HubSpot CRM", desc: "Webhook captures leads, Apollo enriches, upserts to HubSpot, Slack notifies sales.", tag: "n8n", tools: ["Apollo", "HubSpot", "Slack", "n8n"], result: "Lead-to-CRM in seconds", video: `${BASE}/videos/project-09.mp4`, poster: `${BASE}/videos/posters/project-09.jpg`, img: wf55 },
-  { id: 10, title: "E-commerce Inventory Sync", desc: "Real-time sync between Shopify, Airtable, and Sheets with low-stock alerts.", tag: "Airtable", tools: ["Shopify", "Airtable", "Sheets"], result: "Never run out of stock again", video: `${BASE}/videos/project-10.mp4`, poster: `${BASE}/videos/posters/project-10.jpg`, img: wf19 },
+  { id: 1, title: "AI Video Resume Generator", desc: "Resume + photo in, HeyGen avatar video out. Gender detection, OpenAI extraction, auto-upload.", tag: "AI Agents", tools: ["OpenAI", "HeyGen", "Sheets", "n8n"], stat: "100% hands-free video production", result: "Fully automated resume-to-video pipeline", video: `${BASE}/videos/project-01.mp4`, poster: `${BASE}/videos/posters/project-01.jpg`, img: wf6 },
+  { id: 2, title: "AI Lead Generation System", desc: "Apify scrapes prospects, AI writes personalized outreach, human approval gate, Gmail sends.", tag: "AI Agents", tools: ["Apify", "OpenAI", "Gmail", "n8n"], stat: "3x more qualified leads", result: "Full sales pipeline on autopilot", video: `${BASE}/videos/project-02.mp4`, poster: `${BASE}/videos/posters/project-02.jpg`, img: wf12 },
+  { id: 3, title: "RAG Website Chatbot", desc: "Scrapes site content, stores embeddings in Supabase, powers a live Q&A chat agent.", tag: "AI Agents", tools: ["Supabase", "OpenAI", "n8n"], stat: "80% of queries answered by AI", result: "24/7 AI-powered customer support", img: wf4 },
+  { id: 4, title: "Slack RAG Knowledge Bot", desc: "Qdrant vector store ingests company docs. Instant AI answers in Slack with citations.", tag: "AI Agents", tools: ["Qdrant", "OpenAI", "Slack"], stat: "Answers in seconds, not Slack threads", result: "Instant access to company knowledge", img: wf38 },
+  { id: 5, title: "AI Video Content Factory", desc: "Deepseek scripts, ElevenLabs audio, AI images — a full content pipeline into Sheets.", tag: "AI Agents", tools: ["Deepseek", "ElevenLabs", "Sheets"], stat: "10x faster content output", result: "Content production at scale", img: wf51 },
+  { id: 6, title: "Multi-Tool Gemini Agent", desc: "One AI agent wired to YouTube, GitHub, Hacker News, Gmail, Strava, and Calendar.", tag: "AI Agents", tools: ["Gemini", "GitHub", "Gmail", "Calendar"], stat: "6 platforms, one brain", result: "One agent, six platforms", img: wf48 },
+  { id: 7, title: "Client Onboarding Automation", desc: "Contract auto-generated, welcome email sent, Drive folders created, CRM updated.", tag: "n8n", tools: ["Gmail", "Drive", "CRM", "n8n"], stat: "Zero manual onboarding steps", result: "Zero manual steps for new clients", img: wf21 },
+  { id: 8, title: "Multi-Platform Social Media", desc: "AI generates content, formats per platform, auto-posts to LinkedIn, Twitter, Instagram.", tag: "n8n", tools: ["OpenAI", "LinkedIn", "Twitter", "Instagram"], stat: "Saves 12h/week on posting", result: "3 platforms, zero manual posting", img: wf14 },
+  { id: 9, title: "Lead Enrichment & HubSpot CRM", desc: "Webhook captures leads, Apollo enriches, upserts to HubSpot, Slack notifies sales.", tag: "n8n", tools: ["Apollo", "HubSpot", "Slack", "n8n"], stat: "Leads in CRM within 30 seconds", result: "Lead-to-CRM in seconds", img: wf55 },
+  { id: 10, title: "E-commerce Inventory Sync", desc: "Real-time sync between Shopify, Airtable, and Sheets with low-stock alerts.", tag: "Airtable", tools: ["Shopify", "Airtable", "Sheets"], stat: "Stock-outs down to zero", result: "Never run out of stock again", img: wf19 },
 ];
 
 // ── Archive: every other unique system, shown in the "View all" grid ──
@@ -170,16 +171,16 @@ export interface WebProject {
 }
 
 export const webProjects: WebProject[] = [
-  { slug: "01-pulseboard", name: "Pulseboard", kind: "SaaS Analytics Dashboard", desc: "Dark-mode analytics with live KPI cards, revenue charts, and customer tables.", stack: ["React", "Charts", "Claude Code"], img: `${BASE}/webprojects/01-pulseboard.png` },
-  { slug: "02-nova-bank", name: "Nova", kind: "Fintech Landing Page", desc: "Mobile-banking product page with animated phone mockup and trust signals.", stack: ["React", "Tailwind", "Claude Code"], img: `${BASE}/webprojects/02-nova-bank.png` },
-  { slug: "03-atelier-store", name: "Atelier", kind: "E-commerce Storefront", desc: "Editorial furniture shop with a premium typographic hero and product grid.", stack: ["React", "Commerce", "Claude Code"], img: `${BASE}/webprojects/03-atelier-store.png` },
-  { slug: "04-ember-restaurant", name: "Ember", kind: "Restaurant Website", desc: "Moody fine-dining site with reservations flow and menu marquee.", stack: ["React", "Tailwind", "Claude Code"], img: `${BASE}/webprojects/04-ember-restaurant.png` },
-  { slug: "05-haven-realty", name: "Haven", kind: "Real Estate Platform", desc: "Property search with listing cards, filters, and an interactive map panel.", stack: ["React", "Maps", "Claude Code"], img: `${BASE}/webprojects/05-haven-realty.png` },
-  { slug: "06-forge-fitness", name: "FORGE", kind: "Fitness App Landing", desc: "High-energy coaching app page with workout UI mockup and stats strip.", stack: ["React", "Tailwind", "Claude Code"], img: `${BASE}/webprojects/06-forge-fitness.png` },
-  { slug: "07-slotly-booking", name: "Slotly", kind: "Booking Web App", desc: "Appointment scheduling with calendar, time slots, and confirm flow.", stack: ["React", "Calendar", "Claude Code"], img: `${BASE}/webprojects/07-slotly-booking.png` },
-  { slug: "08-lumen-ai", name: "Lumen", kind: "AI Chat Product", desc: "AI assistant interface with structured answers and inline charts.", stack: ["React", "AI", "Claude Code"], img: `${BASE}/webprojects/08-lumen-ai.png` },
-  { slug: "09-studio-north", name: "Studio North", kind: "Agency Website", desc: "Stark typographic agency site with duotone case-study cards.", stack: ["React", "Motion", "Claude Code"], img: `${BASE}/webprojects/09-studio-north.png` },
-  { slug: "10-wander-travel", name: "Wander", kind: "Travel Planning App", desc: "AI trip planner with day-by-day itinerary UI and budget tracking.", stack: ["React", "AI", "Claude Code"], img: `${BASE}/webprojects/10-wander-travel.png` },
+  { slug: "01-pulseboard", name: "Pulseboard", kind: "SaaS Analytics Dashboard", desc: "Dark-mode analytics with live KPI cards, revenue charts, and customer tables.", stack: ["React", "Charts", "Claude Code"], img: `${BASE}/webprojects/01-pulseboard.jpg` },
+  { slug: "02-nova-bank", name: "Nova", kind: "Fintech Landing Page", desc: "Mobile-banking product page with animated phone mockup and trust signals.", stack: ["React", "Tailwind", "Claude Code"], img: `${BASE}/webprojects/02-nova-bank.jpg` },
+  { slug: "03-atelier-store", name: "Atelier", kind: "E-commerce Storefront", desc: "Editorial furniture shop with a premium typographic hero and product grid.", stack: ["React", "Commerce", "Claude Code"], img: `${BASE}/webprojects/03-atelier-store.jpg` },
+  { slug: "04-ember-restaurant", name: "Ember", kind: "Restaurant Website", desc: "Moody fine-dining site with reservations flow and menu marquee.", stack: ["React", "Tailwind", "Claude Code"], img: `${BASE}/webprojects/04-ember-restaurant.jpg` },
+  { slug: "05-haven-realty", name: "Haven", kind: "Real Estate Platform", desc: "Property search with listing cards, filters, and an interactive map panel.", stack: ["React", "Maps", "Claude Code"], img: `${BASE}/webprojects/05-haven-realty.jpg` },
+  { slug: "06-forge-fitness", name: "FORGE", kind: "Fitness App Landing", desc: "High-energy coaching app page with workout UI mockup and stats strip.", stack: ["React", "Tailwind", "Claude Code"], img: `${BASE}/webprojects/06-forge-fitness.jpg` },
+  { slug: "07-slotly-booking", name: "Slotly", kind: "Booking Web App", desc: "Appointment scheduling with calendar, time slots, and confirm flow.", stack: ["React", "Calendar", "Claude Code"], img: `${BASE}/webprojects/07-slotly-booking.jpg` },
+  { slug: "08-lumen-ai", name: "Lumen", kind: "AI Chat Product", desc: "AI assistant interface with structured answers and inline charts.", stack: ["React", "AI", "Claude Code"], img: `${BASE}/webprojects/08-lumen-ai.jpg` },
+  { slug: "09-studio-north", name: "Studio North", kind: "Agency Website", desc: "Stark typographic agency site with duotone case-study cards.", stack: ["React", "Motion", "Claude Code"], img: `${BASE}/webprojects/09-studio-north.jpg` },
+  { slug: "10-wander-travel", name: "Wander", kind: "Travel Planning App", desc: "AI trip planner with day-by-day itinerary UI and budget tracking.", stack: ["React", "AI", "Claude Code"], img: `${BASE}/webprojects/10-wander-travel.jpg` },
 ];
 
 // ── Video testimonials ──

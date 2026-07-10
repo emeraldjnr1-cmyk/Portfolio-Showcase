@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ArrowUpRight, Play, X } from "lucide-react";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
+import { MaskReveal } from "@/components/fx/ScrollFX";
 import { featured, archive, TAG_STYLE, FeaturedProject, WorkflowTag } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -13,13 +14,14 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
   const inView = useInView(ref, { margin: "-15% 0px", amount: 0.4 });
   const [videoOk, setVideoOk] = useState(true);
   const style = TAG_STYLE[project.tag];
+  const hasFilm = Boolean(project.video);
 
   useEffect(() => {
     const v = videoRef.current;
-    if (!v) return;
+    if (!v || !hasFilm) return;
     if (inView) v.play().catch(() => {});
     else v.pause();
-  }, [inView]);
+  }, [inView, hasFilm]);
 
   return (
     <motion.div
@@ -37,38 +39,45 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
         onMouseEnter={(e) => (e.currentTarget.style.boxShadow = `8px 8px 0 ${style.glow}`)}
         onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
       >
-        <div className="relative aspect-video overflow-hidden bg-[#DDDBD2]">
-          {videoOk ? (
-            <video
-              ref={videoRef}
-              src={project.video}
-              poster={project.poster}
-              muted
-              loop
-              playsInline
-              preload="none"
-              onError={() => setVideoOk(false)}
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-            />
-          ) : (
-            <img
-              src={project.img}
-              alt={project.title}
-              loading="lazy"
-              className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
-            />
-          )}
+        <MaskReveal>
+          <div className="relative aspect-video overflow-hidden bg-[#DDDBD2]">
+            {hasFilm && videoOk ? (
+              <video
+                ref={videoRef}
+                src={project.video}
+                poster={project.poster}
+                muted
+                loop
+                playsInline
+                preload="none"
+                onError={() => setVideoOk(false)}
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              />
+            ) : (
+              <img
+                src={project.img}
+                alt={project.title}
+                loading="lazy"
+                className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+              />
+            )}
 
-          <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-400 group-hover:bg-black/25 group-hover:opacity-100">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white scale-75 transition-transform duration-400 group-hover:scale-100 shadow-lg">
-              <Play className="h-6 w-6 text-black fill-black" />
+            {hasFilm && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-400 group-hover:bg-black/25 group-hover:opacity-100">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white scale-75 transition-transform duration-400 group-hover:scale-100 shadow-lg">
+                  <Play className="h-6 w-6 text-black fill-black" />
+                </div>
+              </div>
+            )}
+
+            <div className="absolute right-4 top-4 rounded-full bg-black px-2.5 py-1 font-display text-xs font-bold text-white">
+              {String(project.id).padStart(2, "0")}
+            </div>
+            <div className="absolute bottom-3 left-3 rounded-full bg-black/80 px-3 py-1.5 text-xs font-bold text-[#FFCB41] backdrop-blur-sm">
+              {project.stat}
             </div>
           </div>
-
-          <div className="absolute right-4 top-4 rounded-full bg-black px-2.5 py-1 font-display text-xs font-bold text-white">
-            {String(project.id).padStart(2, "0")}
-          </div>
-        </div>
+        </MaskReveal>
 
         <div className="flex items-start justify-between gap-4 p-6">
           <div>
@@ -110,7 +119,9 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
             className="relative w-full max-w-5xl overflow-hidden rounded-2xl border-2 border-white/20 bg-[#F6F5F1]"
             onClick={(e) => e.stopPropagation()}
           >
-            {videoFailed ? (
+            {!project.video ? (
+              <img src={project.img} alt={project.title} className="aspect-video w-full object-cover object-top" />
+            ) : videoFailed ? (
               <div className="relative">
                 <img src={project.img} alt={project.title} className="aspect-video w-full object-cover object-top" />
                 <span className="absolute left-4 top-4 rounded-full bg-black/70 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-md">
@@ -276,7 +287,7 @@ export function FeaturedWork() {
           />
           <Reveal delay={0.25}>
             <p className="mt-6 max-w-xl text-lg text-black/55">
-              Each flagship build gets the film treatment — press play, watch the system work.
+              The flagship builds get the film treatment — every card opens the real system, tools and outcome included.
             </p>
           </Reveal>
         </div>

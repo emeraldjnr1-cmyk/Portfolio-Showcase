@@ -6,19 +6,29 @@ const WORDS = ["Claude Code", "n8n", "Make.com", "Airtable", "AI Agents"];
 
 export function Preloader({ onDone }: { onDone: () => void }) {
   const [show, setShow] = useState(true);
+  const [gone, setGone] = useState(false);
   const [word, setWord] = useState(0);
 
   useEffect(() => {
     const cycle = setInterval(() => setWord((w) => Math.min(w + 1, WORDS.length - 1)), 320);
-    const t = setTimeout(() => setShow(false), 2100);
+    const t = setTimeout(() => {
+      setShow(false);
+      onDone();
+    }, 2100);
+    // Failsafe: hard-remove even if the exit animation never runs (throttled rAF, background tab).
+    const kill = setTimeout(() => setGone(true), 3200);
     return () => {
       clearInterval(cycle);
       clearTimeout(t);
+      clearTimeout(kill);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (gone) return null;
+
   return (
-    <AnimatePresence onExitComplete={onDone}>
+    <AnimatePresence>
       {show && (
         <motion.div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-[#141414]"

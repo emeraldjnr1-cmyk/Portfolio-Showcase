@@ -9,6 +9,8 @@ import { Magnetic } from "@/components/fx/Magnetic";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 import { Marquee } from "@/components/fx/Marquee";
 import { CountUp } from "@/components/fx/CountUp";
+import { ScrollProgress, VelocitySkew } from "@/components/fx/ScrollFX";
+import { BigMarquee } from "@/components/fx/BigMarquee";
 import { useLenis } from "@/hooks/use-lenis";
 
 import { SiteNav } from "@/components/site/SiteNav";
@@ -532,25 +534,31 @@ export default function Home() {
   return (
     <div className="cursor-none-desktop min-h-screen bg-background text-foreground">
       <Preloader onDone={() => setReady(true)} />
+      <ScrollProgress />
       <CustomCursor />
       <SiteNav />
       <FloatingWhatsApp />
 
-      <main>
-        <Hero ready={ready} />
-        <ToolStrip />
-        <Stats />
-        <WebProjectsSection />
-        <FeaturedWork />
-        <TestimonialCinema />
-        <Services />
-        <Process />
-        <ReviewsMarquee />
-        <About />
-        <FinalCTA />
-      </main>
+      <VelocitySkew>
+        <main>
+          <Hero ready={ready} />
+          <ToolStrip />
+          <Stats />
+          <BigMarquee items={["Claude Code", "Websites", "Apps", "AI Products"]} accent="#0015D4" />
+          <WebProjectsSection />
+          <BigMarquee items={["Automation", "AI Agents", "n8n", "Make.com", "Airtable"]} direction="right" accent="#F32317" />
+          <FeaturedWork />
+          <TestimonialCinema />
+          <Services />
+          <Process />
+          <ReviewsMarquee />
+          <About />
+          <BigMarquee items={["Let's build", "Your system", "Starts here"]} accent="#FFCB41" />
+          <FinalCTA />
+        </main>
 
-      <Footer />
+        <Footer />
+      </VelocitySkew>
     </div>
   );
 }

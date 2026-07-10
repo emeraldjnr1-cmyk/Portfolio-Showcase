@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
+import { MaskReveal } from "@/components/fx/ScrollFX";
 import { webProjects, WebProject } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -29,13 +30,15 @@ function FeatureRow({ project, index }: { project: WebProject; index: number }) 
           onMouseEnter={(e) => (e.currentTarget.style.boxShadow = `10px 10px 0 ${pop}`)}
           onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
         >
-          <motion.img
-            src={project.img}
-            alt={`${project.name} — ${project.kind}`}
-            loading="lazy"
-            style={{ y: imgY, scale: 1.12 }}
-            className="w-full object-cover transition-transform duration-700 group-hover:scale-[1.16]"
-          />
+          <MaskReveal>
+            <motion.img
+              src={project.img}
+              alt={`${project.name} — ${project.kind}`}
+              loading="lazy"
+              style={{ y: imgY, scale: 1.12 }}
+              className="w-full object-cover transition-transform duration-700 group-hover:scale-[1.16]"
+            />
+          </MaskReveal>
         </div>
         <div className="pointer-events-none absolute -bottom-5 left-6 font-display text-[5rem] font-extrabold leading-none text-stroke md:text-[7rem]">
           {String(index + 1).padStart(2, "0")}
