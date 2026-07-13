@@ -60,6 +60,7 @@ import wf58 from "@assets/Screenshot_2026-04-02_at_3.50.12_AM_1776460016082.png"
 
 import profilePicUrl from "@assets/my_profile_pic_1776459432094.jpg";
 import rachelVideoUrl from "@assets/rachel_video_testimonial.mp4";
+import moritzVideoUrl from "@assets/moritz_video_testimonial.mp4";
 
 export const profilePic = profilePicUrl;
 
@@ -217,6 +218,12 @@ export const testimonials: Testimonial[] = [
     name: "Mike Schmidt",
     quote: "Professional, reliable, and genuinely invested in delivering results.",
     aspect: "portrait",
+  },
+  {
+    src: moritzVideoUrl,
+    name: "Moritz Domm",
+    quote: "Thank you for this first great job, Emerald! The second one will follow now.",
+    aspect: "landscape",
   },
 ];
 
