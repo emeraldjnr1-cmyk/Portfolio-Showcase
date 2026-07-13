@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowDown, Star } from "lucide-react";
-import { SiAirtable, SiZapier, SiMake, SiN8N, SiTelegram, SiWhatsapp, SiOpenai, SiClaude } from "react-icons/si";
+import { ArrowDown, ArrowUpRight, Star } from "lucide-react";
+import { SiAirtable, SiZapier, SiMake, SiN8N, SiWhatsapp, SiOpenai, SiClaude } from "react-icons/si";
 
 import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
@@ -18,8 +18,10 @@ import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { WebProjectsSection } from "@/components/site/WebProjects";
 import { TestimonialCinema } from "@/components/site/TestimonialCinema";
+import { OnboardingModal } from "@/components/site/OnboardingModal";
+import { Logo } from "@/components/site/Logo";
 
-import { reviews, profilePic, WHATSAPP, TELEGRAM } from "@/data/portfolio";
+import { reviews, profilePic, WHATSAPP } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -145,8 +147,16 @@ function Hero({ ready }: { ready: boolean }) {
             initial={{ opacity: 0, y: 30 }}
             animate={ready ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.75, ease: EASE }}
-            className="flex items-center gap-4"
+            className="flex flex-col items-start gap-6 md:items-end"
           >
+            <motion.div
+              animate={{ y: [0, -10, 0], rotate: [0, 4, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="hidden md:block"
+            >
+              <Logo size={120} />
+            </motion.div>
+            <div className="flex items-center gap-4">
             <Magnetic strength={0.45}>
               <a
                 href={WHATSAPP}
@@ -169,6 +179,7 @@ function Hero({ ready }: { ready: boolean }) {
                 See the work
               </a>
             </Magnetic>
+            </div>
           </motion.div>
         </div>
       </motion.div>
@@ -560,15 +571,16 @@ function FinalCTA() {
             </a>
           </Magnetic>
           <Magnetic strength={0.4}>
-            <a
-              href={TELEGRAM}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-16 items-center gap-3 rounded-full border border-white/30 px-10 font-display text-lg font-bold text-white transition-colors hover:border-white hover:bg-white hover:text-black"
-              data-cursor="hover"
-            >
-              <SiTelegram className="h-6 w-6" /> Telegram
-            </a>
+            <OnboardingModal
+              trigger={
+                <button
+                  className="inline-flex h-16 items-center gap-3 rounded-full border border-white/30 px-10 font-display text-lg font-bold text-white transition-colors hover:border-white hover:bg-white hover:text-black"
+                  data-cursor="hover"
+                >
+                  Start your project <ArrowUpRight className="h-6 w-6" />
+                </button>
+              }
+            />
           </Magnetic>
         </Reveal>
 
@@ -585,7 +597,8 @@ function Footer() {
   return (
     <footer className="border-t border-white/10 bg-black px-6 py-12 text-[#E7E7E1] md:px-12">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
-        <div className="font-display text-xl font-extrabold">
+        <div className="flex items-center gap-2.5 font-display text-xl font-extrabold">
+          <Logo size={26} stroke="#E7E7E1" />
           Denver<span className="text-[#84DEF9]">®</span>
         </div>
         <p className="text-sm text-white/50">Built with Claude Code. Systems that save time and grow businesses.</p>

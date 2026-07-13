@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { Magnetic } from "@/components/fx/Magnetic";
+import { Logo } from "@/components/site/Logo";
 import { WHATSAPP } from "@/data/portfolio";
 
 const LINKS = [
@@ -33,7 +34,8 @@ export function SiteNav() {
           scrolled ? "py-3 bg-[#E7E7E1]/80 backdrop-blur-xl border-b border-black/10" : "py-6 bg-transparent"
         }`}
       >
-        <a href="#top" className="font-display text-lg font-extrabold tracking-tight text-black">
+        <a href="#top" className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight text-black">
+          <Logo size={24} />
           Denver<span className="text-primary">®</span>
         </a>
 

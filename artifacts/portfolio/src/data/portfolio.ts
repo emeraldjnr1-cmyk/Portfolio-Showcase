@@ -61,6 +61,7 @@ import wf58 from "@assets/Screenshot_2026-04-02_at_3.50.12_AM_1776460016082.png"
 import profilePicUrl from "@assets/my_profile_pic_1776459432094.jpg";
 import rachelVideoUrl from "@assets/rachel_video_testimonial.mp4";
 import moritzVideoUrl from "@assets/moritz_video_testimonial.mp4";
+import entsorgerShowcase from "@assets/entsorger_showcase.png";
 
 export const profilePic = profilePicUrl;
 
@@ -90,6 +91,7 @@ export interface FeaturedProject {
 }
 
 export const featured: FeaturedProject[] = [
+  { id: 11, title: "Entsorger Circle: AI Client Pipeline", desc: "Claude Vision enriches a live Google Sheet with company logos, then a daily pipeline turns event signups into personalized visuals and ready-to-send Gmail drafts.", tag: "AI Agents", tools: ["Claude Vision", "Playwright", "Sheets", "Gmail", "Railway"], stat: "Zero manual outreach for event signups", result: "A real client pipeline, live in production", video: `${BASE}/videos/project-11.mp4`, poster: `${BASE}/videos/posters/project-11.jpg`, img: entsorgerShowcase },
   { id: 1, title: "AI Video Resume Generator", desc: "Resume + photo in, HeyGen avatar video out. Gender detection, OpenAI extraction, auto-upload.", tag: "AI Agents", tools: ["OpenAI", "HeyGen", "Sheets", "n8n"], stat: "100% hands-free video production", result: "Fully automated resume-to-video pipeline", video: `${BASE}/videos/project-01.mp4`, poster: `${BASE}/videos/posters/project-01.jpg`, img: wf6 },
   { id: 2, title: "AI Lead Generation System", desc: "Apify scrapes prospects, AI writes personalized outreach, human approval gate, Gmail sends.", tag: "AI Agents", tools: ["Apify", "OpenAI", "Gmail", "n8n"], stat: "3x more qualified leads", result: "Full sales pipeline on autopilot", video: `${BASE}/videos/project-02.mp4`, poster: `${BASE}/videos/posters/project-02.jpg`, img: wf12 },
   { id: 3, title: "RAG Website Chatbot", desc: "Scrapes site content, stores embeddings in Supabase, powers a live Q&A chat agent.", tag: "AI Agents", tools: ["Supabase", "OpenAI", "n8n"], stat: "80% of queries answered by AI", result: "24/7 AI-powered customer support", img: wf4 },
@@ -238,4 +240,3 @@ export const reviews = [
 ];
 
 export const WHATSAPP = "https://wa.me/2348143046516";
-export const TELEGRAM = "https://t.me/+2348143046516";
