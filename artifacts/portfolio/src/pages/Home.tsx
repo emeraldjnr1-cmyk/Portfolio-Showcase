@@ -225,6 +225,24 @@ function Hero({ ready }: { ready: boolean }) {
                 See the work
               </a>
             </Magnetic>
+            <Magnetic strength={0.5}>
+              <span className="relative inline-block">
+                <motion.a
+                  href={FIVERR}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Hire me on Fiverr"
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+                  className="group relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-black text-[#E7E7E1]"
+                  data-cursor="hover"
+                >
+                  <span className="absolute inset-0 origin-bottom scale-y-0 bg-primary transition-transform duration-400 ease-out group-hover:scale-y-100" />
+                  <SiFiverr className="relative z-10 h-7 w-7" />
+                </motion.a>
+                <span className="pointer-events-none absolute -right-0.5 -top-0.5 z-10 h-3 w-3 animate-pulse rounded-full bg-[#FFCB41]" />
+              </span>
+            </Magnetic>
             </div>
           </motion.div>
         </div>
