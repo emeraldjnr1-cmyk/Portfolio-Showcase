@@ -64,6 +64,42 @@ function RotatingWord() {
   );
 }
 
+// The watchword: quality, value, speed — rolls forever under the headline.
+const WATCHWORDS = [
+  { word: "quality.", color: "#0015D4" },
+  { word: "value.", color: "#F32317" },
+  { word: "speed.", color: "#BA7517" },
+];
+
+function WatchwordRoller() {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    // 2600ms vs the headline's 2200ms so the two rollers interleave
+    // instead of ticking in unison.
+    const t = setInterval(() => setI((v) => (v + 1) % WATCHWORDS.length), 2600);
+    return () => clearInterval(t);
+  }, []);
+  const longest = WATCHWORDS.reduce((a, b) => (b.word.length > a.length ? b.word : a), "");
+  return (
+    <span className="relative inline-grid overflow-hidden align-bottom">
+      <span className="invisible col-start-1 row-start-1 font-editorial italic">{longest}</span>
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={i}
+          initial={{ y: "105%" }}
+          animate={{ y: 0 }}
+          exit={{ y: "-105%" }}
+          transition={{ duration: 0.55, ease: EASE }}
+          className="col-start-1 row-start-1 whitespace-nowrap font-editorial italic"
+          style={{ color: WATCHWORDS[i].color }}
+        >
+          {WATCHWORDS[i].word}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
 // ─────────────────────────────── HERO ───────────────────────────────
 function Hero({ ready }: { ready: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -130,6 +166,15 @@ function Hero({ ready }: { ready: boolean }) {
             </motion.span>
           </span>
         </h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.54 }}
+          className="mt-7 font-display text-xl font-bold tracking-tight text-black md:text-2xl"
+        >
+          Delivered with <WatchwordRoller />
+        </motion.p>
 
         <div className="mt-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <motion.p
