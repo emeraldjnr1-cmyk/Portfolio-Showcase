@@ -1,12 +1,12 @@
-// Denver node mark: a "D" drawn as a single workflow line with three
-// nodes in the brand accent colors (cobalt, amber, red).
+// Denver "D." mark: heavy display D with a cobalt full stop.
+// Confident and typographic, like signing off a sentence.
 export function Logo({
   size = 40,
-  stroke = "#0E0F12",
+  color = "#0E0F12",
   className,
 }: {
   size?: number;
-  stroke?: string;
+  color?: string;
   className?: string;
 }) {
   return (
@@ -20,15 +20,17 @@ export function Logo({
       role="img"
       aria-label="Denver logo"
     >
-      <path
-        d="M32 18 L32 92 M32 18 C 82 18 82 92 32 92"
-        stroke={stroke}
-        strokeWidth={11}
-        strokeLinecap="round"
-      />
-      <circle cx="32" cy="18" r="9" fill="#0015D4" />
-      <circle cx="69.5" cy="55" r="9" fill="#FFCB41" />
-      <circle cx="32" cy="92" r="9" fill="#F32317" />
+      <text
+        x="6"
+        y="92"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontSize="104"
+        fontWeight="900"
+        fill={color}
+      >
+        D
+      </text>
+      <circle cx="96" cy="80" r="12" fill="#0015D4" />
     </svg>
   );
 }

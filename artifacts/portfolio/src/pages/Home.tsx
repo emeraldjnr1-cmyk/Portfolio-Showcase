@@ -20,6 +20,7 @@ import { WebProjectsSection } from "@/components/site/WebProjects";
 import { TestimonialCinema } from "@/components/site/TestimonialCinema";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Logo } from "@/components/site/Logo";
+import { FAQSection } from "@/components/site/FAQ";
 
 import { reviews, profilePic, WHATSAPP } from "@/data/portfolio";
 
@@ -598,7 +599,7 @@ function Footer() {
     <footer className="border-t border-white/10 bg-black px-6 py-12 text-[#E7E7E1] md:px-12">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
         <div className="flex items-center gap-2.5 font-display text-xl font-extrabold">
-          <Logo size={26} stroke="#E7E7E1" />
+          <Logo size={26} color="#E7E7E1" />
           Denver<span className="text-[#84DEF9]">®</span>
         </div>
         <p className="text-sm text-white/50">Built with Claude Code. Systems that save time and grow businesses.</p>
@@ -637,6 +638,7 @@ export default function Home() {
           <Process />
           <ReviewsMarquee />
           <About />
+          <FAQSection />
           <BigMarquee items={["Let's build", "Your system", "Starts here"]} accent="#FFCB41" />
           <FinalCTA />
         </main>
