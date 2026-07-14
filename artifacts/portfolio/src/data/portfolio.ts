@@ -240,3 +240,4 @@ export const reviews = [
 ];
 
 export const WHATSAPP = "https://wa.me/2348143046516";
+export const FIVERR = "https://www.fiverr.com/s/38B9KR9";

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Star } from "lucide-react";
-import { SiAirtable, SiZapier, SiMake, SiN8N, SiWhatsapp, SiOpenai, SiClaude } from "react-icons/si";
+import { SiAirtable, SiZapier, SiMake, SiN8N, SiWhatsapp, SiOpenai, SiClaude, SiFiverr } from "react-icons/si";
 
 import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
@@ -22,7 +22,7 @@ import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Logo } from "@/components/site/Logo";
 import { FAQSection } from "@/components/site/FAQ";
 
-import { reviews, profilePic, WHATSAPP } from "@/data/portfolio";
+import { reviews, profilePic, WHATSAPP, FIVERR } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -507,6 +507,26 @@ function ReviewsMarquee() {
           <FiverrLevelBadge level={2} lit={2} theme={L2_THEME} times="attained once" delay={0.1} />
           <FiverrLevelBadge level={1} lit={1} theme={L1_THEME} times="attained 3×" delay={0.22} />
         </div>
+        <Reveal delay={0.35}>
+          <div className="mt-9 flex justify-center">
+            <Magnetic strength={0.45}>
+              <motion.a
+                href={FIVERR}
+                target="_blank"
+                rel="noopener noreferrer"
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="group relative inline-flex h-14 items-center gap-3 overflow-hidden rounded-full bg-[#1DBF73] px-9 font-display text-base font-bold text-white"
+                data-cursor="hover"
+              >
+                <span className="absolute inset-0 origin-left scale-x-0 bg-black transition-transform duration-400 ease-out group-hover:scale-x-100" />
+                <span className="relative z-10 h-2 w-2 animate-pulse rounded-full bg-white" />
+                <SiFiverr className="relative z-10 h-7 w-7" />
+                <span className="relative z-10">Hire me on Fiverr</span>
+              </motion.a>
+            </Magnetic>
+          </div>
+        </Reveal>
       </div>
       <Marquee duration={45} className="mb-6">
         {reviews.slice(0, 3).map((r) => (
@@ -630,8 +650,22 @@ function FinalCTA() {
           </Magnetic>
         </Reveal>
 
-        <Reveal delay={0.6}>
-          <p className="mt-10 text-sm text-white/40">Limited availability for new projects this month.</p>
+        <Reveal delay={0.55}>
+          <p className="mt-8 text-sm text-white/50">
+            Prefer buyer protection?{" "}
+            <a
+              href={FIVERR}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 font-semibold text-[#1DBF73] transition-colors hover:text-white"
+              data-cursor="hover"
+            >
+              <SiFiverr className="h-4 w-4" /> Hire me on Fiverr
+            </a>
+          </p>
+        </Reveal>
+        <Reveal delay={0.65}>
+          <p className="mt-4 text-sm text-white/40">Limited availability for new projects this month.</p>
         </Reveal>
       </div>
     </section>
@@ -647,7 +681,19 @@ function Footer() {
           <Logo size={26} color="#E7E7E1" />
           Denver<span className="text-[#84DEF9]">®</span>
         </div>
-        <p className="text-sm text-white/50">Built with Claude Code. Systems that save time and grow businesses.</p>
+        <div className="flex items-center gap-4">
+          <p className="text-sm text-white/50">Built with Claude Code. Systems that save time and grow businesses.</p>
+          <a
+            href={FIVERR}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Denver on Fiverr"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1DBF73] text-white transition-transform hover:scale-110"
+            data-cursor="hover"
+          >
+            <SiFiverr className="h-5 w-5" />
+          </a>
+        </div>
         <p className="text-sm text-white/30">
           © {new Date().getFullYear()} Denver <span className="text-[#10B981]">Emerald</span> Peter
         </p>
