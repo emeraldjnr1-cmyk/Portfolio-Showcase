@@ -188,6 +188,31 @@ export const webProjects: WebProject[] = [
   { slug: "10-wander-travel", name: "Wander", kind: "Travel Planning App", desc: "AI trip planner with day-by-day itinerary UI and budget tracking.", stack: ["React", "AI", "Claude Code"], img: `${BASE}/webprojects/10-wander-travel.jpg` },
 ];
 
+// ── Web3 & blockchain projects: dApps, Solana bots, EVM contracts, trading ──
+export const web3Projects: WebProject[] = [
+  { slug: '21-apax', name: 'APAX Portfolio Vault', kind: 'Client Build — Apax × Daniel', desc: 'Portfolio vault dApp where the frontend never touches the chain: Next.js UI, Express API layer, Solidity vault as the single source of truth.', stack: ['Next.js', 'Solidity', 'Hardhat', 'Express'], img: `${BASE}/web3/21-apax.jpg` },
+  { slug: '01-mintforge', name: 'MintForge', kind: 'NFT Mint dApp', desc: 'Generative 8,888-piece mint with phased allowlists, live supply tracking and instant reveal.', stack: ['React', 'Solidity', 'IPFS'], img: `${BASE}/web3/01-mintforge.jpg` },
+  { slug: '02-stakehaus', name: 'StakeHaus', kind: 'Staking Vault dApp', desc: 'Tiered lock vaults paying real yield from protocol fees, with capacity bars and boost multipliers.', stack: ['React', 'Solidity', 'wagmi'], img: `${BASE}/web3/02-stakehaus.jpg` },
+  { slug: '03-bridgeport', name: 'Bridgeport', kind: 'Cross-Chain Bridge UI', desc: 'Bridge interface with live fee quotes, route preview and arrival estimates across chains.', stack: ['React', 'LayerZero', 'ethers'], img: `${BASE}/web3/03-bridgeport.jpg` },
+  { slug: '04-quorum', name: 'Quorum', kind: 'DAO Governance Portal', desc: 'Proposal lifecycle, live vote bars, quorum tracking and treasury oversight for 48k holders.', stack: ['React', 'Snapshot', 'Safe'], img: `${BASE}/web3/04-quorum.jpg` },
+  { slug: '05-lendlane', name: 'LendLane', kind: 'Lending Market dApp', desc: 'Supply and borrow markets with live APYs, health factor monitoring and TVL analytics.', stack: ['React', 'Solidity', 'TheGraph'], img: `${BASE}/web3/05-lendlane.jpg` },
+  { slug: '06-solsniper', name: 'SolSniper', kind: 'Solana Sniper Bot', desc: 'New-pool detection in 38ms with safety checks: mint authority, LP burn, holder concentration, honeypot heuristics.', stack: ['Node.js', 'Solana', 'Jito'], img: `${BASE}/web3/06-solsniper.jpg` },
+  { slug: '07-copyflow', name: 'CopyFlow', kind: 'Solana Copy-Trading Bot', desc: 'Mirror profitable wallets with per-trade sizing, 1.2s mirror delay and full PnL attribution.', stack: ['Node.js', 'Helius', 'Jupiter'], img: `${BASE}/web3/07-copyflow.jpg` },
+  { slug: '08-solarb', name: 'SolArb', kind: 'Solana Arbitrage Bot', desc: 'Cross-DEX spread scanner over Raydium, Orca and Meteora with atomic Jito bundle execution.', stack: ['Node.js', 'Raydium', 'Jito'], img: `${BASE}/web3/08-solarb.jpg` },
+  { slug: '09-pumpwatch', name: 'PumpWatch', kind: 'Telegram Trading Bot', desc: 'Buy, sell and snipe from Telegram: 0.8s execution, rug checks and TP/SL automation baked in.', stack: ['Node.js', 'Telegram', 'Solana'], img: `${BASE}/web3/09-pumpwatch.jpg` },
+  { slug: '10-whaletrace', name: 'WhaleTrace', kind: 'Wallet Tracker Bot', desc: 'Tracks 1,800+ smart-money wallets and pushes whale buys, sells and net-flow alerts in real time.', stack: ['Node.js', 'Helius', 'Discord'], img: `${BASE}/web3/10-whaletrace.jpg` },
+  { slug: '11-vestlock', name: 'VestLock', kind: 'EVM Vesting Contract', desc: 'Cliff plus linear vesting with DAO-only revoke, 100% test coverage and fuzz-tested invariants.', stack: ['Solidity', 'Foundry', 'OpenZeppelin'], img: `${BASE}/web3/11-vestlock.jpg` },
+  { slug: '12-escrowx', name: 'EscrowX', kind: 'NFT Marketplace Escrow', desc: 'Atomic NFT-for-token settlement honoring EIP-2981 royalties, signature orders and nonce protection.', stack: ['Solidity', 'EIP-2981', 'Foundry'], img: `${BASE}/web3/12-escrowx.jpg` },
+  { slug: '13-multisafe', name: 'MultiSafe', kind: 'Multisig Treasury', desc: '4-of-7 signer treasury with 48h timelocks on large transfers and full operation audit trail.', stack: ['Solidity', 'Safe', 'Timelock'], img: `${BASE}/web3/13-multisafe.jpg` },
+  { slug: '14-yieldworks', name: 'YieldWorks', kind: 'Yield Farm Contracts', desc: 'Auto-compounding farm with per-block emissions, boost multipliers and stable or volatile pools.', stack: ['Solidity', 'Hardhat', 'Chainlink'], img: `${BASE}/web3/14-yieldworks.jpg` },
+  { slug: '15-launchbase', name: 'LaunchBase', kind: 'Token Presale Suite', desc: 'Presale contracts with hard caps, per-wallet limits, automatic refunds and LP lock at finalize.', stack: ['Solidity', 'Hardhat', 'Uniswap'], img: `${BASE}/web3/15-launchbase.jpg` },
+  { slug: '16-swiftswap', name: 'SwiftSwap', kind: 'DEX Swap Interface', desc: 'Multi-hop routed swaps with live quotes, slippage guards and pool analytics beside the trade.', stack: ['React', 'Uniswap', 'viem'], img: `${BASE}/web3/16-swiftswap.jpg` },
+  { slug: '17-perpdeck', name: 'PerpDeck', kind: 'Perps Trading Terminal', desc: 'Candles, order ticket, leverage slider and live positions with funding and liquidation math.', stack: ['React', 'dYdX', 'WebSocket'], img: `${BASE}/web3/17-perpdeck.jpg` },
+  { slug: '18-chainfolio', name: 'Chainfolio', kind: 'Portfolio Analytics', desc: 'Net worth across 6 chains: DeFi positions, unrealized PnL and claimable rewards in one view.', stack: ['React', 'Zapper', 'Node.js'], img: `${BASE}/web3/18-chainfolio.jpg` },
+  { slug: '19-signalgrid', name: 'SignalGrid', kind: 'On-Chain Signal Terminal', desc: 'Fuses 14 data sources into smart-money signals with a 22-minute median lead over the crowd.', stack: ['Node.js', 'Dune', 'Telegram'], img: `${BASE}/web3/19-signalgrid.jpg` },
+  { slug: '20-gasguard', name: 'GasGuard', kind: 'MEV Protection Dashboard', desc: 'Private-relay transaction protection: 18k sandwiches blocked and $2.8M saved for users.', stack: ['React', 'Flashbots', 'Node.js'], img: `${BASE}/web3/20-gasguard.jpg` },
+];
+
 // ── Video testimonials ──
 export interface Testimonial {
   src: string;

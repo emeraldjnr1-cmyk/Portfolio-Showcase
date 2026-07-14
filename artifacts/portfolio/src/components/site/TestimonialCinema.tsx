@@ -43,7 +43,7 @@ export function TestimonialCinema() {
       <div className="relative mx-auto max-w-6xl">
         <div className="mb-16 text-center">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">03 — Client stories</span>
+            <span className="font-mono text-sm font-semibold text-primary">04 — Client stories</span>
           </Reveal>
           <SplitWords
             as="h2"

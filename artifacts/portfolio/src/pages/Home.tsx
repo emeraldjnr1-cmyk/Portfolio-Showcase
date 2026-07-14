@@ -17,6 +17,7 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { WebProjectsSection } from "@/components/site/WebProjects";
+import { Web3ProjectsSection } from "@/components/site/Web3Projects";
 import { TestimonialCinema } from "@/components/site/TestimonialCinema";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Logo } from "@/components/site/Logo";
@@ -329,7 +330,7 @@ function Services() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-16">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">04 — Services</span>
+            <span className="font-mono text-sm font-semibold text-primary">05 — Services</span>
           </Reveal>
           <SplitWords
             as="h2"
@@ -381,7 +382,7 @@ function Process() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-20">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">05 — Process</span>
+            <span className="font-mono text-sm font-semibold text-primary">06 — Process</span>
           </Reveal>
           <SplitWords
             as="h2"
@@ -583,7 +584,7 @@ function About() {
 
         <div>
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">06 — About</span>
+            <span className="font-mono text-sm font-semibold text-primary">07 — About</span>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
@@ -740,7 +741,9 @@ export default function Home() {
           <Stats />
           <BigMarquee items={["Claude Code", "Websites", "Apps", "AI Products"]} accent="#0015D4" />
           <WebProjectsSection />
-          <BigMarquee items={["Automation", "AI Agents", "n8n", "Make.com", "Airtable"]} direction="right" accent="#F32317" />
+          <BigMarquee items={["dApps", "Solana Bots", "Smart Contracts", "Web3 Trading", "DeFi"]} direction="right" accent="#8B5CF6" />
+          <Web3ProjectsSection />
+          <BigMarquee items={["Automation", "AI Agents", "n8n", "Make.com", "Airtable"]} accent="#F32317" />
           <FeaturedWork />
           <TestimonialCinema />
           <Services />

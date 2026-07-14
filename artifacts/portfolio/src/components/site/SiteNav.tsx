@@ -6,6 +6,7 @@ import { WHATSAPP } from "@/data/portfolio";
 
 const LINKS = [
   { label: "Claude Code", href: "#websites" },
+  { label: "Web3", href: "#web3" },
   { label: "Automations", href: "#work" },
   { label: "Services", href: "#services" },
   { label: "Clients", href: "#clients" },

@@ -8,7 +8,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const POPS = ["#0015D4", "#F32317", "#FFCB41", "#FF8FCA", "#84DEF9", "#0015D4"];
 
 /** Big editorial row for the first four projects — image drifts with scroll (parallax). */
-function FeatureRow({ project, index }: { project: WebProject; index: number }) {
+export function FeatureRow({ project, index }: { project: WebProject; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoOk, setVideoOk] = useState(true);
@@ -100,7 +100,7 @@ function FeatureRow({ project, index }: { project: WebProject; index: number }) 
 }
 
 /** Compact card for the remaining projects. */
-function CompactCard({ project, index }: { project: WebProject; index: number }) {
+export function CompactCard({ project, index }: { project: WebProject; index: number }) {
   const pop = POPS[(index + 4) % POPS.length];
   return (
     <motion.div
