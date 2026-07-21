@@ -186,6 +186,7 @@ export const webProjects: WebProject[] = [
   { slug: "08-lumen-ai", name: "Lumen", kind: "AI Chat Product", desc: "AI assistant interface with structured answers and inline charts.", stack: ["React", "AI", "Claude Code"], img: `${BASE}/webprojects/08-lumen-ai.jpg` },
   { slug: "09-studio-north", name: "Studio North", kind: "Agency Website", desc: "Stark typographic agency site with duotone case-study cards.", stack: ["React", "Motion", "Claude Code"], img: `${BASE}/webprojects/09-studio-north.jpg` },
   { slug: "10-wander-travel", name: "Wander", kind: "Travel Planning App", desc: "AI trip planner with day-by-day itinerary UI and budget tracking.", stack: ["React", "AI", "Claude Code"], img: `${BASE}/webprojects/10-wander-travel.jpg` },
+  { slug: "11-meridian-sponsorship", name: "Meridian", kind: "Sponsorship Analytics Dashboard", desc: "Live-stream and social data turned into a sponsor-ready ROI report with media value and CPM.", stack: ["React", "Charts", "Claude Code"], img: `${BASE}/webprojects/11-meridian-sponsorship.jpg` },
 ];
 
 // ── Web3 & blockchain projects: dApps, Solana bots, EVM contracts, trading ──
