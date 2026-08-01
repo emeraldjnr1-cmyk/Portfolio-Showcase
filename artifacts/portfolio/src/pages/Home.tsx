@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Star } from "lucide-react";
-import { SiAirtable, SiZapier, SiMake, SiN8N, SiWhatsapp, SiOpenai, SiClaude, SiFiverr } from "react-icons/si";
+import { SiAirtable, SiMake, SiN8N, SiWhatsapp, SiOpenai, SiClaude, SiFiverr } from "react-icons/si";
 
 import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
@@ -22,6 +22,7 @@ import { TestimonialCinema } from "@/components/site/TestimonialCinema";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Logo } from "@/components/site/Logo";
 import { Avatar, SpinningBadge } from "@/components/site/Portrait";
+import { ToolStack } from "@/components/site/ToolStack";
 import { FAQSection } from "@/components/site/FAQ";
 
 import { reviews, profilePic, WHATSAPP, FIVERR } from "@/data/portfolio";
@@ -186,7 +187,7 @@ function Hero({ ready }: { ready: boolean }) {
             transition={{ duration: 0.7, delay: 0.6, ease: EASE }}
             className="max-w-md text-lg leading-relaxed text-black/60"
           >
-            I'm <strong className="font-semibold text-black">Denver <span className="text-[#10B981]">Emerald</span> Peter</strong> — apps and websites shipped with{" "}
+            I'm <strong className="font-semibold text-black">Denver <span className="text-[#10B981]">Emerald</span> Peter</strong>. Apps and websites shipped with{" "}
             <strong className="font-semibold text-black">Claude Code</strong>, and automation systems built on{" "}
             <strong className="font-semibold text-black">n8n, Make.com & Airtable</strong> that capture leads and run
             your operations on autopilot.
@@ -265,33 +266,6 @@ function Hero({ ready }: { ready: boolean }) {
   );
 }
 
-// ─────────────────────────── TOOL MARQUEE ───────────────────────────
-function ToolStrip() {
-  const tools = [
-    { icon: <SiClaude className="h-6 w-6" />, name: "Claude Code" },
-    { icon: <SiClaude className="h-6 w-6" />, name: "Claude Design" },
-    { icon: <SiClaude className="h-6 w-6" />, name: "Claude Cowork" },
-    { icon: <SiN8N className="h-6 w-6" />, name: "n8n" },
-    { icon: <SiMake className="h-6 w-6" />, name: "Make.com" },
-    { icon: <SiAirtable className="h-6 w-6" />, name: "Airtable" },
-    { icon: <SiZapier className="h-6 w-6" />, name: "Zapier" },
-    { icon: <SiOpenai className="h-6 w-6" />, name: "OpenAI" },
-  ];
-  return (
-    <div className="border-y border-black bg-black py-6">
-      <Marquee duration={30}>
-        {tools.map((t, i) => (
-          <div key={`${t.name}-${i}`} className="mx-10 flex items-center gap-3 text-[#E7E7E1]/70 transition-colors hover:text-white">
-            {t.icon}
-            <span className="font-display text-sm font-bold uppercase tracking-widest whitespace-nowrap">{t.name}</span>
-            <span className="ml-6 h-1.5 w-1.5 rounded-full bg-[#FFCB41]" />
-          </div>
-        ))}
-      </Marquee>
-    </div>
-  );
-}
-
 // ─────────────────────────────── STATS ──────────────────────────────
 function Stats() {
   const stats = [
@@ -319,7 +293,7 @@ function Stats() {
 // ───────────────────────────── SERVICES ─────────────────────────────
 function Services() {
   const services = [
-    { icon: <SiClaude className="h-7 w-7" />, title: "Claude Code — Websites & Apps", desc: "Full products designed, built, and shipped with Claude Code. Dashboards, storefronts, SaaS." , pop: "#0015D4" },
+    { icon: <SiClaude className="h-7 w-7" />, title: "Claude Code: Websites & Apps", desc: "Full products designed, built, and shipped with Claude Code. Dashboards, storefronts, SaaS." , pop: "#0015D4" },
     { icon: <SiClaude className="h-7 w-7" />, title: "Claude Design & Cowork", desc: "Brand-quality UI design and AI-assisted operations, powered by the Claude toolkit.", pop: "#F32317" },
     { icon: <SiOpenai className="h-7 w-7" />, title: "AI Agent Development", desc: "RAG chatbots, support agents, and multi-tool AI systems that actually resolve tickets.", pop: "#84DEF9" },
     { icon: <SiN8N className="h-7 w-7" />, title: "n8n Automation", desc: "Flexible, powerful automation for advanced use cases and AI agent orchestration.", pop: "#F32317" },
@@ -375,7 +349,7 @@ function Services() {
 function Process() {
   const steps = [
     { n: "01", title: "Tell me your workflow", desc: "We map your manual processes, find the bottlenecks, and design the ideal flow." },
-    { n: "02", title: "I build your system", desc: "Custom, reliable logic with Claude Code and the best automation tool for the job — tested end to end." },
+    { n: "02", title: "I build your system", desc: "Custom, reliable logic with Claude Code and the best automation tool for the job, tested end to end." },
     { n: "03", title: "You scale on autopilot", desc: "The system runs in the background. We refine, you grow." },
   ];
 
@@ -626,14 +600,31 @@ function About() {
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
+            <p className="mt-6 font-editorial text-2xl leading-snug text-black md:text-[28px]">
+              I build the parts of your business you should never have to think about again.
+            </p>
+          </Reveal>
+          <Reveal delay={0.3}>
             <p className="mt-6 text-lg leading-relaxed text-black/60">
-              An AI & automation specialist with <strong className="font-semibold text-black">4+ years</strong> helping
-              businesses streamline operations. <strong className="font-semibold text-black">50+ clients globally</strong>,{" "}
-              <strong className="font-semibold text-black">200+ systems delivered</strong>, Level 2 Seller on Fiverr.
+              Four years in, that has meant lead pipelines that fill themselves, client onboarding that runs
+              overnight, and dashboards that answer the question before you think to ask it.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-black/60">
-              I'm calm, easy to work with, and strictly focused on systems that actually work — day in, day out.
+              Building it is only half the job. The other half is handing it over properly. Every system ships with a
+              walkthrough video and plain docs, inside your own accounts, so you own it, you can change it, and you
+              are never stuck waiting on me.
             </p>
+            <p className="mt-4 text-lg leading-relaxed text-black/60">
+              Calm, direct, allergic to jargon. If something will not work, I tell you before you pay for it.
+            </p>
+          </Reveal>
+          <Reveal delay={0.4}>
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-black/10 pt-6 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
+              <span>4+ years</span>
+              <span>50+ clients</span>
+              <span>200+ systems</span>
+              <span>Level 2 seller on Fiverr</span>
+            </div>
           </Reveal>
         </div>
       </div>
@@ -774,7 +765,7 @@ export default function Home() {
       <VelocitySkew>
         <main>
           <Hero ready={ready} />
-          <ToolStrip />
+          <ToolStack />
           <Stats />
           <BigMarquee items={["Claude Code", "Websites", "Apps", "AI Products"]} accent="#0015D4" />
           <WebProjectsSection />

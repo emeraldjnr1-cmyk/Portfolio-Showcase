@@ -126,7 +126,7 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
               <div className="relative">
                 <img src={project.img} alt={project.title} className="aspect-video w-full object-cover object-top" />
                 <span className="absolute left-4 top-4 rounded-full bg-black/70 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-md">
-                  Full film coming soon — system preview
+                  Full film coming soon · system preview
                 </span>
               </div>
             ) : (
@@ -288,7 +288,7 @@ export function FeaturedWork() {
           />
           <Reveal delay={0.25}>
             <p className="mt-6 max-w-xl text-lg text-black/55">
-              The flagship builds get the film treatment — every card opens the real system, tools and outcome included.
+              The flagship builds get the film treatment. Every card opens the real system, tools and outcome included.
             </p>
           </Reveal>
         </div>
