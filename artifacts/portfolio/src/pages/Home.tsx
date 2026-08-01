@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionTemplate } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Star } from "lucide-react";
 import { SiWhatsapp, SiFiverr } from "react-icons/si";
 
@@ -206,24 +206,25 @@ function Hero({ ready }: { ready: boolean }) {
             >
               <Logo size={120} />
             </motion.div>
-            <div className="flex items-center gap-4">
+            {/* wraps on narrow screens; labels never break mid-phrase */}
+            <div className="flex flex-wrap items-center gap-3 md:gap-4">
             <Magnetic strength={0.45}>
               <a
                 href={WHATSAPP}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex h-14 items-center gap-3 overflow-hidden rounded-full bg-primary px-8 font-display text-base font-bold text-white"
+                className="group relative inline-flex h-14 items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-full bg-primary px-6 font-display text-[15px] font-bold text-white md:gap-3 md:px-8 md:text-base"
                 data-cursor="hover"
               >
                 <span className="absolute inset-0 origin-left scale-x-0 bg-black transition-transform duration-400 ease-out group-hover:scale-x-100" />
-                <SiWhatsapp className="relative z-10 h-5 w-5" />
+                <SiWhatsapp className="relative z-10 h-5 w-5 shrink-0" />
                 <span className="relative z-10">Start a project</span>
               </a>
             </Magnetic>
             <Magnetic strength={0.45}>
               <a
                 href="#websites"
-                className="inline-flex h-14 items-center rounded-full border border-black/25 px-8 font-display text-base font-bold text-black transition-all hover:border-black hover:bg-black hover:text-white"
+                className="inline-flex h-14 items-center whitespace-nowrap rounded-full border border-black/25 px-6 font-display text-[15px] font-bold text-black transition-all hover:border-black hover:bg-black hover:text-white md:px-8 md:text-base"
                 data-cursor="hover"
               >
                 See the work
@@ -488,6 +489,15 @@ function About() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const imgY = useSpring(useTransform(scrollYProgress, [0, 1], [40, -40]), { stiffness: 100, damping: 30 });
 
+  // Colour resolves as the portrait reaches the middle of the viewport and
+  // drains again on the way out. Scroll-driven rather than hover, because
+  // hover does not exist on a phone and left the photo permanently grey.
+  const grayAmount = useSpring(
+    useTransform(scrollYProgress, [0.12, 0.4, 0.6, 0.88], [1, 0, 0, 1]),
+    { stiffness: 80, damping: 24 },
+  );
+  const portraitFilter = useMotionTemplate`grayscale(${grayAmount})`;
+
   return (
     <section id="about" ref={ref} className="border-t border-black/10 bg-card px-6 py-28 md:px-12 md:py-40">
       <div className="mx-auto grid max-w-6xl items-center gap-16 md:grid-cols-2">
@@ -513,10 +523,11 @@ function About() {
             transition={{ duration: 1, ease: EASE }}
             className="relative overflow-hidden rounded-[2rem] border-2 border-black rotate-2 transition-all duration-700 group-hover:rotate-0 group-hover:shadow-[12px_12px_0_#0015D4]"
           >
-            <img
+            <motion.img
               src={profilePic}
               alt="Denver Emerald Peter"
-              className="w-full scale-105 object-cover grayscale transition-all duration-700 group-hover:scale-100 group-hover:grayscale-0"
+              style={{ filter: portraitFilter }}
+              className="w-full scale-105 object-cover transition-transform duration-700 group-hover:scale-100"
             />
             {/* sheen that sweeps across on hover */}
             <span
@@ -532,7 +543,8 @@ function About() {
             <p className="text-xs font-medium text-black/70">systems shipped</p>
           </div>
 
-          <SpinningBadge className="absolute -bottom-10 -right-8 text-[#E7E7E1] md:-right-12" size={124} />
+          {/* tucked inside the frame on phones, overhangs from md up */}
+          <SpinningBadge className="absolute -bottom-8 right-0 text-[#E7E7E1] md:-bottom-10 md:-right-12" size={124} />
         </motion.div>
 
         <div>

@@ -6,7 +6,7 @@ import {
   SiTelegram, SiReact, SiNextdotjs, SiTailwindcss, SiFigma, SiFramer, SiReplit, SiWordpress,
   SiElementor, SiVercel, SiHubspot, SiSalesforce, SiNotion, SiStripe, SiTwilio, SiSlack,
   SiSolidity, SiEthereum, SiSolana, SiWeb3Dotjs, SiSupabase, SiShopify, SiDocker, SiRailway,
-  SiGooglesheets, SiWhatsapp, SiWagmi, SiPuppeteer, SiCircle, SiGmail,
+  SiGooglesheets, SiWhatsapp, SiWagmi, SiGmail,
 } from "react-icons/si";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 
@@ -115,14 +115,14 @@ const CATEGORIES: Category[] = [
     accent: "#FF8FCA",
     tools: [
       CLAUDE,
-      { name: "Circle.so", Icon: SiCircle },
+      { name: "Circle.so", mark: "Ci" },
       { name: "Skool", mark: "Sk" },
       { name: "Mighty Networks", mark: "MN" },
       { name: "Whop", mark: "Wh" },
       { name: "Stripe", Icon: SiStripe },
       { name: "Softr", mark: "So" },
       { name: "Railway", Icon: SiRailway },
-      { name: "Playwright", Icon: SiPuppeteer },
+      { name: "Playwright", mark: "Pw" },
     ],
   },
 ];

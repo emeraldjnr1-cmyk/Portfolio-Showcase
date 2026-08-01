@@ -33,10 +33,10 @@ export function VelocitySkew({ children }: { children: ReactNode }) {
 export function MaskReveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   const [done, setDone] = useState(false);
 
-  if (done) {
-    return <div className={className}>{children}</div>;
-  }
-
+  // The tree shape must never change here. Swapping the wrapper element type
+  // once the reveal finished remounted every child, which killed any <video>
+  // mid-playback (it came back paused, preload="none", showing its poster).
+  // Instead keep both wrappers mounted and just clear the finished styles.
   return (
     <motion.div
       className={`overflow-hidden ${className}`}
@@ -44,6 +44,7 @@ export function MaskReveal({ children, className = "", delay = 0 }: { children: 
       whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
       viewport={{ once: true, margin: "-12% 0px" }}
       transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1], delay }}
+      style={done ? { clipPath: "none" } : undefined}
     >
       <motion.div
         initial={{ scale: 1.18 }}
@@ -51,6 +52,7 @@ export function MaskReveal({ children, className = "", delay = 0 }: { children: 
         viewport={{ once: true, margin: "-12% 0px" }}
         transition={{ duration: 1.3, ease: [0.22, 1, 0.36, 1], delay }}
         onAnimationComplete={() => setDone(true)}
+        style={done ? { transform: "none" } : undefined}
       >
         {children}
       </motion.div>

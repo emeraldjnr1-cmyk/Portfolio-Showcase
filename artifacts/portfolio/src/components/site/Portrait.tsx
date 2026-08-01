@@ -53,14 +53,13 @@ export function Avatar({
   float?: boolean;
   className?: string;
 }) {
-  return (
+  const head = (
     <motion.span
       initial={{ scale: 0, rotate: -25 }}
       whileInView={{ scale: 1, rotate: 0 }}
       viewport={{ once: true }}
       transition={{ type: "spring", stiffness: 260, damping: 18 }}
-      animate={float ? { y: [0, -5, 0] } : undefined}
-      className={`relative inline-block shrink-0 ${className}`}
+      className={`relative inline-block shrink-0 ${float ? "" : className}`}
       style={{ width: size, height: size }}
     >
       <span
@@ -74,6 +73,21 @@ export function Avatar({
           className="h-full w-full object-cover object-top"
         />
       </span>
+    </motion.span>
+  );
+
+  if (!float) return head;
+
+  // The bob lives on its own wrapper. Keeping it on the entrance element meant
+  // three keyframes under a spring, which framer rejects: it threw in dev and
+  // in prod silently drifted to -5px and stopped instead of looping.
+  return (
+    <motion.span
+      animate={{ y: [0, -6, 0] }}
+      transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+      className={`inline-block ${className}`}
+    >
+      {head}
     </motion.span>
   );
 }

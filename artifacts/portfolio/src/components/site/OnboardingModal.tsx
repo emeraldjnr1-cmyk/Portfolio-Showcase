@@ -72,9 +72,13 @@ export function OnboardingModal({ trigger }: { trigger: React.ReactNode }) {
 
   async function onSubmit(values: Values) {
     setSending(true);
+    // Never leave the button stuck on "Sending..." if the network hangs.
+    const abort = new AbortController();
+    const timeout = setTimeout(() => abort.abort(), 15000);
     try {
       const res = await fetch(FORM_ENDPOINT, {
         method: "POST",
+        signal: abort.signal,
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           "First name": values.firstName,
@@ -89,6 +93,13 @@ export function OnboardingModal({ trigger }: { trigger: React.ReactNode }) {
         }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      // FormSubmit answers application-level failures (recipient not yet
+      // activated, form disabled, rate limited) with HTTP 200 and
+      // {"success":"false"}. Trusting res.ok alone reported delivered leads
+      // that were never sent, and wiped the form on the way out.
+      const body = await res.json().catch(() => null);
+      const ok = body?.success === true || body?.success === "true";
+      if (!ok) throw new Error(body?.message ?? "Submission rejected");
       toast({
         title: "Request sent",
         description: "Thanks! I will get back to you on WhatsApp within 24 hours.",
@@ -96,12 +107,14 @@ export function OnboardingModal({ trigger }: { trigger: React.ReactNode }) {
       form.reset();
       setOpen(false);
     } catch {
+      // Deliberately does not reset the form, so nothing typed is lost.
       toast({
         title: "Something went wrong",
         description: "The form could not be sent. Please message me on WhatsApp instead.",
         variant: "destructive",
       });
     } finally {
+      clearTimeout(timeout);
       setSending(false);
     }
   }

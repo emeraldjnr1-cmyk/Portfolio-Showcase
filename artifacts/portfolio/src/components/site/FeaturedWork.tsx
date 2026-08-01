@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ArrowUpRight, Play, X } from "lucide-react";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
@@ -72,7 +73,7 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
             )}
 
             <div className="absolute right-4 top-4 rounded-full bg-black px-2.5 py-1 font-display text-xs font-bold text-white">
-              {String(project.id).padStart(2, "0")}
+              {String(index + 1).padStart(2, "0")}
             </div>
             <div className="absolute bottom-3 left-3 rounded-full bg-black/80 px-3 py-1.5 text-xs font-bold text-[#FFCB41] backdrop-blur-sm">
               {project.stat}
@@ -102,10 +103,31 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
 function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClose: () => void }) {
   const [videoFailed, setVideoFailed] = useState(false);
   useEffect(() => setVideoFailed(false), [project]);
-  return (
+
+  // Escape to close, and hold the page still underneath while it is open.
+  useEffect(() => {
+    if (!project) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [project, onClose]);
+
+  // Portalled to <body> on purpose. This overlay sits inside VelocitySkew,
+  // whose skew transform makes it the containing block for position: fixed,
+  // so an inline overlay would size itself to the whole document and fly off
+  // as soon as the page moved.
+  return createPortal(
     <AnimatePresence>
       {project && (
         <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${project.title} preview`}
           className="fixed inset-0 z-[90] flex items-center justify-center bg-black/80 p-4 md:p-12 backdrop-blur-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -163,7 +185,8 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 
@@ -283,7 +306,7 @@ export function FeaturedWork() {
           </Reveal>
           <SplitWords
             as="h2"
-            text="Ten systems. Real businesses. Zero manual work."
+            text="Eleven systems. Real businesses. Zero manual work."
             className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl"
           />
           <Reveal delay={0.25}>

@@ -204,6 +204,11 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
     overscroll-behavior-y: none;
+    /* Safety net against sideways scroll from decorative overhangs.
+       `clip` rather than `hidden` on purpose: `hidden` makes the body a
+       scroll container, which silently breaks position: sticky (the FAQ
+       intro column). `clip` does not. */
+    overflow-x: clip;
   }
   ::selection {
     background: #0015D4;
@@ -242,13 +247,22 @@
 .marquee-paused:hover .animate-marquee-left,
 .marquee-paused:hover .animate-marquee-right { animation-play-state: paused; }
 
-@media (pointer: fine) {
+/* Must match CustomCursor's own `hidden md:block` gate. Hiding the native
+   cursor on every fine-pointer device left narrow desktop windows with no
+   cursor at all: the replacement was not rendering below 768px. */
+@media (pointer: fine) and (min-width: 768px) {
   .cursor-none-desktop, .cursor-none-desktop a, .cursor-none-desktop button { cursor: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee-left, .animate-marquee-right { animation: none; }
+  /* framer respects reducedMotion via MotionConfig, but plain CSS animations
+     do not, so silence them here too (marquees and the pulsing status dots). */
+  .animate-marquee-left, .animate-marquee-right, .animate-pulse { animation: none; }
 }
+
+/* Anchor links must clear the fixed header even when Lenis is disabled,
+   which is exactly what happens for reduced-motion users. */
+html { scroll-padding-top: 96px; }
 
 @layer utilities {
   input[type="search"]::-webkit-search-cancel-button { @apply hidden; }
