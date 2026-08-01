@@ -8,7 +8,7 @@ const LINKS = [
   { label: "Claude Code", href: "#websites" },
   { label: "Web3", href: "#web3" },
   { label: "Automations", href: "#work" },
-  { label: "Services", href: "#services" },
+  { label: "Toolkit", href: "#stack" },
   { label: "Clients", href: "#clients" },
   { label: "About", href: "#about" },
 ];

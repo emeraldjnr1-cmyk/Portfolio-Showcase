@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Star } from "lucide-react";
-import { SiAirtable, SiMake, SiN8N, SiWhatsapp, SiOpenai, SiClaude, SiFiverr } from "react-icons/si";
+import { SiWhatsapp, SiFiverr } from "react-icons/si";
 
 import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
@@ -290,61 +290,6 @@ function Stats() {
   );
 }
 
-// ───────────────────────────── SERVICES ─────────────────────────────
-function Services() {
-  const services = [
-    { icon: <SiClaude className="h-7 w-7" />, title: "Claude Code: Websites & Apps", desc: "Full products designed, built, and shipped with Claude Code. Dashboards, storefronts, SaaS." , pop: "#0015D4" },
-    { icon: <SiClaude className="h-7 w-7" />, title: "Claude Design & Cowork", desc: "Brand-quality UI design and AI-assisted operations, powered by the Claude toolkit.", pop: "#F32317" },
-    { icon: <SiOpenai className="h-7 w-7" />, title: "AI Agent Development", desc: "RAG chatbots, support agents, and multi-tool AI systems that actually resolve tickets.", pop: "#84DEF9" },
-    { icon: <SiN8N className="h-7 w-7" />, title: "n8n Automation", desc: "Flexible, powerful automation for advanced use cases and AI agent orchestration.", pop: "#F32317" },
-    { icon: <SiMake className="h-7 w-7" />, title: "Make.com Automation", desc: "Advanced workflow automation connecting your whole stack, end to end.", pop: "#FF8FCA" },
-    { icon: <SiAirtable className="h-7 w-7" />, title: "Airtable CRM Systems", desc: "Custom CRMs to track, manage, and scale your pipeline without the SaaS bloat.", pop: "#FFCB41" },
-  ];
-
-  return (
-    <section id="services" className="border-t border-black/10 px-6 py-28 md:px-12 md:py-40">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-16">
-          <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">05 — Services</span>
-          </Reveal>
-          <SplitWords
-            as="h2"
-            text="One person. Full stack. No hand-offs."
-            className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl"
-          />
-        </div>
-
-        <div className="grid gap-px overflow-hidden rounded-3xl border border-black/15 bg-black/15 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, i) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-8% 0px" }}
-              transition={{ duration: 0.6, ease: EASE, delay: (i % 3) * 0.1 }}
-              className="group relative bg-card p-8 transition-colors duration-500 hover:bg-white"
-              data-cursor="hover"
-            >
-              <div
-                className="mb-6 inline-flex rounded-2xl p-3.5 text-black transition-all duration-400 group-hover:scale-110 group-hover:text-white"
-                style={{ backgroundColor: `${s.pop}22` }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = s.pop)}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = `${s.pop}22`)}
-              >
-                {s.icon}
-              </div>
-              <h3 className="font-display text-xl font-bold text-black">{s.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-black/55">{s.desc}</p>
-              <div className="absolute bottom-0 left-0 h-1 w-0 transition-all duration-500 group-hover:w-full" style={{ backgroundColor: s.pop }} />
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ───────────────────────────── PROCESS ──────────────────────────────
 function Process() {
   const steps = [
@@ -358,7 +303,7 @@ function Process() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-20">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">06 — Process</span>
+            <span className="font-mono text-sm font-semibold text-primary">05 — Process</span>
           </Reveal>
           <SplitWords
             as="h2"
@@ -592,7 +537,7 @@ function About() {
 
         <div>
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">07 — About</span>
+            <span className="font-mono text-sm font-semibold text-primary">06 — About</span>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
@@ -774,7 +719,6 @@ export default function Home() {
           <BigMarquee items={["Automation", "AI Agents", "n8n", "Make.com", "Airtable"]} accent="#F32317" />
           <FeaturedWork />
           <TestimonialCinema />
-          <Services />
           <Process />
           <ReviewsMarquee />
           <About />
