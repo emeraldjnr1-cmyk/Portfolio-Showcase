@@ -21,6 +21,7 @@ import { Web3ProjectsSection } from "@/components/site/Web3Projects";
 import { TestimonialCinema } from "@/components/site/TestimonialCinema";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Logo } from "@/components/site/Logo";
+import { Avatar, SpinningBadge } from "@/components/site/Portrait";
 import { FAQSection } from "@/components/site/FAQ";
 
 import { reviews, profilePic, WHATSAPP, FIVERR } from "@/data/portfolio";
@@ -144,8 +145,9 @@ function Hero({ ready }: { ready: boolean }) {
           initial={{ opacity: 0, y: 20 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-10 inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/60 px-4 py-1.5 text-sm font-medium text-black/70 backdrop-blur-md"
+          className="mb-10 inline-flex items-center gap-2.5 rounded-full border border-black/15 bg-white/60 py-1.5 pl-1.5 pr-4 text-sm font-medium text-black/70 backdrop-blur-md"
         >
+          <Avatar size={30} ring="#0BB07B" />
           <span className="h-2 w-2 animate-pulse rounded-full bg-[#0BB07B]" />
           Available for new projects
         </motion.div>
@@ -570,16 +572,48 @@ function About() {
   return (
     <section id="about" ref={ref} className="border-t border-black/10 bg-card px-6 py-28 md:px-12 md:py-40">
       <div className="mx-auto grid max-w-6xl items-center gap-16 md:grid-cols-2">
-        <motion.div style={{ y: imgY }} className="relative mx-auto w-full max-w-sm">
-          <div className="overflow-hidden rounded-[2rem] border-2 border-black rotate-2 transition-transform duration-700 hover:rotate-0">
-            <img src={profilePic} alt="Denver Peter" className="w-full object-cover" />
-          </div>
+        <motion.div style={{ y: imgY }} className="group relative mx-auto w-full max-w-sm">
+          {/* color pops that drift behind the portrait */}
+          <motion.span
+            aria-hidden
+            className="absolute -right-5 -top-5 h-16 w-16 rounded-full bg-[#84DEF9]"
+            animate={{ y: [0, -12, 0], scale: [1, 1.08, 1] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.span
+            aria-hidden
+            className="absolute -left-8 top-1/3 h-10 w-10 rounded-full bg-[#FF8FCA]"
+            animate={{ y: [0, 14, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          />
+
+          <motion.div
+            initial={{ clipPath: "inset(100% 0% 0% 0%)", opacity: 0 }}
+            whileInView={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }}
+            viewport={{ once: true, margin: "-12% 0px" }}
+            transition={{ duration: 1, ease: EASE }}
+            className="relative overflow-hidden rounded-[2rem] border-2 border-black rotate-2 transition-all duration-700 group-hover:rotate-0 group-hover:shadow-[12px_12px_0_#0015D4]"
+          >
+            <img
+              src={profilePic}
+              alt="Denver Emerald Peter"
+              className="w-full scale-105 object-cover grayscale transition-all duration-700 group-hover:scale-100 group-hover:grayscale-0"
+            />
+            {/* sheen that sweeps across on hover */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 group-hover:translate-x-full"
+            />
+          </motion.div>
+
           <div className="absolute -bottom-6 -left-6 rounded-2xl border-2 border-black bg-[#FFCB41] px-5 py-4">
             <p className="font-display text-2xl font-extrabold text-black">
               <CountUp to={200} suffix="+" />
             </p>
             <p className="text-xs font-medium text-black/70">systems shipped</p>
           </div>
+
+          <SpinningBadge className="absolute -bottom-10 -right-8 text-[#E7E7E1] md:-right-12" size={124} />
         </motion.div>
 
         <div>
@@ -636,9 +670,12 @@ function FinalCTA() {
           className="flex flex-wrap justify-center font-display text-5xl font-extrabold tracking-tight text-white md:text-7xl"
         />
         <Reveal delay={0.3}>
-          <p className="mx-auto mt-6 max-w-xl font-editorial text-2xl text-[#E7E7E1]/70">
-            Let's build a system that works while you sleep.
-          </p>
+          <div className="mt-8 flex flex-col items-center gap-4">
+            <Avatar size={72} ring="#0015D4" float />
+            <p className="mx-auto max-w-xl font-editorial text-2xl text-[#E7E7E1]/70">
+              Let's build a system that works while you sleep.
+            </p>
+          </div>
         </Reveal>
 
         <Reveal delay={0.45} className="mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row">

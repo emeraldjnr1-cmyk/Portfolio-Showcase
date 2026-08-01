@@ -4,6 +4,7 @@ import { Plus, ArrowUpRight } from "lucide-react";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
+import { Avatar } from "@/components/site/Portrait";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -51,9 +52,12 @@ export function FAQSection() {
             className="mt-4 flex flex-wrap font-display text-4xl font-extrabold tracking-tight text-black md:text-6xl"
           />
           <Reveal delay={0.2}>
-            <p className="mt-6 max-w-sm font-editorial text-xl text-black/60">
-              Something else on your mind? Ask me directly.
-            </p>
+            <div className="mt-6 flex max-w-sm items-center gap-3.5">
+              <Avatar size={52} ring="#0015D4" />
+              <p className="font-editorial text-xl text-black/60">
+                Something else on your mind? Ask me directly.
+              </p>
+            </div>
           </Reveal>
           <Reveal delay={0.3}>
             <div className="mt-8">

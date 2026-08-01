@@ -58,7 +58,7 @@ import wf56 from "@assets/Screenshot_2026-04-02_at_3.49.36_AM_1776460016080.png"
 import wf57 from "@assets/Screenshot_2026-04-02_at_3.49.59_AM_1776460016081.png";
 import wf58 from "@assets/Screenshot_2026-04-02_at_3.50.12_AM_1776460016082.png";
 
-import profilePicUrl from "@assets/my_profile_pic_1776459432094.jpg";
+import profilePicUrl from "@assets/denver_portrait_2026.jpg";
 import rachelVideoUrl from "@assets/rachel_video_testimonial.mp4";
 import moritzVideoUrl from "@assets/moritz_video_testimonial.mp4";
 import entsorgerShowcase from "@assets/entsorger_showcase.png";
