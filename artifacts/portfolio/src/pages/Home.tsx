@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionTemplate } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Star } from "lucide-react";
-import { SiWhatsapp, SiFiverr } from "react-icons/si";
+import { SiWhatsapp, SiFiverr, SiUpwork } from "react-icons/si";
 
 import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
@@ -22,10 +22,12 @@ import { TestimonialCinema } from "@/components/site/TestimonialCinema";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Logo } from "@/components/site/Logo";
 import { Avatar, SpinningBadge } from "@/components/site/Portrait";
+import { FiverrLevelBadge, L1_THEME, L2_THEME } from "@/components/site/FiverrBadge";
 import { ToolStack } from "@/components/site/ToolStack";
+import { HireMe } from "@/components/site/HireMe";
 import { FAQSection } from "@/components/site/FAQ";
 
-import { reviews, profilePic, WHATSAPP, FIVERR } from "@/data/portfolio";
+import { reviews, profilePic, WHATSAPP, FIVERR, UPWORK } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -230,24 +232,6 @@ function Hero({ ready }: { ready: boolean }) {
                 See the work
               </a>
             </Magnetic>
-            <Magnetic strength={0.5}>
-              <span className="relative inline-block">
-                <motion.a
-                  href={FIVERR}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Hire me on Fiverr"
-                  animate={{ y: [0, -7, 0] }}
-                  transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-                  className="group relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-black text-[#E7E7E1]"
-                  data-cursor="hover"
-                >
-                  <span className="absolute inset-0 origin-bottom scale-y-0 bg-[#1DBF73] transition-transform duration-400 ease-out group-hover:scale-y-100" />
-                  <SiFiverr className="relative z-10 h-7 w-7" />
-                </motion.a>
-                <span className="pointer-events-none absolute -right-0.5 -top-0.5 z-10 h-3 w-3 animate-pulse rounded-full bg-[#FFCB41]" />
-              </span>
-            </Magnetic>
             </div>
           </motion.div>
         </div>
@@ -304,7 +288,7 @@ function Process() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-20">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">05 — Process</span>
+            <span className="font-mono text-sm font-semibold text-primary">06 — Process</span>
           </Reveal>
           <SplitWords
             as="h2"
@@ -363,77 +347,6 @@ function ReviewCard({ r }: { r: (typeof reviews)[number] }) {
   );
 }
 
-interface BadgeTheme {
-  bgOuter: string;   // card background
-  bgDiamond: string; // large diamond
-  bgDiamondIn: string; // inner diamond
-  hex: string;       // hexagon fill
-  hexLine: string;   // inner hexagon outline
-  gemOn: string;     // lit gems
-  gemOff: string;    // unlit gems
-  label: string;     // LEVEL text color
-}
-
-const L2_THEME: BadgeTheme = {
-  bgOuter: "#BFD62F", bgDiamond: "#8FBE28", bgDiamondIn: "#DDE873",
-  hex: "#1D5B2E", hexLine: "#8FBE28", gemOn: "#C7E63C", gemOff: "#3E7A48", label: "#C7E63C",
-};
-const L1_THEME: BadgeTheme = {
-  bgOuter: "#E9A8C2", bgDiamond: "#D77FA6", bgDiamondIn: "#F3CBDC",
-  hex: "#5C1F3D", hexLine: "#D77FA6", gemOn: "#F3CBDC", gemOff: "#8A4A66", label: "#F3CBDC",
-};
-
-/** Faithful vector recreation of Fiverr's level badge: diamond field, hexagon shield,
- * ribbon banner with gems (lit count = level), LEVEL wordmark. */
-function FiverrLevelBadge({ level, lit, theme, times, delay }: { level: number; lit: number; theme: BadgeTheme; times: string; delay: number }) {
-  const gems = [0, 1, 2];
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24, rotate: -2 }}
-      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-      viewport={{ once: true, margin: "-10% 0px" }}
-      transition={{ duration: 0.6, ease: EASE, delay }}
-      className="group flex flex-col items-center gap-3"
-      data-cursor="hover"
-    >
-      <div className="overflow-hidden rounded-2xl border-2 border-black transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[6px_6px_0_rgba(20,20,20,0.85)]">
-        <svg width="224" height="112" viewBox="0 0 224 112" role="img" aria-label={`Fiverr Level ${level} seller badge`}>
-          {/* diamond field */}
-          <rect width="224" height="112" fill={theme.bgOuter} />
-          <polygon points="112,-44 268,56 112,156 -44,56" fill={theme.bgDiamond} />
-          <polygon points="112,-16 216,56 112,128 8,56" fill={theme.bgDiamondIn} />
-          <polygon points="112,8 180,56 112,104 44,56" fill={theme.bgDiamond} />
-          {/* hexagon shield — widened so the wordmark sits fully inside */}
-          <polygon points="112,14 152,36 152,80 112,102 72,80 72,36" fill={theme.hex} />
-          <polygon points="112,21 146,40 146,77 112,96 78,77 78,40" fill="none" stroke={theme.hexLine} strokeWidth="1.6" opacity="0.85" />
-          {/* ribbon banner */}
-          <polygon points="34,38 54,50 34,62" fill="#EFEDE2" />
-          <polygon points="190,38 170,50 190,62" fill="#EFEDE2" />
-          <rect x="44" y="34" width="136" height="32" fill="#F7F5EC" />
-          <rect x="44" y="34" width="136" height="32" fill="none" stroke="rgba(20,20,20,0.08)" strokeWidth="1" />
-          {/* gems: lit count = level tier */}
-          {gems.map((g) => {
-            const cx = 90 + g * 22;
-            const on = g < lit;
-            return (
-              <polygon
-                key={g}
-                points={`${cx},42 ${cx + 7},50 ${cx},58 ${cx - 7},50`}
-                fill={on ? theme.gemOn : theme.gemOff}
-                opacity={on ? 1 : 0.35}
-              />
-            );
-          })}
-          {/* wordmark */}
-          <text x="112" y="82" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="10.5" fontWeight="800" letterSpacing="2" fill={theme.label}>
-            LEVEL {level}
-          </text>
-        </svg>
-      </div>
-      <p className="text-xs font-semibold uppercase tracking-widest text-black/45">Vetted on Fiverr · {times}</p>
-    </motion.div>
-  );
-}
 
 function ReviewsMarquee() {
   return (
@@ -444,30 +357,6 @@ function ReviewsMarquee() {
           text="Trusted by 50+ clients worldwide."
           className="flex flex-wrap justify-center font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl"
         />
-        <div className="mx-auto mt-8 flex flex-wrap items-start justify-center gap-6">
-          <FiverrLevelBadge level={2} lit={2} theme={L2_THEME} times="attained once" delay={0.1} />
-          <FiverrLevelBadge level={1} lit={1} theme={L1_THEME} times="attained 3×" delay={0.22} />
-        </div>
-        <Reveal delay={0.35}>
-          <div className="mt-9 flex justify-center">
-            <Magnetic strength={0.45}>
-              <motion.a
-                href={FIVERR}
-                target="_blank"
-                rel="noopener noreferrer"
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="group relative inline-flex h-14 items-center gap-3 overflow-hidden rounded-full bg-[#1DBF73] px-9 font-display text-base font-bold text-white"
-                data-cursor="hover"
-              >
-                <span className="absolute inset-0 origin-left scale-x-0 bg-black transition-transform duration-400 ease-out group-hover:scale-x-100" />
-                <span className="relative z-10 h-2 w-2 animate-pulse rounded-full bg-white" />
-                <SiFiverr className="relative z-10 h-7 w-7" />
-                <span className="relative z-10">Hire me on Fiverr</span>
-              </motion.a>
-            </Magnetic>
-          </div>
-        </Reveal>
       </div>
       <Marquee duration={45} className="mb-6">
         {reviews.slice(0, 3).map((r) => (
@@ -549,7 +438,7 @@ function About() {
 
         <div>
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">06 — About</span>
+            <span className="font-mono text-sm font-semibold text-primary">07 — About</span>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
@@ -654,20 +543,6 @@ function FinalCTA() {
           </Magnetic>
         </Reveal>
 
-        <Reveal delay={0.55}>
-          <p className="mt-8 text-sm text-white/50">
-            Prefer buyer protection?{" "}
-            <a
-              href={FIVERR}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-semibold text-[#1DBF73] transition-colors hover:text-white"
-              data-cursor="hover"
-            >
-              <SiFiverr className="h-4 w-4" /> Hire me on Fiverr
-            </a>
-          </p>
-        </Reveal>
         <Reveal delay={0.65}>
           <p className="mt-4 text-sm text-white/40">Limited availability for new projects this month.</p>
         </Reveal>
@@ -687,16 +562,28 @@ function Footer() {
         </div>
         <div className="flex items-center gap-4">
           <p className="text-sm text-white/50">Built with Claude Code. Systems that save time and grow businesses.</p>
-          <a
-            href={FIVERR}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Denver on Fiverr"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1DBF73] text-white transition-transform hover:scale-110"
-            data-cursor="hover"
-          >
-            <SiFiverr className="h-5 w-5" />
-          </a>
+          <div className="flex shrink-0 items-center gap-2.5">
+            <a
+              href={FIVERR}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Denver on Fiverr"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1DBF73] text-white transition-transform hover:scale-110"
+              data-cursor="hover"
+            >
+              <SiFiverr className="h-5 w-5" />
+            </a>
+            <a
+              href={UPWORK}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Denver on Upwork"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#14A800] text-white transition-transform hover:scale-110"
+              data-cursor="hover"
+            >
+              <SiUpwork className="h-5 w-5" />
+            </a>
+          </div>
         </div>
         <p className="text-sm text-white/30">
           © {new Date().getFullYear()} Denver <span className="text-[#10B981]">Emerald</span> Peter
@@ -731,6 +618,7 @@ export default function Home() {
           <BigMarquee items={["Automation", "AI Agents", "n8n", "Make.com", "Airtable"]} accent="#F32317" />
           <FeaturedWork />
           <TestimonialCinema />
+          <HireMe />
           <Process />
           <ReviewsMarquee />
           <About />

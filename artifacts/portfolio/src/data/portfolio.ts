@@ -267,3 +267,4 @@ export const reviews = [
 
 export const WHATSAPP = "https://wa.me/2348143046516";
 export const FIVERR = "https://www.fiverr.com/s/pdD2k9E";
+export const UPWORK = "https://www.upwork.com/freelancers/denvernocode";
