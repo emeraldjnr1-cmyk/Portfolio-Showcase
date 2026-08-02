@@ -8,7 +8,8 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { SiFiverr, SiUpwork } from "react-icons/si";
+import type { IconType } from "react-icons";
+import { SiFiverr, SiUpwork, SiWise, SiPaypal } from "react-icons/si";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
@@ -16,6 +17,16 @@ import { FiverrLevelBadge, L1_THEME, L2_THEME } from "@/components/site/FiverrBa
 import { FIVERR, UPWORK } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+// Methods only, never account details. Payment instructions belong on an
+// invoice sent to a named client, not on a public page where anyone could
+// screenshot them and impersonate the payee.
+const PAY_METHODS: { name: string; Icon?: IconType; mark?: string }[] = [
+  { name: "Wise", Icon: SiWise },
+  { name: "Remitly", mark: "Re" },
+  { name: "PayPal", Icon: SiPaypal },
+  { name: "Bank transfer", mark: "Bk" },
+];
 
 /**
  * Card that leans toward the pointer and carries a spotlight under it.
@@ -184,29 +195,61 @@ export function HireMe() {
           </TiltCard>
         </div>
 
-        {/* direct */}
+        {/* direct: the route that keeps the platform fee out of the price */}
         <Reveal delay={0.2}>
-          <div className="mt-6 flex flex-col items-center justify-between gap-5 rounded-3xl border-2 border-black bg-primary px-8 py-7 text-white md:flex-row md:px-10">
-            <div>
-              <h3 className="font-display text-xl font-extrabold md:text-2xl">Or work with me directly</h3>
-              <p className="mt-1 text-[15px] text-white/70">
-                No platform fees, no middle layer. Tell me what is eating your time and I send a fixed quote within 24
-                hours.
-              </p>
+          <div className="mt-6 overflow-hidden rounded-3xl border-2 border-black bg-primary text-white">
+            <div className="flex flex-col items-start justify-between gap-6 px-8 py-8 md:flex-row md:items-center md:px-10">
+              <div className="max-w-xl">
+                <span className="inline-block rounded-full bg-white/15 px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest">
+                  No platform fee
+                </span>
+                <h3 className="mt-3 font-display text-xl font-extrabold md:text-2xl">Or work with me directly</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-white/75">
+                  Skip the middle layer and the commission that comes with it. We agree the scope, I invoice you, and
+                  the work starts. Same delivery, same support, lower price.
+                </p>
+              </div>
+              <Magnetic strength={0.4}>
+                <OnboardingModal
+                  trigger={
+                    <button
+                      data-cursor="hover"
+                      className="group/btn inline-flex h-14 shrink-0 items-center gap-2.5 whitespace-nowrap rounded-full bg-white px-8 font-display text-[15px] font-bold text-primary transition-transform hover:scale-[1.04]"
+                    >
+                      Start your project
+                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
+                    </button>
+                  }
+                />
+              </Magnetic>
             </div>
-            <Magnetic strength={0.4}>
-              <OnboardingModal
-                trigger={
-                  <button
-                    data-cursor="hover"
-                    className="group/btn inline-flex h-14 shrink-0 items-center gap-2.5 whitespace-nowrap rounded-full bg-white px-8 font-display text-[15px] font-bold text-primary transition-transform hover:scale-[1.04]"
+
+            <div className="flex flex-col gap-4 border-t border-white/20 bg-black/15 px-8 py-5 md:flex-row md:items-center md:px-10">
+              <span className="shrink-0 font-mono text-[11px] font-bold uppercase tracking-widest text-white/60">
+                Pay however suits you
+              </span>
+              <div className="flex flex-wrap items-center gap-2.5">
+                {PAY_METHODS.map((m, i) => (
+                  <motion.span
+                    key={m.name}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 + i * 0.07, duration: 0.4, ease: EASE }}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-[13px] font-semibold backdrop-blur-sm"
                   >
-                    Start your project
-                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-                  </button>
-                }
-              />
-            </Magnetic>
+                    {m.Icon ? (
+                      <m.Icon className="h-4 w-4" />
+                    ) : (
+                      <span className="flex h-4 w-4 items-center justify-center rounded-[3px] bg-white text-[8px] font-extrabold leading-none text-primary">
+                        {m.mark}
+                      </span>
+                    )}
+                    {m.name}
+                  </motion.span>
+                ))}
+              </div>
+            </div>
           </div>
         </Reveal>
       </div>
