@@ -55,7 +55,7 @@ export function SiteNav() {
         <div
           className={`mx-auto flex items-center justify-between px-6 md:px-12 transition-all duration-500 ${
             scrolled && !menuOpen
-              ? "py-3 bg-[#E7E7E1]/80 backdrop-blur-xl border-b border-black/10"
+              ? "py-3 bg-[#E7E7E1]/95 md:bg-[#E7E7E1]/80 md:backdrop-blur-xl border-b border-black/10"
               : "py-6 bg-transparent"
           }`}
         >
@@ -96,7 +96,7 @@ export function SiteNav() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
-              className="relative z-50 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/20 bg-white/70 backdrop-blur-md md:hidden"
+              className="relative z-50 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/20 bg-white/90 md:hidden"
             >
               <span className="relative block h-4 w-5">
                 <motion.span

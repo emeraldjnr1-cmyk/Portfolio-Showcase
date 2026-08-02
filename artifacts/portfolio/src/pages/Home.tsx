@@ -148,7 +148,7 @@ function Hero({ ready }: { ready: boolean }) {
           initial={{ opacity: 0, y: 20 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-10 inline-flex items-center gap-2.5 rounded-full border border-black/15 bg-white/60 py-1.5 pl-1.5 pr-4 text-sm font-medium text-black/70 backdrop-blur-md"
+          className="mb-10 inline-flex items-center gap-2.5 rounded-full border border-black/15 bg-white/80 py-1.5 pl-1.5 pr-4 text-sm font-medium text-black/70 md:bg-white/60 md:backdrop-blur-md"
         >
           <Avatar size={30} ring="#0BB07B" />
           <span className="h-2 w-2 animate-pulse rounded-full bg-[#0BB07B]" />

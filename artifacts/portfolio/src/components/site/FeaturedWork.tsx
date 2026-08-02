@@ -86,7 +86,9 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
             <div className="absolute right-4 top-4 rounded-full bg-black px-2.5 py-1 font-display text-xs font-bold text-white">
               {String(index + 1).padStart(2, "0")}
             </div>
-            <div className="absolute bottom-3 left-3 rounded-full bg-black/80 px-3 py-1.5 text-xs font-bold text-[#FFCB41] backdrop-blur-sm">
+            {/* bg is already near-opaque; a backdrop-filter over a playing
+                video is one of the most expensive things a phone can composite */}
+            <div className="absolute bottom-3 left-3 rounded-full bg-black/85 px-3 py-1.5 text-xs font-bold text-[#FFCB41]">
               {project.stat}
             </div>
           </div>

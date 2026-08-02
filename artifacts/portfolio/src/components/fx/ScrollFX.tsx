@@ -1,5 +1,5 @@
-import { ReactNode, useState } from "react";
-import { motion, useScroll, useSpring, useVelocity, useTransform } from "framer-motion";
+import { ReactNode, useEffect, useState } from "react";
+import { motion, useScroll, useSpring, useVelocity, useTransform, useReducedMotion } from "framer-motion";
 
 /** Thin cobalt progress line pinned to the very top. */
 export function ScrollProgress() {
@@ -15,16 +15,38 @@ export function ScrollProgress() {
 }
 
 /** Velocity skew: the page shears slightly with scroll speed and springs back at rest.
- * The spring output snaps to exactly 0 below a small threshold — without this the
- * transform keeps micro-changing after scrolling stops, forcing the browser to
- * re-rasterize the whole subtree (playing <video> elements visibly glitch). */
+ *
+ * Desktop only, by design. A skew is not axis-aligned, so the compositor cannot
+ * reuse a cached layer: every frame the value changes re-rasterizes the whole
+ * document, which on a phone GPU shows up as visible stutter over heavy
+ * sections (the black toolkit panel with its 15vw ghost word was the worst of
+ * them). It is a decorative flourish, so on touch devices and for
+ * reduced-motion users it simply does not run.
+ *
+ * The wrapper element stays a motion.div in both cases. Swapping it for a plain
+ * div would remount the entire page subtree and kill any playing video. */
 export function VelocitySkew({ children }: { children: ReactNode }) {
+  const reduced = useReducedMotion();
+  const [pointerFine, setPointerFine] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px) and (pointer: fine)");
+    const apply = () => setPointerFine(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
   const { scrollY } = useScroll();
   const velocity = useVelocity(scrollY);
   const raw = useTransform(velocity, [-2500, 0, 2500], [-1.6, 0, 1.6]);
   const sprung = useSpring(raw, { stiffness: 250, damping: 40, mass: 0.6 });
+  // Snap to exactly 0 below a small threshold, otherwise the transform keeps
+  // micro-changing after scrolling stops and never lets the raster settle.
   const skewY = useTransform(sprung, (v) => (Math.abs(v) < 0.04 ? 0 : v));
-  return <motion.div style={{ skewY }}>{children}</motion.div>;
+
+  const active = pointerFine && !reduced;
+  return <motion.div style={active ? { skewY } : undefined}>{children}</motion.div>;
 }
 
 /** Curtain-wipe image reveal: unmasks upward while settling from a slight zoom.

@@ -232,7 +232,10 @@ export function ToolStack() {
                   }}
                   whileHover={{ y: -6, scale: 1.06 }}
                   data-cursor="hover"
-                  className="group flex items-center gap-3 rounded-2xl border border-white/12 bg-white/[0.04] px-5 py-3.5 backdrop-blur-sm transition-colors hover:border-white/35"
+                  // No backdrop-blur here on purpose: over a solid black panel
+                  // it is visually indistinguishable, but every chip forces its
+                  // own backdrop snapshot each frame while the page scrolls.
+                  className="group flex items-center gap-3 rounded-2xl border border-white/12 bg-white/[0.04] px-5 py-3.5 transition-colors hover:border-white/35"
                   style={{ willChange: "transform" }}
                 >
                   <span className="block text-[#E7E7E1]/75 transition-all duration-300 group-hover:scale-110 group-hover:text-white">
