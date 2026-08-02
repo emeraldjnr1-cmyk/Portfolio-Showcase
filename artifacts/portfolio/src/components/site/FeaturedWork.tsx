@@ -31,8 +31,19 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8% 0px" }}
       transition={{ duration: 0.9, ease: EASE, delay: (index % 2) * 0.12 }}
-      className="group relative cursor-pointer"
+      className="group relative cursor-pointer rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
       onClick={() => onOpen(project)}
+      // A div with onClick is invisible to keyboards and screen readers, so
+      // the lightbox could only ever be opened with a mouse.
+      role="button"
+      tabIndex={0}
+      aria-label={`Open ${project.title} preview`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen(project);
+        }
+      }}
       data-cursor="hover"
     >
       <div
