@@ -61,6 +61,7 @@ import wf58 from "@assets/Screenshot_2026-04-02_at_3.50.12_AM_1776460016082.png"
 import profilePicUrl from "@assets/denver_portrait_2026.jpg";
 import rachelVideoUrl from "@assets/rachel_video_testimonial.mp4";
 import moritzVideoUrl from "@assets/moritz_video_testimonial.mp4";
+import danielVideoUrl from "@assets/daniel_video_testimonial.mp4";
 import entsorgerShowcase from "@assets/entsorger_showcase.png";
 
 export const profilePic = profilePicUrl;
@@ -251,6 +252,13 @@ export const testimonials: Testimonial[] = [
     src: moritzVideoUrl,
     name: "Moritz Domm",
     quote: "Thank you for this first great job, Emerald! The second one will follow now.",
+    aspect: "landscape",
+  },
+  {
+    src: danielVideoUrl,
+    name: "Daniel",
+    quote:
+      "He was easy to work with and responded quickly. Emerald made sure everything was just the way we wanted. Highly recommended!",
     aspect: "landscape",
   },
 ];
