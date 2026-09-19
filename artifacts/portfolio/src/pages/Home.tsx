@@ -112,10 +112,10 @@ function Hero({ ready }: { ready: boolean }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  // Preview-only: ?bg=paths|dots|nodes picks a backdrop and shows the switcher.
+  // Preview-only: ?bg=film|paths|dots|nodes picks a backdrop and shows the switcher.
   const [bg, setBg] = useState<HeroBgVariant>(() => {
     const v = new URLSearchParams(window.location.search).get("bg");
-    return v === "dots" || v === "nodes" ? v : "paths";
+    return v === "paths" || v === "dots" || v === "nodes" ? v : "film";
   });
   const picker = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("bg");
 
@@ -130,7 +130,7 @@ function Hero({ ready }: { ready: boolean }) {
       <HeroBackground variant={bg} />
       {picker && (
         <div className="fixed bottom-6 left-1/2 z-[70] flex -translate-x-1/2 gap-1 rounded-full border-2 border-black bg-white p-1 shadow-[4px_4px_0_#0015D4]">
-          {(["paths", "dots", "nodes"] as const).map((v) => (
+          {(["film", "paths", "dots", "nodes"] as const).map((v) => (
             <button
               key={v}
               onClick={() => {

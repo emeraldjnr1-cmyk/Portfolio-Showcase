@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 
-export type HeroBgVariant = "paths" | "dots" | "nodes";
+export type HeroBgVariant = "film" | "paths" | "dots" | "nodes";
 
 const INK = "20,20,20";
 const COBALT = "0,21,212";
@@ -22,6 +22,56 @@ function useMotionAllowed() {
     return () => mq.removeEventListener("change", apply);
   }, []);
   return desktop && !reduced;
+}
+
+// ── Variant 0: the rendered film. Code building a site, an app, an automation
+// and an agent, on a warm 3D stage. 2 MB, silent, loops seamlessly.
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+function Film({ animate }: { animate: boolean }) {
+  // Observe a wrapper that is always mounted. The first render is the still
+  // (the desktop check has not resolved yet), so observing the <video> itself
+  // attached to nothing and left the film paused forever.
+  const wrap = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLVideoElement>(null);
+  const inView = useInView(wrap, { margin: "0px" });
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    if (animate && inView) v.play().catch(() => {});
+    else v.pause();
+  }, [animate, inView]);
+
+  // The stage sits on the right. Fading the frame out toward the left keeps the
+  // headline on flat bone, and the film's own background is the same bone, so
+  // there is no visible edge anywhere.
+  const mask = "linear-gradient(to right, transparent 0%, transparent 42%, #000 82%)";
+  const common = { WebkitMaskImage: mask, maskImage: mask } as const;
+
+  // Phones and reduced-motion never download the video: they get the still.
+  return (
+    <div ref={wrap} className="h-full w-full">
+      {!animate ? (
+      <img
+        src={`${BASE}/videos/posters/hero-loop.jpg`}
+        alt=""
+        className="h-full w-full object-cover object-right opacity-20"
+        style={common}
+      />
+      ) : (
+    <video
+      ref={ref}
+      src={`${BASE}/videos/hero-loop.mp4`}
+      poster={`${BASE}/videos/posters/hero-loop.jpg`}
+      muted
+      loop
+      playsInline
+      preload="auto"
+      className="h-full w-full object-cover object-right opacity-60"
+      style={common}
+    />
+      )}
+    </div>
+  );
 }
 
 // ── Variant 1: flowing ink paths, like a workflow drawn in pencil ──────────
@@ -272,6 +322,7 @@ export function HeroBackground({ variant }: { variant: HeroBgVariant }) {
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+      {variant === "film" && <Film animate={animate} />}
       {variant === "paths" && <FlowingPaths animate={animate} />}
       {variant === "dots" && <CanvasBg draw={dots} animate={animate} />}
       {variant === "nodes" && <CanvasBg draw={nodes} animate={animate} />}
