@@ -12,6 +12,7 @@ import { CountUp } from "@/components/fx/CountUp";
 import { ScrollProgress, VelocitySkew } from "@/components/fx/ScrollFX";
 import { BigMarquee } from "@/components/fx/BigMarquee";
 import { useLenis } from "@/hooks/use-lenis";
+import { HeroBackground, type HeroBgVariant } from "@/components/fx/HeroBackground";
 
 import { SiteNav } from "@/components/site/SiteNav";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
@@ -111,6 +112,13 @@ function Hero({ ready }: { ready: boolean }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
+  // Preview-only: ?bg=paths|dots|nodes picks a backdrop and shows the switcher.
+  const [bg, setBg] = useState<HeroBgVariant>(() => {
+    const v = new URLSearchParams(window.location.search).get("bg");
+    return v === "dots" || v === "nodes" ? v : "paths";
+  });
+  const picker = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("bg");
+
   const line = (delay: number) => ({
     initial: { y: "110%" },
     animate: ready ? { y: 0 } : {},
@@ -119,6 +127,24 @@ function Hero({ ready }: { ready: boolean }) {
 
   return (
     <section ref={ref} id="top" className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pt-24 md:px-12">
+      <HeroBackground variant={bg} />
+      {picker && (
+        <div className="fixed bottom-6 left-1/2 z-[70] flex -translate-x-1/2 gap-1 rounded-full border-2 border-black bg-white p-1 shadow-[4px_4px_0_#0015D4]">
+          {(["paths", "dots", "nodes"] as const).map((v) => (
+            <button
+              key={v}
+              onClick={() => {
+                setBg(v);
+                window.history.replaceState(null, "", `?bg=${v}`);
+              }}
+              className={`rounded-full px-4 py-1.5 text-sm font-bold ${bg === v ? "bg-black text-white" : "text-black"}`}
+            >
+              {v}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* dani-style color pops floating in the field */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <motion.div
