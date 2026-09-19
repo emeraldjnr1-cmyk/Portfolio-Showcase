@@ -632,9 +632,12 @@ export default function Home() {
       <SiteNav />
       <FloatingWhatsApp />
 
-      <VelocitySkew>
-        <main>
-          <Hero ready={ready} />
+      <main>
+        {/* The hero sits outside VelocitySkew on purpose: a skew is not an
+            axis-aligned transform, so shearing a playing <video> every scroll
+            frame makes the film visibly wobble. */}
+        <Hero ready={ready} />
+        <VelocitySkew>
           <ToolStack />
           <Stats />
           <BigMarquee items={["Claude Code", "Websites", "Apps", "AI Products"]} accent="#0015D4" />
@@ -651,10 +654,10 @@ export default function Home() {
           <FAQSection />
           <BigMarquee items={["Let's build", "Your system", "Starts here"]} accent="#FFCB41" />
           <FinalCTA />
-        </main>
+        </VelocitySkew>
+      </main>
 
-        <Footer />
-      </VelocitySkew>
+      <Footer />
     </div>
   );
 }
