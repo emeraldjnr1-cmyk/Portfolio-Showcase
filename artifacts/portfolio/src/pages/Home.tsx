@@ -112,10 +112,12 @@ function Hero({ ready }: { ready: boolean }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  // Preview-only: ?bg=film|paths|dots|nodes picks a backdrop and shows the switcher.
+  // Default is the node network: it is drawn, not decoded, so it costs the
+  // browser nothing next to the hero's other running animations.
+  // ?bg=film|paths|dots|nodes still switches, for comparison.
   const [bg, setBg] = useState<HeroBgVariant>(() => {
     const v = new URLSearchParams(window.location.search).get("bg");
-    return v === "paths" || v === "dots" || v === "nodes" ? v : "film";
+    return v === "film" || v === "paths" || v === "dots" ? v : "nodes";
   });
   const picker = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("bg");
 
