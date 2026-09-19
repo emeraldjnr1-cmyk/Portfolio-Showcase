@@ -25,50 +25,53 @@ function useMotionAllowed() {
 }
 
 // ── Variant 0: the rendered film. Code building a site, an app, an automation
-// and an agent, on a warm 3D stage. 2 MB, silent, loops seamlessly.
+// and an agent, on a warm 3D stage. Silent, loops seamlessly, and plays on
+// phones too using a smaller encode.
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
-function Film({ animate }: { animate: boolean }) {
-  // Observe a wrapper that is always mounted. The first render is the still
-  // (the desktop check has not resolved yet), so observing the <video> itself
-  // attached to nothing and left the film paused forever.
+function Film() {
+  const reduced = useReducedMotion();
+  const [wide, setWide] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const apply = () => setWide(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  // Watch a wrapper that is always mounted, never the media itself: the media
+  // swaps once the width check resolves, and an observer bound to the old node
+  // left the film paused at 0 forever.
   const wrap = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLVideoElement>(null);
   const inView = useInView(wrap, { margin: "0px" });
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
-    if (animate && inView) v.play().catch(() => {});
+    if (inView && !reduced) v.play().catch(() => {});
     else v.pause();
-  }, [animate, inView]);
+  }, [inView, reduced]);
 
-  // The stage sits on the right. Fading the frame out toward the left keeps the
-  // headline on flat bone, and the film's own background is the same bone, so
-  // there is no visible edge anywhere.
-  const mask = "linear-gradient(to right, transparent 0%, transparent 42%, #000 82%)";
-  const common = { WebkitMaskImage: mask, maskImage: mask } as const;
-
-  // Phones and reduced-motion never download the video: they get the still.
+  // No CSS mask and no opacity here on purpose. Both force the browser onto a
+  // costly compositing path for video, which showed up as jitter. The fade to
+  // bone on the left and the veil are rendered into the film instead, so this
+  // is a plain full-strength video layer.
   return (
     <div ref={wrap} className="h-full w-full">
-      {!animate ? (
-      <img
-        src={`${BASE}/videos/posters/hero-loop.jpg`}
-        alt=""
-        className="h-full w-full object-cover object-right opacity-20"
-        style={common}
-      />
+      {reduced ? (
+        <img src={`${BASE}/videos/posters/hero-loop.jpg`} alt="" className="h-full w-full object-cover object-center md:object-right" />
       ) : (
-    <video
-      ref={ref}
-      src={`${BASE}/videos/hero-loop.mp4`}
-      poster={`${BASE}/videos/posters/hero-loop.jpg`}
-      muted
-      loop
-      playsInline
-      preload="auto"
-      className="h-full w-full object-cover object-right opacity-60"
-      style={common}
-    />
+        <video
+          ref={ref}
+          key={wide ? "wide" : "narrow"}
+          src={`${BASE}/videos/${wide ? "hero-loop.mp4" : "hero-loop-540.mp4"}`}
+          poster={`${BASE}/videos/posters/hero-loop.jpg`}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="h-full w-full object-cover object-center opacity-50 md:object-right md:opacity-100"
+        />
       )}
     </div>
   );
@@ -322,7 +325,7 @@ export function HeroBackground({ variant }: { variant: HeroBgVariant }) {
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
-      {variant === "film" && <Film animate={animate} />}
+      {variant === "film" && <Film />}
       {variant === "paths" && <FlowingPaths animate={animate} />}
       {variant === "dots" && <CanvasBg draw={dots} animate={animate} />}
       {variant === "nodes" && <CanvasBg draw={nodes} animate={animate} />}
