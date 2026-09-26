@@ -15,6 +15,7 @@ import { HeroBackground, type HeroBgVariant } from "@/components/fx/HeroBackgrou
 
 import { SiteNav } from "@/components/site/SiteNav";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
+import { AskPax } from "@/components/site/pax/AskPax";
 import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { WebProjectsSection } from "@/components/site/WebProjects";
 import { Web3ProjectsSection } from "@/components/site/Web3Projects";
@@ -564,6 +565,7 @@ export default function Home() {
       <CustomCursor />
       <SiteNav />
       <FloatingWhatsApp />
+      <AskPax />
 
       <main>
         {/* The hero sits outside VelocitySkew on purpose: a skew is not an

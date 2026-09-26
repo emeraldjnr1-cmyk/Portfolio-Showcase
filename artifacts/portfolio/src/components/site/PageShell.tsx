@@ -5,6 +5,7 @@ import { useLenis } from "@/hooks/use-lenis";
 import { SiteNav } from "@/components/site/SiteNav";
 import { Footer } from "@/components/site/Footer";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
+import { AskPax } from "@/components/site/pax/AskPax";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Avatar } from "@/components/site/Portrait";
 import { WHATSAPP } from "@/data/portfolio";
@@ -16,6 +17,7 @@ export function PageShell({ children, cta = "Want a system like this?" }: { chil
     <div className="min-h-screen bg-background text-foreground">
       <SiteNav />
       <FloatingWhatsApp />
+      <AskPax />
       <main>{children}</main>
       <PageCTA heading={cta} />
       <Footer />
