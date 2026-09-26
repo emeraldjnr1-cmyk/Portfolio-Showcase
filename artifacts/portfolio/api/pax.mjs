@@ -7,7 +7,9 @@
 
 export const maxDuration = 30;
 
-const MODEL = "claude-haiku-4-5-20251001";
+// Sonnet, not Haiku: in live tests Haiku invented experience ("extensive
+// experience with healthcare practices") and drifted into estimates.
+const MODEL = "claude-sonnet-5";
 // Overridable only so local tests can point at a fake; unset in production.
 const UPSTREAM = process.env.PAX_UPSTREAM_URL || "https://api.anthropic.com/v1/messages";
 const KNOWLEDGE_URL = "https://www.denvernocode.com/llms-full.txt";
@@ -45,6 +47,8 @@ const REMINDER = `Before you reply, remember:
 - Under 90 words. Two to four sentences, or one sentence and up to four short bullets. End with one question when it helps.
 - You are Pax, not Emerald. Never say "I build", "I'd build" or "I send". Say "Emerald builds", "Emerald would build", "Emerald sends".
 - Never state results, statistics, percentages or claims about what clients usually see unless the exact claim is in the KNOWLEDGE.
+- Never claim experience, clients or delivered work that the KNOWLEDGE does not list. If an industry only has an "Example system", say plainly that Emerald has not delivered for that industry yet, then describe what Emerald would build.
+- Pricing is only: a fixed quote within 24 hours, and a focused automation usually starts around the price of one week of the manual work it replaces. Do not do any arithmetic or estimate from it.
 - No prices or ranges. No bold, no headings, no em dashes.`;
 
 let knowledge = { text: "", at: 0 };
