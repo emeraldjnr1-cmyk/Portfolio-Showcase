@@ -137,7 +137,7 @@ function Hero({ ready }: { ready: boolean }) {
   });
 
   return (
-    <section ref={ref} id="top" className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pt-24 md:px-12">
+    <section ref={ref} id="top" className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pb-16 pt-24 md:px-12">
       <HeroBackground variant={bg} />
       {picker && (
         <div className="fixed bottom-6 left-1/2 z-[70] flex -translate-x-1/2 gap-1 rounded-full border-2 border-black bg-white p-1 shadow-[4px_4px_0_#0015D4]">
@@ -180,19 +180,28 @@ function Hero({ ready }: { ready: boolean }) {
         />
       </div>
 
+      <motion.div
+        animate={{ y: [0, -10, 0], rotate: [0, 4, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute right-[7%] top-[30%] z-10 hidden xl:block"
+        aria-hidden
+      >
+        <Logo size={120} />
+      </motion.div>
+
       <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto w-full max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-10 inline-flex items-center gap-2.5 rounded-full border border-black/15 bg-white/80 py-1.5 pl-1.5 pr-4 text-sm font-medium text-black/70 md:bg-white/60 md:backdrop-blur-md"
+          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-black/15 bg-white/80 py-1.5 pl-1.5 pr-4 text-sm font-medium text-black/70 md:bg-white/60 md:backdrop-blur-md"
         >
           <Avatar size={30} ring="#0BB07B" />
           <span className="h-2 w-2 animate-pulse rounded-full bg-[#0BB07B]" />
           Available for new projects
         </motion.div>
 
-        <h1 className="font-display font-extrabold leading-[1.02] tracking-tight text-black text-[11.5vw] sm:text-[9vw] lg:text-[6.6rem]">
+        <h1 className="font-display font-extrabold leading-[1.02] tracking-tight text-black text-[11.5vw] sm:text-[9vw] lg:text-[min(6.6rem,10.5vh)]">
           <span className="block overflow-hidden pb-2 -mb-2">
             <motion.span className="block" {...line(0.15)}>
               I build with{" "}
@@ -214,7 +223,7 @@ function Hero({ ready }: { ready: boolean }) {
           initial={{ opacity: 0, y: 24 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: EASE, delay: 0.54 }}
-          className="mt-7 font-display text-xl font-bold tracking-tight text-black md:text-2xl"
+          className="mt-5 font-display text-xl font-bold tracking-tight text-black md:text-2xl"
         >
           Delivered with <WatchwordRoller />
         </motion.p>
@@ -230,32 +239,35 @@ function Hero({ ready }: { ready: boolean }) {
           {HERO_QUALIFIER}
         </motion.p>
 
-        <div className="mt-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <motion.p
+        <div data-hero-row className="mt-9 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={ready ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.6, ease: EASE }}
-            className="max-w-md text-lg leading-relaxed text-black/60"
+            className="max-w-[47.5rem]"
           >
-            I'm <strong className="font-semibold text-black">Denver <span className="text-[#10B981]">Emerald</span> Peter</strong>. Apps and websites shipped with{" "}
-            <strong className="font-semibold text-black">Claude Code</strong>, and automation systems built on{" "}
-            <strong className="font-semibold text-black">n8n, Make.com & Airtable</strong> that capture leads and run
-            your operations on autopilot.
-          </motion.p>
+            {/* Problem first, then the outcome, then how: a buyer should see
+                their own situation before they see a tool list. */}
+            <p className="text-lg font-semibold leading-snug text-black md:text-xl">
+              Leads going cold, hours lost to admin, tools that don't talk to each other. I fix the problems quietly
+              costing your business time and revenue.
+            </p>
+            <p className="mt-3 text-base leading-relaxed text-black/60 md:text-lg">
+              I design and build websites, apps and AI-powered automations that capture every enquiry, follow up in
+              minutes and take repetitive work off your team, built with Claude Code, n8n and Make.com. Everything is
+              delivered in your own accounts, fully documented and built to keep running long after handover.
+            </p>
+            <p className="mt-4 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
+              Denver <span className="text-[#10B981]">Emerald</span> Peter · Founder, Denver NoCode
+            </p>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={ready ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.75, ease: EASE }}
-            className="flex flex-col items-start gap-6 md:items-end"
+            className="flex shrink-0 flex-col items-start md:items-end"
           >
-            <motion.div
-              animate={{ y: [0, -10, 0], rotate: [0, 4, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="hidden md:block"
-            >
-              <Logo size={120} />
-            </motion.div>
             {/* wraps on narrow screens; labels never break mid-phrase */}
             <div className="flex flex-wrap items-center gap-3 md:gap-4">
             <Magnetic strength={0.45}>
