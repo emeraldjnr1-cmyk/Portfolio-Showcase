@@ -263,16 +263,6 @@ export const testimonials: Testimonial[] = [
   },
 ];
 
-// ── Written reviews ──
-export const reviews = [
-  { name: "James M.", country: "UK", text: "Denver completely transformed how we handle leads. We save 15+ hours every week now." },
-  { name: "Priya S.", country: "India", text: "The automation system is flawless. Calm, clear communication throughout." },
-  { name: "Carlos R.", country: "Mexico", text: "Best investment for our agency this year. Make.com and Airtable work perfectly together." },
-  { name: "Emma T.", country: "Australia", text: "Exactly what I needed. Professional, fast, and knows the tools inside out." },
-  { name: "David K.", country: "USA", text: "Incredible attention to detail. Built an AI support bot that handles 80% of our queries." },
-  { name: "Fatima A.", country: "UAE", text: "I can finally focus on growing my business instead of copying and pasting data." },
-];
-
 export const WHATSAPP = "https://wa.me/2348143046516";
 export const FIVERR = "https://www.fiverr.com/s/pdD2k9E";
 export const UPWORK = "https://www.upwork.com/freelancers/denvernocode";

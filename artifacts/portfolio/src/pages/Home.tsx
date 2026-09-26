@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionTemplate } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Star } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 
 import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
-import { Marquee } from "@/components/fx/Marquee";
 import { CountUp } from "@/components/fx/CountUp";
 import { ScrollProgress, VelocitySkew } from "@/components/fx/ScrollFX";
 import { BigMarquee } from "@/components/fx/BigMarquee";
@@ -32,7 +31,7 @@ import { ClaudeFullStack } from "@/components/site/ClaudeFullStack";
 import { IndustriesSection } from "@/components/site/IndustriesSection";
 import { TeamSection } from "@/components/site/TeamSection";
 
-import { reviews, profilePic, WHATSAPP } from "@/data/portfolio";
+import { profilePic, WHATSAPP } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -359,53 +358,6 @@ function Process() {
   );
 }
 
-// ──────────────────────────── REVIEWS ───────────────────────────────
-function ReviewCard({ r }: { r: (typeof reviews)[number] }) {
-  return (
-    <div className="mx-3 w-[340px] shrink-0 rounded-2xl border border-black/10 bg-white p-6 shadow-sm">
-      <div className="mb-4 flex gap-1 text-[#FFCB41]">
-        {[...Array(5)].map((_, i) => (
-          <Star key={i} className="h-4 w-4 fill-current" />
-        ))}
-      </div>
-      <p className="text-sm leading-relaxed text-black/80">"{r.text}"</p>
-      <div className="mt-5 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary font-display text-sm font-bold text-white">
-          {r.name.charAt(0)}
-        </div>
-        <p className="text-sm font-semibold text-black">
-          {r.name} <span className="font-normal text-black/45">— {r.country}</span>
-        </p>
-      </div>
-    </div>
-  );
-}
-
-
-function ReviewsMarquee() {
-  return (
-    <section className="border-t border-black/10 py-28 md:py-36 overflow-hidden">
-      <div className="mb-14 px-6 text-center md:px-12">
-        <SplitWords
-          as="h2"
-          text="Trusted by 50+ clients worldwide."
-          className="flex flex-wrap justify-center font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl"
-        />
-      </div>
-      <Marquee duration={45} className="mb-6">
-        {reviews.slice(0, 3).map((r) => (
-          <ReviewCard key={r.name} r={r} />
-        ))}
-      </Marquee>
-      <Marquee duration={45} direction="right">
-        {reviews.slice(3).map((r) => (
-          <ReviewCard key={r.name} r={r} />
-        ))}
-      </Marquee>
-    </section>
-  );
-}
-
 // ───────────────────────────── ABOUT ────────────────────────────────
 function About() {
   const ref = useRef<HTMLDivElement>(null);
@@ -619,7 +571,6 @@ export default function Home() {
           <TeamSection />
           <HireMe />
           <Process />
-          <ReviewsMarquee />
           <About />
           <FAQSection />
           <BigMarquee items={["Let's build", "Your system", "Starts here"]} accent="#FFCB41" />
