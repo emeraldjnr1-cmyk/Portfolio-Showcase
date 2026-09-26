@@ -48,8 +48,13 @@ function linkify(text: string, keyBase: string): ReactNode[] {
   });
 }
 
+// Pax ends a message with [[HANDOFF]] when a visitor is ready for a quote.
+// It becomes a button, so strip it (and any half-streamed tail of it).
+const HANDOFF = "[[HANDOFF]]";
+const stripMarker = (t: string) => t.replace(/\[\[HANDOFF\]\]/g, "").replace(/\[\[[A-Z]*\]?$/, "").trim();
+
 function Rich({ text }: { text: string }) {
-  const blocks = text.trim().split(/\n{2,}/);
+  const blocks = stripMarker(text).split(/\n{2,}/);
   return (
     <>
       {blocks.map((block, b) => {
@@ -225,9 +230,21 @@ export default function PaxPanel({
                   </div>
                 </div>
               ) : m.content ? (
-                <PaxBubble key={i}>
-                  <Rich text={m.content} />
-                </PaxBubble>
+                <div key={i} className="space-y-2">
+                  <PaxBubble>
+                    <Rich text={m.content} />
+                  </PaxBubble>
+                  {m.content.includes(HANDOFF) && (
+                    <div className="pl-9">
+                      <button
+                        onClick={() => setView("handoff")}
+                        className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-[3px_3px_0_#141414] transition-colors hover:bg-black"
+                      >
+                        Send my brief to Emerald <ArrowUp className="h-4 w-4 rotate-45" />
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : null,
             )}
             {waiting && (
@@ -282,7 +299,35 @@ export default function PaxPanel({
   );
 }
 
-// ── "Talk to Emerald": sends the conversation to Emerald's inbox ──
+// ── "Talk to Emerald": Pax writes a brief, the visitor checks it, it goes out ──
+type Brief = {
+  summary: string;
+  business: string;
+  goal: string;
+  problem: string;
+  tools: string;
+  scale: string;
+  timeline: string;
+  budget: string;
+  service: string;
+  questions: string[];
+};
+
+/** The visitor-facing brief. Emerald's follow-up questions stay out of it. */
+function formatBrief(b: Brief) {
+  return [
+    `Summary: ${b.summary}`,
+    `Business: ${b.business}`,
+    `What I want built: ${b.goal}`,
+    `The problem today: ${b.problem}`,
+    `Tools I use: ${b.tools}`,
+    `Scale: ${b.scale}`,
+    `Timeline: ${b.timeline}`,
+    `Budget: ${b.budget}`,
+    `Best-fit service: ${b.service}`,
+  ].join("\n");
+}
+
 function Handoff({
   messages,
   onBack,
@@ -294,14 +339,43 @@ function Handoff({
 }) {
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
-  const [note, setNote] = useState("");
+  const [brief, setBrief] = useState<Brief | null>(null);
+  const [briefText, setBriefText] = useState("");
+  const [briefState, setBriefState] = useState<"none" | "writing" | "ready" | "failed">("none");
   const [state, setState] = useState<"idle" | "sending" | "error">("idle");
 
-  const transcript = messages.map((m) => `${m.role === "user" ? "Visitor" : "Pax"}: ${m.content}`).join("\n\n");
-  const firstAsk = messages.find((m) => m.role === "user")?.content ?? "";
-  const waText = encodeURIComponent(
-    `Hi Emerald, I'm ${name || "a visitor"}. I was chatting with Pax on your site${firstAsk ? ` about: ${firstAsk.slice(0, 200)}` : "."}`,
-  );
+  const hasChat = messages.some((m) => m.role === "user");
+  const transcript = messages.map((m) => `${m.role === "user" ? "Visitor" : "Pax"}: ${stripMarker(m.content)}`).join("\n\n");
+
+  // Ask Pax for the brief as soon as the screen opens, while the visitor
+  // types their name.
+  useEffect(() => {
+    if (!hasChat) return;
+    const abort = new AbortController();
+    setBriefState("writing");
+    fetch("/api/pax", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ mode: "brief", messages }),
+      signal: abort.signal,
+    })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((d: { brief: Brief }) => {
+        setBrief(d.brief);
+        setBriefText(formatBrief(d.brief));
+        setBriefState("ready");
+      })
+      .catch((e) => e.name !== "AbortError" && setBriefState("failed"));
+    return () => abort.abort();
+    // The chat is frozen while this screen is open.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const who = name.trim() || "a visitor";
+  const waBody = briefText
+    ? `Hi Emerald, I'm ${who}. I chatted with Pax on your site and here is my project brief:\n\n${briefText}`
+    : `Hi Emerald, I'm ${who}. I was chatting with Pax on your site about a project.`;
+  const waHref = `${WHATSAPP}?text=${encodeURIComponent(waBody.slice(0, 1800))}`;
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -314,10 +388,11 @@ function Handoff({
         body: JSON.stringify({
           Name: name,
           "WhatsApp or email": contact,
-          Note: note || "(none)",
+          "Project brief": briefText || "(no brief: see the conversation below)",
+          "Questions to ask them": brief?.questions?.length ? brief.questions.map((q) => `- ${q}`).join("\n") : "(none)",
           Page: typeof location !== "undefined" ? location.href : "",
           Conversation: transcript || "(no chat yet)",
-          _subject: `Ask Pax lead: ${name}`,
+          _subject: `Pax lead: ${name}${brief?.summary && brief.summary !== "Not discussed" ? `, ${brief.summary}` : ""}`,
           _template: "table",
           _captcha: "false",
         }),
@@ -325,7 +400,7 @@ function Handoff({
       // FormSubmit reports failures as {"success":"false"} with HTTP 200.
       const body = await res.json().catch(() => null);
       if (!res.ok || !(body?.success === true || body?.success === "true")) throw new Error("not delivered");
-      onSent(`Sent. Emerald has this conversation and your details, and will get back to you within 24 hours.`);
+      onSent("Sent. Emerald has your brief and this conversation, and will get back to you within 24 hours.");
     } catch {
       setState("error");
     }
@@ -341,30 +416,59 @@ function Handoff({
       </button>
       <h3 className="mt-4 font-display text-2xl font-extrabold tracking-tight text-black">Talk to Emerald</h3>
       <p className="mt-2 text-sm leading-relaxed text-black/60">
-        Emerald gets this conversation and your details, and replies within 24 hours with next steps.
+        {hasChat
+          ? "Pax turns this chat into a short brief, so Emerald can quote without making you repeat yourself. Check it, then send."
+          : "Leave your details and Emerald replies within 24 hours with next steps."}
       </p>
+
       <form onSubmit={submit} className="mt-5 space-y-3">
+        {hasChat && (
+          <div>
+            <p className="mb-1.5 font-mono text-[11px] font-bold uppercase tracking-widest text-black/50">Your project brief</p>
+            {briefState === "writing" && (
+              <div className="flex items-center gap-2 rounded-xl border-2 border-dashed border-black/30 bg-white px-3.5 py-4 text-sm text-black/60">
+                <img src={PAX_AVATAR} alt="" width={22} height={22} className="h-[22px] w-[22px] rounded-full object-cover" />
+                Pax is writing your brief...
+              </div>
+            )}
+            {briefState === "ready" && (
+              <textarea
+                className={`${field} min-h-[220px] resize-y font-mono text-[13px] leading-relaxed`}
+                value={briefText}
+                onChange={(e) => setBriefText(e.target.value)}
+                aria-label="Your project brief"
+              />
+            )}
+            {briefState === "failed" && (
+              <p className="rounded-xl border-2 border-dashed border-black/30 bg-white px-3.5 py-3 text-sm text-black/60">
+                Pax could not write the brief this time. Emerald still gets the full conversation.
+              </p>
+            )}
+          </div>
+        )}
         <input className={field} placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required aria-label="Your name" />
         <input className={field} placeholder="WhatsApp number or email" value={contact} onChange={(e) => setContact(e.target.value)} required aria-label="WhatsApp number or email" />
-        <textarea className={`${field} min-h-[88px] resize-none`} placeholder="Anything to add? (optional)" value={note} onChange={(e) => setNote(e.target.value)} aria-label="Anything to add" />
         {state === "error" && (
           <p className="text-sm font-semibold text-[#F32317]">That did not go through. Try again, or use WhatsApp below.</p>
         )}
         <button
           type="submit"
-          disabled={state === "sending"}
+          disabled={state === "sending" || briefState === "writing"}
           className="h-12 w-full rounded-full bg-primary font-display text-base font-bold text-white transition-colors hover:bg-black disabled:opacity-60"
         >
-          {state === "sending" ? "Sending..." : "Send to Emerald"}
+          {state === "sending" ? "Sending..." : briefState === "writing" ? "Writing your brief..." : "Email my brief to Emerald"}
         </button>
       </form>
       <a
-        href={`${WHATSAPP}?text=${waText}`}
+        href={waHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-3 flex h-12 w-full items-center justify-center gap-2 rounded-full border-2 border-black bg-white font-display text-base font-bold text-black transition-colors hover:bg-black hover:text-white"
+        aria-disabled={briefState === "writing"}
+        className={`mt-3 flex h-12 w-full items-center justify-center gap-2 rounded-full border-2 border-black bg-white font-display text-base font-bold text-black transition-colors hover:bg-black hover:text-white ${
+          briefState === "writing" ? "pointer-events-none opacity-50" : ""
+        }`}
       >
-        <SiWhatsapp className="h-5 w-5 text-[#25D366]" /> Or message on WhatsApp
+        <SiWhatsapp className="h-5 w-5 text-[#25D366]" /> Send it on WhatsApp instead
       </a>
     </div>
   );

@@ -42,7 +42,7 @@ Rules:
 - Much of the KNOWLEDGE is written in Emerald's own voice ("I build", "I send"). Never repeat that voice: you are not Emerald, so say "Emerald builds", "Emerald sends", and speak as Pax ("I can help you find...").
 - When a page would help, give its full URL from the KNOWLEDGE, for example https://www.denvernocode.com/services/automation.
 - Qualify gently: ask what their business does and what eats their team's time, then point to the matching service, industry page or case study.
-- When someone wants to start, asks for a person, or wants a quote, tell them to tap "Talk to Emerald" at the top of this chat, which sends Emerald this conversation, or to message Emerald on WhatsApp.
+- Quotes and starting a project: Emerald needs a clear picture to quote. Before handing off, make sure you know what the business does, what they want built, the problem it solves today, the tools they use now, rough volume, and when they need it. Ask for what is missing, at most two short questions per message. Once you know enough, or the visitor asks for a person or wants to move on anyway, offer to send Emerald a short brief of this conversation, and end that message with the exact token [[HANDOFF]] on its own line. The token shows the visitor a button; use it only at that moment.
 - Reply in the visitor's language.
 - Stay on topic: Denver NoCode, its work, automation, AI agents and Claude Code. Politely decline anything else, such as writing their code, homework or general questions, in one sentence, then steer back.
 - Never ask for passwords, API keys or payment details.
@@ -54,7 +54,94 @@ const REMINDER = `Before you reply, remember:
 - Never state results, statistics, percentages or claims about what clients usually see unless the exact claim is in the KNOWLEDGE.
 - Never claim experience, clients or delivered work that the KNOWLEDGE does not list. If an industry only has an "Example system", say plainly that Emerald has not delivered for that industry yet, then describe what Emerald would build.
 - Pricing is only: a fixed quote within 24 hours, and a focused automation usually starts around the price of one week of the manual work it replaces. Do not do any arithmetic or estimate from it.
-- No prices or ranges. No bold, no headings, no em dashes.`;
+- No prices or ranges. No bold, no headings, no em dashes.
+- When the visitor is ready to move forward and you have the essentials, end with [[HANDOFF]] on its own line.`;
+
+// ── Brief mode: turns the chat into a project brief for Emerald ──
+const SERVICES = [
+  "Claude Code development",
+  "Websites and web apps",
+  "Business automation",
+  "AI agents and chatbots",
+  "MCP servers and Claude integrations",
+  "Web3 and blockchain",
+];
+
+const BRIEF_RULES = `You turn a website chat between a visitor and Pax, the assistant on Denver NoCode's site, into a project brief for Emerald, who will quote the work.
+
+Use only what the visitor actually said. Write "Not discussed" for anything they did not cover. Never invent details, budgets, deadlines or volumes, and never copy Pax's suggestions in as if the visitor asked for them. Plain text values, no markdown, no em dashes.
+
+Return ONLY a JSON object with these fields:
+"summary": one line under 12 words naming the business type and what they want,
+"business": what the business does,
+"goal": what they want built,
+"problem": what is going wrong or costing time today,
+"tools": the tools and systems they use now,
+"scale": volumes, team size or anything that sizes the job,
+"timeline": when they need it,
+"budget": only a budget the visitor stated, otherwise "Not discussed",
+"service": the best fit from this list: ${SERVICES.join("; ")},
+"questions": an array of up to 4 short questions Emerald should ask to quote accurately.`;
+
+/** Brief mode accepts a chat that ends on Pax's turn, unlike chat mode. */
+function transcriptOf(raw) {
+  if (!Array.isArray(raw)) return "";
+  return raw
+    .slice(-MAX_MESSAGES)
+    .filter((m) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
+    .map((m) => `${m.role === "user" ? "Visitor" : "Pax"}: ${m.content.slice(0, MAX_INPUT_CHARS).replace(/\[\[HANDOFF\]\]/g, "").trim()}`)
+    .join("\n\n");
+}
+
+async function writeBrief(apiKey, raw) {
+  const chat = transcriptOf(raw);
+  if (!chat.includes("Visitor:")) return text("Bad request", 400);
+  let res;
+  try {
+    res = await fetch(UPSTREAM, {
+      method: "POST",
+      headers: { "x-api-key": apiKey, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 1500,
+        system: BRIEF_RULES,
+        messages: [{ role: "user", content: `<chat>\n${chat}\n</chat>\n\nReturn the JSON brief.` }],
+      }),
+    });
+  } catch {
+    return text("Brief unavailable", 502);
+  }
+  if (!res.ok) {
+    console.error("pax brief upstream", res.status, await res.text().catch(() => ""));
+    return text("Brief unavailable", 502);
+  }
+  const data = await res.json().catch(() => null);
+  const out = (data?.content || []).filter((c) => c.type === "text").map((c) => c.text).join("");
+  const json = out.slice(out.indexOf("{"), out.lastIndexOf("}") + 1);
+  let brief;
+  try {
+    brief = JSON.parse(json);
+  } catch {
+    return text("Brief unavailable", 502);
+  }
+  // Keep only the expected fields, as clean strings.
+  const clean = (v) => noDashes(String(v ?? "Not discussed")).slice(0, 600);
+  const result = {
+    summary: clean(brief.summary),
+    business: clean(brief.business),
+    goal: clean(brief.goal),
+    problem: clean(brief.problem),
+    tools: clean(brief.tools),
+    scale: clean(brief.scale),
+    timeline: clean(brief.timeline),
+    budget: clean(brief.budget),
+    service: SERVICES.includes(brief.service) ? brief.service : clean(brief.service),
+    questions: Array.isArray(brief.questions) ? brief.questions.slice(0, 4).map(clean) : [],
+  };
+  return new Response(JSON.stringify({ brief: result }), {
+    headers: { "content-type": "application/json", "cache-control": "no-store" },
+  });
+}
 
 let knowledge = { text: "", at: 0 };
 
@@ -145,8 +232,9 @@ export async function POST(request) {
   } catch {
     return text("Bad request", 400);
   }
-  const messages = cleanMessages(body?.messages);
-  if (!messages) return text("Bad request", 400);
+  const briefMode = body?.mode === "brief";
+  const messages = briefMode ? null : cleanMessages(body?.messages);
+  if (!briefMode && !messages) return text("Bad request", 400);
 
   const ip = (request.headers.get("x-forwarded-for") || "anon").split(",")[0].trim();
   const day = new Date().toISOString().slice(0, 10);
@@ -156,6 +244,8 @@ export async function POST(request) {
   if ((await bump(`pax:day:${day}`, 86400)) > DAILY_TOTAL) {
     return text("Pax is resting for today. Tap Talk to Emerald, or message Emerald on WhatsApp.", 429);
   }
+
+  if (briefMode) return writeBrief(apiKey, body?.messages);
 
   const kb = await getKnowledge();
   let upstream;
