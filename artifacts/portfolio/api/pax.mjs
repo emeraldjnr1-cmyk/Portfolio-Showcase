@@ -20,7 +20,8 @@ const KNOWLEDGE_TTL_MS = 10 * 60 * 1000;
 // stop abuse, not normal visitors.
 const MAX_INPUT_CHARS = 1500;
 const MAX_MESSAGES = 30;
-const MAX_OUTPUT_TOKENS = 300;
+// Headroom, not the length limit: the prompt keeps replies under 90 words.
+const MAX_OUTPUT_TOKENS = 1024;
 const HOURLY_PER_IP = 40;
 const DAILY_TOTAL = 500;
 
@@ -162,6 +163,9 @@ export async function POST(request) {
     body: JSON.stringify({
       model: MODEL,
       max_tokens: MAX_OUTPUT_TOKENS,
+      // Thinking off: with it on, Opus spent the whole budget thinking on a
+      // longer question and the visitor got an empty reply.
+      thinking: { type: "disabled" },
       stream: true,
       system: [
         { type: "text", text: RULES },
