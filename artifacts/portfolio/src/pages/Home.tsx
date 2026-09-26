@@ -110,6 +110,9 @@ function WatchwordRoller() {
   );
 }
 
+// Who the site is for. Emerald picks the wording; swap it here.
+const HERO_QUALIFIER = "Built for businesses doing $10k+ a month";
+
 // ─────────────────────────────── HERO ───────────────────────────────
 function Hero({ ready }: { ready: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -213,6 +216,17 @@ function Hero({ ready }: { ready: boolean }) {
           className="mt-7 font-display text-xl font-bold tracking-tight text-black md:text-2xl"
         >
           Delivered with <WatchwordRoller />
+        </motion.p>
+
+        {/* The qualifier: tells buyers who this is for before they scroll. */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.62 }}
+          className="mt-4 inline-flex items-center gap-2 whitespace-nowrap font-mono text-[11px] font-semibold uppercase tracking-wide text-black/55 sm:gap-2.5 sm:text-xs sm:tracking-widest md:text-sm"
+        >
+          <span className="h-2 w-2 shrink-0 bg-primary" aria-hidden />
+          {HERO_QUALIFIER}
         </motion.p>
 
         <div className="mt-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
