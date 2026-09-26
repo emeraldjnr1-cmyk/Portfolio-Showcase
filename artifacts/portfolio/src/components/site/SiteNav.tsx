@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
@@ -19,6 +20,10 @@ const LINKS = [
 ];
 
 export function SiteNav() {
+  // Section anchors only exist on the home page; elsewhere they go via "/".
+  const [location] = useLocation();
+  const onHome = location === "/";
+  const links = onHome ? LINKS : LINKS.map((l) => ({ ...l, href: `/${l.href}` }));
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -59,13 +64,13 @@ export function SiteNav() {
               : "py-6 bg-transparent"
           }`}
         >
-          <a href="#top" className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight text-black">
+          <a href={onHome ? "#top" : "/"} className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight text-black">
             <Logo size={24} />
             Denver<span className="text-primary">®</span>
           </a>
 
           <nav className="hidden md:flex items-center gap-8">
-            {LINKS.map((l) => (
+            {links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
@@ -134,7 +139,7 @@ export function SiteNav() {
             className="fixed inset-0 z-40 flex flex-col justify-center bg-[#E7E7E1] px-8 md:hidden"
           >
             <nav className="flex flex-col gap-1">
-              {LINKS.map((l, i) => (
+              {links.map((l, i) => (
                 <motion.a
                   key={l.href}
                   href={l.href}

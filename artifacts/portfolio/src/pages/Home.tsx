@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionTemplate } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Star } from "lucide-react";
-import { SiWhatsapp, SiFiverr, SiUpwork } from "react-icons/si";
+import { SiWhatsapp } from "react-icons/si";
 
 import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
@@ -27,8 +27,9 @@ import { FiverrLevelBadge, L1_THEME, L2_THEME } from "@/components/site/FiverrBa
 import { ToolStack } from "@/components/site/ToolStack";
 import { HireMe } from "@/components/site/HireMe";
 import { FAQSection } from "@/components/site/FAQ";
+import { Footer } from "@/components/site/Footer";
 
-import { reviews, profilePic, WHATSAPP, FIVERR, UPWORK } from "@/data/portfolio";
+import { reviews, profilePic, WHATSAPP } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -51,8 +52,9 @@ function RotatingWord() {
   const longest = ROTATING.reduce((a, b) => (b.word.length > a.length ? b.word : a), "");
   return (
     <span className="relative inline-grid overflow-hidden align-bottom">
-      {/* invisible sizer keeps layout stable */}
-      <span className="invisible col-start-1 row-start-1 font-editorial">{longest}</span>
+      {/* Invisible sizer keeps layout stable. The word lives in CSS content,
+          not the DOM, so crawlers read the headline without a stray word. */}
+      <span aria-hidden data-w={longest} className="invisible col-start-1 row-start-1 font-editorial before:content-[attr(data-w)]" />
       <AnimatePresence mode="popLayout">
         <motion.span
           key={i}
@@ -88,7 +90,7 @@ function WatchwordRoller() {
   const longest = WATCHWORDS.reduce((a, b) => (b.word.length > a.length ? b.word : a), "");
   return (
     <span className="relative inline-grid overflow-hidden align-bottom">
-      <span className="invisible col-start-1 row-start-1 font-editorial italic">{longest}</span>
+      <span aria-hidden data-w={longest} className="invisible col-start-1 row-start-1 font-editorial italic before:content-[attr(data-w)]" />
       <AnimatePresence mode="popLayout">
         <motion.span
           key={i}
@@ -116,6 +118,7 @@ function Hero({ ready }: { ready: boolean }) {
   // browser nothing next to the hero's other running animations.
   // ?bg=film|paths|dots|nodes still switches, for comparison.
   const [bg, setBg] = useState<HeroBgVariant>(() => {
+    if (typeof window === "undefined") return "nodes";
     const v = new URLSearchParams(window.location.search).get("bg");
     return v === "film" || v === "paths" || v === "dots" ? v : "nodes";
   });
@@ -186,12 +189,12 @@ function Hero({ ready }: { ready: boolean }) {
         <h1 className="font-display font-extrabold leading-[1.02] tracking-tight text-black text-[11.5vw] sm:text-[9vw] lg:text-[6.6rem]">
           <span className="block overflow-hidden pb-2 -mb-2">
             <motion.span className="block" {...line(0.15)}>
-              I build with
+              I build with{" "}
             </motion.span>
           </span>
           <span className="block overflow-hidden pb-3 -mb-3">
             <motion.span className="block" {...line(0.28)}>
-              <RotatingWord />
+              <RotatingWord />{" "}
             </motion.span>
           </span>
           <span className="block overflow-hidden pb-2 -mb-2">
@@ -576,48 +579,6 @@ function FinalCTA() {
         </Reveal>
       </div>
     </section>
-  );
-}
-
-// ───────────────────────────── FOOTER ───────────────────────────────
-function Footer() {
-  return (
-    <footer className="border-t border-white/10 bg-black px-6 py-12 text-[#E7E7E1] md:px-12">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
-        <div className="flex items-center gap-2.5 font-display text-xl font-extrabold">
-          <Logo size={26} color="#E7E7E1" />
-          Denver<span className="text-[#84DEF9]">®</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <p className="text-sm text-white/50">Built with Claude Code. Systems that save time and grow businesses.</p>
-          <div className="flex shrink-0 items-center gap-2.5">
-            <a
-              href={FIVERR}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Denver on Fiverr"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1DBF73] text-white transition-transform hover:scale-110"
-              data-cursor="hover"
-            >
-              <SiFiverr className="h-5 w-5" />
-            </a>
-            <a
-              href={UPWORK}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Denver on Upwork"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[#14A800] text-white transition-transform hover:scale-110"
-              data-cursor="hover"
-            >
-              <SiUpwork className="h-5 w-5" />
-            </a>
-          </div>
-        </div>
-        <p className="text-sm text-white/30">
-          © {new Date().getFullYear()} Denver <span className="text-[#10B981]">Emerald</span> Peter
-        </p>
-      </div>
-    </footer>
   );
 }
 

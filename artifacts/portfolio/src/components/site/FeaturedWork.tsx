@@ -134,6 +134,8 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
   // whose skew transform makes it the containing block for position: fixed,
   // so an inline overlay would size itself to the whole document and fly off
   // as soon as the page moved.
+  // Prerendering runs without a document; the overlay only matters in a browser.
+  if (typeof document === "undefined") return null;
   return createPortal(
     <AnimatePresence>
       {project && (
