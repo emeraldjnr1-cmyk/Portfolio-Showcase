@@ -95,6 +95,11 @@ export function Footer() {
                 Ways to work together
               </a>
             </li>
+            <li>
+              <a href="/team" className={linkCls}>
+                The D. Team
+              </a>
+            </li>
           </ul>
         </nav>
       </div>

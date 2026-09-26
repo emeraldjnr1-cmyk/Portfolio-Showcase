@@ -5,6 +5,7 @@
 import { services } from "@/data/services";
 import { work } from "@/data/work";
 import { industries } from "@/data/industries";
+import { team } from "@/data/team";
 import { FAQS } from "@/data/faqs";
 import { FIVERR, UPWORK, WHATSAPP } from "@/data/portfolio";
 
@@ -97,7 +98,7 @@ const home: PageMeta = {
       "@id": PERSON_ID,
       name: SITE.person,
       alternateName: ["Denver Peter", "Emerald"],
-      jobTitle: "Founder",
+      jobTitle: "Founder and CEO",
       worksFor: { "@id": ORG_ID },
       url: `${SITE.url}/#about`,
       image: SITE.image,
@@ -251,6 +252,31 @@ const industryPages: PageMeta[] = industries.map((ind) => ({
   ],
 }));
 
+const teamPage: PageMeta = {
+  path: "/team",
+  title: "The D. Team | Denver NoCode",
+  description:
+    "Meet the D. Team: Emerald, founder and CEO of Denver NoCode, with Marcel, Smart and Samuel across AI video, web design, Roblox and automation.",
+  image: SITE.image,
+  imageSize: { w: 1200, h: 630 },
+  summary: "The team: Emerald (founder and CEO), Marcel, Smart and Samuel.",
+  jsonLd: [
+    breadcrumbs([["Home", "/"], ["Team", "/team"]]),
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "The D. Team",
+      itemListElement: team.map((m, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: m.founder
+          ? { "@id": PERSON_ID }
+          : { "@type": "Person", name: m.name, jobTitle: m.title, worksFor: { "@id": ORG_ID } },
+      })),
+    },
+  ],
+};
+
 export const PAGES: PageMeta[] = [
   home,
   servicesIndex,
@@ -259,5 +285,6 @@ export const PAGES: PageMeta[] = [
   ...industryPages,
   workIndex,
   ...workPages,
+  teamPage,
   notFound,
 ];

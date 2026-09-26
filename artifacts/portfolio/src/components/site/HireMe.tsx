@@ -106,7 +106,7 @@ export function HireMe() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 text-center md:mb-20">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">07 — Hire me</span>
+            <span className="font-mono text-sm font-semibold text-primary">08 — Hire me</span>
           </Reveal>
           <SplitWords
             as="h2"

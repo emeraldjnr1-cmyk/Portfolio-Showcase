@@ -135,6 +135,10 @@ ${list("/industries")}
 - [All work](${urlOf("/work")}): the flagship systems, each broken down step by step.
 ${list("/work")}
 
+## Team
+
+- [The D. Team](${urlOf("/team")}): Emerald (founder and CEO), with Marcel (AI video editor and automation specialist), Smart (web designer and business automation consultant) and Samuel (Roblox developer and AI automation expert).
+
 ## Contact
 
 - [WhatsApp](${SITE.whatsapp}): fastest way to start a project.

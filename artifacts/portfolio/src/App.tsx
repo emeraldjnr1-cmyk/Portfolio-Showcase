@@ -8,6 +8,7 @@ import Home from "@/pages/Home";
 import { ServicesIndex, ServicePage } from "@/pages/Services";
 import { WorkIndex, WorkPage } from "@/pages/Work";
 import { IndustriesIndex, IndustryPage } from "@/pages/Industries";
+import { TeamPage } from "@/pages/Team";
 import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/services/:slug">{(p) => <ServicePage slug={p.slug} />}</Route>
       <Route path="/industries" component={IndustriesIndex} />
       <Route path="/industries/:slug">{(p) => <IndustryPage slug={p.slug} />}</Route>
+      <Route path="/team" component={TeamPage} />
       <Route path="/work" component={WorkIndex} />
       <Route path="/work/:slug">{(p) => <WorkPage slug={p.slug} />}</Route>
       <Route component={NotFound} />
