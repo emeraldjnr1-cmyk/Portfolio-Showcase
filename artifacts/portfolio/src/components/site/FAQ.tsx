@@ -18,7 +18,7 @@ export function FAQSection() {
         {/* Sticky intro column */}
         <div className="md:sticky md:top-32 md:self-start">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">09 — Questions</span>
+            <span className="font-mono text-sm font-semibold text-primary">10 — Questions</span>
           </Reveal>
           <SplitWords
             as="h2"

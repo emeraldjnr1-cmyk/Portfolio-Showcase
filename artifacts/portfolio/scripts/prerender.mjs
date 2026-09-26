@@ -125,6 +125,11 @@ fs.writeFileSync(
 - [All services](${urlOf("/services")}): overview of the six services.
 ${list("/services")}
 
+## Industries
+
+- [All industries](${urlOf("/industries")}): the twelve industries served.
+${list("/industries")}
+
 ## Work
 
 - [All work](${urlOf("/work")}): the flagship systems, each broken down step by step.

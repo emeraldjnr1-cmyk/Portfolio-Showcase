@@ -29,6 +29,7 @@ import { HireMe } from "@/components/site/HireMe";
 import { FAQSection } from "@/components/site/FAQ";
 import { Footer } from "@/components/site/Footer";
 import { ClaudeFullStack } from "@/components/site/ClaudeFullStack";
+import { IndustriesSection } from "@/components/site/IndustriesSection";
 
 import { reviews, profilePic, WHATSAPP } from "@/data/portfolio";
 
@@ -320,7 +321,7 @@ function Process() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-20">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">07 — Process</span>
+            <span className="font-mono text-sm font-semibold text-primary">08 — Process</span>
           </Reveal>
           <SplitWords
             as="h2"
@@ -470,7 +471,7 @@ function About() {
 
         <div>
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">08 — About</span>
+            <span className="font-mono text-sm font-semibold text-primary">09 — About</span>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
@@ -609,6 +610,7 @@ export default function Home() {
           <WebProjectsSection />
           <BigMarquee items={["Automation", "AI Agents", "n8n", "Make.com", "Airtable"]} direction="right" accent="#F32317" />
           <FeaturedWork />
+          <IndustriesSection />
           <BigMarquee items={["dApps", "Solana Bots", "Smart Contracts", "Web3 Trading", "DeFi"]} accent="#8B5CF6" />
           <Web3ProjectsSection />
           <TestimonialCinema />

@@ -4,6 +4,7 @@
 // prerendered, indexed and listed automatically.
 import { services } from "@/data/services";
 import { work } from "@/data/work";
+import { industries } from "@/data/industries";
 import { FAQS } from "@/data/faqs";
 import { FIVERR, UPWORK, WHATSAPP } from "@/data/portfolio";
 
@@ -210,4 +211,53 @@ const notFound: PageMeta = {
   noindex: true,
 };
 
-export const PAGES: PageMeta[] = [home, servicesIndex, ...servicePages, workIndex, ...workPages, notFound];
+const industriesIndex: PageMeta = {
+  path: "/industries",
+  title: "Industries: AI Automation by Sector | Denver NoCode",
+  description:
+    "Claude Code builds, automation and AI agents for real estate, fitness, construction, events, e-commerce, agencies, creators, professional services and more.",
+  image: SITE.image,
+  imageSize: { w: 1200, h: 630 },
+  summary: "The twelve industries served, each with its own page.",
+  jsonLd: [
+    breadcrumbs([["Home", "/"], ["Industries", "/industries"]]),
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      itemListElement: industries.map((ind, i) => ({ "@type": "ListItem", position: i + 1, name: ind.name, url: abs(`/industries/${ind.slug}`) })),
+    },
+  ],
+};
+
+const industryPages: PageMeta[] = industries.map((ind) => ({
+  path: `/industries/${ind.slug}`,
+  title: ind.title,
+  description: ind.description,
+  image: SITE.image,
+  imageSize: { w: 1200, h: 630 },
+  summary: ind.short,
+  jsonLd: [
+    breadcrumbs([["Home", "/"], ["Industries", "/industries"], [ind.name, `/industries/${ind.slug}`]]),
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: `Automation and AI for ${ind.name.toLowerCase()}`,
+      description: ind.description,
+      url: abs(`/industries/${ind.slug}`),
+      provider: { "@id": ORG_ID },
+      areaServed: "Worldwide",
+      audience: { "@type": "BusinessAudience", name: ind.name },
+    },
+  ],
+}));
+
+export const PAGES: PageMeta[] = [
+  home,
+  servicesIndex,
+  ...servicePages,
+  industriesIndex,
+  ...industryPages,
+  workIndex,
+  ...workPages,
+  notFound,
+];
