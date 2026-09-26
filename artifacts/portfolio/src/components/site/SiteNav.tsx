@@ -13,7 +13,7 @@ const LINKS = [
   { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
   { label: "Claude Code", href: "#claude-code" },
-  { label: "Toolkit", href: "#stack" },
+  { label: "D. Team", href: "#team" },
   { label: "Clients", href: "#clients" },
   { label: "Hire me", href: "#hire" },
   { label: "About", href: "#about" },
