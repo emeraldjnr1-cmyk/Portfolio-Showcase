@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 import { MaskReveal } from "@/components/fx/ScrollFX";
 import { webProjects, WebProject } from "@/data/portfolio";
@@ -139,7 +140,7 @@ export function WebProjectsSection() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-20 md:mb-28">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">01 — Built with Claude Code</span>
+            <span className="font-mono text-sm font-semibold text-primary">02 — Apps and websites</span>
           </Reveal>
           <SplitWords
             as="h2"
@@ -148,9 +149,13 @@ export function WebProjectsSection() {
           />
           <Reveal delay={0.25}>
             <p className="mt-6 max-w-xl text-lg text-black/55">
-              Dashboards, storefronts, booking flows, AI products — and automations and AI agent systems too. Full
-              builds, not templates.
+              Dashboards, storefronts, booking flows and AI products. Full builds, not templates.
             </p>
+          </Reveal>
+          <Reveal delay={0.35}>
+            <a href="/services/websites-apps" className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-black transition-colors hover:text-primary">
+              Websites and web apps service <ArrowUpRight className="h-4 w-4" />
+            </a>
           </Reveal>
         </div>
 

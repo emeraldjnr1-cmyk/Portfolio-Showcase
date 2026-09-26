@@ -317,7 +317,7 @@ export function FeaturedWork() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 md:mb-24">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">03 — Featured automation systems</span>
+            <span className="font-mono text-sm font-semibold text-primary">03 — Automations and AI agents</span>
           </Reveal>
           <SplitWords
             as="h2"
@@ -328,6 +328,19 @@ export function FeaturedWork() {
             <p className="mt-6 max-w-xl text-lg text-black/55">
               The flagship builds get the film treatment. Every card opens the real system, tools and outcome included.
             </p>
+          </Reveal>
+          <Reveal delay={0.35}>
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold">
+              <a href="/services/automation" className="inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
+                Automation service <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a href="/services/ai-agents" className="inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
+                AI agents service <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a href="/work" className="inline-flex items-center gap-1.5 text-black/55 transition-colors hover:text-primary">
+                Every system, step by step <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
           </Reveal>
         </div>
 

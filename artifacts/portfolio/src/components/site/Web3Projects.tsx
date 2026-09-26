@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 import { web3Projects } from "@/data/portfolio";
 import { FeatureRow, CompactCard } from "@/components/site/WebProjects";
@@ -10,7 +11,7 @@ export function Web3ProjectsSection() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-20 md:mb-28">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">02 — Web3 & Blockchain</span>
+            <span className="font-mono text-sm font-semibold text-primary">04 — Web3 & Blockchain</span>
           </Reveal>
           <SplitWords
             as="h2"
@@ -22,6 +23,11 @@ export function Web3ProjectsSection() {
               Solana trading systems, EVM contracts, DeFi interfaces and full client builds. Contract to UI, end to
               end.
             </p>
+          </Reveal>
+          <Reveal delay={0.35}>
+            <a href="/services/web3" className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-black transition-colors hover:text-primary">
+              Web3 service <ArrowUpRight className="h-4 w-4" />
+            </a>
           </Reveal>
         </div>
 

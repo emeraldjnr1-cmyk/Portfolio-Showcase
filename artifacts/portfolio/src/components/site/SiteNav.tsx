@@ -12,7 +12,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const LINKS = [
   { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
-  { label: "Claude Code", href: "#websites" },
+  { label: "Claude Code", href: "#claude-code" },
   { label: "Toolkit", href: "#stack" },
   { label: "Clients", href: "#clients" },
   { label: "Hire me", href: "#hire" },
