@@ -10,9 +10,9 @@ import { WHATSAPP } from "@/data/portfolio";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const LINKS = [
+  { label: "Services", href: "/services" },
+  { label: "Work", href: "/work" },
   { label: "Claude Code", href: "#websites" },
-  { label: "Web3", href: "#web3" },
-  { label: "Automations", href: "#work" },
   { label: "Toolkit", href: "#stack" },
   { label: "Clients", href: "#clients" },
   { label: "Hire me", href: "#hire" },
@@ -23,7 +23,7 @@ export function SiteNav() {
   // Section anchors only exist on the home page; elsewhere they go via "/".
   const [location] = useLocation();
   const onHome = location === "/";
-  const links = onHome ? LINKS : LINKS.map((l) => ({ ...l, href: `/${l.href}` }));
+  const links = onHome ? LINKS : LINKS.map((l) => (l.href.startsWith("#") ? { ...l, href: `/${l.href}` } : l));
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -69,17 +69,23 @@ export function SiteNav() {
             Denver<span className="text-primary">®</span>
           </a>
 
-          <nav className="hidden md:flex items-center gap-8">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="group relative text-sm font-medium text-black/60 transition-colors hover:text-black"
-              >
-                {l.label}
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-primary transition-all duration-300 group-hover:w-full" />
-              </a>
-            ))}
+          <nav className="hidden lg:flex items-center gap-8">
+            {links.map((l) => {
+              const current = l.href.startsWith("/") && !l.href.includes("#") && location.startsWith(l.href);
+              return (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  aria-current={current ? "page" : undefined}
+                  className={`group relative text-sm font-medium transition-colors hover:text-black ${current ? "text-black" : "text-black/60"}`}
+                >
+                  {l.label}
+                  <span
+                    className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 group-hover:w-full ${current ? "w-full" : "w-0"}`}
+                  />
+                </a>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-3">
@@ -101,7 +107,7 @@ export function SiteNav() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
-              className="relative z-50 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/20 bg-white/90 md:hidden"
+              className="relative z-50 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/20 bg-white/90 lg:hidden"
             >
               <span className="relative block h-4 w-5">
                 <motion.span
@@ -136,7 +142,7 @@ export function SiteNav() {
             animate={{ clipPath: "circle(150% at calc(100% - 44px) 44px)" }}
             exit={{ clipPath: "circle(0% at calc(100% - 44px) 44px)" }}
             transition={{ duration: 0.55, ease: EASE }}
-            className="fixed inset-0 z-40 flex flex-col justify-center bg-[#E7E7E1] px-8 md:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-center overflow-y-auto bg-[#E7E7E1] px-8 pb-8 pt-24 lg:hidden"
           >
             <nav className="flex flex-col gap-1">
               {links.map((l, i) => (
@@ -147,7 +153,7 @@ export function SiteNav() {
                   initial={{ opacity: 0, y: 26 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.18 + i * 0.055, duration: 0.5, ease: EASE }}
-                  className="group flex items-center justify-between border-b border-black/10 py-4 font-display text-3xl font-extrabold tracking-tight text-black"
+                  className="group flex items-center justify-between border-b border-black/10 py-3 font-display text-[28px] leading-tight font-extrabold tracking-tight text-black"
                 >
                   <span className="flex items-baseline gap-3">
                     <span className="font-mono text-xs font-bold text-black/30">
