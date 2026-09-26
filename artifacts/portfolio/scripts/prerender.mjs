@@ -12,7 +12,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const out = path.join(root, "dist/public");
 const template = fs.readFileSync(path.join(out, "index.html"), "utf8");
-const { render, PAGES, SITE } = await import(pathToFileURL(path.join(root, "dist/server/entry-server.js")).href);
+const { render, PAGES, SITE, buildKnowledge } = await import(pathToFileURL(path.join(root, "dist/server/entry-server.js")).href);
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const urlOf = (p) => (p === "/" ? `${SITE.url}/` : `${SITE.url}${p}`);
@@ -144,7 +144,16 @@ ${list("/work")}
 - [WhatsApp](${SITE.whatsapp}): fastest way to start a project.
 ${SITE.sameAs.map((u) => `- [${u.includes("upwork") ? "Upwork" : "Fiverr"}](${u})`).join("\n")}
 - [Home](${SITE.url}/): video testimonials, the full portfolio and the onboarding form.
+
+## Optional
+
+- [Full details](${SITE.url}/llms-full.txt): every service, industry, case study and FAQ in one file.
 `,
 );
 
+// The long form: what AI engines read in depth, and all that Ask Pax knows.
+const knowledge = buildKnowledge();
+fs.writeFileSync(path.join(out, "llms-full.txt"), knowledge);
+
+console.log(`prerender: llms-full.txt ${knowledge.split(/\s+/).length} words`);
 console.log(`prerender: ${PAGES.length} pages, sitemap (${indexable.length} urls), robots.txt, llms.txt`);
