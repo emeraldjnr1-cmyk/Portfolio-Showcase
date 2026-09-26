@@ -103,6 +103,9 @@ export function ClaudeFullStack() {
             <a href="/services" className="inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
               All services <ArrowUpRight className="h-4 w-4" />
             </a>
+            <a href="/films" className="inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
+              Watch the build films <ArrowUpRight className="h-4 w-4" />
+            </a>
             <a href="#websites" className="inline-flex items-center gap-1.5 text-black/55 transition-colors hover:text-primary">
               See the builds below
             </a>

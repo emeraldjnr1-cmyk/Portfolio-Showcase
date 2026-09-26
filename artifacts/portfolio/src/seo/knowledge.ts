@@ -6,6 +6,7 @@ import { services } from "@/data/services";
 import { industries, PROOF_LABEL, SIZES } from "@/data/industries";
 import { work } from "@/data/work";
 import { team } from "@/data/team";
+import { films, FILM_GROUPS } from "@/data/films";
 import { FAQS } from "@/data/faqs";
 import { webProjects, web3Projects, testimonials, WHATSAPP, FIVERR, UPWORK } from "@/data/portfolio";
 
@@ -73,6 +74,12 @@ export function buildKnowledge(): string {
     out.push(`### ${w.title} (${SITE}/work/${w.slug})`, "", w.desc, `Result: ${w.stat}. ${w.result}.`, "How it works:");
     w.steps.forEach((st, i) => out.push(`${i + 1}. ${st}`));
     out.push(`Stack: ${w.tools.join(", ")}.`, "");
+  }
+
+  h(`Build films (${SITE}/films): short walkthroughs with sample data, not client results`);
+  for (const g of FILM_GROUPS) {
+    out.push(`${g.label}:`);
+    for (const f of films.filter((x) => x.service === g.service)) out.push(`- ${f.title} (${f.tag}): ${f.desc}`);
   }
 
   h("Web builds gallery (showcase builds, see the home page)");

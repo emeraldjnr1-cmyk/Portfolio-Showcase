@@ -6,6 +6,7 @@ import { services } from "@/data/services";
 import { work } from "@/data/work";
 import { industries } from "@/data/industries";
 import { team } from "@/data/team";
+import { films, filmSrc, filmPoster } from "@/data/films";
 import { FAQS } from "@/data/faqs";
 import { FIVERR, UPWORK, WHATSAPP } from "@/data/portfolio";
 
@@ -252,6 +253,34 @@ const industryPages: PageMeta[] = industries.map((ind) => ({
   ],
 }));
 
+const video = (f: (typeof films)[number]) => ({
+  "@type": "VideoObject",
+  name: f.title,
+  description: f.desc,
+  thumbnailUrl: abs(filmPoster(f)),
+  contentUrl: abs(filmSrc(f)),
+  uploadDate: f.date,
+  duration: `PT${f.seconds}S`,
+  creator: { "@id": ORG_ID },
+});
+
+const filmsPage: PageMeta = {
+  path: "/films",
+  title: "Build Films: Claude Systems in Action | Denver NoCode",
+  description:
+    "Short films showing how Claude systems work, from Claude Code and Claude Skills to automations, AI agents, MCP servers and full-stack apps.",
+  image: abs(filmPoster(films[0])),
+  summary: "Short walkthrough films of Claude systems, grouped by service.",
+  jsonLd: [
+    breadcrumbs([["Home", "/"], ["Build films", "/films"]]),
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      itemListElement: films.map((f, i) => ({ "@type": "ListItem", position: i + 1, item: video(f) })),
+    },
+  ],
+};
+
 const teamPage: PageMeta = {
   path: "/team",
   title: "The D. Team | Denver NoCode",
@@ -286,5 +315,6 @@ export const PAGES: PageMeta[] = [
   workIndex,
   ...workPages,
   teamPage,
+  filmsPage,
   notFound,
 ];

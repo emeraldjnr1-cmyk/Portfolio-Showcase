@@ -65,6 +65,11 @@ export function Footer() {
               </li>
             ))}
             <li>
+              <a href="/films" className={linkCls}>
+                Build films
+              </a>
+            </li>
+            <li>
               <a href="/work" className="text-sm font-semibold text-white transition-colors hover:text-[#FFCB41]">
                 All work
               </a>

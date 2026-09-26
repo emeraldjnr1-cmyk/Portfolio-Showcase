@@ -3,6 +3,8 @@ import { ArrowUpRight, Plus } from "lucide-react";
 import NotFound from "@/pages/not-found";
 import { PageShell, Breadcrumbs, AccentHeading, StartButtons } from "@/components/site/PageShell";
 import { services, serviceBySlug } from "@/data/services";
+import { filmsFor } from "@/data/films";
+import { FilmGrid } from "@/components/site/Films";
 
 const STEPS = [
   { n: "01", title: "Tell me your workflow", desc: "We map the manual process, find the bottleneck and agree what done looks like." },
@@ -61,6 +63,7 @@ export function ServicePage({ slug }: { slug: string }) {
   const s = serviceBySlug(slug);
   if (!s) return <NotFound />;
   const others = services.filter((o) => o.slug !== s.slug);
+  const serviceFilms = filmsFor(s.slug);
   const accentVar = { "--accent": s.accent } as CSSProperties;
 
   return (
@@ -109,6 +112,23 @@ export function ServicePage({ slug }: { slug: string }) {
           </ul>
         </div>
       </section>
+
+      {/* Build films for this service, when there are any */}
+      {serviceFilms.length > 0 && (
+        <section className="border-t border-black/10 px-6 py-24 md:px-12 md:py-32">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
+              <h2 className="font-display text-4xl font-extrabold tracking-tight text-black md:text-6xl">
+                Watch it <span className="font-editorial font-normal" style={{ color: s.accent }}>work</span>.
+              </h2>
+              <a href="/films" className="inline-flex items-center gap-1.5 text-sm font-bold text-black transition-colors hover:text-primary">
+                All build films <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
+            <FilmGrid films={serviceFilms} />
+          </div>
+        </section>
+      )}
 
       {/* Proof */}
       <section className="border-t border-black/10 px-6 py-24 md:px-12 md:py-32">
