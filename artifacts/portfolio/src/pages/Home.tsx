@@ -446,11 +446,12 @@ function About() {
             transition={{ duration: 1, ease: EASE }}
             className="relative overflow-hidden rounded-[2rem] border-2 border-black rotate-2 transition-all duration-700 group-hover:rotate-0 group-hover:shadow-[12px_12px_0_#0015D4]"
           >
+            {/* Zoomed to head and shoulders; the source is a half-body shot. */}
             <motion.img
               src={profilePic}
               alt="Denver Emerald Peter"
-              style={{ filter: portraitFilter }}
-              className="w-full scale-105 object-cover transition-transform duration-700 group-hover:scale-100"
+              style={{ filter: portraitFilter, transformOrigin: "50% 4%" }}
+              className="w-full scale-[1.5] object-cover transition-transform duration-700 group-hover:scale-[1.45]"
             />
             {/* sheen that sweeps across on hover */}
             <span
