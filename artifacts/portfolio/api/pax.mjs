@@ -7,9 +7,10 @@
 
 export const maxDuration = 30;
 
-// Sonnet, not Haiku: in live tests Haiku invented experience ("extensive
-// experience with healthcare practices") and drifted into estimates.
-const MODEL = "claude-sonnet-5";
+// Opus 5.5 at Emerald's request (26 Sep 2026). Not Haiku: in live tests
+// Haiku invented experience ("extensive experience with healthcare
+// practices") and drifted into estimates; Sonnet 5 also passed.
+const MODEL = "claude-opus-5-5";
 // Overridable only so local tests can point at a fake; unset in production.
 const UPSTREAM = process.env.PAX_UPSTREAM_URL || "https://api.anthropic.com/v1/messages";
 const KNOWLEDGE_URL = "https://www.denvernocode.com/llms-full.txt";
