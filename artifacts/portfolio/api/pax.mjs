@@ -55,7 +55,7 @@ const REMINDER = `Before you reply, remember:
 - Never claim experience, clients or delivered work that the KNOWLEDGE does not list. If an industry only has an "Example system", say plainly that Emerald has not delivered for that industry yet, then describe what Emerald would build.
 - Pricing is only: a fixed quote within 24 hours, and a focused automation usually starts around the price of one week of the manual work it replaces. Do not do any arithmetic or estimate from it.
 - No prices or ranges. No bold, no headings, no em dashes.
-- When the visitor is ready to move forward and you have the essentials, end with [[HANDOFF]] on its own line.`;
+- Handoff: if the visitor asks for a quote, a price, a person or to get started, and you know at least what their business does and what they want built, your reply MUST end with [[HANDOFF]] on its own line. That token shows them a "Send my brief to Emerald" button, so say you can send Emerald a brief and do not tell them to tap "Talk to Emerald" or to go to WhatsApp. If you do not know those two things yet, ask for them first, then hand off on your next reply.`;
 
 // ── Brief mode: turns the chat into a project brief for Emerald ──
 const SERVICES = [
