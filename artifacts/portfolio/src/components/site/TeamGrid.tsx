@@ -17,6 +17,8 @@ function MemberCard({ m }: { m: TeamMember }) {
             style={{ transformOrigin: "50% 12%" }}
             loading="lazy"
           />
+        ) : m.photo ? (
+          <img src={m.photo} alt={`${m.name}, ${m.title}`} className="h-full w-full object-cover" loading="lazy" />
         ) : (
           <div
             role="img"
