@@ -6,7 +6,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 function MemberCard({ m }: { m: TeamMember }) {
   return (
-    <div className="group text-center">
+    <a href={`/team/${m.slug}`} className="group block text-center" data-cursor="hover" aria-label={`Meet ${m.name}, ${m.title}`}>
       <div className="relative aspect-square overflow-hidden rounded-2xl border-2 border-black transition-all duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:shadow-[8px_8px_0_#141414]">
         {m.founder ? (
           // Zoomed to head and shoulders: the source portrait is a full half-body shot.
@@ -40,7 +40,10 @@ function MemberCard({ m }: { m: TeamMember }) {
       </div>
       <h3 className="mt-3 font-display text-base font-extrabold tracking-tight text-black sm:text-lg md:mt-5 md:text-2xl">{m.name}</h3>
       <p className="mx-auto mt-1 max-w-[16rem] text-[11px] leading-snug text-black/55 sm:text-sm md:text-base">{m.title}</p>
-    </div>
+      <span className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-primary transition-transform group-hover:translate-x-0.5 sm:text-sm">
+        Meet {m.name} <span aria-hidden>→</span>
+      </span>
+    </a>
   );
 }
 

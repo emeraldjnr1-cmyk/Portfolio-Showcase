@@ -101,8 +101,9 @@ const home: PageMeta = {
       alternateName: ["Denver Peter", "Emerald"],
       jobTitle: "Founder and CEO",
       worksFor: { "@id": ORG_ID },
-      url: `${SITE.url}/#about`,
+      url: `${SITE.url}/team/emerald`,
       image: SITE.image,
+      homeLocation: { "@type": "Place", name: "Lagos, Nigeria", address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" } },
       sameAs: SITE.sameAs,
       knowsAbout: ["Claude Code", "AI agents", "n8n", "Make.com", "Airtable", "React"],
     },
@@ -306,6 +307,42 @@ const teamPage: PageMeta = {
   ],
 };
 
+// One profile page per member. Draft profiles (not yet written or approved
+// by the person) stay out of Google and the sitemap until approved.
+const profilePages: PageMeta[] = team.map((m) =>
+  m.founder
+    ? {
+        path: `/team/${m.slug}`,
+        title: "Denver Emerald Peter, Founder of Denver NoCode",
+        description:
+          "Meet Denver Emerald Peter, the Lagos-based founder of Denver NoCode, building Claude Code apps, AI agents and automations for businesses in Europe, the US and Asia.",
+        image: SITE.image,
+        imageSize: { w: 1200, h: 630 },
+        summary: "Emerald's profile: story, how Emerald works, and client words.",
+        jsonLd: [
+          breadcrumbs([["Home", "/"], ["Team", "/team"], [m.name, `/team/${m.slug}`]]),
+          { "@context": "https://schema.org", "@type": "ProfilePage", url: abs(`/team/${m.slug}`), mainEntity: { "@id": PERSON_ID } },
+        ],
+      }
+    : {
+        path: `/team/${m.slug}`,
+        title: `${m.name}, ${m.title} | Denver NoCode`,
+        description: `Meet ${m.name}, ${m.title.toLowerCase()} on the D. Team at Denver NoCode. ${m.lead}`,
+        image: abs(m.photo ?? "/og-image.png"),
+        summary: `${m.name}: ${m.title}.`,
+        noindex: m.draft,
+        jsonLd: [
+          breadcrumbs([["Home", "/"], ["Team", "/team"], [m.name, `/team/${m.slug}`]]),
+          {
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            url: abs(`/team/${m.slug}`),
+            mainEntity: { "@type": "Person", name: m.name, jobTitle: m.title, image: abs(m.photo ?? ""), worksFor: { "@id": ORG_ID } },
+          },
+        ],
+      },
+);
+
 export const PAGES: PageMeta[] = [
   home,
   servicesIndex,
@@ -315,6 +352,7 @@ export const PAGES: PageMeta[] = [
   workIndex,
   ...workPages,
   teamPage,
+  ...profilePages,
   filmsPage,
   notFound,
 ];
