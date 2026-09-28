@@ -53,7 +53,7 @@ function Portrait({ m, className = "", accent = COBALT }: { m: TeamMember; class
     <div className={`overflow-hidden rounded-[1.75rem] border-2 border-black bg-black ${className}`} style={{ boxShadow: `10px 10px 0 ${accent}` }}>
       {m.founder ? (
         // A dedicated studio portrait for this page, pre-cropped to 4:5.
-        <img src="/team/emerald-profile.webp" alt={m.fullName ?? m.name} width={960} height={1200} className="aspect-[4/5] w-full object-cover" />
+        <img src="/team/emerald-portrait.webp" alt={m.fullName ?? m.name} width={960} height={1200} className="aspect-[4/5] w-full object-cover" />
       ) : (
         <img src={m.photo} alt={`${m.name}, ${m.title}`} className="aspect-square w-full object-cover" />
       )}
