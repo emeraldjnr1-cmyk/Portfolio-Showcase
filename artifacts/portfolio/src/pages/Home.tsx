@@ -258,7 +258,7 @@ function Hero({ ready }: { ready: boolean }) {
               delivered in your own accounts, fully documented and built to keep running long after handover.
             </p>
             <p className="mt-4 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
-              Denver <span className="text-[#10B981]">Emerald</span> Peter · Founder, Denver NoCode
+              Denver <span className="text-[#00795A]">Emerald</span> Peter · Founder, Denver NoCode
             </p>
           </motion.div>
 
@@ -456,7 +456,7 @@ function About() {
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
-              Hi, I'm Denver <span className="text-[#10B981]">Emerald</span> Peter.
+              Hi, I'm Denver <span className="text-[#00795A]">Emerald</span> Peter.
             </h2>
           </Reveal>
           <Reveal delay={0.2}>

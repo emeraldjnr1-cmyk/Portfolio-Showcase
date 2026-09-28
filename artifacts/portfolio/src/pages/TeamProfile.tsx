@@ -6,6 +6,14 @@ import { PageShell, Breadcrumbs, AccentHeading, StartButtons } from "@/component
 import { team, memberBySlug, LOCATION, type TeamMember } from "@/data/team";
 import { profilePic, testimonials, FIVERR, UPWORK, WHATSAPP } from "@/data/portfolio";
 
+// Emerald's page takes emerald as its accent. Buttons and the menu stay brand
+// cobalt, so actions look the same on every page. Text uses a deep jewel
+// emerald (about 4.5:1 on the bone background); Pantone Emerald #009B77 is
+// only 2.8:1 there, so it is kept for the portrait's shadow.
+export const EMERALD = "#00795A";
+const EMERALD_GLOW = "#009B77";
+const COBALT = "#0015D4";
+
 // ── Shared pieces ──
 
 /** Opens Lagos in Google Maps. */
@@ -40,11 +48,12 @@ function LocalTime() {
   );
 }
 
-function Portrait({ m, className = "" }: { m: TeamMember; className?: string }) {
+function Portrait({ m, className = "", accent = COBALT }: { m: TeamMember; className?: string; accent?: string }) {
   return (
-    <div className={`overflow-hidden rounded-[1.75rem] border-2 border-black bg-black shadow-[10px_10px_0_#0015D4] ${className}`}>
+    <div className={`overflow-hidden rounded-[1.75rem] border-2 border-black bg-black ${className}`} style={{ boxShadow: `10px 10px 0 ${accent}` }}>
       {m.founder ? (
-        <img src={profilePic} alt={m.fullName ?? m.name} className="aspect-[4/5] w-full scale-[1.3] object-cover" style={{ transformOrigin: "50% 8%" }} />
+        // A dedicated studio portrait for this page, pre-cropped to 4:5.
+        <img src="/team/emerald-profile.webp" alt={m.fullName ?? m.name} width={960} height={1200} className="aspect-[4/5] w-full object-cover" />
       ) : (
         <img src={m.photo} alt={`${m.name}, ${m.title}`} className="aspect-square w-full object-cover" />
       )}
@@ -60,17 +69,19 @@ function Section({ children, tint = false }: { children: ReactNode; tint?: boole
   );
 }
 
-function H2({ before, accent, after = "." }: { before: string; accent: string; after?: string }) {
+function H2({ before, accent, after = ".", color = COBALT }: { before: string; accent: string; after?: string; color?: string }) {
   return (
     <h2 className="font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
       {before}
-      <span className="font-editorial font-normal text-primary">{accent}</span>
+      <span className="font-editorial font-normal" style={{ color }}>
+        {accent}
+      </span>
       {after}
     </h2>
   );
 }
 
-function HandlesAndSkills({ m, who }: { m: TeamMember; who: string }) {
+function HandlesAndSkills({ m, who, color = COBALT }: { m: TeamMember; who: string; color?: string }) {
   return (
     <div className="grid gap-12 md:grid-cols-2">
       <div>
@@ -78,7 +89,9 @@ function HandlesAndSkills({ m, who }: { m: TeamMember; who: string }) {
         <ul className="mt-5 border-t border-black/15">
           {m.handles.map((h, i) => (
             <li key={h} className="flex gap-4 border-b border-black/15 py-4">
-              <span className="font-mono text-sm font-bold text-primary">{String(i + 1).padStart(2, "0")}</span>
+              <span className="font-mono text-sm font-bold" style={{ color }}>
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <span className="text-lg text-black/80">{h}</span>
             </li>
           ))}
@@ -149,11 +162,15 @@ function FounderProfile({ m }: { m: TeamMember }) {
         <div className="mx-auto grid max-w-7xl items-center gap-14 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
           <div>
             <Breadcrumbs trail={[["Home", "/"], ["Team", "/team"], [m.name, `/team/${m.slug}`]]} />
-            <p className="mt-8 font-mono text-sm font-semibold text-primary">Founder and CEO, Denver NoCode</p>
+            <p className="mt-8 font-mono text-sm font-semibold" style={{ color: EMERALD }}>
+              Founder and CEO, Denver NoCode
+            </p>
             <div className="mt-4">
-              <AccentHeading before="Meet " accent={m.name} after="." color="#0015D4" />
+              <AccentHeading before="Meet " accent={m.name} after="." color={EMERALD} />
             </div>
-            <p className="mt-3 font-mono text-sm font-semibold uppercase tracking-widest text-black/45">{m.fullName}</p>
+            <p className="mt-3 font-mono text-sm font-semibold uppercase tracking-widest text-black/45">
+              Denver <span style={{ color: EMERALD }}>Emerald</span> Peter
+            </p>
             <p className="mt-7 max-w-xl text-xl font-semibold leading-snug text-black md:text-2xl">{m.lead}</p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <LocationButton />
@@ -166,7 +183,7 @@ function FounderProfile({ m }: { m: TeamMember }) {
               <StartButtons />
             </div>
           </div>
-          <Portrait m={m} className="mx-auto w-full max-w-sm rotate-2" />
+          <Portrait m={m} className="mx-auto w-full max-w-sm rotate-2" accent={EMERALD_GLOW} />
         </div>
       </section>
 
@@ -185,7 +202,7 @@ function FounderProfile({ m }: { m: TeamMember }) {
       {/* Story */}
       <Section>
         <div className="grid gap-12 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-          <H2 before="My " accent="story" />
+          <H2 before="My " accent="story" color={EMERALD} />
           <div className="space-y-5 text-lg leading-relaxed text-black/70">
             {m.bio.map((p) => (
               <p key={p.slice(0, 20)}>{p}</p>
@@ -196,7 +213,7 @@ function FounderProfile({ m }: { m: TeamMember }) {
 
       {/* How I work */}
       <Section tint>
-        <H2 before="How I " accent="work" />
+        <H2 before="How I " accent="work" color={EMERALD} />
         <ul className="mt-12 grid gap-6 md:grid-cols-2">
           {PRINCIPLES.map((p, i) => (
             <li key={p.t} className="rounded-2xl border-2 border-black bg-white p-7">
@@ -210,16 +227,16 @@ function FounderProfile({ m }: { m: TeamMember }) {
 
       {/* What I handle */}
       <Section>
-        <H2 before="On every " accent="project" />
+        <H2 before="On every " accent="project" color={EMERALD} />
         <div className="mt-12">
-          <HandlesAndSkills m={m} who="Emerald" />
+          <HandlesAndSkills m={m} who="Emerald" color={EMERALD} />
         </div>
       </Section>
 
       {/* Clients */}
       <Section tint>
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <H2 before="In clients' " accent="words" />
+          <H2 before="In clients' " accent="words" color={EMERALD} />
           <a href="/#clients" className="inline-flex items-center gap-1.5 text-sm font-bold text-black hover:text-primary">
             Watch the video testimonials <ArrowUpRight className="h-4 w-4" />
           </a>
@@ -239,7 +256,7 @@ function FounderProfile({ m }: { m: TeamMember }) {
       {/* Team */}
       <Section>
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <H2 before="The team I " accent="lead" />
+          <H2 before="The team I " accent="lead" color={EMERALD} />
           <a href="/team" className="inline-flex items-center gap-1.5 text-sm font-bold text-black hover:text-primary">
             The D. Team <ArrowUpRight className="h-4 w-4" />
           </a>
@@ -251,7 +268,7 @@ function FounderProfile({ m }: { m: TeamMember }) {
 
       {/* Find me */}
       <Section tint>
-        <H2 before="Find me " accent="here" />
+        <H2 before="Find me " accent="here" color={EMERALD} />
         <div className="mt-10 flex flex-wrap gap-3">
           {[
             { href: WHATSAPP, label: "WhatsApp", Icon: SiWhatsapp },
