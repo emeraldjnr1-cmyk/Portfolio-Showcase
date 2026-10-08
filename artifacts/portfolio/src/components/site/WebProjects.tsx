@@ -58,7 +58,7 @@ export function FeatureRow({ project, index }: { project: WebProject; index: num
             ) : (
               <motion.img
                 src={project.img}
-                alt={`${project.name} — ${project.kind}`}
+                alt={`${project.name}, ${project.kind}`}
                 loading="lazy"
                 style={{ y: imgY, scale: 1.12 }}
                 className="w-full object-cover transition-transform duration-700 group-hover:scale-[1.16]"
@@ -117,7 +117,7 @@ export function CompactCard({ project, index }: { project: WebProject; index: nu
       <div className="relative aspect-[16/10] overflow-hidden bg-[#DDDBD2]">
         <img
           src={project.img}
-          alt={`${project.name} — ${project.kind}`}
+          alt={`${project.name}, ${project.kind}`}
           loading="lazy"
           className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
         />

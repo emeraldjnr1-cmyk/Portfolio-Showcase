@@ -25,7 +25,7 @@ export type StoryStep = {
 export const STORY_STEPS: StoryStep[] = [
   { id: "enquiry", time: "23:47", title: "An enquiry arrives", desc: "From the website form, long after the office closed." },
   { id: "captured", time: "23:47", title: "Captured", desc: "Lands in the CRM as a new lead. Nothing to copy across." },
-  { id: "enriched", time: "23:47", title: "Enriched", desc: "The blanks fill in: source, area, budget band, timeframe." },
+  { id: "enriched", time: "23:47", title: "Enriched", desc: "Details added: source page, area, budget band, timeframe." },
   { id: "drafted", time: "23:48", title: "Claude drafts a reply", desc: "Reads the message and writes in the agency's own voice." },
   { id: "approved", time: "23:48", title: "A person approves", desc: "Ada gets a push and taps Approve. Nothing goes out without her." },
   { id: "sent", time: "23:49", title: "Sent on WhatsApp", desc: "Amara has a real answer before she puts her phone down." },

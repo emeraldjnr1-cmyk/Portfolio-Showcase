@@ -148,7 +148,7 @@ fs.writeFileSync(
 
 - 200+ systems delivered for 50+ clients worldwide, over 4+ years of building automations.
 - Level 2 seller on Fiverr, also hireable on Upwork or directly on WhatsApp.
-- A fixed quote within 24 hours of the onboarding form. Most automations ship in 3 to 7 days; websites and bigger app builds in 1 to 3 weeks.
+- A fixed quote within 24 hours of the onboarding form. Most automations ship in 3 to 7 days; websites and web apps in 1 to 3 weeks; full platforms in 3 weeks and up, delivered in milestones.
 - Every system is delivered in the client's own accounts, with a walkthrough video and plain docs.
 
 ## Services
@@ -174,7 +174,7 @@ ${list("/work")}
 
 - [WhatsApp](${SITE.whatsapp}): fastest way to start a project.
 ${SITE.sameAs.map((u) => `- [${u.includes("upwork") ? "Upwork" : "Fiverr"}](${u})`).join("\n")}
-- [Home](${SITE.url}/): video testimonials, the full portfolio and the onboarding form.
+- [Home](${SITE.url}/): video testimonials, web builds, the automation story, starting prices and the onboarding form.
 
 ## Optional
 

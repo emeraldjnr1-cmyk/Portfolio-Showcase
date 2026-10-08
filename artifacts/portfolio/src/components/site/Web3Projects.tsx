@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 import { web3Projects } from "@/data/portfolio";
 import { FeatureRow, CompactCard } from "@/components/site/WebProjects";
@@ -23,11 +22,10 @@ export function Web3ProjectsSection() {
               Solana trading systems, EVM contracts, DeFi interfaces and full client builds. Contract to UI, end to
               end.
             </p>
-          </Reveal>
-          <Reveal delay={0.35}>
-            <a href="/services/web3" className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-black transition-colors hover:text-primary">
-              Web3 service <ArrowUpRight className="h-4 w-4" />
-            </a>
+            <p className="mt-4 inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
+              <span className="h-2 w-2 bg-[#FFCB41]" aria-hidden />
+              APAX is a client build. The other 20 are showcase builds with sample data.
+            </p>
           </Reveal>
         </div>
 

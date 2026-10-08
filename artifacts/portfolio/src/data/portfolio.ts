@@ -192,7 +192,7 @@ export const webProjects: WebProject[] = [
 
 // ── Web3 & blockchain projects: dApps, Solana bots, EVM contracts, trading ──
 export const web3Projects: WebProject[] = [
-  { slug: '21-apax', name: 'APAX Portfolio Vault', kind: 'Client Build — Apax × Daniel', desc: 'Portfolio vault dApp where the frontend never touches the chain: Next.js UI, Express API layer, Solidity vault as the single source of truth.', stack: ['Next.js', 'Solidity', 'Hardhat', 'Express'], img: `${BASE}/web3/21-apax.jpg` },
+  { slug: '21-apax', name: 'APAX Portfolio Vault', kind: 'Client build: Apax × Daniel', desc: 'Portfolio vault dApp where the frontend never touches the chain: Next.js UI, Express API layer, Solidity vault as the single source of truth.', stack: ['Next.js', 'Solidity', 'Hardhat', 'Express'], img: `${BASE}/web3/21-apax.jpg` },
   { slug: '01-mintforge', name: 'MintForge', kind: 'NFT Mint dApp', desc: 'Generative 8,888-piece mint with phased allowlists, live supply tracking and instant reveal.', stack: ['React', 'Solidity', 'IPFS'], img: `${BASE}/web3/01-mintforge.jpg` },
   { slug: '02-stakehaus', name: 'StakeHaus', kind: 'Staking Vault dApp', desc: 'Tiered lock vaults paying real yield from protocol fees, with capacity bars and boost multipliers.', stack: ['React', 'Solidity', 'wagmi'], img: `${BASE}/web3/02-stakehaus.jpg` },
   { slug: '03-bridgeport', name: 'Bridgeport', kind: 'Cross-Chain Bridge UI', desc: 'Bridge interface with live fee quotes, route preview and arrival estimates across chains.', stack: ['React', 'LayerZero', 'ethers'], img: `${BASE}/web3/03-bridgeport.jpg` },
@@ -237,7 +237,7 @@ export const testimonials: Testimonial[] = [
     src: rachelVideoUrl,
     name: "Rachel",
     poster: `${BASE}/videos/posters/testimonials/rachel.jpg`,
-    quote: "Denver delivered exactly what we needed — fast, clear, and genuinely expert work.",
+    quote: "Denver delivered exactly what we needed: fast, clear, and genuinely expert work.",
     aspect: "landscape",
   },
   {

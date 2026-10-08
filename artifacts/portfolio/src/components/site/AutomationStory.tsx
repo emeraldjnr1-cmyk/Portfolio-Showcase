@@ -36,7 +36,7 @@ function useStoryMode(): Mode {
   const off = useMotionOff();
   const [desk, setDesk] = useState(false);
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px) and (min-height: 640px) and (pointer: fine)");
+    const mq = window.matchMedia("(min-width: 1024px) and (min-height: 780px) and (pointer: fine), (min-width: 1280px) and (min-height: 700px) and (pointer: fine)");
     const apply = () => setDesk(mq.matches);
     apply();
     mq.addEventListener("change", apply);
@@ -189,9 +189,9 @@ function EnquiryCard() {
           <Initials />
           <div className="min-w-0">
             <p className="font-display text-base font-extrabold tracking-tight text-black">{STORY.lead.name}</p>
-            <p className="font-mono text-xs text-black/50">{STORY.lead.phone}</p>
+            <p className="whitespace-nowrap font-mono text-xs text-black/50">{STORY.lead.phone}</p>
           </div>
-          <span className="ml-auto inline-flex items-center gap-1.5 text-xs font-semibold text-black/50">
+          <span className="ml-auto hidden items-center gap-1.5 text-xs font-semibold text-black/50 sm:inline-flex">
             <Globe className="h-3.5 w-3.5" /> Schools page
           </span>
         </div>
@@ -211,34 +211,34 @@ function CapturedCard() {
   return (
     <Card>
       <CardHead dot="#0015D4" right={<Chip tone="live">Row 148 added</Chip>}>
-        <span className="inline-flex items-center gap-1.5">
-          <Table2 className="h-3.5 w-3.5" /> CRM <span className="text-black/35">·</span> Leads
-        </span>
+        <Table2 className="mr-1.5 inline h-3.5 w-3.5 align-[-2px]" />
+        CRM <span className="text-black/35">·</span> Leads
       </CardHead>
       <div className="overflow-hidden px-4 py-4">
-        {/* The Source column only appears from sm up: five columns do not fit a phone. */}
+        {/* Phones show Name, Budget and Status; Source and Area join from sm up. */}
         <div className="overflow-hidden rounded-lg border border-black/15 text-[11px] sm:text-xs">
-          <div className="grid grid-cols-[1.5fr_0.8fr_1fr_0.8fr] border-b border-black/15 bg-card font-mono text-[10px] font-bold uppercase tracking-wider text-black/50 sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
+          <div className="grid grid-cols-[1.6fr_1fr_0.9fr] border-b border-black/15 bg-card font-mono text-[10px] font-bold uppercase tracking-wider text-black/50 sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
             {SHEET_COLS.map((c) => (
-              <span key={c} className={`truncate px-2 py-2 sm:px-2.5 ${c === "Source" ? "hidden sm:block" : ""}`}>
+              <span key={c} className={`truncate px-2 py-2 sm:px-2.5 ${c === "Source" || c === "Area" ? "hidden sm:block" : ""}`}>
                 {c}
               </span>
             ))}
           </div>
-          <div className="grid grid-cols-[1.5fr_0.8fr_1fr_0.8fr] text-black/35 sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
+          <div className="grid grid-cols-[1.6fr_1fr_0.9fr] text-black/35 sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
             {["T. Mensah", "Website", "320k", "Eastgate", "Viewed"].map((c, i) => (
-              <span key={i} className={`truncate border-b border-black/10 px-2 py-2 sm:px-2.5 ${i === 1 ? "hidden sm:block" : ""}`}>
+              <span key={i} className={`truncate border-b border-black/10 px-2 py-2 sm:px-2.5 ${i === 1 || i === 3 ? "hidden sm:block" : ""}`}>
                 {c}
               </span>
             ))}
           </div>
-          <motion.div variants={rise} className="grid grid-cols-[1.5fr_0.8fr_1fr_0.8fr] bg-[#FFCB41]/35 font-semibold text-black sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
+          <motion.div variants={rise} className="grid grid-cols-[1.6fr_1fr_0.9fr] bg-[#FFCB41]/35 font-semibold text-black sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
             <span className="truncate px-2 py-2 sm:px-2.5">{STORY.lead.name}</span>
-            <span className="hidden truncate px-2 py-2 sm:block sm:px-2.5">Website</span>
-            <span className="truncate px-2 py-2 sm:px-2.5">450k</span>
-            <span className="flex items-center px-2 py-2 sm:px-2.5">
-              <span role="img" aria-label="empty cell" className="inline-block h-3 w-10 rounded border border-dashed border-black/30" />
-            </span>
+            {/* Source, budget band and area are blank until enrichment fills them. */}
+            {[0, 1, 2].map((k) => (
+              <span key={k} className={`flex items-center px-2 py-2 sm:px-2.5 ${k === 1 ? "" : "hidden sm:flex"}`}>
+                <span role="img" aria-label="empty cell" className="inline-block h-3 w-10 rounded border border-dashed border-black/30" />
+              </span>
+            ))}
             <span className="truncate px-2 py-2 text-primary sm:px-2.5">New</span>
           </motion.div>
         </div>
@@ -261,7 +261,7 @@ const FIELDS: { k: string; v: string; late?: boolean }[] = [
 function EnrichedCard() {
   return (
     <Card>
-      <CardHead dot="#FFCB41" right={<motion.span variants={later}><Chip tone="warn">4 blanks filled</Chip></motion.span>}>
+      <CardHead dot="#FFCB41" right={<motion.span variants={later}><Chip tone="warn">4 details added</Chip></motion.span>}>
         Enrichment <span className="text-black/35">·</span> Lead 148
       </CardHead>
       <div className="px-5 py-5">
@@ -286,9 +286,9 @@ function DraftCard() {
   return (
     <Card>
       <CardHead dot="#0015D4" right={<span className="font-mono text-[11px] font-bold">23:48</span>}>
-        <span className="inline-flex items-center gap-1.5">
-          <Sparkles className="h-3.5 w-3.5 text-primary" /> Claude <span className="text-black/35">·</span> drafting in the agency's voice
-        </span>
+        <Sparkles className="mr-1.5 inline h-3.5 w-3.5 align-[-2px] text-primary" />
+        Claude <span className="text-black/35">·</span> <span className="sm:hidden">drafting</span>
+        <span className="hidden sm:inline">drafting in the agency's voice</span>
       </CardHead>
       <div className="px-5 py-5">
         <div className="relative">
@@ -321,8 +321,10 @@ function ApprovalCard() {
         Needs a human <span className="text-black/35">·</span> push sent to {STORY.agent}
       </CardHead>
       <div className="px-5 py-5">
-        <p className="text-sm leading-relaxed text-black/60">{STORY.agent} reads the draft on her phone. The reply waits until she says so.</p>
-        <p className="mt-3 line-clamp-2 rounded-xl bg-card px-4 py-3 text-sm leading-relaxed text-black/80">{STORY.reply}</p>
+        <p className="text-sm leading-relaxed text-black/60">{STORY.agent} reads the draft on the phone. The reply waits for that approval.</p>
+        <div className="mt-3 rounded-xl bg-card px-4 py-3">
+          <p className="line-clamp-2 text-sm leading-relaxed text-black/80">{STORY.reply}</p>
+        </div>
         <div className="relative mt-4 h-11">
           {/* Styled as controls on purpose, not real buttons: this is a picture of a decision, not one the visitor makes. */}
           <motion.div variants={earlier} className="absolute inset-0 flex items-center gap-3">
@@ -357,10 +359,9 @@ function WhatsAppCard() {
         <SiWhatsapp className="ml-auto h-5 w-5 text-[#0BB07B]" aria-hidden />
       </div>
       <div className="space-y-3 bg-[#E7E7E1] px-4 py-4">
-        <div className="max-w-[85%] rounded-2xl rounded-tl-sm border border-black/10 bg-white px-3.5 py-2.5 text-sm leading-relaxed text-black">
-          <p>{STORY.enquiry}</p>
-          <p className="mt-1 text-right font-mono text-[10px] text-black/45">23:47</p>
-        </div>
+        <p className="mx-auto w-fit rounded-full bg-white/80 px-3 py-1 text-center font-mono text-[10px] font-semibold uppercase tracking-wider text-black/50">
+          Enquiry from the website form · 23:47
+        </p>
         <motion.div variants={rise} className="ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-[#DCF8C6] px-3.5 py-2.5 text-sm leading-relaxed text-black">
           <p>{STORY.reply}</p>
           <p className="mt-1">{STORY.signoff}</p>
@@ -448,13 +449,13 @@ function Closing() {
     <div className="mx-auto mt-20 grid max-w-7xl gap-10 border-t-2 border-black pt-12 md:mt-28 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-end md:pt-16">
       <Reveal>
         <p className="font-display text-4xl font-extrabold leading-[1.02] tracking-tight text-black md:text-6xl">
-          Two minutes. One tap. <span className="font-editorial font-normal text-primary">While you slept.</span>
+          Two minutes. One tap. <span className="font-editorial font-normal text-primary">Even after hours.</span>
         </p>
       </Reveal>
       <Reveal delay={0.15}>
         <p className="text-base leading-relaxed text-black/55">
-          That was one enquiry. Yours arrive all week, and every one gets the same two minutes. Built in your own accounts,
-          with a person in the loop where it matters.
+          That was one enquiry. Yours arrive all week, and every one is picked up the moment it lands, with the reply going
+          out as soon as someone approves it. Built in your own accounts, with a person in the loop where it matters.
         </p>
         <div className="mt-6 flex flex-wrap items-center gap-4">
           <a
@@ -505,7 +506,9 @@ function FlowStory({ motionOff }: { motionOff: boolean }) {
             <Node n={i + 1} />
             <div className="min-w-0">
               <motion.div variants={rise}>
-                <p className="font-mono text-xs font-bold text-black/45">{s.time}</p>
+                <p className="font-mono text-xs font-bold text-black/45">
+                  {s.time} <span className="text-black/30">·</span> <span className="uppercase tracking-wider">Example</span>
+                </p>
                 <h3 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-black">{s.title}</h3>
                 <p className="mt-1.5 text-base leading-relaxed text-black/55">{s.desc}</p>
               </motion.div>
@@ -578,7 +581,7 @@ function PinnedStory() {
                 />
                 {status}
               </span>
-              <span className="w-[5ch] text-right text-base font-bold tabular-nums text-black">{clock}</span>
+              <span className="w-[5ch] text-right text-base font-bold tabular-nums tracking-normal text-black">{clock}</span>
             </span>
           </div>
 
@@ -624,7 +627,7 @@ function PinnedStory() {
             </ol>
 
             {/* The stage: every card is mounted, only the active one is visible. */}
-            <div className="relative min-h-[520px]">
+            <div className="relative min-h-[520px] pr-20 xl:pr-0">
               {[IdleCard, ...CARDS].map((Art, k) => {
                 const i = k - 1; // -1 is the idle card
                 const pos = i < active ? "before" : i === active ? "active" : "after";

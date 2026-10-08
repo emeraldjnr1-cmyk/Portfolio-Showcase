@@ -19,7 +19,7 @@ export function Pricing({ num = "06" }: { num?: string }) {
             <SplitWords
               as="h2"
               text="Typical projects, honest starting prices."
-              className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl"
+              className="mt-4 max-w-3xl text-balance font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl"
             />
           </div>
           <Reveal delay={0.2}>
@@ -35,12 +35,13 @@ export function Pricing({ num = "06" }: { num?: string }) {
             <li key={p.name}>
               <a
                 href={p.href}
+                aria-label={`${p.name}, from ${usd(p.from)}. See the service`}
                 className={`group flex h-full flex-col rounded-2xl border-2 border-black p-7 transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_#141414] ${
                   p.featured ? "bg-black text-[#E7E7E1]" : "bg-white text-black"
                 }`}
               >
                 <span className="flex items-start justify-between gap-3">
-                  <span className={`font-display text-xl font-extrabold tracking-tight ${p.featured ? "text-white" : "text-black"}`}>{p.name}</span>
+                  <h3 className={`font-display text-xl font-extrabold tracking-tight ${p.featured ? "text-white" : "text-black"}`}>{p.name}</h3>
                   {p.featured && (
                     <span className="shrink-0 rounded-full bg-[#FFCB41] px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-black">
                       Most asked
@@ -64,7 +65,7 @@ export function Pricing({ num = "06" }: { num?: string }) {
                   ))}
                 </span>
                 <span className={`mt-7 inline-flex items-center gap-1.5 text-sm font-bold ${p.featured ? "text-white" : "text-black"} group-hover:underline`}>
-                  What's included <ArrowUpRight className="h-4 w-4" />
+                  See the service <ArrowUpRight className="h-4 w-4" />
                 </span>
               </a>
             </li>
@@ -72,7 +73,7 @@ export function Pricing({ num = "06" }: { num?: string }) {
           <li>
             <div className="flex h-full flex-col justify-between rounded-2xl border-2 border-dashed border-black/30 p-7">
               <div>
-                <span className="font-display text-xl font-extrabold tracking-tight text-black">Something else?</span>
+                <h3 className="font-display text-xl font-extrabold tracking-tight text-black">Something else?</h3>
                 <p className="mt-3 leading-relaxed text-black/60">
                   Roblox games, Web3, MCP servers, rescues of half-built projects. Describe it and you get a plan and a
                   fixed price within 24 hours.

@@ -26,6 +26,15 @@ export function AskPax() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<PaxMessage[]>([]);
   const close = useCallback(() => setOpen(false), []);
+  // The "Ask Pax" label shows near the top of the page only; further down it
+  // folds into the avatar so it never sits on top of buttons near the edge.
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setCompact(window.scrollY > window.innerHeight * 0.6);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => setMessages(load()), []);
   useEffect(() => {
@@ -45,7 +54,7 @@ export function AskPax() {
           className="group fixed bottom-[5.5rem] right-6 z-30 flex items-center gap-3"
           data-cursor="hover"
         >
-          <span className="pointer-events-none hidden rounded-full border-2 border-black bg-white px-4 py-2 font-display text-sm font-bold text-black shadow-[3px_3px_0_#141414] transition-transform group-hover:-translate-x-1 md:block">
+          <span className={`pointer-events-none hidden rounded-full border-2 border-black bg-white px-4 py-2 font-display text-sm font-bold text-black shadow-[3px_3px_0_#141414] transition-all duration-200 group-hover:-translate-x-1 md:block ${compact ? "md:translate-x-2 md:opacity-0 md:group-hover:translate-x-0 md:group-hover:opacity-100" : ""}`}>
             Ask Pax
           </span>
           <span className="relative block h-[60px] w-[60px] shrink-0 overflow-hidden rounded-full border-2 border-black bg-black shadow-lg transition-transform group-hover:scale-105">

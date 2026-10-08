@@ -71,7 +71,7 @@ export const services: Service[] = [
       },
       {
         q: "How long does a Claude Code build take?",
-        a: "Most automations ship in 3 to 7 days. Websites and bigger app builds run 1 to 3 weeks. Fill the onboarding form and you get a fixed quote within 24 hours.",
+        a: "Most automations ship in 3 to 7 days. Websites and web apps run 1 to 3 weeks, and full platforms take 3 weeks and up, delivered in milestones. Fill the onboarding form and you get a fixed quote within 24 hours.",
       },
     ],
   },

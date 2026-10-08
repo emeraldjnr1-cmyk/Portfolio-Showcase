@@ -98,7 +98,7 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a href="/#pricing" className={linkCls}>
+              <a href="/#hire" className={linkCls}>
                 Ways to work together
               </a>
             </li>
@@ -133,9 +133,22 @@ function Year() {
  * animated hero, on every page, remembered in this browser. */
 function MotionToggle() {
   const [off, setOff] = useUserMotionOff();
+  const toggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const btn = e.currentTarget;
+    const before = btn.getBoundingClientRect().top;
+    setOff(!off);
+    // Sections above (the scroll story) change height when motion flips, so
+    // hold the switch where it was instead of throwing the page around.
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        const after = btn.getBoundingClientRect().top;
+        if (Math.abs(after - before) > 1) window.scrollBy(0, after - before);
+      }),
+    );
+  };
   return (
     <button
-      onClick={() => setOff(!off)}
+      onClick={toggle}
       aria-pressed={off}
       className="inline-flex items-center gap-2 rounded-full border border-white/20 px-3.5 py-1.5 text-xs font-semibold text-white/60 transition-colors hover:border-white hover:text-white"
     >

@@ -24,6 +24,10 @@ export function SiteNav() {
   const [location] = useLocation();
   const onHome = location === "/";
   const links = onHome ? LINKS : LINKS.map((l) => (l.href.startsWith("#") ? { ...l, href: `/${l.href}` } : l));
+  // The most specific page link wins, so /team/emerald lights up About, not D. Team too.
+  const currentHref = links
+    .filter((l) => l.href.startsWith("/") && !l.href.includes("#") && (location === l.href || location.startsWith(`${l.href}/`)))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -71,7 +75,7 @@ export function SiteNav() {
 
           <nav className="hidden lg:flex items-center gap-8">
             {links.map((l) => {
-              const current = l.href.startsWith("/") && !l.href.includes("#") && location.startsWith(l.href);
+              const current = l.href === currentHref;
               return (
                 <a
                   key={l.href}

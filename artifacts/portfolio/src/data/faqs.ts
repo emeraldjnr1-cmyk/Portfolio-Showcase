@@ -2,7 +2,7 @@
 export const FAQS = [
   {
     q: "What exactly do you build?",
-    a: "Two things: websites and web apps shipped with Claude Code, and automation systems built on n8n, Make.com and Airtable. If a task eats your team's hours every week, I can probably turn it into a system that runs itself.",
+    a: "Websites and web apps, business automations, AI agents and chatbots, MCP integrations, and Claude set up for your team, all built with Claude Code, n8n and Make.com. If a task eats your team's hours every week, I can probably turn it into a system that runs itself.",
   },
   {
     q: "How much does a project cost?",
@@ -10,7 +10,7 @@ export const FAQS = [
   },
   {
     q: "How long does a build take?",
-    a: "Most automations ship in 3 to 7 days. Websites and bigger app builds run 1 to 3 weeks. You get progress updates as we go, not silence until delivery.",
+    a: "Most automations ship in 3 to 7 days. Websites and web apps run 1 to 3 weeks, and full platforms take 3 weeks and up, delivered in milestones. You get progress updates as we go, not silence until delivery.",
   },
   {
     q: "Do I need to be technical to use what you build?",
