@@ -416,10 +416,9 @@ export default function Home() {
         <VelocitySkew>
           <ToolStack />
           <ClaudeFullStack />
-          <AutomationStory />
           <BigMarquee items={["Claude Code", "Websites", "Apps", "AI Products"]} accent="#0015D4" />
           <WebProjectsSection />
-          {/* 03 — How it runs: the signature scroll story slots in here. */}
+          <AutomationStory num="03" />
           <FeaturedWork />
           <TestimonialCinema />
           <Pricing num="06" />
