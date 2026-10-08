@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
-import { motion, useScroll, useSpring, useVelocity, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useSpring, useVelocity, useTransform } from "framer-motion";
+import { useMotionOff } from "@/lib/motion-pref";
 
 /** Thin cobalt progress line pinned to the very top. */
 export function ScrollProgress() {
@@ -26,7 +27,7 @@ export function ScrollProgress() {
  * The wrapper element stays a motion.div in both cases. Swapping it for a plain
  * div would remount the entire page subtree and kill any playing video. */
 export function VelocitySkew({ children }: { children: ReactNode }) {
-  const reduced = useReducedMotion();
+  const reduced = useMotionOff();
   const [pointerFine, setPointerFine] = useState(false);
 
   useEffect(() => {

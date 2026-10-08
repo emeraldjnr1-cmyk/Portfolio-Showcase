@@ -5,8 +5,8 @@ import {
   useSpring,
   useTransform,
   useMotionTemplate,
-  useReducedMotion,
-} from "framer-motion";
+  } from "framer-motion";
+import { useMotionOff } from "@/lib/motion-pref";
 import { ArrowUpRight } from "lucide-react";
 import type { IconType } from "react-icons";
 import { SiFiverr, SiUpwork, SiWise, SiPaypal } from "react-icons/si";
@@ -36,7 +36,7 @@ const PAY_METHODS: { name: string; Icon?: IconType; mark?: string }[] = [
  */
 function TiltCard({ accent, children }: { accent: string; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useMotionOff();
 
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
@@ -80,7 +80,7 @@ function TiltCard({ accent, children }: { accent: string; children: ReactNode })
         <motion.span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: spotlight }} />
         <span
           aria-hidden
-          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{ boxShadow: `inset 0 0 0 2px ${accent}` }}
         />
         <div className="relative" style={reduced ? undefined : { transform: "translateZ(40px)" }}>
@@ -149,7 +149,7 @@ export function HireMe() {
                   data-cursor="hover"
                   className="group/btn relative inline-flex h-13 items-center gap-2.5 overflow-hidden rounded-full bg-[#1DBF73] px-7 py-3.5 font-display text-[15px] font-bold text-white"
                 >
-                  <span className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-400 ease-out group-hover/btn:scale-x-100" />
+                  <span className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-250 ease-out group-hover/btn:scale-x-100" />
                   <span className="relative z-10 transition-colors group-hover/btn:text-[#0B7A45]">Hire me on Fiverr</span>
                   <ArrowUpRight className="relative z-10 h-4 w-4 transition-all group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 group-hover/btn:text-[#0B7A45]" />
                 </a>
@@ -186,7 +186,7 @@ export function HireMe() {
                   data-cursor="hover"
                   className="group/btn relative inline-flex h-13 items-center gap-2.5 overflow-hidden rounded-full bg-[#14A800] px-7 py-3.5 font-display text-[15px] font-bold text-white"
                 >
-                  <span className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-400 ease-out group-hover/btn:scale-x-100" />
+                  <span className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-250 ease-out group-hover/btn:scale-x-100" />
                   <span className="relative z-10 transition-colors group-hover/btn:text-[#0E7A00]">Hire me on Upwork</span>
                   <ArrowUpRight className="relative z-10 h-4 w-4 transition-all group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 group-hover/btn:text-[#0E7A00]" />
                 </a>

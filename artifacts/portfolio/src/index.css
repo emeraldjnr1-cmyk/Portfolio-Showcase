@@ -247,18 +247,25 @@
 .marquee-paused:hover .animate-marquee-left,
 .marquee-paused:hover .animate-marquee-right { animation-play-state: paused; }
 
-/* Must match CustomCursor's own `hidden md:block` gate. Hiding the native
-   cursor on every fine-pointer device left narrow desktop windows with no
-   cursor at all: the replacement was not rendering below 768px. */
-@media (pointer: fine) and (min-width: 768px) {
-  .cursor-none-desktop, .cursor-none-desktop a, .cursor-none-desktop button { cursor: none; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   /* framer respects reducedMotion via MotionConfig, but plain CSS animations
      do not, so silence them here too (marquees and the pulsing status dots). */
   .animate-marquee-left, .animate-marquee-right, .animate-pulse { animation: none; }
 }
+/* The footer's "Animations off" switch does the same, for any visitor. */
+html[data-motion="off"] .animate-marquee-left,
+html[data-motion="off"] .animate-marquee-right,
+html[data-motion="off"] .animate-pulse { animation: none; }
+
+/* Page-to-page transitions: a quick cross-fade between pages in browsers that
+   support it (Chrome, Edge, Safari 18.2+). Others simply load the page. */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+html[data-motion="off"]::view-transition-old(root),
+html[data-motion="off"]::view-transition-new(root) { animation: none; }
 
 /* Anchor links must clear the fixed header even when Lenis is disabled,
    which is exactly what happens for reduced-motion users. */

@@ -72,7 +72,7 @@ export function ClaudeFullStack() {
                   {/* Colour flood on hover. Desktop only: phones have no hover. */}
                   <span
                     aria-hidden
-                    className="absolute inset-0 hidden origin-bottom scale-y-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-y-100 md:block"
+                    className="absolute inset-0 hidden origin-bottom scale-y-0 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-y-100 md:block"
                     style={{ backgroundColor: l.color }}
                   />
                   <span className="relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5 py-7 md:grid-cols-[4rem_minmax(0,1.1fr)_minmax(0,1fr)_auto] md:gap-8 md:px-4 md:py-9">

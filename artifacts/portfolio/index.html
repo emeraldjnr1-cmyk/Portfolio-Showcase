@@ -14,6 +14,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Decides before first paint: intro only on the first visit of a session,
+         never with reduced motion. Also restores the "Animations off" switch. -->
+    <script>
+      try {
+        var d = document.documentElement;
+        var off = localStorage.getItem("dnc-motion") === "off";
+        d.dataset.motion = off ? "off" : "on";
+        if (location.pathname === "/" && !off && !sessionStorage.getItem("dnc-intro-seen") &&
+            !matchMedia("(prefers-reduced-motion: reduce)").matches) d.dataset.intro = "1";
+      } catch (e) {}
+    </script>
+    <style>html[data-intro] body::before{content:"";position:fixed;inset:0;z-index:100;background:#141414}</style>
   </head>
   <body>
     <div id="root"><!--app-html--></div>

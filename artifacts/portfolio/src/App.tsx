@@ -12,6 +12,7 @@ import { TeamPage } from "@/pages/Team";
 import { TeamProfilePage } from "@/pages/TeamProfile";
 import { FilmsPage } from "@/pages/Films";
 import { Analytics } from "@vercel/analytics/react";
+import { useMotionOff } from "@/lib/motion-pref";
 
 const queryClient = new QueryClient();
 
@@ -35,9 +36,10 @@ function Router() {
 
 /** ssrPath is set only by the build-time prerender, which has no window.location. */
 function App({ ssrPath }: { ssrPath?: string }) {
+  const motionOff = useMotionOff();
   return (
     <QueryClientProvider client={queryClient}>
-      <MotionConfig reducedMotion="user">
+      <MotionConfig reducedMotion={motionOff ? "always" : "user"}>
         <TooltipProvider>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")} ssrPath={ssrPath}>
             <Router />

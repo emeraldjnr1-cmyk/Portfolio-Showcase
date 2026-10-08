@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useMotionOff } from "@/lib/motion-pref";
 
 export type HeroBgVariant = "film" | "paths" | "dots" | "nodes";
 
@@ -12,7 +13,7 @@ const COBALT = "0,21,212";
  * we spent a whole pass removing per-frame cost from mobile scrolling.
  */
 function useMotionAllowed() {
-  const reduced = useReducedMotion();
+  const reduced = useMotionOff();
   const [desktop, setDesktop] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px) and (pointer: fine)");
@@ -29,7 +30,7 @@ function useMotionAllowed() {
 // phones too using a smaller encode.
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 function Film() {
-  const reduced = useReducedMotion();
+  const reduced = useMotionOff();
   const [wide, setWide] = useState(true);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");

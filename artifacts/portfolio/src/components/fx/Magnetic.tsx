@@ -5,8 +5,8 @@ export function Magnetic({ children, strength = 0.35 }: { children: ReactNode; s
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 180, damping: 14, mass: 0.4 });
-  const sy = useSpring(y, { stiffness: 180, damping: 14, mass: 0.4 });
+  const sx = useSpring(x, { stiffness: 320, damping: 24, mass: 0.35 });
+  const sy = useSpring(y, { stiffness: 320, damping: 24, mass: 0.35 });
 
   const onMove = (e: React.MouseEvent) => {
     const el = ref.current;

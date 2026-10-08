@@ -1,45 +1,57 @@
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { useMotionOff } from "@/lib/motion-pref";
 
+/**
+ * The system pointer always stays visible: replacing it can make it vanish
+ * for low-vision visitors who enlarge their cursor. This adds a small label
+ * beside the pointer, only over elements marked data-cursor-label ("Play",
+ * "View"), and only on mouse-driven devices with motion allowed.
+ */
 export function CustomCursor() {
   const [enabled, setEnabled] = useState(false);
-  const [hovering, setHovering] = useState(false);
-  const x = useMotionValue(-100);
-  const y = useMotionValue(-100);
-  const sx = useSpring(x, { stiffness: 500, damping: 40, mass: 0.6 });
-  const sy = useSpring(y, { stiffness: 500, damping: 40, mass: 0.6 });
+  const [label, setLabel] = useState<string | null>(null);
+  const off = useMotionOff();
+  const x = useMotionValue(-200);
+  const y = useMotionValue(-200);
+  const sx = useSpring(x, { stiffness: 700, damping: 45, mass: 0.4 });
+  const sy = useSpring(y, { stiffness: 700, damping: 45, mass: 0.4 });
 
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
+    const mq = window.matchMedia("(pointer: fine)");
+    if (!mq.matches || off) {
+      setEnabled(false);
+      return;
+    }
     setEnabled(true);
-
     const move = (e: MouseEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
-      const t = e.target as HTMLElement;
-      setHovering(!!t.closest("a, button, [data-cursor='hover']"));
+      const t = (e.target as HTMLElement).closest<HTMLElement>("[data-cursor-label]");
+      setLabel(t ? t.dataset.cursorLabel ?? null : null);
     };
     window.addEventListener("mousemove", move, { passive: true });
     return () => window.removeEventListener("mousemove", move);
-  }, [x, y]);
+  }, [x, y, off]);
 
   if (!enabled) return null;
 
   return (
-    <motion.div
-      className="pointer-events-none fixed left-0 top-0 z-[99] hidden md:block"
-      style={{ x: sx, y: sy }}
-    >
-      <motion.div
-        className="rounded-full border -translate-x-1/2 -translate-y-1/2"
-        animate={{
-          width: hovering ? 56 : 14,
-          height: hovering ? 56 : 14,
-          backgroundColor: hovering ? "rgba(0,21,212,0.12)" : "rgba(20,20,20,0.85)",
-          borderColor: hovering ? "rgba(0,21,212,0.9)" : "rgba(20,20,20,0.9)",
-        }}
-        transition={{ type: "spring", stiffness: 400, damping: 28 }}
-      />
+    <motion.div className="pointer-events-none fixed left-0 top-0 z-[99]" style={{ x: sx, y: sy }} aria-hidden>
+      <AnimatePresence>
+        {label && (
+          <motion.span
+            key="label"
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.6 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            className="ml-4 mt-4 block whitespace-nowrap rounded-full border-2 border-black bg-white px-3 py-1 font-display text-xs font-bold text-black shadow-[3px_3px_0_#141414]"
+          >
+            {label}
+          </motion.span>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

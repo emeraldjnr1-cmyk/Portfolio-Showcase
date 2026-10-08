@@ -11,11 +11,13 @@ import { CountUp } from "@/components/fx/CountUp";
 import { ScrollProgress, VelocitySkew } from "@/components/fx/ScrollFX";
 import { BigMarquee } from "@/components/fx/BigMarquee";
 import { useLenis } from "@/hooks/use-lenis";
+import { useMotionOff } from "@/lib/motion-pref";
 import { HeroBackground, type HeroBgVariant } from "@/components/fx/HeroBackground";
 
 import { SiteNav } from "@/components/site/SiteNav";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { AskPax } from "@/components/site/pax/AskPax";
+import { ProofStrip } from "@/components/site/ProofStrip";
 import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { WebProjectsSection } from "@/components/site/WebProjects";
 import { Web3ProjectsSection } from "@/components/site/Web3Projects";
@@ -48,10 +50,12 @@ const ROTATING = [
 
 function RotatingWord() {
   const [i, setI] = useState(0);
+  const off = useMotionOff();
   useEffect(() => {
+    if (off) return setI(0);
     const t = setInterval(() => setI((v) => (v + 1) % ROTATING.length), 2200);
     return () => clearInterval(t);
-  }, []);
+  }, [off]);
   const longest = ROTATING.reduce((a, b) => (b.word.length > a.length ? b.word : a), "");
   return (
     <span className="relative inline-grid overflow-hidden align-bottom">
@@ -84,12 +88,14 @@ const WATCHWORDS = [
 
 function WatchwordRoller() {
   const [i, setI] = useState(0);
+  const off = useMotionOff();
   useEffect(() => {
+    if (off) return setI(0);
     // 2600ms vs the headline's 2200ms so the two rollers interleave
     // instead of ticking in unison.
     const t = setInterval(() => setI((v) => (v + 1) % WATCHWORDS.length), 2600);
     return () => clearInterval(t);
-  }, []);
+  }, [off]);
   const longest = WATCHWORDS.reduce((a, b) => (b.word.length > a.length ? b.word : a), "");
   return (
     <span className="relative inline-grid overflow-hidden align-bottom">
@@ -266,7 +272,7 @@ function Hero({ ready }: { ready: boolean }) {
             initial={{ opacity: 0, y: 30 }}
             animate={ready ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.75, ease: EASE }}
-            className="flex shrink-0 flex-col items-start md:items-end"
+            className="flex shrink-0 flex-col items-start md:items-end md:pr-36 xl:pr-28"
           >
             {/* wraps on narrow screens; labels never break mid-phrase */}
             <div className="flex flex-wrap items-center gap-3 md:gap-4">
@@ -278,7 +284,7 @@ function Hero({ ready }: { ready: boolean }) {
                 className="group relative inline-flex h-14 items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-full bg-primary px-6 font-display text-[15px] font-bold text-white md:gap-3 md:px-8 md:text-base"
                 data-cursor="hover"
               >
-                <span className="absolute inset-0 origin-left scale-x-0 bg-black transition-transform duration-400 ease-out group-hover:scale-x-100" />
+                <span className="absolute inset-0 origin-left scale-x-0 bg-black transition-transform duration-250 ease-out group-hover:scale-x-100" />
                 <SiWhatsapp className="relative z-10 h-5 w-5 shrink-0" />
                 <span className="relative z-10">Start a project</span>
               </a>
@@ -538,7 +544,7 @@ function FinalCTA() {
               className="group relative inline-flex h-16 items-center gap-3 overflow-hidden rounded-full bg-[#E7E7E1] px-10 font-display text-lg font-bold text-black"
               data-cursor="hover"
             >
-              <span className="absolute inset-0 origin-bottom scale-y-0 bg-primary transition-transform duration-400 ease-out group-hover:scale-y-100" />
+              <span className="absolute inset-0 origin-bottom scale-y-0 bg-primary transition-transform duration-250 ease-out group-hover:scale-y-100" />
               <SiWhatsapp className="relative z-10 h-6 w-6 transition-colors group-hover:text-white" />
               <span className="relative z-10 transition-colors group-hover:text-white">Message me on WhatsApp</span>
             </a>
@@ -571,7 +577,7 @@ export default function Home() {
   useLenis();
 
   return (
-    <div className="cursor-none-desktop min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <Preloader onDone={() => setReady(true)} />
       <ScrollProgress />
       <CustomCursor />
@@ -584,6 +590,7 @@ export default function Home() {
             axis-aligned transform, so shearing a playing <video> every scroll
             frame makes the film visibly wobble. */}
         <Hero ready={ready} />
+        <ProofStrip />
         <VelocitySkew>
           <ToolStack />
           <Stats />

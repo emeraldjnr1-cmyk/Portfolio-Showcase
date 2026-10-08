@@ -33,6 +33,7 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
       transition={{ duration: 0.9, ease: EASE, delay: (index % 2) * 0.12 }}
       className="group relative cursor-pointer rounded-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
       onClick={() => onOpen(project)}
+      data-cursor-label="Play"
       // A div with onClick is invisible to keyboards and screen readers, so
       // the lightbox could only ever be opened with a mouse.
       role="button"
@@ -47,7 +48,7 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
       data-cursor="hover"
     >
       <div
-        className="relative overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-all duration-500 group-hover:border-black"
+        className="relative overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-all duration-200 group-hover:border-black"
         onMouseEnter={(e) => (e.currentTarget.style.boxShadow = `8px 8px 0 ${style.glow}`)}
         onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
       >
@@ -76,7 +77,7 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
             )}
 
             {hasFilm && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-400 group-hover:bg-black/25 group-hover:opacity-100">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/25 group-hover:opacity-100">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white scale-75 transition-transform duration-400 group-hover:scale-100 shadow-lg">
                   <Play className="h-6 w-6 text-black fill-black" />
                 </div>
@@ -223,7 +224,7 @@ function ViewAllArchive() {
           whileTap={{ scale: 0.97 }}
           data-cursor="hover"
         >
-          <span className="absolute inset-0 origin-bottom scale-y-0 bg-black transition-transform duration-400 ease-out group-hover:scale-y-100" />
+          <span className="absolute inset-0 origin-bottom scale-y-0 bg-black transition-transform duration-250 ease-out group-hover:scale-y-100" />
           <span className="relative z-10 transition-colors group-hover:text-white">
             {open ? "Close archive" : `View all ${archive.length} systems`}
           </span>

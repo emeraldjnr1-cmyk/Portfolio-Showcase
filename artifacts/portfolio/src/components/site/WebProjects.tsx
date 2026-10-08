@@ -37,7 +37,7 @@ export function FeatureRow({ project, index }: { project: WebProject; index: num
         data-cursor="hover"
       >
         <div
-          className="relative overflow-hidden rounded-2xl border-2 border-black/10 transition-all duration-500 group-hover:border-black"
+          className="relative overflow-hidden rounded-2xl border-2 border-black/10 transition-all duration-200 group-hover:border-black"
           onMouseEnter={(e) => (e.currentTarget.style.boxShadow = `10px 10px 0 ${pop}`)}
           onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
         >
@@ -109,7 +109,7 @@ export function CompactCard({ project, index }: { project: WebProject; index: nu
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8% 0px" }}
       transition={{ duration: 0.7, ease: EASE, delay: (index % 3) * 0.1 }}
-      className="group overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-all duration-400 hover:border-black"
+      className="group overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-all duration-200 hover:border-black"
       onMouseEnter={(e) => (e.currentTarget.style.boxShadow = `6px 6px 0 ${pop}`)}
       onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
       data-cursor="hover"

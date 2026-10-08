@@ -221,42 +221,50 @@ export interface Testimonial {
   name: string;
   quote: string;
   aspect: "portrait" | "landscape";
+  /** A still of the client, for the proof strip and before the video loads. */
+  poster: string;
 }
 
 export const testimonials: Testimonial[] = [
   {
     src: "https://res.cloudinary.com/dtyrmuton/video/upload/v1776458122/Jenny_vt_3_ujgrda.mp4",
     name: "Jenny Malafrina",
+    poster: `${BASE}/videos/posters/testimonials/jenny.jpg`,
     quote: "Working with Denver completely changed how our business handles client onboarding.",
     aspect: "portrait",
   },
   {
     src: rachelVideoUrl,
     name: "Rachel",
+    poster: `${BASE}/videos/posters/testimonials/rachel.jpg`,
     quote: "Denver delivered exactly what we needed — fast, clear, and genuinely expert work.",
     aspect: "landscape",
   },
   {
     src: "https://res.cloudinary.com/dtyrmuton/video/upload/v1776458153/shiehk_video_testimonial_1_2_xhgkoy.mp4",
     name: "Shiekh Shadi Shuvo",
+    poster: `${BASE}/videos/posters/testimonials/shiekh.jpg`,
     quote: "The automation system Denver built saves us hours every single day.",
     aspect: "portrait",
   },
   {
     src: "https://res.cloudinary.com/dtyrmuton/video/upload/v1776458159/mike_schimdht_video_testimonial_3_vrmmgi.mp4",
     name: "Mike Schmidt",
+    poster: `${BASE}/videos/posters/testimonials/mike.jpg`,
     quote: "Professional, reliable, and genuinely invested in delivering results.",
     aspect: "portrait",
   },
   {
     src: moritzVideoUrl,
     name: "Moritz Domm",
+    poster: `${BASE}/videos/posters/testimonials/moritz.jpg`,
     quote: "Thank you for this first great job, Emerald! The second one will follow now.",
     aspect: "landscape",
   },
   {
     src: danielVideoUrl,
     name: "Daniel",
+    poster: `${BASE}/videos/posters/testimonials/daniel.jpg`,
     quote:
       "He was easy to work with and responded quickly. Emerald made sure everything was just the way we wanted. Highly recommended!",
     aspect: "landscape",

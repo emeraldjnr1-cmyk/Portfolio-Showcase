@@ -34,7 +34,7 @@ export function WorkIndex() {
         <ul className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 lg:grid-cols-3">
           {work.map((w, i) => (
             <li key={w.slug}>
-              <a href={`/work/${w.slug}`} className="group block">
+              <a href={`/work/${w.slug}`} className="group block" data-cursor-label="View">
                 <div className="overflow-hidden rounded-2xl border-2 border-black bg-white transition-all duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:shadow-[8px_8px_0_#0015D4]">
                   <img
                     src={w.poster ?? w.img}

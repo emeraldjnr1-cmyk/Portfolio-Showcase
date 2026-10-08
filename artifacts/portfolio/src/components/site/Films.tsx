@@ -28,7 +28,7 @@ export function FilmCard({ film }: { film: Film }) {
             onClick={() => setPlaying(true)}
             className="absolute inset-0 h-full w-full"
             aria-label={`Play film: ${film.title}`}
-            data-cursor="hover"
+            data-cursor-label="Play"
           >
             <img src={filmPoster(film)} alt="" loading="lazy" className="h-full w-full object-cover" />
             {/* Corner, not centre: the posters carry their headline mid-frame. */}

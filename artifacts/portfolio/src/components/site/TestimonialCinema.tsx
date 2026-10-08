@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 import { testimonials } from "@/data/portfolio";
@@ -11,6 +11,9 @@ export function TestimonialCinema() {
   const [direction, setDirection] = useState<1 | -1>(1);
   const [muted, setMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  // Nothing downloads or plays until the player is near the screen.
+  const frameRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(frameRef, { margin: "200px 0px" });
 
   const t = testimonials[current];
 
@@ -24,8 +27,9 @@ export function TestimonialCinema() {
     const v = videoRef.current;
     if (!v) return;
     v.muted = muted;
-    v.play().catch(() => {});
-  }, [current, muted]);
+    if (inView) v.play().catch(() => {});
+    else v.pause();
+  }, [current, muted, inView]);
 
   const variants = {
     enter: (d: number) => ({ x: d > 0 ? "60%" : "-60%", opacity: 0, scale: 0.9 }),
@@ -64,6 +68,7 @@ export function TestimonialCinema() {
 
           <div className="flex-1">
             <div
+              ref={frameRef}
               className={`relative mx-auto overflow-hidden rounded-3xl border-2 border-black bg-black shadow-2xl transition-all duration-500 ${
                 t.aspect === "portrait" ? "max-w-sm aspect-[9/16] max-h-[70vh]" : "w-full aspect-video"
               }`}
@@ -87,10 +92,11 @@ export function TestimonialCinema() {
                       if (el) videoRef.current = el;
                     }}
                     src={t.src}
+                    poster={t.poster}
                     muted
                     loop
                     playsInline
-                    preload="metadata"
+                    preload={inView ? "auto" : "none"}
                     className="h-full w-full object-cover"
                     aria-label={`Video testimonial from ${t.name}`}
                   />
@@ -99,7 +105,7 @@ export function TestimonialCinema() {
 
               <button
                 onClick={() => setMuted((m) => !m)}
-                className="absolute bottom-4 right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-md transition-colors hover:bg-primary"
+                className="absolute bottom-4 right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white transition-colors md:bg-black/50 md:backdrop-blur-md hover:bg-primary"
                 aria-label={muted ? "Unmute" : "Mute"}
                 data-cursor="hover"
               >

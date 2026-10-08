@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { useMotionOff } from "@/lib/motion-pref";
 
 /** Buttery smooth scrolling for the whole page. */
 export function useLenis() {
+  const off = useMotionOff();
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (off) return;
 
     const lenis = new Lenis({
       duration: 1.15,
@@ -36,5 +38,5 @@ export function useLenis() {
       document.removeEventListener("click", onClick);
       lenis.destroy();
     };
-  }, []);
+  }, [off]);
 }

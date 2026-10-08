@@ -4,6 +4,7 @@ import { FIVERR, UPWORK, WHATSAPP } from "@/data/portfolio";
 import { services } from "@/data/services";
 import { work } from "@/data/work";
 import { industries } from "@/data/industries";
+import { useUserMotionOff } from "@/lib/motion-pref";
 
 // Every page carries these links, which is how crawlers find the service and
 // work pages without relying on the sitemap alone.
@@ -111,10 +112,27 @@ export function Footer() {
 
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 pt-8 md:flex-row">
         <p className="text-sm text-white/40">Built with Claude Code. Systems that save time and grow businesses.</p>
+        <MotionToggle />
         <p className="text-sm text-white/30">
           © {new Date().getFullYear()} Denver <span className="text-[#10B981]">Emerald</span> Peter
         </p>
       </div>
     </footer>
+  );
+}
+
+/** Lets any visitor stop the marquees, rotating words, smooth scroll and the
+ * animated hero, on every page, remembered in this browser. */
+function MotionToggle() {
+  const [off, setOff] = useUserMotionOff();
+  return (
+    <button
+      onClick={() => setOff(!off)}
+      aria-pressed={off}
+      className="inline-flex items-center gap-2 rounded-full border border-white/20 px-3.5 py-1.5 text-xs font-semibold text-white/60 transition-colors hover:border-white hover:text-white"
+    >
+      <span className={`h-2 w-2 rounded-full ${off ? "bg-white/30" : "bg-[#0BB07B]"}`} aria-hidden />
+      Animations {off ? "off" : "on"}
+    </button>
   );
 }
