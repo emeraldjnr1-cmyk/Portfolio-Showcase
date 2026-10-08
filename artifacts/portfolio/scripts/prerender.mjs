@@ -3,8 +3,8 @@
 // which is most AI crawlers, still read the full page. Also writes
 // sitemap.xml, robots.txt and llms.txt from the same page list.
 //
-// The browser then mounts the app with createRoot, which replaces this HTML
-// with the live app, so nothing needs to hydrate exactly.
+// The browser then hydrates this HTML (src/main.tsx), so what is rendered here
+// must be exactly what the first client render produces.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -12,7 +12,35 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const out = path.join(root, "dist/public");
 const template = fs.readFileSync(path.join(out, "index.html"), "utf8");
-const { render, PAGES, SITE, buildKnowledge } = await import(pathToFileURL(path.join(root, "dist/server/entry-server.js")).href);
+const { render, PAGES, SITE, buildKnowledge, ROUTE_SOURCES, routeKeyFor } = await import(
+  pathToFileURL(path.join(root, "dist/server/entry-server.js")).href
+);
+
+// Pages are code-split, so each HTML file gets a modulepreload for its own
+// route chunk (and that chunk's static imports). Without it the browser only
+// discovers the chunk after the entry script has run, one round trip late.
+const manifestFile = path.join(out, ".vite/manifest.json");
+const manifest = JSON.parse(fs.readFileSync(manifestFile, "utf8"));
+// Same URL prefix Vite gave the entry script (BASE_PATH, "/" in production).
+const base = template.match(/<script type="module"[^>]*src="(.*?)\/assets\//)?.[1] ?? "";
+const closure = (key, seen = new Set()) => {
+  const entry = manifest[key];
+  if (!entry || seen.has(entry.file)) return seen;
+  seen.add(entry.file);
+  for (const dep of entry.imports ?? []) closure(dep, seen);
+  return seen;
+};
+const entryKey = Object.keys(manifest).find((k) => manifest[k].isEntry);
+if (!entryKey) throw new Error("prerender: no entry in the Vite manifest");
+const alreadyLoaded = closure(entryKey);
+function preloads(pagePath) {
+  const src = ROUTE_SOURCES[routeKeyFor(pagePath)];
+  if (!manifest[src]) throw new Error(`prerender: ${src} is missing from the Vite manifest`);
+  return [...closure(src)]
+    .filter((f) => !alreadyLoaded.has(f))
+    .map((f) => `<link rel="modulepreload" crossorigin href="${base}/${f}" />`)
+    .join("\n    ");
+}
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const urlOf = (p) => (p === "/" ? `${SITE.url}/` : `${SITE.url}${p}`);
@@ -52,12 +80,15 @@ if (!SEO_BLOCK.test(template) || !template.includes("<!--app-html-->")) {
 const words = (html) => html.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
 
 for (const page of PAGES) {
-  const app = render(page.path);
+  const app = await render(page.path);
   // Fail the build rather than ship a blank page to crawlers again.
   if (!/<h1[\s>]/.test(app) || words(app) < 80) {
     throw new Error(`prerender: ${page.path} rendered without an h1 or with too little text (${words(app)} words)`);
   }
-  const html = template.replace(SEO_BLOCK, head(page)).replace("<!--app-html-->", app);
+  const html = template
+    .replace(SEO_BLOCK, head(page))
+    .replace("</head>", `${preloads(page.path)}\n  </head>`)
+    .replace("<!--app-html-->", app);
   const file =
     page.path === "/" ? "index.html" : page.path === "/404" ? "404.html" : path.join(page.path.slice(1), "index.html");
   fs.mkdirSync(path.dirname(path.join(out, file)), { recursive: true });
@@ -154,6 +185,9 @@ ${SITE.sameAs.map((u) => `- [${u.includes("upwork") ? "Upwork" : "Fiverr"}](${u}
 // The long form: what AI engines read in depth, and all that Ask Pax knows.
 const knowledge = buildKnowledge();
 fs.writeFileSync(path.join(out, "llms-full.txt"), knowledge);
+
+// The manifest was only needed for the modulepreload links above.
+fs.rmSync(path.dirname(manifestFile), { recursive: true, force: true });
 
 console.log(`prerender: llms-full.txt ${knowledge.split(/\s+/).length} words`);
 console.log(`prerender: ${PAGES.length} pages, sitemap (${indexable.length} urls), robots.txt, llms.txt`);

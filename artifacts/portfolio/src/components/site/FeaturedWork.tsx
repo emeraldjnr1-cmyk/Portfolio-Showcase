@@ -118,6 +118,13 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
   const [videoFailed, setVideoFailed] = useState(false);
   useEffect(() => setVideoFailed(false), [project]);
 
+  // The prerender has no document to portal into, so it renders nothing here.
+  // The first client render must match that exactly for hydration, so the
+  // portal only appears after mount. Nothing is visible until a card is
+  // clicked anyway.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   // Escape to close, and hold the page still underneath while it is open.
   useEffect(() => {
     if (!project) return;
@@ -135,8 +142,7 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
   // whose skew transform makes it the containing block for position: fixed,
   // so an inline overlay would size itself to the whole document and fly off
   // as soon as the page moved.
-  // Prerendering runs without a document; the overlay only matters in a browser.
-  if (typeof document === "undefined") return null;
+  if (!mounted) return null;
   return createPortal(
     <AnimatePresence>
       {project && (

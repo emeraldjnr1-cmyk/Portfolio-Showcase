@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionTemplate } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
@@ -128,13 +128,19 @@ function Hero({ ready }: { ready: boolean }) {
 
   // Default is the node network: it is drawn, not decoded, so it costs the
   // browser nothing next to the hero's other running animations.
-  // ?bg=film|paths|dots|nodes still switches, for comparison.
-  const [bg, setBg] = useState<HeroBgVariant>(() => {
-    if (typeof window === "undefined") return "nodes";
-    const v = new URLSearchParams(window.location.search).get("bg");
-    return v === "film" || v === "paths" || v === "dots" ? v : "nodes";
-  });
-  const picker = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("bg");
+  // ?bg=film|paths|dots|nodes still switches, for comparison. The query is
+  // read after hydration (the prerender has no URL to read, and the first
+  // client render must match it), in a layout effect so the override is in
+  // place before the first paint.
+  const [bg, setBg] = useState<HeroBgVariant>("nodes");
+  const [picker, setPicker] = useState(false);
+  useLayoutEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    if (!q.has("bg")) return;
+    const v = q.get("bg");
+    setBg(v === "film" || v === "paths" || v === "dots" ? v : "nodes");
+    setPicker(true);
+  }, []);
 
   const line = (delay: number) => ({
     initial: { y: "110%" },

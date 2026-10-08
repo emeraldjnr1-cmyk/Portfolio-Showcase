@@ -1,21 +1,15 @@
+import { Suspense } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { MotionConfig } from "framer-motion";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
-import Home from "@/pages/Home";
-import { ServicesIndex, ServicePage } from "@/pages/Services";
-import { WorkIndex, WorkPage } from "@/pages/Work";
-import { IndustriesIndex, IndustryPage } from "@/pages/Industries";
-import { TeamPage } from "@/pages/Team";
-import { TeamProfilePage } from "@/pages/TeamProfile";
-import { FilmsPage } from "@/pages/Films";
 import { Analytics } from "@vercel/analytics/react";
 import { useMotionOff } from "@/lib/motion-pref";
+import { routes } from "@/routes";
 
-const queryClient = new QueryClient();
+const { home: Home, services: ServicesIndex, service: ServicePage, industries: IndustriesIndex, industry: IndustryPage } = routes;
+const { team: TeamPage, teamProfile: TeamProfilePage, films: FilmsPage, work: WorkIndex, workPage: WorkPage, notFound: NotFound } = routes;
 
+// Keep routeKeyFor() in routes.tsx in step with this list.
 function Router() {
   return (
     <Switch>
@@ -38,17 +32,17 @@ function Router() {
 function App({ ssrPath }: { ssrPath?: string }) {
   const motionOff = useMotionOff();
   return (
-    <QueryClientProvider client={queryClient}>
-      <MotionConfig reducedMotion={motionOff ? "always" : "user"}>
-        <TooltipProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")} ssrPath={ssrPath}>
-            <Router />
-          </WouterRouter>
-          <Toaster />
-          <Analytics />
-        </TooltipProvider>
-      </MotionConfig>
-    </QueryClientProvider>
+    <MotionConfig reducedMotion={motionOff ? "always" : "user"}>
+      <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")} ssrPath={ssrPath}>
+        {/* The current route's chunk is always loaded before render (main.tsx,
+            entry-server.tsx), so this fallback never shows on a page load. */}
+        <Suspense fallback={null}>
+          <Router />
+        </Suspense>
+      </WouterRouter>
+      <Toaster />
+      <Analytics />
+    </MotionConfig>
   );
 }
 

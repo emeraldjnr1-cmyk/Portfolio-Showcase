@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { SiFiverr, SiUpwork, SiWhatsapp } from "react-icons/si";
 import { Logo } from "@/components/site/Logo";
 import { FIVERR, UPWORK, WHATSAPP } from "@/data/portfolio";
@@ -114,11 +115,18 @@ export function Footer() {
         <p className="text-sm text-white/40">Built with Claude Code. Systems that save time and grow businesses.</p>
         <MotionToggle />
         <p className="text-sm text-white/30">
-          © {new Date().getFullYear()} Denver <span className="text-[#10B981]">Emerald</span> Peter
+          © <Year /> Denver <span className="text-[#10B981]">Emerald</span> Peter
         </p>
       </div>
     </footer>
   );
+}
+
+/** The build year first, so hydration matches the prerender; the live year after. */
+function Year() {
+  const [year, setYear] = useState(__BUILD_YEAR__);
+  useEffect(() => setYear(new Date().getFullYear()), []);
+  return <>{year}</>;
 }
 
 /** Lets any visitor stop the marquees, rotating words, smooth scroll and the

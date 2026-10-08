@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const EASE = [0.76, 0, 0.24, 1] as const;
@@ -14,17 +14,22 @@ const HOLD_MS = 950;
  * <html data-intro>, which CSS covers with the same dark colour, so the page
  * never flashes underneath before this component mounts. Everyone else gets
  * the page immediately.
+ *
+ * The first render is always "no intro" on both the prerender and the client,
+ * so hydration matches the static HTML. The real decision is read in a layout
+ * effect, before the browser paints, with the CSS cover still up.
  */
 export function Preloader({ onDone }: { onDone: () => void }) {
-  const [show, setShow] = useState(() => typeof document !== "undefined" && document.documentElement.dataset.intro === "1");
+  const [show, setShow] = useState(false);
   const [gone, setGone] = useState(false);
   const [word, setWord] = useState(0);
 
-  useEffect(() => {
-    if (!show) {
+  useLayoutEffect(() => {
+    if (document.documentElement.dataset.intro !== "1") {
       onDone();
       return;
     }
+    setShow(true);
     try {
       sessionStorage.setItem(SEEN, "1");
     } catch {
