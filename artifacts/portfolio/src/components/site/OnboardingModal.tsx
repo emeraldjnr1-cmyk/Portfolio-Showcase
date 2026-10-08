@@ -10,9 +10,11 @@ import {
 
 // The form (react-hook-form, zod, the select widget) is code-split. It is
 // fetched when the trigger is hovered or focused, or in the browser's idle
-// time after the page has loaded, so by the time anyone clicks it is already
-// here. The dialog only opens once the chunk is in, so there is never an
-// empty frame.
+// time after the page has loaded, so usually it is already here. The dialog
+// opens on the tap regardless: if the form is still downloading (a first visit
+// on a slow phone), a placeholder of the fields shows until it arrives. Waiting
+// to open felt like a dead button, and a dialog could pop up late after the
+// visitor had already moved on.
 const loadForm = () => import("./OnboardingForm");
 const OnboardingForm = lazy(loadForm);
 
@@ -41,8 +43,8 @@ export function OnboardingModal({ trigger }: { trigger: React.ReactNode }) {
     <Dialog
       open={open}
       onOpenChange={(next) => {
-        if (!next) return setOpen(false);
-        loadForm().then(() => setOpen(true), () => setOpen(true));
+        if (next) warm();
+        setOpen(next);
       }}
     >
       <DialogTrigger asChild onPointerEnter={warm} onFocus={warm}>
@@ -58,10 +60,27 @@ export function OnboardingModal({ trigger }: { trigger: React.ReactNode }) {
           </DialogDescription>
         </DialogHeader>
 
-        <Suspense fallback={null}>
+        <Suspense fallback={<FormPlaceholder />}>
           <OnboardingForm onSent={() => setOpen(false)} />
         </Suspense>
       </DialogContent>
     </Dialog>
+  );
+}
+
+/** Same footprint as the form, so nothing jumps when it arrives. */
+function FormPlaceholder() {
+  return (
+    <div className="mt-6 space-y-5" aria-busy="true" aria-label="Loading the form">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div className="h-[68px] animate-pulse rounded-xl bg-black/[0.06]" />
+        <div className="h-[68px] animate-pulse rounded-xl bg-black/[0.06]" />
+      </div>
+      <div className="h-[68px] animate-pulse rounded-xl bg-black/[0.06]" />
+      <div className="h-[68px] animate-pulse rounded-xl bg-black/[0.06]" />
+      <div className="h-[68px] animate-pulse rounded-xl bg-black/[0.06]" />
+      <div className="h-28 animate-pulse rounded-xl bg-black/[0.06]" />
+      <div className="h-14 animate-pulse rounded-full bg-black/[0.08]" />
+    </div>
   );
 }
