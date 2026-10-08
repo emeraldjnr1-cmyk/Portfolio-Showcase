@@ -29,6 +29,7 @@ import { HireMe } from "@/components/site/HireMe";
 import { FAQSection } from "@/components/site/FAQ";
 import { Footer } from "@/components/site/Footer";
 import { ClaudeFullStack } from "@/components/site/ClaudeFullStack";
+import { AutomationStory } from "@/components/site/AutomationStory";
 
 import { WHATSAPP } from "@/data/portfolio";
 
@@ -415,6 +416,7 @@ export default function Home() {
         <VelocitySkew>
           <ToolStack />
           <ClaudeFullStack />
+          <AutomationStory />
           <BigMarquee items={["Claude Code", "Websites", "Apps", "AI Products"]} accent="#0015D4" />
           <WebProjectsSection />
           {/* 03 — How it runs: the signature scroll story slots in here. */}
