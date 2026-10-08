@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionTemplate } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 
@@ -7,7 +7,6 @@ import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
-import { CountUp } from "@/components/fx/CountUp";
 import { ScrollProgress, VelocitySkew } from "@/components/fx/ScrollFX";
 import { BigMarquee } from "@/components/fx/BigMarquee";
 import { useLenis } from "@/hooks/use-lenis";
@@ -18,23 +17,20 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { AskPax } from "@/components/site/pax/AskPax";
 import { ProofStrip } from "@/components/site/ProofStrip";
+import { Pricing } from "@/components/site/Pricing";
 import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { WebProjectsSection } from "@/components/site/WebProjects";
-import { Web3ProjectsSection } from "@/components/site/Web3Projects";
 import { TestimonialCinema } from "@/components/site/TestimonialCinema";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Logo } from "@/components/site/Logo";
-import { Avatar, SpinningBadge } from "@/components/site/Portrait";
-import { FiverrLevelBadge, L1_THEME, L2_THEME } from "@/components/site/FiverrBadge";
+import { Avatar } from "@/components/site/Portrait";
 import { ToolStack } from "@/components/site/ToolStack";
 import { HireMe } from "@/components/site/HireMe";
 import { FAQSection } from "@/components/site/FAQ";
 import { Footer } from "@/components/site/Footer";
 import { ClaudeFullStack } from "@/components/site/ClaudeFullStack";
-import { IndustriesSection } from "@/components/site/IndustriesSection";
-import { TeamSection } from "@/components/site/TeamSection";
 
-import { profilePic, WHATSAPP } from "@/data/portfolio";
+import { WHATSAPP } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -323,187 +319,6 @@ function Hero({ ready }: { ready: boolean }) {
   );
 }
 
-// ─────────────────────────────── STATS ──────────────────────────────
-function Stats() {
-  const stats = [
-    { to: 50, suffix: "+", label: "Clients worldwide" },
-    { to: 200, suffix: "+", label: "Systems delivered" },
-    { to: 4, suffix: " yrs", label: "Building automations" },
-    { to: 15, suffix: "+", label: "Hours saved weekly, per client" },
-  ];
-  return (
-    <section className="px-6 py-20 md:px-12">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 md:grid-cols-4">
-        {stats.map((s, i) => (
-          <Reveal key={s.label} delay={i * 0.1} className="text-center md:text-left">
-            <div className="font-display text-5xl font-extrabold text-black md:text-6xl">
-              <CountUp to={s.to} suffix={s.suffix} />
-            </div>
-            <p className="mt-2 text-sm text-black/50">{s.label}</p>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-// ───────────────────────────── PROCESS ──────────────────────────────
-function Process() {
-  const steps = [
-    { n: "01", title: "Tell me your workflow", desc: "We map your manual processes, find the bottlenecks, and design the ideal flow." },
-    { n: "02", title: "I build your system", desc: "Custom, reliable logic with Claude Code and the best automation tool for the job, tested end to end." },
-    { n: "03", title: "You scale on autopilot", desc: "The system runs in the background. We refine, you grow." },
-  ];
-
-  return (
-    <section className="border-t border-black/10 bg-card px-6 py-28 md:px-12 md:py-40">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-20">
-          <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">09 — Process</span>
-          </Reveal>
-          <SplitWords
-            as="h2"
-            text="Three steps. No surprises."
-            className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-6xl"
-          />
-        </div>
-
-        <div className="grid gap-10 md:grid-cols-3">
-          {steps.map((s, i) => (
-            <motion.div
-              key={s.n}
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10% 0px" }}
-              transition={{ duration: 0.8, ease: EASE, delay: i * 0.15 }}
-              className="relative border-t-2 border-black/10 pt-8"
-            >
-              <motion.div
-                className="absolute -top-0.5 left-0 h-0.5 bg-primary"
-                initial={{ width: 0 }}
-                whileInView={{ width: "100%" }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.2, ease: EASE, delay: 0.3 + i * 0.2 }}
-              />
-              <span className="font-display text-6xl font-extrabold text-stroke">{s.n}</span>
-              <h3 className="mt-6 font-display text-2xl font-bold text-black">{s.title}</h3>
-              <p className="mt-3 leading-relaxed text-black/55">{s.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ───────────────────────────── ABOUT ────────────────────────────────
-function About() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const imgY = useSpring(useTransform(scrollYProgress, [0, 1], [40, -40]), { stiffness: 100, damping: 30 });
-
-  // Colour resolves as the portrait reaches the middle of the viewport and
-  // drains again on the way out. Scroll-driven rather than hover, because
-  // hover does not exist on a phone and left the photo permanently grey.
-  const grayAmount = useSpring(
-    useTransform(scrollYProgress, [0.12, 0.4, 0.6, 0.88], [1, 0, 0, 1]),
-    { stiffness: 80, damping: 24 },
-  );
-  const portraitFilter = useMotionTemplate`grayscale(${grayAmount})`;
-
-  return (
-    <section id="about" ref={ref} className="border-t border-black/10 bg-card px-6 py-28 md:px-12 md:py-40">
-      <div className="mx-auto grid max-w-6xl items-center gap-16 md:grid-cols-2">
-        <motion.div style={{ y: imgY }} className="group relative mx-auto w-full max-w-sm">
-          {/* color pops that drift behind the portrait */}
-          <motion.span
-            aria-hidden
-            className="absolute -right-5 -top-5 h-16 w-16 rounded-full bg-[#84DEF9]"
-            animate={{ y: [0, -12, 0], scale: [1, 1.08, 1] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.span
-            aria-hidden
-            className="absolute -left-8 top-1/3 h-10 w-10 rounded-full bg-[#FF8FCA]"
-            animate={{ y: [0, 14, 0] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-
-          <motion.div
-            initial={{ clipPath: "inset(100% 0% 0% 0%)", opacity: 0 }}
-            whileInView={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }}
-            viewport={{ once: true, margin: "-12% 0px" }}
-            transition={{ duration: 1, ease: EASE }}
-            className="relative overflow-hidden rounded-[2rem] border-2 border-black rotate-2 transition-all duration-700 group-hover:rotate-0 group-hover:shadow-[12px_12px_0_#0015D4]"
-          >
-            {/* Zoomed to head and shoulders; the source is a half-body shot. */}
-            <motion.img
-              src={profilePic}
-              alt="Denver Emerald Peter"
-              style={{ filter: portraitFilter, transformOrigin: "50% 4%" }}
-              className="w-full scale-[1.5] object-cover transition-transform duration-700 group-hover:scale-[1.45]"
-            />
-            {/* sheen that sweeps across on hover */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 group-hover:translate-x-full"
-            />
-          </motion.div>
-
-          <div className="absolute -bottom-6 -left-6 rounded-2xl border-2 border-black bg-[#FFCB41] px-5 py-4">
-            <p className="font-display text-2xl font-extrabold text-black">
-              <CountUp to={200} suffix="+" />
-            </p>
-            <p className="text-xs font-medium text-black/70">systems shipped</p>
-          </div>
-
-          {/* tucked inside the frame on phones, overhangs from md up */}
-          <SpinningBadge className="absolute -bottom-8 right-0 text-[#E7E7E1] md:-bottom-10 md:-right-12" size={124} />
-        </motion.div>
-
-        <div>
-          <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">10 — About</span>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
-              Hi, I'm Denver <span className="text-[#00795A]">Emerald</span> Peter.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="mt-6 font-editorial text-2xl leading-snug text-black md:text-[28px]">
-              I build the parts of your business you should never have to think about again.
-            </p>
-          </Reveal>
-          <Reveal delay={0.3}>
-            <p className="mt-6 text-lg leading-relaxed text-black/60">
-              Four years in, that has meant lead pipelines that fill themselves, client onboarding that runs
-              overnight, and dashboards that answer the question before you think to ask it.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-black/60">
-              Building it is only half the job. The other half is handing it over properly. Every system ships with a
-              walkthrough video and plain docs, inside your own accounts, so you own it, you can change it, and you
-              are never stuck waiting on me.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-black/60">
-              Calm, direct, allergic to jargon. If something will not work, I tell you before you pay for it.
-            </p>
-          </Reveal>
-          <Reveal delay={0.4}>
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-black/10 pt-6 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
-              <span>4+ years</span>
-              <span>50+ clients</span>
-              <span>200+ systems</span>
-              <span>Level 2 seller on Fiverr</span>
-            </div>
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ────────────────────────────── CTA ─────────────────────────────────
 function FinalCTA() {
   return (
@@ -599,20 +414,14 @@ export default function Home() {
         <ProofStrip />
         <VelocitySkew>
           <ToolStack />
-          <Stats />
           <ClaudeFullStack />
           <BigMarquee items={["Claude Code", "Websites", "Apps", "AI Products"]} accent="#0015D4" />
           <WebProjectsSection />
-          <BigMarquee items={["Automation", "AI Agents", "n8n", "Make.com", "Airtable"]} direction="right" accent="#F32317" />
+          {/* 03 — How it runs: the signature scroll story slots in here. */}
           <FeaturedWork />
-          <IndustriesSection />
-          <BigMarquee items={["dApps", "Solana Bots", "Smart Contracts", "Web3 Trading", "DeFi"]} accent="#8B5CF6" />
-          <Web3ProjectsSection />
           <TestimonialCinema />
-          <TeamSection />
+          <Pricing num="06" />
           <HireMe />
-          <Process />
-          <About />
           <FAQSection />
           <BigMarquee items={["Let's build", "Your system", "Starts here"]} accent="#FFCB41" />
           <FinalCTA />

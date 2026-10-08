@@ -257,7 +257,7 @@ export const services: Service[] = [
       { title: "On-chain dashboards", desc: "Portfolio, signal and protection dashboards that turn chain data into decisions." },
     ],
     tools: ["Solidity", "Foundry", "Hardhat", "Next.js", "React", "wagmi", "viem", "Solana", "Helius", "Jupiter"],
-    proof: [{ href: "/#web3", label: "Web3 gallery", note: "The APAX Portfolio Vault client build, plus 20 more" }],
+    proof: [{ href: "/services/web3#web3", label: "Web3 gallery", note: "The APAX Portfolio Vault client build, plus 20 more" }],
     faqs: [
       {
         q: "Do you audit smart contracts?",

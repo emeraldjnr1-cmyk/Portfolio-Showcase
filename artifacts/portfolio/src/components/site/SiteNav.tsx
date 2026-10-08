@@ -13,10 +13,10 @@ const LINKS = [
   { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
   { label: "Claude Code", href: "#claude-code" },
-  { label: "D. Team", href: "#team" },
+  { label: "D. Team", href: "/team" },
   { label: "Clients", href: "#clients" },
-  { label: "Hire me", href: "#hire" },
-  { label: "About", href: "#about" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "About", href: "/team/emerald" },
 ];
 
 export function SiteNav() {

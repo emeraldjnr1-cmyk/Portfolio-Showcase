@@ -98,7 +98,7 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a href="/#hire" className={linkCls}>
+              <a href="/#pricing" className={linkCls}>
                 Ways to work together
               </a>
             </li>

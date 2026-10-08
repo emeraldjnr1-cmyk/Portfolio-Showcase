@@ -7,6 +7,7 @@ import { industries, PROOF_LABEL, SIZES } from "@/data/industries";
 import { work } from "@/data/work";
 import { team } from "@/data/team";
 import { films, FILM_GROUPS } from "@/data/films";
+import { packages, usd } from "@/data/pricing";
 import { FAQS } from "@/data/faqs";
 import { webProjects, web3Projects, testimonials, WHATSAPP, FIVERR, UPWORK } from "@/data/portfolio";
 
@@ -35,6 +36,10 @@ export function buildKnowledge(): string {
     "- Direct: no platform fee. Scope is agreed, Emerald invoices, and the work starts. Same delivery, same support, lower price. Payment by Wise, Remitly, PayPal or bank transfer.",
     `- Fastest start: WhatsApp (${WHATSAPP}) or the onboarding form on the home page (the Start your project button). Emerald sends a plan and a fixed quote within 24 hours.`,
   );
+
+  h("Typical projects and starting prices (USD)");
+  for (const p of packages) out.push(`- ${p.name}: from ${usd(p.from)}, typically ${p.timeline.toLowerCase()}. ${p.what}`);
+  out.push("These are starting points. Every project gets its own fixed quote from Emerald within 24 hours. Larger builds are paid in milestones.");
 
   h("Process");
   out.push(

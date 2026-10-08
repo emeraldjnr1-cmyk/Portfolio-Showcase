@@ -5,6 +5,7 @@ import { PageShell, Breadcrumbs, AccentHeading, StartButtons } from "@/component
 import { services, serviceBySlug } from "@/data/services";
 import { filmsFor } from "@/data/films";
 import { FilmGrid } from "@/components/site/Films";
+import { Web3ProjectsSection } from "@/components/site/Web3Projects";
 
 const STEPS = [
   { n: "01", title: "Tell me your workflow", desc: "We map the manual process, find the bottleneck and agree what done looks like." },
@@ -129,6 +130,9 @@ export function ServicePage({ slug }: { slug: string }) {
           </div>
         </section>
       )}
+
+      {/* The Web3 gallery moved here from the home page. */}
+      {s.slug === "web3" && <Web3ProjectsSection />}
 
       {/* Proof */}
       <section className="border-t border-black/10 px-6 py-24 md:px-12 md:py-32">

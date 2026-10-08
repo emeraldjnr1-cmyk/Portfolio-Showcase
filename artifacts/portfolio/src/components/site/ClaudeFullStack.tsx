@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
+import { industries } from "@/data/industries";
 
 // Section 01: Claude Code as the umbrella over everything else on the page.
 // Each lane is a link to its service page, which is also how the home page
@@ -109,6 +110,26 @@ export function ClaudeFullStack() {
             <a href="#websites" className="inline-flex items-center gap-1.5 text-black/55 transition-colors hover:text-primary">
               See the builds below
             </a>
+          </div>
+        </Reveal>
+
+        {/* The industries grid lives on /industries now; this row keeps every
+            industry page one click from home. */}
+        <Reveal delay={0.25}>
+          <div className="mt-14 border-t border-black/10 pt-8">
+            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-black/45">Built for your industry</p>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {industries.map((ind) => (
+                <li key={ind.slug}>
+                  <a
+                    href={`/industries/${ind.slug}`}
+                    className="inline-flex rounded-full border border-black/20 bg-white/70 px-3.5 py-1.5 text-sm font-medium text-black/75 transition-colors duration-150 hover:border-black hover:bg-black hover:text-white"
+                  >
+                    {ind.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </Reveal>
       </div>

@@ -324,7 +324,7 @@ export function FeaturedWork() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 md:mb-24">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">03 — Automations and AI agents</span>
+            <span className="font-mono text-sm font-semibold text-primary">04 — Automations and AI agents</span>
           </Reveal>
           <SplitWords
             as="h2"

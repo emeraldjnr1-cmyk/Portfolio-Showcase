@@ -6,7 +6,7 @@ export const FAQS = [
   },
   {
     q: "How much does a project cost?",
-    a: "It depends on scope. A focused automation usually starts around the price of one week of the manual work it replaces. Once you fill the onboarding form I send a fixed quote within 24 hours, so there are never surprises.",
+    a: "Typical projects start at $800 for Claude setup and training, $950 for a focused automation, $1,750 for an AI agent, chatbot, website or web app, and $2,950 for a full platform. Every project gets its own fixed quote within 24 hours of the onboarding form, so you know the full price before anything starts.",
   },
   {
     q: "How long does a build take?",

@@ -11,7 +11,7 @@ export function Web3ProjectsSection() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-20 md:mb-28">
           <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">05 — Web3 & Blockchain</span>
+            <span className="font-mono text-sm font-semibold text-primary">The Web3 gallery</span>
           </Reveal>
           <SplitWords
             as="h2"

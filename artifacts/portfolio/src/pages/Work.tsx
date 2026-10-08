@@ -23,7 +23,7 @@ export function WorkIndex() {
             <a href="/#websites" className="inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-black hover:text-white">
               Web builds gallery <ArrowUpRight className="h-4 w-4" />
             </a>
-            <a href="/#web3" className="inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-black hover:text-white">
+            <a href="/services/web3#web3" className="inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-black hover:text-white">
               Web3 gallery <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>

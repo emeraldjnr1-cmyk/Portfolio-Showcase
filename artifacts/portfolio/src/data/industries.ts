@@ -356,7 +356,7 @@ export const industries: Industry[] = [
       {
         kind: "client",
         text: "APAX Portfolio Vault: a vault dApp where the front end never touches the chain, with a Next.js UI, an Express API layer and a Solidity vault as the single source of truth.",
-        href: "/#web3",
+        href: "/services/web3#web3",
       },
     ],
     services: ["web3", "claude-code"],
