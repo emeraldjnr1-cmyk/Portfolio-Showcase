@@ -76,8 +76,53 @@ export const services: Service[] = [
     ],
   },
   {
-    slug: "websites-apps",
+    slug: "roblox",
     num: "02",
+    name: "Roblox game development",
+    short: "Obbies, horror, simulators, tycoons, roleplay and fighting games, built in Roblox Studio and Luau and published in your own group.",
+    title: "Roblox Game Developer for Hire | Denver NoCode",
+    description:
+      "Roblox game development for hire: obby, horror, simulator, tycoon, roleplay and fighting games built in Roblox Studio and Luau, published in your own group, with server-side anti-exploit checks and milestone delivery.",
+    h1: { before: "Roblox games, built in ", accent: "your", after: " group." },
+    lead:
+      "From a first obby to a round-based horror game with a store and a leaderboard. I build in Roblox Studio and Luau, inside a group you own, and deliver in milestones you play before the next one starts. Every game ships with server-side checks against exploiters and a handover walkthrough, so you can keep updating it yourself.",
+    accent: "#F32317",
+    builds: [
+      { title: "Obby and endless runner", desc: "Checkpoint obbies and three-lane runners with a speed curve, personal bests and a leaderboard the server verifies." },
+      { title: "Horror and round-based", desc: "Lobbies, rounds, hiding spots, entity behaviour and a death screen that matters, with every balance number in a config file you can tune." },
+      { title: "Simulator and tycoon", desc: "Click, collect, rebirth and build loops with an economy designed to stay balanced after launch." },
+      { title: "Roleplay and city", desc: "Jobs, homes, vehicles and a map built from a modular kit, so new content drops in without a rebuild." },
+      { title: "Fighting and combat", desc: "1v1 and team fighters with hitboxes checked on the server, combo and counter systems, health, rounds and knockouts." },
+      { title: "Saves, store and anti-exploit", desc: "Session-locked DataStore saves, gamepasses and developer products on Roblox's own systems, with scores and rewards validated on the server and every free model read for backdoors." },
+    ],
+    tools: ["Roblox Studio", "Luau", "DataStoreService", "Claude Code", "Blender"],
+    proof: [{ href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Twenty concept demos across five game types" }],
+    faqs: [
+      {
+        q: "Who owns the game?",
+        a: "You do. The game is created and published in your own Roblox group, so the place, every asset and the Robux it earns belong to you from day one. I work as a developer in that group, and you can remove that access the moment we are done.",
+      },
+      {
+        q: "How do you stop exploiters?",
+        a: "Nothing the client can touch is trusted. Scores, currency, purchases and rewards are checked on the server, remote events are validated and rate limited, and any free model or plugin is read line by line for backdoors before it enters the place. No game is exploit-proof, but this removes the cheap attacks that ruin leaderboards and economies.",
+      },
+      {
+        q: "How long does a Roblox game take?",
+        a: "A focused game such as an obby or a runner takes about 4 weeks. A round-based horror game or a simulator with a store and progression runs 6 to 8 weeks. Work is delivered in milestones: you play each one in your own group before the next begins, and the first milestone is always a playable run.",
+      },
+      {
+        q: "Will it get players?",
+        a: "I build the retention basics Roblox measures, such as a fast first 30 seconds, saves that never vanish and a reason to come back, and publish with an icon, thumbnails and a searchable description. I do not promise player counts or revenue. Anyone who does is guessing.",
+      },
+      {
+        q: "What do I get at handover?",
+        a: "The published game in your group, a clean and commented place file, the config files that hold every balance number, and a recorded walkthrough of how to ship your own updates. Standard Roblox tooling throughout, so any Roblox developer can pick it up later.",
+      },
+    ],
+  },
+  {
+    slug: "websites-apps",
+    num: "03",
     name: "Websites and web apps",
     short: "Landing pages, SaaS dashboards, booking tools, portals and storefronts, built with React and Claude Code.",
     title: "Websites & Web Apps Built with Claude Code | Denver NoCode",
@@ -117,7 +162,7 @@ export const services: Service[] = [
   },
   {
     slug: "automation",
-    num: "03",
+    num: "04",
     name: "Business automation",
     short: "n8n, Make.com and Airtable systems for lead capture, onboarding, CRM updates, invoicing and reporting.",
     title: "n8n & Make.com Automation Expert | Denver NoCode",
@@ -159,7 +204,7 @@ export const services: Service[] = [
   },
   {
     slug: "ai-agents",
-    num: "04",
+    num: "05",
     name: "AI agents and chatbots",
     short: "Support bots, knowledge bots, sales agents and assistants that answer from your own data and act in your tools.",
     title: "AI Agent Development & Custom Chatbots | Denver NoCode",
@@ -201,7 +246,7 @@ export const services: Service[] = [
   },
   {
     slug: "mcp",
-    num: "05",
+    num: "06",
     name: "MCP servers and Claude integrations",
     short: "Custom MCP servers that give Claude safe, scoped access to your CRM, database, website or internal APIs.",
     title: "MCP Server Development & Claude Integrations | Denver NoCode",
@@ -239,7 +284,7 @@ export const services: Service[] = [
   },
   {
     slug: "web3",
-    num: "06",
+    num: "07",
     name: "Web3 and blockchain",
     short: "dApp front ends, Solidity smart contracts, Solana bots and on-chain dashboards.",
     title: "Web3 & Smart Contract Development | Denver NoCode",
@@ -270,51 +315,6 @@ export const services: Service[] = [
       {
         q: "Which chains do you work with?",
         a: "EVM chains such as Ethereum, Base, Arbitrum and Polygon, and Solana.",
-      },
-    ],
-  },
-  {
-    slug: "roblox",
-    num: "07",
-    name: "Roblox game development",
-    short: "Obbies, horror, simulators, tycoons, roleplay and fighting games, built in Roblox Studio and Luau and published in your own group.",
-    title: "Roblox Game Developer for Hire | Denver NoCode",
-    description:
-      "Roblox game development for hire: obby, horror, simulator, tycoon, roleplay and fighting games built in Roblox Studio and Luau, published in your own group, with server-side anti-exploit checks and milestone delivery.",
-    h1: { before: "Roblox games, built in ", accent: "your", after: " group." },
-    lead:
-      "From a first obby to a round-based horror game with a store and a leaderboard. I build in Roblox Studio and Luau, inside a group you own, and deliver in milestones you play before the next one starts. Every game ships with server-side checks against exploiters and a handover walkthrough, so you can keep updating it yourself.",
-    accent: "#F32317",
-    builds: [
-      { title: "Obby and endless runner", desc: "Checkpoint obbies and three-lane runners with a speed curve, personal bests and a leaderboard the server verifies." },
-      { title: "Horror and round-based", desc: "Lobbies, rounds, hiding spots, entity behaviour and a death screen that matters, with every balance number in a config file you can tune." },
-      { title: "Simulator and tycoon", desc: "Click, collect, rebirth and build loops with an economy designed to stay balanced after launch." },
-      { title: "Roleplay and city", desc: "Jobs, homes, vehicles and a map built from a modular kit, so new content drops in without a rebuild." },
-      { title: "Fighting and combat", desc: "1v1 and team fighters with hitboxes checked on the server, combo and counter systems, health, rounds and knockouts." },
-      { title: "Saves, store and anti-exploit", desc: "Session-locked DataStore saves, gamepasses and developer products on Roblox's own systems, with scores and rewards validated on the server and every free model read for backdoors." },
-    ],
-    tools: ["Roblox Studio", "Luau", "DataStoreService", "Claude Code", "Blender"],
-    proof: [{ href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Twenty concept demos across five game types" }],
-    faqs: [
-      {
-        q: "Who owns the game?",
-        a: "You do. The game is created and published in your own Roblox group, so the place, every asset and the Robux it earns belong to you from day one. I work as a developer in that group, and you can remove that access the moment we are done.",
-      },
-      {
-        q: "How do you stop exploiters?",
-        a: "Nothing the client can touch is trusted. Scores, currency, purchases and rewards are checked on the server, remote events are validated and rate limited, and any free model or plugin is read line by line for backdoors before it enters the place. No game is exploit-proof, but this removes the cheap attacks that ruin leaderboards and economies.",
-      },
-      {
-        q: "How long does a Roblox game take?",
-        a: "A focused game such as an obby or a runner takes about 4 weeks. A round-based horror game or a simulator with a store and progression runs 6 to 8 weeks. Work is delivered in milestones: you play each one in your own group before the next begins, and the first milestone is always a playable run.",
-      },
-      {
-        q: "Will it get players?",
-        a: "I build the retention basics Roblox measures, such as a fast first 30 seconds, saves that never vanish and a reason to come back, and publish with an icon, thumbnails and a searchable description. I do not promise player counts or revenue. Anyone who does is guessing.",
-      },
-      {
-        q: "What do I get at handover?",
-        a: "The published game in your group, a clean and commented place file, the config files that hold every balance number, and a recorded walkthrough of how to ship your own updates. Standard Roblox tooling throughout, so any Roblox developer can pick it up later.",
       },
     ],
   },

@@ -103,8 +103,21 @@ export function FeatureRow({ project, index }: { project: WebProject; index: num
 /** Compact card for the remaining projects. */
 export function CompactCard({ project, index }: { project: WebProject; index: number }) {
   const pop = POPS[(index + 4) % POPS.length];
+  // Cards with a film play it muted while on screen, like the FeatureRow, so a
+  // gallery of demos moves instead of sitting as stills.
+  const ref = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoOk, setVideoOk] = useState(true);
+  const inView = useInView(ref, { margin: "-10% 0px", amount: 0.3 });
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !project.video) return;
+    if (inView) v.play().catch(() => {});
+    else v.pause();
+  }, [inView, project.video]);
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8% 0px" }}
@@ -115,12 +128,27 @@ export function CompactCard({ project, index }: { project: WebProject; index: nu
       data-cursor="hover"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-[#DDDBD2]">
-        <img
-          src={project.img}
-          alt={`${project.name}, ${project.kind}`}
-          loading="lazy"
-          className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-        />
+        {project.video && videoOk ? (
+          <video
+            ref={videoRef}
+            src={project.video}
+            poster={project.poster ?? project.img}
+            muted
+            loop
+            playsInline
+            preload="none"
+            onError={() => setVideoOk(false)}
+            aria-label={`${project.name}, ${project.kind}`}
+            className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <img
+            src={project.img}
+            alt={`${project.name}, ${project.kind}`}
+            loading="lazy"
+            className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+          />
+        )}
       </div>
       <div className="p-5">
         <p className="font-mono text-[11px] font-bold uppercase tracking-widest text-black/40">{project.kind}</p>
