@@ -219,8 +219,20 @@ export const web3Projects: WebProject[] = [
 
 // ── Published Roblox games (the gallery on /services/roblox) ──
 // Filled from scripts/roblox-media.mjs output, then edited by hand.
-// Strongest game first: it becomes the FeatureRow.
-export const robloxProjects: WebProject[] = [];
+// Strongest game first: it becomes the FeatureRow. Concept demos are labelled
+// as such in `kind`; only a game published in a client's group may drop the label.
+export const robloxProjects: WebProject[] = [
+  {
+    slug: "01-canyon-rush",
+    name: "Canyon Rush",
+    kind: "Concept demo: three-lane endless runner",
+    desc: "Lane switching, a speed curve, coin streaks and a best score to beat, shown as a playable loop.",
+    stack: ["Runner loop", "Speed curve", "Coin streaks", "Best score"],
+    img: `${BASE}/roblox/01-canyon-rush.jpg`,
+    video: `${BASE}/videos/roblox-01.mp4`,
+    poster: `${BASE}/videos/posters/roblox-01.jpg`,
+  },
+];
 
 // ── Video testimonials ──
 export interface Testimonial {

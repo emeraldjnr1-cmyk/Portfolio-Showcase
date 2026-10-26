@@ -93,7 +93,7 @@ export function buildKnowledge(): string {
   h("Web3 gallery (APAX is a client build; the rest are showcase builds)");
   for (const p of web3Projects) out.push(`- ${p.name}, ${p.kind.replace(" — ", ": ")}: ${p.desc}`);
 
-  h("Roblox games (published on Roblox, playable)");
+  h("Roblox gallery (concept demos made for the site, not published games)");
   for (const p of robloxProjects) out.push(`- ${p.name}, ${p.kind}: ${p.desc}${p.href ? ` Play: ${p.href}` : ""}`);
 
   h("Video testimonials from real clients (first names as shown on the site)");

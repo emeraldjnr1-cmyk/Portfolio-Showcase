@@ -31,16 +31,16 @@ export function RobloxProjectsSection() {
           </Reveal>
           <SplitWords
             as="h2"
-            text="Published games you can open and play."
+            text="Game loops, shown in motion."
             className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl"
           />
           <Reveal delay={0.25}>
             <p className="mt-6 max-w-xl text-lg text-black/55">
-              Obbies, horror, simulators and roleplay, built in Roblox Studio and Luau and live on Roblox.
+              The core loop of each game type, played through so you can see the pacing before anything is built for you.
             </p>
             <p className="mt-4 inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
               <span className="h-2 w-2 bg-[#F32317]" aria-hidden />
-              Every game here is published on Roblox. Open it, play it, judge it yourself.
+              Concept demos made for this page, not published games. Client games ship in the client's own Roblox group.
             </p>
           </Reveal>
         </div>

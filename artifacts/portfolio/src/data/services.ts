@@ -294,7 +294,7 @@ export const services: Service[] = [
       { title: "Anti-exploit hardening", desc: "Scores, currency and rewards validated on the server, rate limits on remotes, and every free model read for backdoors before it enters the place." },
     ],
     tools: ["Roblox Studio", "Luau", "DataStoreService", "Claude Code", "Blender"],
-    proof: [{ href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Published games you can open and play" }],
+    proof: [{ href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Concept demo of the runner loop, with more game types to follow" }],
     faqs: [
       {
         q: "Who owns the game?",
