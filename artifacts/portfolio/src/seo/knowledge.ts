@@ -9,7 +9,7 @@ import { team } from "@/data/team";
 import { films, FILM_GROUPS } from "@/data/films";
 import { packages, usd } from "@/data/pricing";
 import { FAQS } from "@/data/faqs";
-import { webProjects, web3Projects, testimonials, WHATSAPP, FIVERR, UPWORK } from "@/data/portfolio";
+import { webProjects, web3Projects, robloxProjects, testimonials, WHATSAPP, FIVERR, UPWORK } from "@/data/portfolio";
 
 const SITE = "https://www.denvernocode.com";
 
@@ -20,7 +20,7 @@ export function buildKnowledge(): string {
   out.push(
     "# Denver NoCode: full public knowledge",
     "",
-    "Denver NoCode is the studio of Denver Emerald Peter (Emerald), a Claude Code developer who builds web apps, websites, business automations, AI agents and MCP servers for businesses worldwide, with Claude Code, n8n, Make.com and Airtable.",
+    "Denver NoCode is the studio of Denver Emerald Peter (Emerald), a Claude Code developer who builds web apps, websites, business automations, AI agents, MCP servers and Roblox games for businesses worldwide, with Claude Code, n8n, Make.com and Airtable.",
     "",
     "- 200+ systems delivered for 50+ clients worldwide, over 4+ years of building automations.",
     "- Level 2 seller on Fiverr.",
@@ -92,6 +92,9 @@ export function buildKnowledge(): string {
 
   h("Web3 gallery (APAX is a client build; the rest are showcase builds)");
   for (const p of web3Projects) out.push(`- ${p.name}, ${p.kind.replace(" — ", ": ")}: ${p.desc}`);
+
+  h("Roblox games (published on Roblox, playable)");
+  for (const p of robloxProjects) out.push(`- ${p.name}, ${p.kind}: ${p.desc}${p.href ? ` Play: ${p.href}` : ""}`);
 
   h("Video testimonials from real clients (first names as shown on the site)");
   for (const t of testimonials) out.push(`- ${t.name}: "${t.quote}"`);

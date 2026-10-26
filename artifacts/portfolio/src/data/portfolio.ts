@@ -174,6 +174,8 @@ export interface WebProject {
   img: string;
   video?: string;
   poster?: string;
+  /** External link, for example a published Roblox game. */
+  href?: string;
 }
 
 export const webProjects: WebProject[] = [
@@ -214,6 +216,11 @@ export const web3Projects: WebProject[] = [
   { slug: '19-signalgrid', name: 'SignalGrid', kind: 'On-Chain Signal Terminal', desc: 'Fuses 14 data sources into smart-money signals with a 22-minute median lead over the crowd.', stack: ['Node.js', 'Dune', 'Telegram'], img: `${BASE}/web3/19-signalgrid.jpg` },
   { slug: '20-gasguard', name: 'GasGuard', kind: 'MEV Protection Dashboard', desc: 'Private-relay transaction protection: 18k sandwiches blocked and $2.8M saved for users.', stack: ['React', 'Flashbots', 'Node.js'], img: `${BASE}/web3/20-gasguard.jpg` },
 ];
+
+// ── Published Roblox games (the gallery on /services/roblox) ──
+// Filled from scripts/roblox-media.mjs output, then edited by hand.
+// Strongest game first: it becomes the FeatureRow.
+export const robloxProjects: WebProject[] = [];
 
 // ── Video testimonials ──
 export interface Testimonial {

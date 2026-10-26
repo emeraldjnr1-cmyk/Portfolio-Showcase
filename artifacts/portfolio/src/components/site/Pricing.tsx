@@ -75,8 +75,8 @@ export function Pricing({ num = "06" }: { num?: string }) {
               <div>
                 <h3 className="font-display text-xl font-extrabold tracking-tight text-black">Something else?</h3>
                 <p className="mt-3 leading-relaxed text-black/60">
-                  Roblox games, Web3, MCP servers, rescues of half-built projects. Describe it and you get a plan and a
-                  fixed price within 24 hours.
+                  Web3, MCP servers, rescues of half-built projects. Describe it and you get a plan and a fixed price
+                  within 24 hours.
                 </p>
               </div>
               <div className="mt-7">

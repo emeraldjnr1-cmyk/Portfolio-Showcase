@@ -2,11 +2,11 @@
 export const FAQS = [
   {
     q: "What exactly do you build?",
-    a: "Websites and web apps, business automations, AI agents and chatbots, MCP integrations, and Claude set up for your team, all built with Claude Code, n8n and Make.com. If a task eats your team's hours every week, I can probably turn it into a system that runs itself.",
+    a: "Websites and web apps, business automations, AI agents and chatbots, MCP integrations, Roblox games, and Claude set up for your team, all built with Claude Code, n8n and Make.com. If a task eats your team's hours every week, I can probably turn it into a system that runs itself.",
   },
   {
     q: "How much does a project cost?",
-    a: "Typical projects start at $800 for Claude setup and training, $950 for a focused automation, $1,750 for an AI agent, chatbot, website or web app, and $2,950 for a full platform. Every project gets its own fixed quote within 24 hours of the onboarding form, so you know the full price before anything starts.",
+    a: "Typical projects start at $800 for Claude setup and training, $950 for a focused automation, $1,750 for an AI agent, chatbot, website or web app, and $2,950 for a full platform or a Roblox game. Every project gets its own fixed quote within 24 hours of the onboarding form, so you know the full price before anything starts.",
   },
   {
     q: "How long does a build take?",

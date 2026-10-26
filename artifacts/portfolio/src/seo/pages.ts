@@ -86,12 +86,12 @@ const home: PageMeta = {
       logo: SITE.logo,
       image: SITE.image,
       description:
-        "A Claude Code studio building web apps, websites, business automations, AI agents and MCP servers for businesses worldwide.",
+        "A Claude Code studio building web apps, websites, business automations, AI agents, MCP servers and Roblox games for businesses worldwide.",
       founder: { "@id": PERSON_ID },
       areaServed: "Worldwide",
       sameAs: SITE.sameAs,
       contactPoint: { "@type": "ContactPoint", contactType: "sales", url: SITE.whatsapp, availableLanguage: "English" },
-      knowsAbout: ["Claude Code", "AI agents", "Model Context Protocol", "n8n", "Make.com", "Airtable", "Business automation", "Web development", "Web3"],
+      knowsAbout: ["Claude Code", "AI agents", "Model Context Protocol", "n8n", "Make.com", "Airtable", "Business automation", "Web development", "Web3", "Roblox game development"],
     },
     {
       "@context": "https://schema.org",
@@ -115,7 +115,7 @@ const servicesIndex: PageMeta = {
   path: "/services",
   title: "Services: Claude Code, Automation, AI Agents & MCP | Denver NoCode",
   description:
-    "Six ways to hire Denver NoCode: Claude Code builds, websites and web apps, n8n and Make.com automation, AI agents, MCP servers and Web3 development.",
+    "Seven ways to hire Denver NoCode: Claude Code builds, websites and web apps, n8n and Make.com automation, AI agents, MCP servers, Web3 development and Roblox games.",
   image: SITE.image,
   imageSize: { w: 1200, h: 630 },
   summary: "Services overview, linking to every service page.",

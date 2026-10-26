@@ -6,6 +6,7 @@ import { services, serviceBySlug } from "@/data/services";
 import { filmsFor } from "@/data/films";
 import { FilmGrid } from "@/components/site/Films";
 import { Web3ProjectsSection } from "@/components/site/Web3Projects";
+import { RobloxProjectsSection } from "@/components/site/RobloxProjects";
 
 const STEPS = [
   { n: "01", title: "Tell me your workflow", desc: "We map the manual process, find the bottleneck and agree what done looks like." },
@@ -25,7 +26,7 @@ export function ServicesIndex() {
           </div>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-black/60 md:text-xl">
             Claude Code sits under everything: it is how I design, write and test each system. The tool on top changes
-            with the job, from a React app to an n8n workflow to a Solidity contract.
+            with the job, from a React app to an n8n workflow to a Roblox game.
           </p>
           <div className="mt-10">
             <StartButtons />
@@ -133,6 +134,7 @@ export function ServicePage({ slug }: { slug: string }) {
 
       {/* The Web3 gallery moved here from the home page. */}
       {s.slug === "web3" && <Web3ProjectsSection />}
+      {s.slug === "roblox" && <RobloxProjectsSection />}
 
       {/* Proof */}
       <section className="border-t border-black/10 px-6 py-24 md:px-12 md:py-32">

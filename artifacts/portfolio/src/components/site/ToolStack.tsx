@@ -6,7 +6,7 @@ import {
   SiTelegram, SiReact, SiNextdotjs, SiTailwindcss, SiFigma, SiFramer, SiReplit, SiWordpress,
   SiElementor, SiVercel, SiHubspot, SiSalesforce, SiNotion, SiStripe, SiTwilio, SiSlack,
   SiSolidity, SiEthereum, SiSolana, SiWeb3Dotjs, SiSupabase, SiShopify, SiDocker, SiRailway,
-  SiGooglesheets, SiWhatsapp, SiWagmi, SiGmail,
+  SiGooglesheets, SiWhatsapp, SiWagmi, SiGmail, SiRobloxstudio, SiLuau, SiBlender,
 } from "react-icons/si";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 
@@ -106,6 +106,19 @@ const CATEGORIES: Category[] = [
       { name: "Jito", mark: "Ji" },
       { name: "Next.js", Icon: SiNextdotjs },
       { name: "Docker", Icon: SiDocker },
+    ],
+  },
+  {
+    id: "roblox",
+    label: "Roblox & Games",
+    blurb: "Games published in your group, hardened against exploits.",
+    accent: "#F32317",
+    tools: [
+      CLAUDE,
+      { name: "Roblox Studio", Icon: SiRobloxstudio },
+      { name: "Luau", Icon: SiLuau },
+      { name: "DataStore", mark: "DS" },
+      { name: "Blender", Icon: SiBlender },
     ],
   },
   {

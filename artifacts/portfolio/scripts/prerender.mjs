@@ -144,7 +144,7 @@ fs.writeFileSync(
   path.join(out, "llms.txt"),
   `# ${SITE.name}
 
-> ${SITE.name} is the studio of ${SITE.person}, a Claude Code developer who builds web apps, websites, business automations, AI agents and MCP servers for businesses worldwide, using Claude Code, n8n, Make.com and Airtable.
+> ${SITE.name} is the studio of ${SITE.person}, a Claude Code developer who builds web apps, websites, business automations, AI agents, MCP servers and Roblox games for businesses worldwide, using Claude Code, n8n, Make.com and Airtable.
 
 - 200+ systems delivered for 50+ clients worldwide, over 4+ years of building automations.
 - Level 2 seller on Fiverr, also hireable on Upwork or directly on WhatsApp.
@@ -153,7 +153,7 @@ fs.writeFileSync(
 
 ## Services
 
-- [All services](${urlOf("/services")}): overview of the six services.
+- [All services](${urlOf("/services")}): overview of the seven services.
 ${list("/services")}
 
 ## Industries

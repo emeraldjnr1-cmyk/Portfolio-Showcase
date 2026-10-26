@@ -273,6 +273,51 @@ export const services: Service[] = [
       },
     ],
   },
+  {
+    slug: "roblox",
+    num: "07",
+    name: "Roblox game development",
+    short: "Obbies, horror, simulators, tycoons and roleplay games, built in Roblox Studio and Luau and published in your own group.",
+    title: "Roblox Game Developer for Hire | Denver NoCode",
+    description:
+      "Roblox game development for hire: obby, horror, simulator, tycoon and roleplay games built in Roblox Studio and Luau, published in your own group, with server-side anti-exploit checks and milestone delivery.",
+    h1: { before: "Roblox games, built in ", accent: "your", after: " group." },
+    lead:
+      "From a first obby to a round-based horror game with a store and a leaderboard. I build in Roblox Studio and Luau, inside a group you own, and deliver in milestones you play before the next one starts. Every game ships with server-side checks against exploiters and a handover walkthrough, so you can keep updating it yourself.",
+    accent: "#F32317",
+    builds: [
+      { title: "Obby and endless runner", desc: "Checkpoint obbies and three-lane runners with a speed curve, personal bests and a leaderboard the server verifies." },
+      { title: "Horror and round-based", desc: "Lobbies, rounds, hiding spots, entity behaviour and a death screen that matters, with every balance number in a config file you can tune." },
+      { title: "Simulator and tycoon", desc: "Click, collect, rebirth and build loops with an economy designed to stay balanced after launch." },
+      { title: "Roleplay and city", desc: "Jobs, homes, vehicles and a map built from a modular kit, so new content drops in without a rebuild." },
+      { title: "Saves, store and badges", desc: "Session-locked DataStore saves, gamepasses and developer products on Roblox's own systems, plus badges for players to hunt." },
+      { title: "Anti-exploit hardening", desc: "Scores, currency and rewards validated on the server, rate limits on remotes, and every free model read for backdoors before it enters the place." },
+    ],
+    tools: ["Roblox Studio", "Luau", "DataStoreService", "Claude Code", "Blender"],
+    proof: [{ href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Published games you can open and play" }],
+    faqs: [
+      {
+        q: "Who owns the game?",
+        a: "You do. The game is created and published in your own Roblox group, so the place, every asset and the Robux it earns belong to you from day one. I work as a developer in that group, and you can remove that access the moment we are done.",
+      },
+      {
+        q: "How do you stop exploiters?",
+        a: "Nothing the client can touch is trusted. Scores, currency, purchases and rewards are checked on the server, remote events are validated and rate limited, and any free model or plugin is read line by line for backdoors before it enters the place. No game is exploit-proof, but this removes the cheap attacks that ruin leaderboards and economies.",
+      },
+      {
+        q: "How long does a Roblox game take?",
+        a: "A focused game such as an obby or a runner takes about 4 weeks. A round-based horror game or a simulator with a store and progression runs 6 to 8 weeks. Work is delivered in milestones: you play each one in your own group before the next begins, and the first milestone is always a playable run.",
+      },
+      {
+        q: "Will it get players?",
+        a: "I build the retention basics Roblox measures, such as a fast first 30 seconds, saves that never vanish and a reason to come back, and publish with an icon, thumbnails and a searchable description. I do not promise player counts or revenue. Anyone who does is guessing.",
+      },
+      {
+        q: "What do I get at handover?",
+        a: "The published game in your group, a clean and commented place file, the config files that hold every balance number, and a recorded walkthrough of how to ship your own updates. Standard Roblox tooling throughout, so any Roblox developer can pick it up later.",
+      },
+    ],
+  },
 ];
 
 export const serviceBySlug = (slug: string) => services.find((s) => s.slug === slug);
