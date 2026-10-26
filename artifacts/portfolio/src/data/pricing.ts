@@ -60,7 +60,7 @@ export const packages: Package[] = [
   {
     name: "Roblox game",
     from: 2950,
-    what: "A published Roblox game built in your own group: obby, horror, simulator, tycoon or roleplay, with saves, a store and server-side anti-exploit checks.",
+    what: "A published Roblox game built in your own group: obby, horror, simulator, tycoon, roleplay or fighting, with saves, a store and server-side anti-exploit checks.",
     includes: ["Built in Roblox Studio and Luau", "Published in your group, you own it", "Saves, store, badges and leaderboards", "Milestone delivery and handover walkthrough"],
     timeline: "4 to 8 weeks",
     href: "/services/roblox",

@@ -277,10 +277,10 @@ export const services: Service[] = [
     slug: "roblox",
     num: "07",
     name: "Roblox game development",
-    short: "Obbies, horror, simulators, tycoons and roleplay games, built in Roblox Studio and Luau and published in your own group.",
+    short: "Obbies, horror, simulators, tycoons, roleplay and fighting games, built in Roblox Studio and Luau and published in your own group.",
     title: "Roblox Game Developer for Hire | Denver NoCode",
     description:
-      "Roblox game development for hire: obby, horror, simulator, tycoon and roleplay games built in Roblox Studio and Luau, published in your own group, with server-side anti-exploit checks and milestone delivery.",
+      "Roblox game development for hire: obby, horror, simulator, tycoon, roleplay and fighting games built in Roblox Studio and Luau, published in your own group, with server-side anti-exploit checks and milestone delivery.",
     h1: { before: "Roblox games, built in ", accent: "your", after: " group." },
     lead:
       "From a first obby to a round-based horror game with a store and a leaderboard. I build in Roblox Studio and Luau, inside a group you own, and deliver in milestones you play before the next one starts. Every game ships with server-side checks against exploiters and a handover walkthrough, so you can keep updating it yourself.",
@@ -290,11 +290,11 @@ export const services: Service[] = [
       { title: "Horror and round-based", desc: "Lobbies, rounds, hiding spots, entity behaviour and a death screen that matters, with every balance number in a config file you can tune." },
       { title: "Simulator and tycoon", desc: "Click, collect, rebirth and build loops with an economy designed to stay balanced after launch." },
       { title: "Roleplay and city", desc: "Jobs, homes, vehicles and a map built from a modular kit, so new content drops in without a rebuild." },
-      { title: "Saves, store and badges", desc: "Session-locked DataStore saves, gamepasses and developer products on Roblox's own systems, plus badges for players to hunt." },
-      { title: "Anti-exploit hardening", desc: "Scores, currency and rewards validated on the server, rate limits on remotes, and every free model read for backdoors before it enters the place." },
+      { title: "Fighting and combat", desc: "1v1 and team fighters with hitboxes checked on the server, combo and counter systems, health, rounds and knockouts." },
+      { title: "Saves, store and anti-exploit", desc: "Session-locked DataStore saves, gamepasses and developer products on Roblox's own systems, with scores and rewards validated on the server and every free model read for backdoors." },
     ],
     tools: ["Roblox Studio", "Luau", "DataStoreService", "Claude Code", "Blender"],
-    proof: [{ href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Concept demo of the runner loop, with more game types to follow" }],
+    proof: [{ href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Twenty concept demos across five game types" }],
     faqs: [
       {
         q: "Who owns the game?",
