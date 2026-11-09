@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cashout Matchmaker Proposal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#E8E5DE;
+    --ink:#0A0A0A;
+    --ink-soft:#4A4A4A;
+    --muted:#7B7770;
+    --blue:#1B1BFF;
+    --coral:#E85445;
+    --green:#4A9F5F;
+    --card:#F1EEE7;
+    --yellow:#F5C842;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  .serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;}
+  .blue{color:var(--blue);}
+  .coral{color:var(--coral);}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:28px 0;gap:20px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:16px;}
+  .mark{font-weight:900;font-size:26px;letter-spacing:-.03em;}
+  .brand-dot{color:var(--blue);}
+  .status{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(10,10,10,.18);border-radius:100px;padding:7px 15px;font-size:12.5px;color:var(--ink-soft);}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
+  .pill{display:inline-block;background:var(--ink);color:var(--cream);border-radius:100px;padding:13px 28px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;}
+  .pill.blue-fill{background:var(--blue);color:#fff;}
+  .pill.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);}
+  .pill.client{display:inline-flex;align-items:center;gap:10px;}
+  .pill.client i{width:8px;height:8px;border-radius:50%;background:var(--yellow);display:inline-block;}
+
+  .hero{padding:70px 0 60px;position:relative;}
+  .label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:26px;display:block;}
+  h1{font-weight:900;letter-spacing:-.045em;line-height:.93;font-size:clamp(48px,8.2vw,104px);}
+  h1 .serif{font-weight:400;letter-spacing:-.02em;}
+  .subhead{max-width:660px;margin-top:34px;font-size:18.5px;color:var(--ink-soft);}
+  .subhead strong{color:var(--ink);font-weight:600;}
+  .cta{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;}
+  .flourish{position:absolute;border-radius:50%;pointer-events:none;}
+  .f1{width:13px;height:13px;background:var(--yellow);top:120px;right:8%;}
+  .f2{width:9px;height:9px;background:var(--blue);top:250px;right:16%;}
+  .f3{width:11px;height:11px;background:var(--coral);bottom:80px;right:5%;}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding:56px 0;border-top:1px solid rgba(10,10,10,.14);}
+  .stat .n{font-size:clamp(38px,5vw,58px);font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.4;}
+
+  .divider{overflow:hidden;padding:26px 0;white-space:nowrap;}
+  .divider span{font-weight:900;font-size:clamp(52px,11vw,150px);letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1.5px rgba(10,10,10,.28);}
+
+  section{padding:76px 0;}
+  h2{font-weight:900;letter-spacing:-.04em;line-height:1;font-size:clamp(36px,5.6vw,66px);max-width:15ch;}
+  h2 .serif{font-weight:400;}
+  .lede{max-width:660px;margin-top:26px;font-size:18px;color:var(--ink-soft);}
+  .lede strong{color:var(--ink);font-weight:600;}
+  p + p{margin-top:16px;}
+
+  .quote{margin-top:40px;max-width:900px;border-left:3px solid var(--blue);padding:6px 0 6px 26px;}
+  .quote p{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(24px,3vw,34px);line-height:1.25;color:var(--ink);}
+  .quote small{display:block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+
+  .lede + .sys{margin-top:44px;}
+  .sys{display:grid;grid-template-columns:88px 1fr;gap:28px;padding:38px 0;border-top:1px solid rgba(10,10,10,.14);align-items:start;}
+  .sys .num{font-weight:900;font-size:52px;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.4px var(--ink);line-height:.9;}
+  .sys h3{font-size:27px;font-weight:800;letter-spacing:-.03em;margin-bottom:14px;}
+  .sys p{font-size:16.5px;color:var(--ink-soft);max-width:700px;}
+  .sys ul{margin-top:18px;list-style:none;max-width:700px;}
+  .sys li{position:relative;padding-left:24px;font-size:15.5px;color:var(--ink-soft);margin-bottom:9px;}
+  .sys li:before{content:"";position:absolute;left:0;top:9px;width:9px;height:1.5px;background:var(--blue);}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:46px;}
+  .find{background:var(--card);border-radius:22px;padding:34px;}
+  .find .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);margin-bottom:14px;}
+  .find h3{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2;}
+  .find p{font-size:15.5px;color:var(--ink-soft);}
+  .find .cost{margin-top:16px;padding-top:14px;border-top:1px solid rgba(10,10,10,.12);font-size:14.5px;color:var(--ink);}
+  .find .cost b{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);font-weight:500;margin-right:8px;}
+
+  .fix{margin-top:46px;border-top:2px solid var(--ink);}
+  .frow{display:grid;grid-template-columns:60px 1fr 1.5fr;gap:24px;padding:22px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:start;}
+  .frow.h{padding:12px 0;}
+  .frow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .frow .i{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--coral);font-weight:500;}
+  .frow .p{font-weight:700;font-size:16.5px;letter-spacing:-.01em;}
+  .frow .s{font-size:15.5px;color:var(--ink-soft);}
+  .frow .s b{color:var(--ink);font-weight:600;}
+
+  .stack{margin-top:46px;max-width:940px;}
+  .srow{display:grid;grid-template-columns:250px 108px 1fr;gap:22px;padding:17px 0;border-bottom:1px solid rgba(10,10,10,.11);align-items:baseline;}
+  .srow .t{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+  .srow .c{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;}
+  .srow .c.e{color:var(--green);}
+  .srow .c.m{color:var(--blue);}
+  .srow .c.h{color:var(--coral);}
+  .srow .w{font-size:15px;color:var(--ink-soft);}
+  .srow.head{border-bottom:2px solid var(--ink);padding-bottom:12px;}
+  .srow.head div{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+
+  /* END RESULT MOCKUPS */
+  .mocks{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;margin-top:50px;align-items:start;}
+  .mocks .full{grid-column:1 / -1;}
+  .mocks>div{min-width:0;}
+  .mockcap{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  .board{background:#fff;border-radius:22px;overflow:hidden;border:1px solid rgba(10,10,10,.1);}
+  .bhead{padding:16px 22px;border-bottom:1px solid rgba(10,10,10,.09);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+  .bhead .ttl{font-weight:800;font-size:15px;letter-spacing:-.02em;}
+  .bhead .ttl small{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);font-weight:500;letter-spacing:.06em;margin-top:2px;}
+  .tabs{display:flex;gap:7px;flex-wrap:wrap;}
+  .tab{font-size:12px;font-weight:600;padding:6px 13px;border-radius:100px;background:#F2F0EB;color:var(--muted);}
+  .tab.on{background:var(--ink);color:#fff;}
+  .sp{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;letter-spacing:.02em;white-space:nowrap;}
+  .sp.g{background:#DFF0DA;color:#2F6E3F;}
+  .sp.b{background:#E1E1FF;color:var(--blue);}
+  .sp.y{background:#FBEFC4;color:#7A5A00;}
+  .sp.r{background:#FBE0DC;color:#9A2E22;}
+
+  .term{font-family:'JetBrains Mono',monospace;font-size:12.2px;line-height:1.75;padding:18px 22px;color:#2a2a2a;background:#FCFBF8;}
+  .term .u{color:var(--blue);font-weight:500;}
+  .term .u:before{content:"you › ";color:var(--muted);}
+  .term .c:before{content:"claude › ";color:var(--muted);}
+  .term .ok{color:#2F6E3F;}
+  .term .ok:before{content:"✓ ";}
+  .term .warn{color:#B23A2C;}
+  .term .warn:before{content:"✕ ";}
+  .term .dim{color:var(--muted);}
+  .term .blk{margin:8px 0;}
+
+  .jobs{padding:8px 0;}
+  .job{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px 22px;border-bottom:1px solid rgba(10,10,10,.07);align-items:center;}
+  .job:last-child{border-bottom:0;}
+  .job b{display:block;font-size:14.5px;letter-spacing:-.01em;}
+  .job span{display:block;font-size:12px;color:var(--muted);margin-top:2px;}
+  .job .ap{font-size:12px;font-weight:700;background:var(--ink);color:#fff;border-radius:100px;padding:7px 14px;white-space:nowrap;}
+  .apply{margin:6px 22px 18px;background:#F7F5F0;border-radius:14px;padding:16px 18px;font-size:12.5px;}
+  .apply .fl{display:grid;grid-template-columns:110px 1fr;gap:8px;padding:5px 0;border-bottom:1px dashed rgba(10,10,10,.1);}
+  .apply .fl:last-child{border-bottom:0;}
+  .apply .fl em{font-style:normal;color:var(--muted);}
+
+  .sheet{overflow-x:auto;}
+  .sh{display:grid;grid-template-columns:86px 1.6fr 1fr 120px 104px;gap:12px;padding:12px 22px;border-bottom:1px solid rgba(10,10,10,.07);font-size:12.8px;align-items:center;min-width:720px;}
+  .sh.hd{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:#F7F5F0;}
+  .sh .hl{font-weight:600;color:var(--ink);}
+  .sh .src{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sh .pl{font-size:11.5px;color:var(--ink-soft);}
+  .box{display:inline-block;width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px;vertical-align:middle;margin-right:6px;}
+  .box.on{background:var(--ink);position:relative;}
+  .box.on:after{content:"";position:absolute;left:3.5px;top:0;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
+  .shfoot{padding:12px 22px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+  .roi{margin-top:48px;border-top:2px solid var(--ink);}
+  .rrow{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:24px;padding:24px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .rrow.h{padding:12px 0;}
+  .rrow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .rrow .m{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+  .rrow .m small{display:block;font-weight:400;font-size:13.5px;color:var(--muted);margin-top:3px;letter-spacing:0;}
+  .rv{font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .rv.was{font-size:clamp(22px,2.8vw,30px);color:var(--muted);}
+  .rv.now{font-size:clamp(26px,3.4vw,38px);color:var(--blue);}
+  .rv span{display:block;font-size:12px;font-weight:500;letter-spacing:0;color:var(--muted);margin-top:7px;font-family:'JetBrains Mono',monospace;}
+  .roinote{margin-top:32px;background:var(--ink);color:var(--cream);border-radius:24px;padding:36px 38px;max-width:900px;}
+  .roinote .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:14px;}
+  .roinote p{font-size:17px;color:rgba(232,229,222,.82);}
+  .roinote b{color:var(--cream);font-weight:700;}
+
+  .yes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px;}
+  .yes>div{background:var(--card);border-radius:20px;padding:28px;}
+  .yes>div.dark{background:var(--ink);color:var(--cream);}
+  .yes .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .yes div.dark .k{color:var(--yellow);}
+  .yes b{display:block;font-size:17.5px;font-weight:800;letter-spacing:-.02em;margin-bottom:9px;}
+  .yes p{font-size:14.5px;color:var(--ink-soft);}
+  .yes div.dark p{color:rgba(232,229,222,.8);}
+
+  .tiers{display:grid;grid-template-columns:repeat(2,1fr);max-width:900px;margin-left:auto;margin-right:auto;gap:22px;margin-top:50px;align-items:start;}
+  .tier{background:var(--card);border-radius:26px;padding:38px 32px;display:flex;flex-direction:column;height:100%;}
+  .tier.feat{background:var(--ink);color:var(--cream);transform:translateY(-16px);}
+  .tier .tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+  .tier.feat .tag{color:var(--yellow);}
+  .tier h3{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px;}
+  .tier .who{font-size:14.5px;color:var(--muted);margin-bottom:26px;min-height:44px;}
+  .tier .amt{font-size:clamp(40px,5.4vw,56px);font-weight:900;letter-spacing:-.05em;line-height:1;}
+  .tier .cur{font-size:13px;color:var(--muted);margin-top:9px;margin-bottom:28px;font-family:'JetBrains Mono',monospace;}
+  .tier ul{list-style:none;flex:1;}
+  .tier li{position:relative;padding-left:23px;font-size:14.5px;margin-bottom:11px;color:var(--ink-soft);line-height:1.45;}
+  .tier.feat li{color:rgba(232,229,222,.86);}
+  .tier li:before{content:"";position:absolute;left:0;top:8px;width:9px;height:1.5px;background:var(--blue);}
+  .tier.feat li:before{background:var(--yellow);}
+  .tier li.no{color:var(--muted);}
+  .tier li.no:before{background:var(--coral);}
+  .tier .btn{margin-top:30px;display:block;text-align:center;border-radius:100px;padding:14px;font-size:14.5px;font-weight:600;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);}
+  .tier.feat .btn{background:var(--yellow);border-color:var(--yellow);color:var(--ink);}
+  .note{margin-top:34px;font-size:15px;color:var(--muted);max-width:780px;}
+
+  .ms{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:44px;}
+  .ms>div{border-top:2px solid var(--ink);padding-top:18px;}
+  .ms .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.13em;color:var(--blue);margin-bottom:10px;}
+  .ms b{display:block;font-size:16.5px;font-weight:700;margin-bottom:7px;letter-spacing:-.01em;}
+  .ms p{font-size:14.5px;color:var(--ink-soft);}
+
+  .close{background:var(--ink);color:var(--cream);border-radius:32px;padding:clamp(44px,7vw,84px);margin:30px 0 90px;}
+  .close h2{max-width:18ch;color:var(--cream);}
+  .close p{max-width:640px;margin-top:26px;font-size:18px;color:rgba(232,229,222,.72);}
+  .close ol{max-width:640px;margin:20px 0 0 20px;color:rgba(232,229,222,.82);font-size:16.5px;}
+  .close ol li{margin-bottom:8px;}
+  .close .cta{margin-top:40px;}
+  .close .pill.ghost{color:var(--cream);border-color:rgba(232,229,222,.45);}
+  .valid{margin-top:34px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+
+  @media(max-width:980px){.mocks{grid-template-columns:1fr;}}
+  @media(max-width:900px){
+    .stats{grid-template-columns:repeat(2,1fr);gap:26px;}
+    .grid-2,.tiers,.ms,.yes{grid-template-columns:1fr;}
+    .tier.feat{transform:none;}
+    .sys{grid-template-columns:1fr;gap:12px;}
+    .srow{grid-template-columns:1fr;gap:6px;}
+    .srow.head{display:none;}
+    .frow{grid-template-columns:1fr;gap:6px;}
+    .frow.h{display:none;}
+    .rrow{grid-template-columns:1fr 1fr;gap:16px;}
+    .rrow .m{grid-column:1 / -1;}
+    .rrow.h{display:none;}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 16px;}
+    .stats{grid-template-columns:1fr 1fr;}
+    .find,.tier,.yes>div{padding:26px;}
+    .roinote{padding:28px;}
+    .topbar .pill.client{white-space:normal;text-align:center;}
+    .apply .fl{grid-template-columns:1fr;gap:2px;}
+  }
+  @media print{
+    @page{size:A3;margin:14mm;}
+    body{background:#fff;font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .tiers{grid-template-columns:repeat(2,1fr)!important;}
+    .grid-2{grid-template-columns:repeat(2,1fr)!important;}
+    .ms,.yes{grid-template-columns:repeat(3,1fr)!important;}
+    .mocks{grid-template-columns:1.15fr 1fr!important;}
+    .srow{grid-template-columns:250px 108px 1fr!important;}
+    .srow.head{display:grid!important;}
+    .frow{grid-template-columns:60px 1fr 1.5fr!important;}
+    .frow.h{display:grid!important;}
+    .rrow{grid-template-columns:1.35fr 1fr 1fr!important;}
+    .rrow.h{display:grid!important;}
+    .tier.feat{transform:none;}
+    section{padding:34px 0;break-inside:avoid;}
+    .tier,.find,.roinote,.board,.yes>div{break-inside:avoid;}
+    .divider,.flourish{display:none;}
+    .pill,.btn{display:none!important;}
+  }
+
+  .wa{background:#ECE5DD;padding:16px 14px;display:flex;flex-direction:column;gap:8px;font-size:13.5px;line-height:1.45;min-height:340px;}
+  .wa .b{max-width:86%;padding:8px 11px;border-radius:12px;background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.08);}
+  .wa .b.me{align-self:flex-end;background:#DCF8C6;}
+  .wa .b small{display:block;color:#7a7a7a;font-size:10.5px;margin-top:3px;text-align:right;}
+  .wa .b b{display:block;margin-bottom:2px;}
+  .wa .shot{height:58px;border-radius:8px;background:repeating-linear-gradient(180deg,#e7e5e4 0 4px,#f6f6f6 4px 9px);margin:3px 0 4px;}
+  .wa .wnote{align-self:center;background:#FFF5C4;color:#5c5c5c;font-size:11.5px;padding:5px 10px;border-radius:8px;}
+  .job .pill2{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:rgba(74,159,95,.15);color:#2F7A43;white-space:nowrap;}
+  .job .pill2.w{background:rgba(245,200,66,.3);color:#7A5B00;}
+  .job .pill2.n{background:rgba(27,27,255,.08);color:var(--blue);}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 6px;}
+  .split div{border-radius:14px;padding:10px 12px;background:rgba(10,10,10,.05);font-size:13px;}
+  .tier.feat .split div{background:rgba(255,255,255,.08);}
+  .split b{display:block;font-size:20px;font-weight:900;letter-spacing:-.02em;}
+  @media (max-width:900px){.tiers{grid-template-columns:1fr;}.tier.feat{transform:none;}.ms{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">D<span class="brand-dot">.</span></div>
+      <div class="status"><span class="dot"></span> Available to start this week</div>
+    </div>
+    <a class="pill client" href="https://wa.me/2348143046516?text=Hi%20Emerald%2C%20add%20me%20to%20your%20client%20base" target="_blank" rel="noopener"><i></i>Message me to be added to my client base</a>
+  </div>
+
+  <div class="hero">
+    <span class="flourish f1"></span>
+    <span class="flourish f2"></span>
+    <span class="flourish f3"></span>
+    <span class="label">01 · Proposal · Cashout Singapore · The matchmaker</span>
+    <h1>Buyers say what they need.<br>Agents answer with a <span class="serif blue">real match</span>,<br>that <span class="serif coral">starts on Cashout</span>.</h1>
+    <p class="subhead">You want Cashout to stop chasing listings and <strong>go deep into what buyers and tenants need</strong>, then get agents and owners to answer those needs, with <strong>both sides reached through ChatDaddy</strong>. This is how it gets built, in two phases, on the interview, buyer chat, screenshot reading and search Cashout already has.</p>
+    <div class="cta">
+      <a class="pill blue-fill" href="#result">See the end result</a>
+      <a class="pill ghost" href="#invest">See the two phases</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n">2</div><div class="l">Sides captured: what searchers need, and what agents and owners actually have.</div></div>
+    <div class="stat"><div class="n">50k</div><div class="l">Agents in your database, reached through ChatDaddy once they opt in.</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">Buyer names or numbers shown to an agent before the buyer says yes.</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">Board where you see every brief, every reply, every match and every viewing.</div></div>
+  </div>
+
+  <div class="divider"><span>DEMAND FIRST · SUPPLY ANSWERS · CASHOUT IN THE MIDDLE</span></div>
+
+  <!-- YOUR PROBLEM -->
+  <section id="problem">
+    <span class="label">02 · Your problem</span>
+    <h2>Listings were the wrong <span class="serif coral">bottleneck</span>.</h2>
+    <div class="quote">
+      <p>"we are not focusing on getting listing to put in our platform but to go deep into the buyer / tenant requirements and get agents to respond to those demands"</p>
+      <small>Your words, 9 November</small>
+    </div>
+    <p class="lede">That decision follows from four things you and Lai found in the last week.</p>
+
+    <div class="grid-2">
+      <div class="find">
+        <div class="k">Pain 01 · Getting listings</div>
+        <h3>Agents have no reason to list again</h3>
+        <p>PropertyGuru and 99.co do not let agents export their listings, the agent you asked posts each listing twice already, and many agents hold fewer than five listings at a time. Asking them to list on a new site is one more chore with no buyer attached.</p>
+        <div class="cost"><b>Costing you</b>A slow climb to your first 1,000 listings, and thin search results while buyers are arriving from your marketing.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 02 · Shallow demand</div>
+        <h3>A buyer's real need leaves with them</h3>
+        <p>Today the buyer chat answers the search in front of it. When nothing fits, the buyer's budget, areas, timing and must-haves are not kept as a need that anyone works on afterwards.</p>
+        <div class="cost"><b>Costing you</b>Every search that finds nothing is a qualified lead that walks away.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 03 · Idle supply</div>
+        <h3>50,000 agents, and nothing to answer</h3>
+        <p>Your agent database is the largest asset Cashout has, and there is nothing to send them that is worth replying to. A blast asking them to list is easy to ignore.</p>
+        <div class="cost"><b>Costing you</b>The value of the database, and the risk of burning the new WhatsApp number on messages that get blocked.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 04 · Tracking the deal</div>
+        <h3>Deals that close outside Cashout are invisible</h3>
+        <p>As you put it on 6 November: "hard to track transactions happened outside Cashout". If a buyer and an agent meet off the platform, you cannot show Cashout made the introduction.</p>
+        <div class="cost"><b>Costing you</b>Commission and referral fees you cannot claim, and no numbers to show what Cashout is worth.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FIX -->
+  <section id="fix">
+    <span class="label">03 · The fix</span>
+    <h2>One fix for each <span class="serif blue">pain</span>.</h2>
+    <p class="lede">Every part of the build exists to remove one of the four pains above.</p>
+    <div class="fix">
+      <div class="frow h"><div>#</div><div>The pain</div><div>What removes it</div></div>
+      <div class="frow">
+        <div class="i">01</div>
+        <div class="p">Getting listings</div>
+        <div class="s"><b>Supply answers a buyer, privately.</b> An agent or owner replies to a buyer brief with a screenshot, a link or a few lines, and Cashout reads it. No public listing is needed, nothing is copied from PropertyGuru, and owners keep their unit private until a buyer fits.</div>
+      </div>
+      <div class="frow">
+        <div class="i">02</div>
+        <div class="p">Shallow demand</div>
+        <div class="s"><b>The buyer brief.</b> Cashout's AI interviews the searcher the way the listing interview does for owners: budget and loan readiness, areas and MRT, size, move-in date, must-haves, deal-breakers. It becomes a brief that stays open and keeps working after they leave.</div>
+      </div>
+      <div class="frow">
+        <div class="i">03</div>
+        <div class="p">Idle supply</div>
+        <div class="s"><b>A real buyer, sent to the right agents.</b> Agents who opted in get the brief on WhatsApp through ChatDaddy, without the buyer's name or number. That is a message worth answering, because it is their commission.</div>
+      </div>
+      <div class="frow">
+        <div class="i">04</div>
+        <div class="p">Tracking the deal</div>
+        <div class="s"><b>Every introduction goes through Cashout.</b> The buyer sees the shortlist, says yes to the ones they want, and only then are the two sides connected, with the time, the brief and the agent recorded on your board.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- END RESULT -->
+  <section id="result">
+    <span class="label">04 · The end result</span>
+    <h2>One tenant, three agents, one <span class="serif blue">viewing</span>.</h2>
+    <p class="lede">Three views of the same brief: the tenant on WhatsApp, an agent on WhatsApp, and your board. The tenant and agents are examples; the Queenstown listings and rents are real Cashout listings today.</p>
+
+    <div class="mocks">
+      <div>
+        <div class="mockcap">The tenant · WhatsApp, through ChatDaddy</div>
+        <div class="board">
+          <div class="bhead"><div class="ttl">Cashout Singapore<small>Business account · +65 8808 0669</small></div></div>
+          <div class="wa">
+            <div class="b me">Looking for a 2 bedroom condo near Queenstown MRT, up to 5k a month<small>9:02 PM</small></div>
+            <div class="b">Got it. A few questions so agents send only what fits: when do you want to move in, and is it for you and one other adult?<small>9:02 PM</small></div>
+            <div class="b me">1 December, two of us, no pets, employment pass<small>9:03 PM</small></div>
+            <div class="wnote">Your brief R-0187 is with 3 agents. Your name and number are not shared.</div>
+            <div class="b"><b>3 matches so far</b>1) 2 bed, 4 min to Queenstown MRT, S$4,800 a month<br>2) 2 bed, Commonwealth, S$4,800 a month<br>3) 2 bed, S$4,000 a month, 9 min walk<br>Reply with a number to ask for a viewing.<small>9:41 PM</small></div>
+            <div class="b me">1<small>9:43 PM</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="mockcap">An agent · WhatsApp, through ChatDaddy</div>
+        <div class="board">
+          <div class="bhead"><div class="ttl">Cashout Singapore<small>Buyer briefs · you opted in on 12 Nov</small></div></div>
+          <div class="wa">
+            <div class="b"><b>Tenant brief R-0187</b>2 bedroom condo near Queenstown MRT, up to S$5,000 a month, move in 1 December, 2 adults, employment pass, no pets.<br>Have a unit that fits? Reply with a screenshot, a link or the details.<small>9:04 PM</small></div>
+            <div class="b me"><div class="shot"></div>This one, 2 bed 2 bath, available 25 Nov<small>9:20 PM</small></div>
+            <div class="b">Read it: 2 bedrooms, 4 minutes to Queenstown MRT, S$4,800 a month, available 25 November. It fits the brief, and it is on the tenant's shortlist.<small>9:21 PM</small></div>
+            <div class="wnote">The tenant asked to view your unit. Reply with two times that suit.</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="mockcap">Your board · cashout.com.sg admin</div>
+        <div class="board">
+          <div class="bhead">
+            <div class="ttl">Demand board<small>Rentals · this week</small></div>
+            <div class="tabs"><span class="tab on">Briefs</span><span class="tab">Supply</span><span class="tab">Matches</span></div>
+          </div>
+          <div class="jobs">
+            <div class="job"><div><b>R-0187 · 2 bed condo, Queenstown</b><span>up to S$5,000 · move in 1 Dec · sent to 3 agents · 3 replies</span></div><span class="pill2">Viewing asked</span></div>
+            <div class="job"><div><b>R-0186 · 3 bed condo, D21</b><span>up to S$6,500 · move in Jan · sent to 5 agents · 1 reply</span></div><span class="pill2 n">Shortlist sent</span></div>
+            <div class="job"><div><b>S-0041 · 4 room HDB, Tampines</b><span>buying, up to S$700,000 · loan ready · waiting for replies</span></div><span class="pill2 w">Waiting</span></div>
+            <div class="job"><div><b>R-0185 · studio, Tanjong Pagar</b><span>up to S$3,200 · no fit yet · 2 owners told</span></div><span class="pill2 w">No match yet</span></div>
+            <div class="job"><div><b>Introductions this month</b><span>buyer said yes, agent and time recorded</span></div><span class="pill2">14</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="roi">
+      <div class="rrow h"><div>For every searcher</div><div>Today</div><div>With the matchmaker</div></div>
+      <div class="rrow">
+        <div class="m">When nothing on Cashout fits<small>The buyer's search finds no listing</small></div>
+        <div class="rv was">They leave<span>Need lost</span></div>
+        <div class="rv now">A brief stays open<span>Agents are asked</span></div>
+      </div>
+      <div class="rrow">
+        <div class="m">What agents are asked for<small>The message they get from Cashout</small></div>
+        <div class="rv was">"Please list"<span>A chore, easy to ignore</span></div>
+        <div class="rv now">A real buyer<span>Their commission</span></div>
+      </div>
+      <div class="rrow">
+        <div class="m">Where supply comes from<small>Units Cashout can offer</small></div>
+        <div class="rv was">Public listings only<span>Slow to build</span></div>
+        <div class="rv now">Any unit an agent or owner has<span>Private until it fits</span></div>
+      </div>
+      <div class="rrow">
+        <div class="m">Who made the introduction<small>When a deal closes</small></div>
+        <div class="rv was">Unknown<span>Met off the platform</span></div>
+        <div class="rv now">Cashout, recorded<span>Brief, agent, time</span></div>
+      </div>
+    </div>
+    <div class="roinote">
+      <div class="k">The maths of one match</div>
+      <p>A rental agent in Singapore usually earns about half a month's rent on a one-year lease, and about a month on two years. On a S$4,800 a month unit like the one above, that is <b>S$2,400 to S$4,800 from a single match</b>. Every brief that turns into a viewing is an introduction you can show, and a referral between licensed agents is normal co-broking. <b>A handful of matches makes Cashout's value visible to agents in a way a listings count never does.</b></p>
+    </div>
+  </section>
+
+  <!-- PLAIN WORDS -->
+  <section>
+    <span class="label">05 · In plain words</span>
+    <h2>What is easy, and what <span class="serif coral">is not</span>.</h2>
+    <p class="lede">Every piece, rated honestly, so you can see where the work sits.</p>
+    <div class="stack">
+      <div class="srow head"><div>The piece</div><div>Difficulty</div><div>Why</div></div>
+      <div class="srow"><div class="t">The buyer brief interview</div><div class="c m">Medium</div><div class="w">Built on the listing interview engine, with new questions for searchers instead of owners.</div></div>
+      <div class="srow"><div class="t">Supply cards from agents and owners</div><div class="c m">Medium</div><div class="w">Reads screenshots, links and pasted text, as tested on your Holland Hill Park screenshots on 7 November.</div></div>
+      <div class="srow"><div class="t">Matching both ways</div><div class="c m">Medium</div><div class="w">The search engine already matches needs to listings. It learns to match a brief to private supply, and a new unit to the briefs already waiting.</div></div>
+      <div class="srow"><div class="t">The demand board</div><div class="c e">Easy</div><div class="w">Same pattern as the admin screens you use today.</div></div>
+      <div class="srow"><div class="t">Sending briefs through ChatDaddy</div><div class="c m">Medium</div><div class="w">ChatDaddy has an API for sending and webhooks for replies. Messages to agents use Meta-approved templates.</div></div>
+      <div class="srow"><div class="t">Reading agents' WhatsApp replies</div><div class="c h">Hard</div><div class="w">Replies are messy: a screenshot, a link, or just "yes I have one". This is the core of phase two and gets the most testing.</div></div>
+      <div class="srow"><div class="t">Opt-in, sending limits and Do Not Call</div><div class="c m">Medium</div><div class="w">Agents opt in before they get briefs, and sending follows Meta's daily limits for the number.</div></div>
+    </div>
+  </section>
+
+  <div class="divider"><span>THE AI LISTENS · THE RULES DECIDE · THE BUYER SAYS YES</span></div>
+
+  <!-- WHAT GETS BUILT -->
+  <section id="build">
+    <span class="label">06 · What gets built</span>
+    <h2>Two phases, each <span class="serif blue">useful on its own</span>.</h2>
+    <p class="lede">Phase one works on cashout.com.sg from the day it ships, with briefs sent through ChatDaddy by your team. Phase two makes the whole loop run itself on WhatsApp.</p>
+
+    <div class="sys">
+      <div class="num">01</div>
+      <div>
+        <h3>Phase one · Demand and supply capture</h3>
+        <ul>
+          <li>The buyer brief interview in the buyer chat, for buyers and tenants, with a clear brief at the end</li>
+          <li>Supply cards: agents and owners add a unit privately on the site from a screenshot, a link or pasted text</li>
+          <li>Matching: each brief against Cashout's listings and the supply cards, and each new unit against open briefs</li>
+          <li>The demand board in admin: briefs, supply, matches, with status and the date of each</li>
+          <li>Export of briefs in the format your team uses in ChatDaddy, so marketing can send them from day one</li>
+          <li>Starts with one segment, rentals unless you choose otherwise, so the loop is proven before it widens</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sys">
+      <div class="num">02</div>
+      <div>
+        <h3>Phase two · The two-way matchmaker on WhatsApp</h3>
+        <ul>
+          <li>Agent and owner opt-in over WhatsApp, with the opt-in recorded</li>
+          <li>Briefs sent automatically through ChatDaddy's API to agents who opted in and fit the area</li>
+          <li>Replies come back through ChatDaddy's webhook; Cashout's AI reads the screenshot, link or text and checks it against the brief</li>
+          <li>The searcher gets the shortlist on WhatsApp and replies with a number to ask for a viewing</li>
+          <li>Contact details are exchanged only on the searcher's yes, and every introduction is recorded on your board</li>
+          <li>Credits ready for pay per use: agents spend a credit to answer a brief once you start charging</li>
+          <li>Sending kept within Meta's daily limits for the number, and checked against the Do Not Call registry where it applies</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAID UPFRONT -->
+  <section>
+    <span class="label">07 · Said upfront</span>
+    <h2>Five things I will not <span class="serif coral">pretend</span> about.</h2>
+    <div class="grid-2">
+      <div class="find"><div class="k">Said upfront 01</div><h3>Agents opt in first</h3><p>A first message asks each agent whether they want buyer briefs. Only those who say yes get them. That keeps Cashout within the Spam Control Act and the Do Not Call rules, and protects the WhatsApp number from being reported and limited.</p></div>
+      <div class="find"><div class="k">Said upfront 02</div><h3>Meta sets the pace</h3><p>A new WhatsApp Business number can start a limited number of conversations a day, 250 at first, rising as the number keeps a good quality rating. Reaching 50,000 agents happens over weeks, not in one blast.</p></div>
+      <div class="find"><div class="k">Said upfront 03</div><h3>ChatDaddy on the business number</h3><p>ChatDaddy needs to run on +65 8808 0669 through the official WhatsApp Business API, not on a personal phone, for sending at this volume. Your ChatDaddy plan and Meta's message fees are billed to you directly.</p></div>
+      <div class="find"><div class="k">Said upfront 04</div><h3>Built with Lai</h3><p>Lai leads the code. The work is done on its own branch, Lai reviews it, and you both agree when it goes live.</p></div>
+      <div class="find"><div class="k">Said upfront 05</div><h3>No invented matches</h3><p>A match is only sent to a searcher when the unit's facts fit the brief, read from what the agent or owner actually sent. If the facts are unclear, Cashout asks the agent instead of guessing.</p></div>
+    </div>
+  </section>
+
+  <!-- EASY YES -->
+  <section>
+    <span class="label">08 · Why this is an easy yes</span>
+    <h2>Low risk, and it is all <span class="serif blue">yours</span>.</h2>
+    <div class="yes">
+      <div><div class="k">The value</div><b>One match can cover phase one</b><p>Even half a month's rent on a one-year lease of a unit like the one above, about S$2,400, is more than phase one costs. Every match after that is the matchmaker earning its keep.</p></div>
+      <div><div class="k">What you keep</div><b>Everything, in your accounts</b><p>The code in your GitHub, the briefs and supply in your database, the ChatDaddy and Meta accounts in your name. Lai can run and extend all of it.</p></div>
+      <div><div class="k">Proof first</div><b>Phase one runs on real searchers</b><p>Phase one ships the buyer brief, supply cards and the demand board on the live site. You see real briefs and real matches before phase two is started.</p></div>
+      <div><div class="k">The stop rule</div><b>Stop after phase one</b><p>If phase one is not what you expected, you stop there. You keep the brief interview, the supply cards and the board, and phase two is never started.</p></div>
+      <div class="dark"><div class="k">Launch bonus</div><b>A board that starts full</b><p>The demand board opens with the needs buyers have already typed into Cashout's chat, grouped by area, budget and type, with no names or numbers. Your team sees what demand exists on day one.</p></div>
+      <div><div class="k">Clear scope</div><b>A fixed price per phase</b><p>Everything in each phase is listed below. New ideas get their own fixed price, agreed before any work starts.</p></div>
+    </div>
+  </section>
+
+  <div class="divider"><span>INVESTMENT · TWO PHASES</span></div>
+
+  <!-- INVESTMENT -->
+  <section id="invest">
+    <span class="label">09 · Investment</span>
+    <h2>Two phases, <span class="serif blue">half up front</span>.</h2>
+    <p class="lede">Each phase is paid half to start and half when it is delivered and you have checked it. Phase one replaces the feature you asked for in place of the two remaining care plan months.</p>
+
+    <div class="tiers">
+      <div class="tier">
+        <div class="tag">Phase 01</div>
+        <h3>Demand and supply capture</h3>
+        <div class="who">The buyer brief, private supply, matching and your board</div>
+        <div class="amt">$1,400</div>
+        <div class="cur">USD · in place of the two remaining care plan months</div>
+        <div class="split"><div>To start<b>$700</b></div><div>On delivery<b>$700</b></div></div>
+        <ul>
+          <li>Buyer brief interview for buyers and tenants</li>
+          <li>Supply cards from screenshots, links or text, for agents and owners</li>
+          <li>Matching both ways against listings and supply</li>
+          <li>Demand board in admin</li>
+          <li>Brief export for your team's ChatDaddy sends</li>
+          <li>One segment first, rentals unless you choose otherwise</li>
+          <li>About 5 to 6 working days</li>
+        </ul>
+        <a class="btn" href="#next">Start phase one</a>
+      </div>
+
+      <div class="tier feat">
+        <div class="tag">Phase 02</div>
+        <h3>The two-way matchmaker</h3>
+        <div class="who">The whole loop running on WhatsApp through ChatDaddy</div>
+        <div class="amt">$4,500</div>
+        <div class="cur">USD · after phase one is accepted</div>
+        <div class="split"><div>To start<b>$2,250</b></div><div>On delivery<b>$2,250</b></div></div>
+        <ul>
+          <li>Agent and owner opt-in, recorded</li>
+          <li>Briefs sent automatically through ChatDaddy's API</li>
+          <li>AI reading of agents' replies against the brief</li>
+          <li>Shortlists to searchers on WhatsApp, viewing requests by reply</li>
+          <li>Contact shared only on the searcher's yes, every introduction recorded</li>
+          <li>Credits ready for pay per use</li>
+          <li>About 2 to 3 weeks</li>
+        </ul>
+        <a class="btn" href="#next">Plan phase two</a>
+      </div>
+    </div>
+    <p class="note">Quoted in USD. Each balance is released when that phase is delivered and you have checked it against its list above. ChatDaddy, Meta WhatsApp fees, Supabase and the AI usage are in your accounts and billed to you directly.</p>
+  </section>
+
+  <div class="close" id="next">
+    <h2>Demand first. Phase one starts <span class="serif" style="color:var(--yellow);">this week</span>.</h2>
+    <p>Tell me to go ahead and I will send the phase one invoice. To start, I need:</p>
+    <ol>
+      <li>Lai's agreement that the plan fits his, and the branch we build on</li>
+      <li>The first segment: rentals, or another you prefer</li>
+      <li>The Supabase Pro upgrade done, so photos and uploads work again</li>
+      <li>For phase two: a ChatDaddy API token, and confirmation ChatDaddy runs on +65 8808 0669 through the WhatsApp Business API</li>
+    </ol>
+    <p>One thing worth saying plainly. The AI is not the clever part. The clever part is making every searcher's need something an agent wants to answer, and making every answer pass through Cashout. That is what turns a listings site nobody has heard of into the place agents come for buyers.</p>
+    <div class="cta">
+      <a class="pill blue-fill" href="#invest">Review the two phases</a>
+      <a class="pill ghost" href="#result">See the end result again</a>
+    </div>
+    <div class="valid">Valid 14 days · Quoted in USD · Prepared 9 November 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
