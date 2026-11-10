@@ -106,7 +106,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:.88rem}
 .kv dt{color:var(--muted)}
 .kv dd{margin:0}
-.callout{font-size:9px;fill:var(--muted);font-family:var(--body)}
+.callout{font-size:8.5px;fill:var(--muted);font-family:var(--body);stroke:none}
 .callout-line{stroke:var(--accent-2);stroke-width:.8;fill:none}
 /* gates */
 .gates{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;counter-reset:gate}
@@ -121,6 +121,7 @@ footer b{font-weight:500;color:var(--fg)}
   .palette{grid-template-columns:repeat(2,1fr)}
   .gates{grid-template-columns:repeat(2,1fr)}
   .mood{grid-template-columns:repeat(3,1fr);grid-auto-rows:130px}
+  .sec-head .eyebrow{white-space:normal}
   .m1{grid-column:span 3;grid-row:span 1}.m7{grid-column:span 3}.m2,.m5{grid-column:span 2}
 }
 @media (max-width:560px){
@@ -382,8 +383,8 @@ footer b{font-weight:500;color:var(--fg)}
     <div class="sec-head"><h2>Sample tech pack: The Camp Shirt</h2><p class="eyebrow">Deliverable 7 of 7 · One page of the production file</p></div>
     <div class="tp">
       <div class="sheet">
-        <svg viewBox="0 0 260 250" class="flat" aria-label="Camp shirt flat with construction callouts">
-          <g transform="translate(30,4)">
+        <svg viewBox="0 0 360 250" class="flat" aria-label="Camp shirt flat with construction callouts">
+          <g transform="translate(70,4)">
             <path class="fill" d="M64,60 L100,84 L136,60 L158,66 L178,116 L150,124 L144,108 L148,222 L52,222 L56,108 L50,124 L22,116 L42,66 Z"/>
             <path d="M42,66 Q50,94 56,108 M158,66 Q150,94 144,108"/>
             <path class="fill" d="M64,60 L100,84 L100,70 L80,48 Z M136,60 L100,84 L100,70 L120,48 Z"/>
@@ -393,11 +394,11 @@ footer b{font-weight:500;color:var(--fg)}
             <rect x="112" y="100" width="24" height="26"/>
             <path class="ts" d="M54,216 L146,216"/>
           </g>
-          <path class="callout-line" d="M110,52 L150,28 L206,28"/><text class="callout" x="150" y="24">A  One-piece camp collar</text>
-          <path class="callout-line" d="M154,100 L200,80 L256,80"/><text class="callout" x="200" y="76">B  Patch pocket 12 x 13</text>
-          <path class="callout-line" d="M130,160 L200,150 L256,150"/><text class="callout" x="200" y="146">C  Concealed placket</text>
-          <path class="callout-line" d="M80,124 L30,150 L4,150"/><text class="callout" x="4" y="146">D  French seam</text>
-          <path class="callout-line" d="M110,222 L60,238 L4,238"/><text class="callout" x="4" y="234">E  2 cm double-fold hem</text>
+          <path class="callout-line" d="M170,52 L230,26 L356,26"/><text class="callout" x="232" y="22">A  One-piece camp collar</text>
+          <path class="callout-line" d="M206,112 L250,84 L356,84"/><text class="callout" x="252" y="80">B  Patch pocket 12 x 13</text>
+          <path class="callout-line" d="M176,164 L250,150 L356,150"/><text class="callout" x="252" y="146">C  Concealed placket</text>
+          <path class="callout-line" d="M124,140 L60,150 L4,150"/><text class="callout" x="4" y="146">D  French seam</text>
+          <path class="callout-line" d="M170,226 L90,238 L4,238"/><text class="callout" x="4" y="234">E  2 cm double-fold hem</text>
         </svg>
       </div>
       <div>
