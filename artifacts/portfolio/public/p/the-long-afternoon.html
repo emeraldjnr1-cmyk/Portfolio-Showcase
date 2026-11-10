@@ -100,6 +100,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .gender-head:first-of-type{margin-top:0}
 /* tech pack */
 .tp{display:grid;grid-template-columns:1fr 1.4fr;gap:32px;align-items:start}
+.tp > *{min-width:0}
 .tp .sheet{background:var(--card);border:1px solid var(--line);padding:20px}
 .tp .sheet + .sheet{margin-top:20px}
 .tp .sheet h3{margin-bottom:12px}
@@ -128,6 +129,7 @@ footer b{font-weight:500;color:var(--fg)}
   .lineup{grid-template-columns:repeat(2,1fr)}
   .gates{grid-template-columns:1fr}
   section{padding-block:52px}
+  .tablewrap table{min-width:600px}
   .mood{grid-template-columns:repeat(2,1fr);grid-auto-rows:120px}
   .m1,.m7,.m2,.m5{grid-column:span 2}
 }
