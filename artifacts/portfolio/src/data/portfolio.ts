@@ -480,6 +480,29 @@ export const testimonials: Testimonial[] = [
   },
 ];
 
+// ── Written reviews ──
+// Reviews a client sent in writing rather than on camera. Quoted as written.
+export interface WrittenReview {
+  name: string;
+  role: string;
+  project: string;
+  quote: string;
+  photo: string;
+  when: string;
+}
+
+export const writtenReviews: WrittenReview[] = [
+  {
+    name: "Maverick Tsao",
+    role: "Founder, Cashout Singapore",
+    project: "Cashout AI property platform",
+    quote:
+      "Emerald helped to launch the Cashout AI platform with his excellent technical work on AI stack programming. He is technical capable and detailed in his documentation. I will not hesitate to use him again in future requirements. Highly recommended.",
+    photo: `${BASE}/reviews/maverick-tsao.jpg`,
+    when: "November 2026",
+  },
+];
+
 export const WHATSAPP = "https://wa.me/2348143046516";
 export const FIVERR = "https://www.fiverr.com/s/pdD2k9E";
 export const UPWORK = "https://www.upwork.com/freelancers/denvernocode";

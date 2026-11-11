@@ -21,6 +21,7 @@ import { Pricing } from "@/components/site/Pricing";
 import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { WebProjectsSection } from "@/components/site/WebProjects";
 import { TestimonialCinema } from "@/components/site/TestimonialCinema";
+import { WrittenReviews } from "@/components/site/WrittenReviews";
 import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Logo } from "@/components/site/Logo";
 import { Avatar } from "@/components/site/Portrait";
@@ -421,6 +422,7 @@ export default function Home() {
           <AutomationStory num="03" />
           <FeaturedWork />
           <TestimonialCinema />
+          <WrittenReviews />
           <Pricing num="06" />
           <HireMe />
           <FAQSection />

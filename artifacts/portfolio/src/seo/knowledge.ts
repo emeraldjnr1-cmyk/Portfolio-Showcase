@@ -9,7 +9,7 @@ import { team } from "@/data/team";
 import { films, FILM_GROUPS } from "@/data/films";
 import { packages, usd } from "@/data/pricing";
 import { FAQS } from "@/data/faqs";
-import { webProjects, web3Projects, robloxProjects, testimonials, WHATSAPP, FIVERR, UPWORK } from "@/data/portfolio";
+import { webProjects, web3Projects, robloxProjects, testimonials, writtenReviews, WHATSAPP, FIVERR, UPWORK } from "@/data/portfolio";
 
 const SITE = "https://www.denvernocode.com";
 
@@ -98,6 +98,8 @@ export function buildKnowledge(): string {
 
   h("Video testimonials from real clients (first names as shown on the site)");
   for (const t of testimonials) out.push(`- ${t.name}: "${t.quote}"`);
+  h("Written reviews from clients");
+  for (const r of writtenReviews) out.push(`- ${r.name}, ${r.role} (${r.project}): "${r.quote}"`);
 
   h("The D. Team");
   for (const m of team) out.push(`- ${m.name}: ${m.title}`);
