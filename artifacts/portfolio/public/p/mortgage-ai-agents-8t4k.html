@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>Mortgage AI agents · Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#E8E5DE;--ink:#0A0A0A;--ink-soft:#4A4A4A;--muted:#7B7770;--blue:#1B1BFF;--coral:#E85445;--green:#4A9F5F;--card:#F1EEE7;--yellow:#F5C842;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  .serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;}
+  .blue{color:var(--blue);} .coral{color:var(--coral);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:28px 0;gap:20px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:16px;}
+  .mark{font-weight:900;font-size:26px;letter-spacing:-.03em;}
+  .brand-dot{color:var(--blue);}
+  .status{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(10,10,10,.18);border-radius:100px;padding:7px 15px;font-size:12.5px;color:var(--ink-soft);}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
+  .pill{display:inline-block;background:var(--ink);color:var(--cream);border-radius:100px;padding:13px 28px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;}
+  .pill.blue-fill{background:var(--blue);color:#fff;}
+  .pill.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);}
+  .pill.client{display:inline-flex;align-items:center;gap:10px;}
+  .pill.client i{width:8px;height:8px;border-radius:50%;background:var(--yellow);display:inline-block;}
+  .hero{padding:70px 0 60px;position:relative;}
+  .label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:26px;display:block;}
+  h1{font-weight:900;letter-spacing:-.045em;line-height:.93;font-size:clamp(46px,7.6vw,98px);}
+  h1 .serif{font-weight:400;letter-spacing:-.02em;}
+  .subhead{max-width:680px;margin-top:34px;font-size:18.5px;color:var(--ink-soft);}
+  .subhead strong{color:var(--ink);font-weight:600;}
+  .cta{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;}
+  .flourish{position:absolute;border-radius:50%;pointer-events:none;}
+  .f1{width:13px;height:13px;background:var(--yellow);top:120px;right:8%;}
+  .f2{width:9px;height:9px;background:var(--blue);top:250px;right:16%;}
+  .f3{width:11px;height:11px;background:var(--coral);bottom:80px;right:5%;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding:56px 0;border-top:1px solid rgba(10,10,10,.14);}
+  .stat .n{font-size:clamp(38px,5vw,58px);font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.4;}
+  .divider{overflow:hidden;padding:26px 0;white-space:nowrap;}
+  .divider span{font-weight:900;font-size:clamp(52px,11vw,150px);letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1.5px rgba(10,10,10,.28);}
+  section{padding:76px 0;}
+  h2{font-weight:900;letter-spacing:-.04em;line-height:1;font-size:clamp(36px,5.6vw,66px);max-width:16ch;}
+  h2 .serif{font-weight:400;}
+  .lede{max-width:680px;margin-top:26px;font-size:18px;color:var(--ink-soft);}
+  .lede strong{color:var(--ink);font-weight:600;}
+  p + p{margin-top:16px;}
+  .quote{margin-top:40px;max-width:880px;border-left:3px solid var(--coral);padding:6px 0 6px 26px;}
+  .quote p{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(24px,3vw,34px);line-height:1.25;color:var(--ink);}
+  .quote span{display:block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .pains{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:46px;}
+  .find{background:var(--card);border-radius:22px;padding:34px;}
+  .find .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);margin-bottom:14px;}
+  .find h3{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2;}
+  .find p{font-size:15.5px;color:var(--ink-soft);}
+  .pains .find .cost{margin-top:16px;padding-top:14px;border-top:1px solid rgba(10,10,10,.1);font-size:14.5px;color:var(--ink);}
+  .pains .find .cost b{color:var(--coral);font-weight:700;}
+  .fix{margin-top:46px;border-top:2px solid var(--ink);max-width:1000px;}
+  .frow{display:grid;grid-template-columns:1fr 36px 1.25fr;gap:22px;padding:22px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .frow.h{padding:12px 0;}
+  .frow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .frow .p{font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink);}
+  .frow .p small{display:block;font-weight:400;font-size:13.5px;color:var(--coral);margin-top:4px;}
+  .frow .ar{font-family:'JetBrains Mono',monospace;color:var(--blue);font-size:18px;text-align:center;}
+  .frow .s{font-size:15.5px;color:var(--ink-soft);}
+  .frow .s b{color:var(--ink);font-weight:700;}
+
+  /* END RESULT MOCKUPS */
+  .mockcap{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  .samples{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;margin-top:50px;align-items:start;}
+  .samples .full{grid-column:1 / -1;}
+  /* Slack status message */
+  .sl{background:#fff;border-radius:18px;border:1px solid rgba(10,10,10,.1);overflow:hidden;font-size:13.5px;}
+  .sl .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid #ECEAE5;background:#FAF9F6;}
+  .sl .ch{font-weight:800;font-size:14px;}
+  .sl .ch span{color:var(--muted);font-weight:400;margin-right:2px;}
+  .sl .mem{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);}
+  .sl .msg{display:grid;grid-template-columns:38px 1fr;gap:12px;padding:16px 18px 18px;}
+  .sl .av{width:38px;height:38px;border-radius:9px;background:var(--ink);color:var(--cream);font-weight:900;font-size:17px;display:flex;align-items:center;justify-content:center;letter-spacing:-.03em;}
+  .sl .av span{color:var(--yellow);}
+  .sl .who{font-weight:800;font-size:14px;}
+  .sl .app{font-family:'JetBrains Mono',monospace;font-size:9.5px;background:#ECEAE5;color:var(--ink-soft);padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:2px;}
+  .sl .tm{font-size:11.5px;color:var(--muted);margin-left:6px;}
+  .sl .ttl{margin-top:4px;font-weight:700;}
+  .sl .prog{margin:10px 0 6px;height:8px;border-radius:9px;background:#ECEAE5;overflow:hidden;}
+  .sl .prog i{display:block;height:100%;width:86%;background:var(--green);border-radius:9px;}
+  .sl .pc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+  .sl .blk{margin-top:12px;border-left:3px solid #DAD7D0;padding:2px 0 2px 12px;}
+  .sl .ln{display:flex;gap:8px;align-items:baseline;padding:3px 0;line-height:1.4;}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:999px;white-space:nowrap;flex:none;}
+  .chip.ok{background:#E3F2E7;color:#2C7540;}
+  .chip.miss{background:#FBE5E2;color:#B8382B;}
+  .chip.flag{background:#FCF1CF;color:#8A6A07;}
+  .chip.tr{background:#E6E6FF;color:var(--blue);}
+  .sl .ment{background:#E6E6FF;color:var(--blue);border-radius:4px;padding:0 3px;font-weight:600;}
+  .sl .acts{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .sl .acts span{border:1px solid #DAD7D0;border-radius:7px;padding:5px 11px;font-size:12px;font-weight:600;}
+  .sl .acts span.pr{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+  /* WorkDrive tree */
+  .wd{background:#fff;border-radius:18px;border:1px solid rgba(10,10,10,.1);overflow:hidden;}
+  .wd .bar{padding:12px 18px;border-bottom:1px solid #ECEAE5;background:#FAF9F6;display:flex;justify-content:space-between;gap:10px;align-items:center;}
+  .wd .bar b{font-size:14px;font-weight:800;}
+  .wd .crumb{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);}
+  .wd .tree{padding:14px 18px 18px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.5;}
+  .wd .r{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px dashed #EEECE7;}
+  .wd .r:last-child{border-bottom:0;}
+  .wd .r.l1{padding-left:18px;} .wd .r.l2{padding-left:38px;}
+  .wd .fd{width:15px;height:11px;background:var(--yellow);border-radius:2px;position:relative;flex:none;}
+  .wd .fd:before{content:"";position:absolute;left:0;top:-3px;width:7px;height:4px;background:var(--yellow);border-radius:2px 2px 0 0;}
+  .wd .fl{width:10px;height:13px;border:1.5px solid var(--ink-soft);border-radius:2px;flex:none;}
+  .wd .nm{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .wd .r.folder .nm{font-weight:700;color:var(--ink);font-family:'Inter',sans-serif;font-size:13px;}
+  .wd .tg{font-size:9.5px;padding:1px 6px;border-radius:999px;white-space:nowrap;flex:none;}
+  .wd .tg.new{background:#E3F2E7;color:#2C7540;}
+  .wd .tg.en{background:#E6E6FF;color:var(--blue);}
+  .wd .tg.fr{background:#ECEAE5;color:var(--ink-soft);}
+  .wd .tg.fl2{background:#FCF1CF;color:#8A6A07;}
+  /* Review queue card */
+  .rq{background:#fff;border-radius:18px;border:1px solid rgba(10,10,10,.1);border-left:5px solid var(--coral);display:grid;grid-template-columns:230px 1fr;gap:26px;padding:22px 24px;}
+  .rq .doc{background:#FAF9F6;border:1px solid #ECEAE5;border-radius:10px;padding:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-soft);position:relative;}
+  .rq .doc b{display:block;font-family:'Inter',sans-serif;font-size:12px;color:var(--ink);margin-bottom:8px;}
+  .rq .doc .dl{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #EEECE7;}
+  .rq .doc .dl.hot{background:rgba(232,84,69,.12);outline:1.5px dashed var(--coral);outline-offset:1px;border-radius:3px;padding:3px 4px;margin:2px -4px;}
+  .rq .doc .bars{margin-top:10px;display:grid;gap:5px;}
+  .rq .doc .bars i{display:block;height:5px;border-radius:3px;background:#E6E3DC;}
+  .rq .hd{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap;}
+  .rq .q{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);}
+  .rq h4{font-size:18px;font-weight:800;letter-spacing:-.02em;margin-top:4px;line-height:1.25;}
+  .rq .meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:4px;}
+  .rq .sig{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;}
+  .rq .sig div{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);line-height:1.4;}
+  .rq .sig div b{color:var(--ink);font-weight:700;}
+  .rq .sev{width:9px;height:9px;border-radius:50%;margin-top:5px;flex:none;}
+  .rq .sev.h{background:var(--coral);} .rq .sev.m{background:var(--yellow);} .rq .sev.l{background:#C9C5BC;}
+  .rq .rule{margin-top:14px;font-size:13px;color:var(--ink);background:var(--card);border-radius:9px;padding:9px 12px;}
+  .rq .btns{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .rq .btns span{border:1px solid #DAD7D0;border-radius:8px;padding:6px 12px;font-size:12.5px;font-weight:600;}
+  .rq .btns span.pr{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+
+  .roi{margin-top:48px;border-top:2px solid var(--ink);}
+  .rrow{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:24px;padding:24px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .rrow.h{padding:12px 0;}
+  .rrow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .rrow .m{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+  .rrow .m small{display:block;font-weight:400;font-size:13.5px;color:var(--muted);margin-top:3px;letter-spacing:0;}
+  .rv{font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .rv.was{font-size:clamp(22px,2.8vw,30px);color:var(--muted);}
+  .rv.now{font-size:clamp(26px,3.4vw,40px);color:var(--blue);}
+  .rv span{display:block;font-size:12px;font-weight:500;letter-spacing:0;color:var(--muted);margin-top:7px;font-family:'JetBrains Mono',monospace;}
+  .roinote{margin-top:32px;background:var(--ink);color:var(--cream);border-radius:24px;padding:36px 38px;max-width:900px;}
+  .roinote .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:14px;}
+  .roinote p{font-size:17px;color:rgba(232,229,222,.82);}
+  .roinote b{color:var(--cream);font-weight:700;}
+  .get{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px;}
+  .get>div{background:var(--card);border-radius:20px;padding:28px;}
+  .get .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .get b{display:block;font-size:17.5px;font-weight:800;letter-spacing:-.02em;margin-bottom:9px;}
+  .get p{font-size:14.5px;color:var(--ink-soft);}
+  .lede + .sys{margin-top:40px;}
+  .sys{display:grid;grid-template-columns:88px 1fr;gap:28px;padding:38px 0;border-top:1px solid rgba(10,10,10,.14);align-items:start;}
+  .sys .num{font-weight:900;font-size:52px;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.4px var(--ink);line-height:.9;}
+  .sys h3{font-size:27px;font-weight:800;letter-spacing:-.03em;margin-bottom:14px;}
+  .sys p{font-size:16.5px;color:var(--ink-soft);max-width:720px;}
+  .sys ul{margin-top:18px;list-style:none;max-width:720px;}
+  .sys li{position:relative;padding-left:24px;font-size:15.5px;color:var(--ink-soft);margin-bottom:9px;}
+  .sys li:before{content:"";position:absolute;left:0;top:11px;width:9px;height:1.5px;background:var(--blue);}
+  .sys li b{color:var(--ink);font-weight:600;}
+  .yes{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:46px;}
+  .yes>div{background:var(--card);border-radius:22px;padding:30px 32px;}
+  .yes .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .yes b{display:block;font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px;line-height:1.2;}
+  .yes p{font-size:15px;color:var(--ink-soft);}
+  .yes .wide{grid-column:1 / -1;background:var(--ink);color:var(--cream);}
+  .yes .wide .k{color:var(--yellow);}
+  .yes .wide p{color:rgba(232,229,222,.82);}
+  .yes .wide b{color:var(--cream);}
+  /* PIPEDA table */
+  .pip{margin-top:40px;border-top:2px solid var(--ink);}
+  .prow{display:grid;grid-template-columns:240px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:start;}
+  .prow.h{padding:12px 0;}
+  .prow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .prow .p{font-weight:800;font-size:16.5px;letter-spacing:-.01em;}
+  .prow .s{font-size:15.5px;color:var(--ink-soft);}
+  /* Proof */
+  .proof{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:46px;}
+  .pf{background:var(--card);border-radius:22px;padding:32px 34px;}
+  .pf.main{grid-column:1 / -1;background:#fff;border:1px solid rgba(10,10,10,.1);}
+  .pf .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .pf h3{font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;}
+  .pf p{font-size:15.5px;color:var(--ink-soft);}
+  .pf .cols{display:grid;grid-template-columns:1fr 1fr;gap:10px 34px;margin-top:20px;list-style:none;}
+  .pf .cols li{position:relative;padding-left:22px;font-size:15px;color:var(--ink-soft);line-height:1.45;}
+  .pf .cols li:before{content:"";position:absolute;left:0;top:10px;width:9px;height:1.5px;background:var(--blue);}
+  .pf .why{margin-top:22px;padding-top:16px;border-top:1px solid rgba(10,10,10,.1);font-size:15px;color:var(--ink);}
+  .pf .why b{color:var(--blue);}
+  /* Estimate tables */
+  .est{margin-top:46px;border-top:2px solid var(--ink);}
+  .erow{display:grid;grid-template-columns:44px 1fr 90px 120px;gap:20px;padding:16px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .erow.h{padding:12px 0;}
+  .erow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .erow .i{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue);}
+  .erow .p{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+  .erow .p small{display:block;font-weight:400;font-size:13.5px;color:var(--muted);margin-top:3px;letter-spacing:0;}
+  .erow .hr{font-weight:900;font-size:22px;letter-spacing:-.03em;text-align:right;}
+  .erow .usd{font-weight:600;font-size:15px;color:var(--ink-soft);text-align:right;font-family:'JetBrains Mono',monospace;}
+  .erow.tot{border-bottom:2px solid var(--ink);padding:22px 0;}
+  .erow.tot .p{font-size:19px;font-weight:900;}
+  .erow.tot .hr{font-size:34px;color:var(--blue);}
+  .erow.tot .usd{font-size:17px;color:var(--ink);font-weight:700;}
+  .erow .hr.r,.erow.h .r{text-align:right;}
+  .mod{margin-top:30px;border-top:2px solid var(--ink);}
+  .mrow{display:grid;grid-template-columns:1.05fr 1fr 1.45fr;gap:22px;padding:18px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:start;}
+  .mrow.h{padding:12px 0;}
+  .mrow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .mrow .p{font-weight:700;font-size:15.5px;letter-spacing:-.01em;}
+  .mrow .md{font-weight:800;font-size:15.5px;color:var(--blue);}
+  .mrow .md small{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:2px;}
+  .mrow .s{font-size:15px;color:var(--ink-soft);}
+  .sub{margin-top:64px;}
+  .sub h3{font-size:clamp(26px,3.2vw,36px);font-weight:900;letter-spacing:-.03em;line-height:1.05;}
+  .sub h3 .serif{font-weight:400;}
+  .sub .lede{margin-top:14px;font-size:16.5px;}
+  .note{margin-top:28px;font-size:15px;color:var(--muted);max-width:820px;}
+  .note b{color:var(--ink);font-weight:600;}
+  .report{margin-top:30px;background:var(--ink);color:var(--cream);border-radius:24px;padding:34px 38px;display:grid;grid-template-columns:1fr 1.3fr;gap:34px;align-items:start;}
+  .report .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:12px;}
+  .report h4{font-size:24px;font-weight:900;letter-spacing:-.03em;line-height:1.15;}
+  .report ul{list-style:none;}
+  .report li{position:relative;padding-left:22px;font-size:15px;color:rgba(232,229,222,.84);margin-bottom:9px;line-height:1.5;}
+  .report li:before{content:"";position:absolute;left:0;top:10px;width:9px;height:1.5px;background:var(--yellow);}
+  .report li b{color:var(--cream);}
+  /* Roadmap */
+  .road{margin-top:40px;border-top:2px solid var(--ink);}
+  .wrow{display:grid;grid-template-columns:54px 1.05fr 1.5fr;gap:22px;padding:18px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:start;}
+  .wrow .n{font-weight:900;font-size:26px;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.2px var(--ink);line-height:1;}
+  .wrow .p{font-weight:800;font-size:16.5px;letter-spacing:-.01em;line-height:1.3;}
+  .wrow .p small{display:block;font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-top:6px;}
+  .wrow .s{font-size:15px;color:var(--ink-soft);}
+  .close{background:var(--ink);color:var(--cream);border-radius:32px;padding:clamp(44px,7vw,84px);margin:30px 0 90px;}
+  .close h2{max-width:18ch;color:var(--cream);}
+  .close p{max-width:660px;margin-top:26px;font-size:18px;color:rgba(232,229,222,.72);}
+  .close p b{color:var(--cream);}
+  .valid{margin-top:34px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  @media(max-width:980px){
+    .samples{grid-template-columns:1fr;}
+    .rq{grid-template-columns:1fr;}
+    .rq .doc{max-width:320px;}
+  }
+  @media(max-width:900px){
+    .stats{grid-template-columns:repeat(2,1fr);gap:26px;}
+    .pains,.get,.yes,.proof,.report{grid-template-columns:1fr;}
+    .yes .wide,.pf.main{grid-column:auto;}
+    .pf .cols{grid-template-columns:1fr;}
+    .sys{grid-template-columns:1fr;gap:12px;}
+    .frow{grid-template-columns:1fr;gap:8px;}
+    .frow .ar,.frow.h,.rrow.h,.prow.h,.mrow.h{display:none;}
+    .rrow{grid-template-columns:1fr 1fr;gap:16px;}
+    .rrow .m{grid-column:1 / -1;}
+    .prow{grid-template-columns:1fr;gap:6px;}
+    .mrow{grid-template-columns:1fr;gap:6px;}
+    .wrow{grid-template-columns:44px 1fr;gap:6px 16px;}
+    .wrow .s{grid-column:2;}
+    .rq .sig{grid-template-columns:1fr;}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 16px;}
+    .find,.get>div,.yes>div,.pf{padding:26px;}
+    .roinote,.report{padding:28px;}
+    .erow{grid-template-columns:28px 1fr 60px;gap:12px;}
+    .erow .usd{display:none;}
+    .erow.h .usd-h{display:none;}
+    .rq{padding:18px;}
+  }
+  @media print{
+    @page{size:A3;margin:14mm;}
+    body{background:#fff;font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .pains,.yes,.proof{grid-template-columns:repeat(2,1fr)!important;}
+    .get{grid-template-columns:repeat(3,1fr)!important;}
+    .samples{grid-template-columns:1.1fr 1fr!important;}
+    .rq{grid-template-columns:230px 1fr!important;}
+    .frow{grid-template-columns:1fr 36px 1.25fr!important;}
+    .frow.h,.rrow.h,.prow.h,.mrow.h{display:grid!important;}
+    .rrow{grid-template-columns:1.35fr 1fr 1fr!important;}
+    .report{grid-template-columns:1fr 1.3fr!important;}
+    section{padding:34px 0;}
+    .find,.roinote,.sl,.wd,.rq,.get>div,.yes>div,.pf,.sys,.frow,.rrow,.prow,.erow,.mrow,.wrow,.report,.close,.quote{break-inside:avoid;}
+    h2,.sub h3,.label{break-after:avoid;}
+    .divider,.flourish{display:none;}
+    .pill,.btn{display:none!important;}
+  }
+</style></head><body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">D<span class="brand-dot">.</span></div>
+      <div class="status"><span class="dot"></span> Available to start this week</div>
+    </div>
+    <a class="pill client" href="#estimate"><i></i>See the estimate</a>
+  </div>
+  <div class="hero">
+    <span class="flourish f1"></span><span class="flourish f2"></span><span class="flourish f3"></span>
+    <span class="label">01 · Proposal for your mortgage brokerage · AI agents, starting with document management</span>
+    <h1>Hundreds of documents a day.<br>One agent that <span class="serif blue">files them right</span>,<br>and a team that <span class="serif coral">only checks the flags</span>.</h1>
+    <p class="subhead">You want an AI developer to rebuild <strong>12+ workflows with AI agents</strong> in n8n and LangGraph, starting with <strong>document management</strong>. This page answers your three questions: <strong>a similar automation I have already built</strong>, <strong>an hour estimate</strong> for document management with the model I would use for each part and why, and <strong>how your client data is handled</strong>.</p>
+    <div class="cta">
+      <a class="pill blue-fill" href="#result">See the end result</a>
+      <a class="pill ghost" href="#privacy">How client data is handled</a>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">~70h</div><div class="l">estimated for workflow 1, document management, at your US$40 rate</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">queue for every document, whether it came by Gmail or Slack</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">client documents stored on my machines, before, during or after the build</div></div>
+    <div class="stat"><div class="n">12</div><div class="l">workflows mapped: document management first, 11 more in the roadmap</div></div>
+  </div>
+  <div class="divider"><span>RECEIVE · CHECK · RENAME · FILE · REPORT</span></div>
+
+  <section id="problem">
+    <span class="label">02 · Your problem</span>
+    <h2>Every file needs 30 to 40 documents, and <span class="serif coral">they never arrive</span> in order.</h2>
+    <div class="quote">
+      <p>"Hundreds of client documents arrive daily."</p>
+      <span>Your job post, Upwork, November 2026</span>
+    </div>
+    <div class="pains">
+      <div class="find">
+        <div class="k">Pain 01</div>
+        <h3>Opening, renaming and filing by hand</h3>
+        <p>Documents land in Gmail and Slack. Someone opens each one, works out what it is and whose file it belongs to, renames it to your convention and drags it into the right Zoho WorkDrive folder.</p>
+        <div class="cost">Cost today: <b>staff hours every working day</b> spent on filing instead of on clients and lenders.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 02</div>
+        <h3>Missing documents found late</h3>
+        <p>With 30 to 40 documents per client file, a missing letter of employment or bank statement is easy to miss until a lender or underwriter asks for it.</p>
+        <div class="cost">Cost today: <b>files that stall</b> while you chase the client at the last minute.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 03</div>
+        <h3>An altered document looks normal on screen</h3>
+        <p>An edited pay stub or bank statement does not announce itself. Checking every PDF for signs of editing by eye is slow and depends on who opened it.</p>
+        <div class="cost">Cost today: <b>fraud risk</b> on files you send to lenders under your name.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 04</div>
+        <h3>French documents need reading in English</h3>
+        <p>Before anyone can review a French pay stub or letter, someone has to translate it, and the original still has to be kept as it came in.</p>
+        <div class="cost">Cost today: <b>a wait on every French document</b> before the file can move.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 05</div>
+        <h3>Nobody can see a file's status at a glance</h3>
+        <p>Which documents came in today, which are still missing and which look wrong lives in people's heads and inboxes.</p>
+        <div class="cost">Cost today: <b>time spent asking around</b> before every client or lender update.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 06</div>
+        <h3>AI cannot become a privacy problem</h3>
+        <p>These are IDs, pay stubs, T4s and bank statements of Canadian clients. Moving them through AI has to keep you in control of where they go.</p>
+        <div class="cost">Cost today: <b>a reason to hold back on automation</b> unless the data question is answered first.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fix">
+    <span class="label">03 · The fix</span>
+    <h2>One pain, <span class="serif blue">one answer</span>, no extras.</h2>
+    <div class="fix">
+      <div class="frow h"><div>What hurts</div><div></div><div>What removes it</div></div>
+      <div class="frow"><div class="p">Opening, renaming and filing by hand<small>Pain 01</small></div><div class="ar">→</div><div class="s"><b>Intake, classification and filing agent.</b> Gmail and Slack feed one queue. Each document is classified, renamed to your convention and filed into the client folder in WorkDrive by file number through the Zoho WorkDrive API.</div></div>
+      <div class="frow"><div class="p">Missing documents found late<small>Pain 02</small></div><div class="ar">→</div><div class="s"><b>Completeness checklist per file.</b> Your document checklist per deal type, written as plain rules in code (not AI), checked every time a document arrives.</div></div>
+      <div class="frow"><div class="p">Altered documents look normal<small>Pain 03</small></div><div class="ar">→</div><div class="s"><b>Alteration signals, flagged for a person.</b> PDF metadata and edit history, incremental saves, producer software, font and text-layer mismatches and image error-level checks. Flagged for review, never auto-rejected.</div></div>
+      <div class="frow"><div class="p">French documents need English<small>Pain 04</small></div><div class="ar">→</div><div class="s"><b>Translation stored alongside the original.</b> An English copy is filed next to the French document. The original is never overwritten.</div></div>
+      <div class="frow"><div class="p">No status at a glance<small>Pain 05</small></div><div class="ar">→</div><div class="s"><b>Slack status per file.</b> Received, missing and flagged, posted per client file, with a review queue for anything low-confidence.</div></div>
+      <div class="frow"><div class="p">AI cannot become a privacy problem<small>Pain 06</small></div><div class="ar">→</div><div class="s"><b>Your server, your accounts, minimum data.</b> Self-hosted n8n in a Canadian region on a server you own, your own AI provider accounts, and only the text or image each step needs sent to a model. Full detail in section 06.</div></div>
+    </div>
+  </section>
+
+  <div class="divider"><span>GMAIL · SLACK · WORKDRIVE</span></div>
+
+  <section id="result">
+    <span class="label">04 · The end result</span>
+    <h2>What your team sees <span class="serif blue">once it runs</span>.</h2>
+    <p class="lede">The three screens below are built for this proposal with <strong>fictional sample names and file numbers</strong>. In discovery your real naming convention, folder tree and checklist replace them.</p>
+    <div class="samples">
+      <div>
+        <div class="mockcap">Slack · status for one client file</div>
+        <div class="sl">
+          <div class="bar"><div class="ch"><span>#</span>file-status</div><div class="mem">Filing agent · today</div></div>
+          <div class="msg">
+            <div class="av">FA</div>
+            <div>
+              <div><span class="who">Filing agent</span><span class="app">APP</span><span class="tm">10:42 AM</span></div>
+              <div class="ttl">File FN-24817 · Martin, Camille · Purchase, salaried</div>
+              <div class="prog"><i></i></div>
+              <div class="pc">31 of 36 checklist documents received</div>
+              <div class="blk">
+                <div class="ln"><span class="chip ok">RECEIVED</span><span>Pay stub, Oct 2026 · via Gmail</span></div>
+                <div class="ln"><span class="chip ok">RECEIVED</span><span>T4 2025 · via Slack</span></div>
+                <div class="ln"><span class="chip tr">TRANSLATED</span><span>Letter of employment · French original kept</span></div>
+                <div class="ln"><span class="chip flag">FLAGGED</span><span>Bank statement, Sep 2026 · 3 alteration signals</span></div>
+                <div class="ln"><span class="chip miss">MISSING</span><span>Void cheque, down payment gift letter, 90-day bank history</span></div>
+              </div>
+              <div style="margin-top:12px">Flagged item sent to review. <span class="ment">@Sophie</span> please check before it goes to the lender.</div>
+              <div class="acts"><span class="pr">Open review queue</span><span>Open folder</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="mockcap">Zoho WorkDrive · renamed and filed by file number</div>
+        <div class="wd">
+          <div class="bar"><b>Client Files</b><span class="crumb">2026 / FN-24817</span></div>
+          <div class="tree">
+            <div class="r folder"><span class="fd"></span><span class="nm">FN-24817 Martin, Camille</span></div>
+            <div class="r folder l1"><span class="fd"></span><span class="nm">01 Identity</span></div>
+            <div class="r l2"><span class="fl"></span><span class="nm">FN-24817_Martin_ID_DriversLicence.pdf</span></div>
+            <div class="r folder l1"><span class="fd"></span><span class="nm">02 Income</span></div>
+            <div class="r l2"><span class="fl"></span><span class="nm">FN-24817_Martin_PayStub_2026-10.pdf</span><span class="tg new">NEW</span></div>
+            <div class="r l2"><span class="fl"></span><span class="nm">FN-24817_Martin_T4_2025.pdf</span><span class="tg new">NEW</span></div>
+            <div class="r l2"><span class="fl"></span><span class="nm">FN-24817_Martin_LOE_2026-11_EN.pdf</span><span class="tg en">EN</span></div>
+            <div class="r l2"><span class="fl"></span><span class="nm">FN-24817_Martin_LOE_2026-11_FR-original.pdf</span><span class="tg fr">ORIGINAL</span></div>
+            <div class="r folder l1"><span class="fd"></span><span class="nm">03 Down payment</span></div>
+            <div class="r l2"><span class="fl"></span><span class="nm">FN-24817_Martin_BankStmt_2026-09.pdf</span><span class="tg fl2">IN REVIEW</span></div>
+            <div class="r folder l1"><span class="fd"></span><span class="nm">04 Property</span></div>
+            <div class="r l2"><span class="fl"></span><span class="nm">FN-24817_Martin_APS_Signed.pdf</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="full">
+        <div class="mockcap">Review queue · a flagged document with its alteration signals</div>
+        <div class="rq">
+          <div class="doc">
+            <b>Bank statement · Sep 2026</b>
+            <div class="dl"><span>Opening balance</span><span>12,480.15</span></div>
+            <div class="dl"><span>Payroll deposit</span><span>3,912.40</span></div>
+            <div class="dl hot"><span>Transfer in</span><span>18,000.00</span></div>
+            <div class="dl"><span>Rent</span><span>-2,150.00</span></div>
+            <div class="dl hot"><span>Closing balance</span><span>31,642.55</span></div>
+            <div class="bars"><i style="width:92%"></i><i style="width:70%"></i><i style="width:84%"></i></div>
+          </div>
+          <div>
+            <div class="hd">
+              <div>
+                <div class="q">Review 1 of 3 · signals, not a verdict</div>
+                <h4>FN-24817_Martin_BankStmt_2026-09.pdf</h4>
+                <div class="meta">Received via Gmail · 10:39 AM · Martin, Camille</div>
+              </div>
+            </div>
+            <div class="sig">
+              <div><span class="sev h"></span><span><b>Producer software changed.</b> Created by a bank statement generator, last saved by a desktop PDF editor.</span></div>
+              <div><span class="sev h"></span><span><b>Incremental saves after creation.</b> 2 edit sessions found in the file history.</span></div>
+              <div><span class="sev m"></span><span><b>Font mismatch</b> on the "Transfer in" and closing balance lines.</span></div>
+              <div><span class="sev l"></span><span><b>Error-level difference</b> around the closing balance area.</span></div>
+            </div>
+            <div class="rule">Nothing is rejected automatically. A person on your team decides, and the decision is posted back to the file in Slack.</div>
+            <div class="btns"><span class="pr">Accept</span><span>Ask client for the original from the bank</span><span>Reject</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="roi">
+      <div class="rrow h"><div>What changes</div><div>Today</div><div>With workflow 1</div></div>
+      <div class="rrow"><div class="m">Renaming and filing<small>Every document, every day</small></div><div class="rv was">By hand</div><div class="rv now">Automatic<span>ON ARRIVAL, BY FILE NUMBER</span></div></div>
+      <div class="rrow"><div class="m">Missing documents<small>Against the checklist per deal type</small></div><div class="rv was">Found late</div><div class="rv now">On arrival<span>CHECKED EVERY TIME A DOC LANDS</span></div></div>
+      <div class="rrow"><div class="m">Signs of alteration<small>Pay stubs, statements, letters</small></div><div class="rv was">By eye</div><div class="rv now">Flagged<span>SIGNALS SENT TO A PERSON</span></div></div>
+      <div class="rrow"><div class="m">French documents<small>Before the file can move</small></div><div class="rv was">Wait</div><div class="rv now">English copy<span>ORIGINAL ALWAYS KEPT</span></div></div>
+      <div class="rrow"><div class="m">File status<small>Received, missing, flagged</small></div><div class="rv was">Ask around</div><div class="rv now">In Slack<span>ONE UPDATE PER FILE</span></div></div>
+    </div>
+    <div class="roinote">
+      <div class="k">The maths against your own volume</div>
+      <p>If opening, renaming and filing one document takes your team <b>two minutes</b>, then <b>200 documents a day is more than six staff hours</b>, every working day. Workflow 1 is a one-time build of <b>about 70 hours</b>, and the intake, file-number lookup and WorkDrive filing it creates are reused by the workflows that come after it.</p>
+    </div>
+    <div class="get">
+      <div><div class="k">You get 01</div><b>A filing agent that runs all day</b><p>Every document from Gmail and Slack classified, renamed and filed into the right client folder.</p></div>
+      <div><div class="k">You get 02</div><b>A review queue for the edge cases</b><p>Low-confidence documents and alteration signals go to a person, with the reason shown.</p></div>
+      <div><div class="k">You get 03</div><b>The base for the next 11</b><p>One intake queue, one file-number lookup and one filing step, ready for the workflows in the roadmap.</p></div>
+    </div>
+  </section>
+
+  <section id="build">
+    <span class="label">05 · How the work runs</span>
+    <h2>Four stages, <span class="serif blue">tested on your real documents</span> before launch.</h2>
+    <p class="lede"><strong>n8n runs the pipeline</strong> on your server. AI is used only where reading a document needs it. Renaming, filing, the checklist and status updates are plain code, so they do the same thing every time. <strong>LangGraph</strong> comes in for later workflows where an agent has to reason across several steps, such as underwriting notes.</p>
+    <div class="sys">
+      <div class="num">01</div>
+      <div>
+        <h3>Discovery and mapping</h3>
+        <p>Before any automation, I map how your files work today, so the agent files the way your team already does.</p>
+        <ul><li>Your <b>naming convention</b>, written as rules</li><li>How a document is matched to its <b>file number</b></li><li>Your <b>WorkDrive folder tree</b> per client file</li><li>The <b>document checklist per deal type</b></li></ul>
+      </div>
+    </div>
+    <div class="sys">
+      <div class="num">02</div>
+      <div>
+        <h3>Intake and reading</h3>
+        <p>Every document enters one queue, whatever channel it came from, and is read once.</p>
+        <ul><li><b>Gmail and Slack intake</b> into one queue</li><li><b>Classification</b> of each document type</li><li><b>Data extraction</b> from IDs, pay stubs, letters of employment and bank statements</li></ul>
+      </div>
+    </div>
+    <div class="sys">
+      <div class="num">03</div>
+      <div>
+        <h3>Checks</h3>
+        <p>The parts that protect the file, with a person kept in the loop.</p>
+        <ul><li><b>Completeness check</b> against the checklist per client file, with deterministic rules, not AI</li><li><b>Alteration signals</b> flagged for human review, never auto-rejected</li><li><b>French to English</b> translation stored alongside the original, original never overwritten</li></ul>
+      </div>
+    </div>
+    <div class="sys">
+      <div class="num">04</div>
+      <div>
+        <h3>Filing, status and go-live</h3>
+        <p>Documents reach their folder and your team sees where every file stands.</p>
+        <ul><li><b>Rename and file</b> into WorkDrive by file number through the Zoho WorkDrive API</li><li><b>Slack status</b> per file: received, missing, flagged</li><li><b>Review queue</b> for anything low-confidence</li><li><b>Testing on a real sample</b> of your documents before go-live, then handover docs</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span>YOUR SERVER · YOUR KEYS · YOUR DATA</span></div>
+
+  <section id="privacy">
+    <span class="label">06 · Privacy and data handling</span>
+    <h2>Your clients' data <span class="serif blue">stays in your systems</span>.</h2>
+    <p class="lede">You asked about self-hosting, where data is processed, an NDA and PIPEDA. Here is how the build is set up on each point.</p>
+    <div class="yes">
+      <div><div class="k">Self-hosting</div><b>n8n on a server you own, in a Canadian region</b><p>The pipeline runs on your infrastructure, not mine. Your files stay in your Gmail, Slack and Zoho WorkDrive.</p></div>
+      <div><div class="k">AI provider accounts</div><b>Your accounts, your settings, your costs</b><p>As you said, the AI provider accounts are yours. You control retention settings and see every cost directly.</p></div>
+      <div><div class="k">Where data is processed</div><b>Only the minimum per step goes to a model</b><p>Each step sends only the text or image it needs. Self-hosted OCR can extract text first without leaving your server. Model processing can stay in a Canadian cloud region where the chosen model is available, confirmed before the build.</p></div>
+      <div><div class="k">My side</div><b>Nothing stored on my machines</b><p>No client data is stored on my machines. Credentials live in your own secret store, and my access is removed at the end of the engagement.</p></div>
+      <div class="wide"><div class="k">NDA and data processing agreement</div><b>Happy to sign both before I see a single document</b><p>Send your NDA and data processing agreement with the go-ahead. Sample documents for testing come after they are signed.</p></div>
+    </div>
+    <div class="pip">
+      <div class="prow h"><div>PIPEDA principle</div><div>How the build supports it</div></div>
+      <div class="prow"><div class="p">Consent</div><div class="s">The pipeline only processes documents clients sent you for their own mortgage file, for that purpose. No new use of their data.</div></div>
+      <div class="prow"><div class="p">Limiting collection and use</div><div class="s">Only the text or image a step needs is sent to a model. No copies are kept outside your Gmail, Slack and WorkDrive.</div></div>
+      <div class="prow"><div class="p">Safeguards</div><div class="s">Self-hosted on your server, credentials in your secret store, your own AI accounts, a person reviewing every flagged document, my access removed at the end.</div></div>
+      <div class="prow"><div class="p">Accountability</div><div class="s">Every document's path (received, checked, filed, flagged) is visible in Slack and in the n8n run history on your server.</div></div>
+    </div>
+    <p class="note">The build is <b>designed to support your PIPEDA obligations</b>. It is not legal advice and not a certification; your privacy officer or counsel confirms the final setup.</p>
+  </section>
+
+  <section id="proof">
+    <span class="label">07 · Proof</span>
+    <h2>The same kind of build, <span class="serif blue">already delivered</span>.</h2>
+    <p class="lede">You asked for an example of a similar automation. Client names are kept private; the builds are real.</p>
+    <div class="proof">
+      <div class="pf main">
+        <div class="k">Closest match · AI invoice automation · 2 milestones</div>
+        <h3>A construction and property developer in Spain</h3>
+        <p>Documents arrive by email or as phone photos. AI reads each one, rules validate it, and it is filed without anyone typing.</p>
+        <ul class="cols">
+          <li>Gmail watcher plus a phone-photo intake folder, triggered every minute</li>
+          <li>Claude reads each invoice, with PDFs sent as documents</li>
+          <li>Extracts invoice number, date, supplier, tax ID, base, VAT and total</li>
+          <li>Validates Spanish tax ID formats and returns null rather than guessing</li>
+          <li>A document-type filter rejects purchase orders, delivery notes, quotes and pro formas</li>
+          <li>Duplicate detection and 38 accounting categories</li>
+          <li>Bank CSV reconciliation marks invoices as settled</li>
+          <li>Processed files archived automatically</li>
+          <li>Milestone 2: per-line price history and an alert when a supplier's unit price rises more than 5%</li>
+          <li>Runs on the client's own Google account and her own Claude API key</li>
+        </ul>
+        <div class="why"><b>Why it matters for you:</b> the same shape as your workflow 1. Documents arrive by email, AI reads them, rules check them, the wrong document types are filtered out, nothing is guessed, and it runs on the client's own accounts.</div>
+      </div>
+      <div class="pf">
+        <div class="k">Browser automation · daily</div>
+        <h3>Lead enrichment pipeline for a German industry network</h3>
+        <p>Playwright and Claude Vision on Railway, on a daily cron. Relevant to your <b>Scarlett CRM</b> workflow, where there is no API and the work has to happen in the browser.</p>
+      </div>
+      <div class="pf">
+        <div class="k">AI with a human check · live</div>
+        <h3>Cashout, a live Singapore property platform</h3>
+        <p>AI turns an owner's voice note or free text into a structured listing, with a person confirming before it saves. It answers only from the database, so the AI never holds facts. The same rule fits your <b>lender and rate Q&amp;A</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="estimate">
+    <span class="label">08 · Estimate</span>
+    <h2>About 70 hours for document management, <span class="serif blue">at your rate</span>.</h2>
+    <p class="lede">You set the rate at <strong>US$40 an hour</strong>, so there are no packages here. This is one estimate for workflow 1, split by phase, so you can see where every hour goes.</p>
+    <div class="est">
+      <div class="erow h"><div></div><div>Phase</div><div class="r">Hours</div><div class="r usd-h">USD</div></div>
+      <div class="erow"><div class="i">01</div><div class="p">Discovery and mapping<small>Naming convention, file-number lookup, WorkDrive tree, checklist per deal type</small></div><div class="hr">8h</div><div class="usd">$320</div></div>
+      <div class="erow"><div class="i">02</div><div class="p">Gmail and Slack intake<small>Both channels into one queue</small></div><div class="hr">10h</div><div class="usd">$400</div></div>
+      <div class="erow"><div class="i">03</div><div class="p">Classification and extraction<small>Document type, then data from IDs, pay stubs, letters, statements</small></div><div class="hr">14h</div><div class="usd">$560</div></div>
+      <div class="erow"><div class="i">04</div><div class="p">Completeness checklist logic<small>Deterministic rules per deal type</small></div><div class="hr">8h</div><div class="usd">$320</div></div>
+      <div class="erow"><div class="i">05</div><div class="p">Alteration signals<small>Metadata, edit history, producer, fonts, error-level checks</small></div><div class="hr">8h</div><div class="usd">$320</div></div>
+      <div class="erow"><div class="i">06</div><div class="p">French to English<small>English copy filed beside the original</small></div><div class="hr">5h</div><div class="usd">$200</div></div>
+      <div class="erow"><div class="i">07</div><div class="p">Rename and WorkDrive filing<small>By file number through the Zoho WorkDrive API</small></div><div class="hr">7h</div><div class="usd">$280</div></div>
+      <div class="erow"><div class="i">08</div><div class="p">Slack status and review queue<small>Received, missing, flagged per file</small></div><div class="hr">5h</div><div class="usd">$200</div></div>
+      <div class="erow"><div class="i">09</div><div class="p">Testing on a real sample and handover<small>Your documents, before go-live, then handover docs</small></div><div class="hr">5h</div><div class="usd">$200</div></div>
+      <div class="erow tot"><div></div><div class="p">Workflow 1 · document management</div><div class="hr">70h</div><div class="usd">≈ $2,800</div></div>
+    </div>
+    <div class="report">
+      <div><div class="k">How hours are reported</div><h4>You see every hour, every week.</h4></div>
+      <ul>
+        <li><b>Hours tracked on Upwork</b> against the phase they belong to</li>
+        <li><b>A short written update every week:</b> hours per phase, what is done, what is next</li>
+        <li><b>Early warning:</b> if a phase looks like it will run over its estimate, I tell you before it does, not after</li>
+        <li><b>AI usage costs</b> show up in your own provider accounts, separate from my hours</li>
+      </ul>
+    </div>
+
+    <div class="sub">
+      <h3>Which model for <span class="serif blue">each part</span>, and why.</h3>
+      <p class="lede">The cheapest reliable option per step. The final choice for each step is confirmed with a <strong>side by side test on your own sample documents</strong>.</p>
+      <div class="mod">
+        <div class="mrow h"><div>Part</div><div>Model</div><div>Why</div></div>
+        <div class="mrow"><div class="p">Renaming, filing, checklist, Slack status</div><div class="md">No AI<small>Deterministic code</small></div><div class="s">Same input, same result, every time. Nothing to guess and no model cost.</div></div>
+        <div class="mrow"><div class="p">Document classification</div><div class="md">Claude<small>Sonnet tier</small></div><div class="s">Strong document and image understanding and consistent structured output, so every document gets the same kind of answer.</div></div>
+        <div class="mrow"><div class="p">Extraction from IDs, pay stubs, letters of employment, bank statements</div><div class="md">Claude<small>Sonnet tier</small></div><div class="s">Reads scans and photos as well as clean PDFs and returns the fields in a fixed structure your checks can rely on.</div></div>
+        <div class="mrow"><div class="p">French to English translation</div><div class="md">Claude<small>Sonnet tier</small></div><div class="s">Keeps the layout and meaning of financial and employment documents, in the same structured format as the rest.</div></div>
+        <div class="mrow"><div class="p">Simple routing</div><div class="md">Claude Haiku tier or Gemini Flash<small>Cheaper, fast model</small></div><div class="s">Used only where accuracy risk is low, so you are not paying top-tier rates for easy decisions.</div></div>
+        <div class="mrow"><div class="p">First-pass text extraction</div><div class="md">Self-hosted OCR<small>e.g. Tesseract or docTR</small></div><div class="s">Text is pulled out on your own server, without the document leaving it, where you want that.</div></div>
+      </div>
+    </div>
+
+    <div class="sub" id="roadmap">
+      <h3>The next 11 workflows, <span class="serif blue">ordered by value</span>.</h3>
+      <p class="lede">A proposed order, each one estimated separately when we get to it. We set the real order together once document management is live.</p>
+      <div class="road">
+        <div class="wrow"><div class="n">02</div><div class="p">Income and down payment analysis<small>Reuses workflow 1 extraction</small></div><div class="s">The pay stubs, T4s and bank statements are already read and filed, so this turns that data into an analysis your brokers can check.</div></div>
+        <div class="wrow"><div class="n">03</div><div class="p">Data entry into Scarlett<small>Browser automation, no API</small></div><div class="s">Fills the CRM from extracted data in the browser, with a person confirming before it saves. Removes double keying on every file.</div></div>
+        <div class="wrow"><div class="n">04</div><div class="p">Broker file prep<small>Reuses the checklist</small></div><div class="s">Assembles a complete file once the checklist says everything is in.</div></div>
+        <div class="wrow"><div class="n">05</div><div class="p">Underwriting notes with red flags<small>LangGraph agent</small></div><div class="s">Draft notes against your Canadian and Ontario mortgage policy PDFs, with red flags for the underwriter to judge.</div></div>
+        <div class="wrow"><div class="n">06</div><div class="p">Lender conditions tracking<small>Reuses Slack status</small></div><div class="s">Each condition tracked per file, with the same received, missing and flagged updates your team will already know.</div></div>
+        <div class="wrow"><div class="n">07</div><div class="p">Pre-approval letters in Word<small>Financing scenarios</small></div><div class="s">Letters drafted in Word with the financing scenarios filled in from the file, ready for a broker to review.</div></div>
+        <div class="wrow"><div class="n">08</div><div class="p">Approval emails and commitment letter review<small>Compare against the file</small></div><div class="s">Commitment letters checked against what the file says, with differences highlighted before the client sees them.</div></div>
+        <div class="wrow"><div class="n">09</div><div class="p">KYC support<small>Reuses ID extraction</small></div><div class="s">ID data already extracted in workflow 1 feeds the KYC steps.</div></div>
+        <div class="wrow"><div class="n">10</div><div class="p">Compliance packages<small>Reuses the filed documents</small></div><div class="s">Packages built from documents that are already named and filed the same way every time.</div></div>
+        <div class="wrow"><div class="n">11</div><div class="p">Zoho Sign signing packages<small>Zoho Sign</small></div><div class="s">Signing packages prepared and sent from the right documents in the file.</div></div>
+        <div class="wrow"><div class="n">12</div><div class="p">Lender and rate Q&amp;A<small>Answers only from your sources</small></div><div class="s">Answers come only from your lender and rate information, never from the model's memory, the same rule as the Cashout build above.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="close" id="next">
+    <span class="label" style="color:var(--yellow)">09 · Next step</span>
+    <h2>Say yes to the estimate and I start <span class="serif" style="color:var(--yellow)">discovery</span> this week.</h2>
+    <p>Reply on Upwork with the go-ahead, your naming convention and the document checklist for one deal type. Send your NDA and data processing agreement with it. <b>Sample documents for testing come after they are signed.</b></p>
+    <div class="valid">Valid 14 days · All amounts in USD · 24 November 2026 · Emerald, Denver No Code</div>
+  </div>
+</div>
+</body></html>
