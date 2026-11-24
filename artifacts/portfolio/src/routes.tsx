@@ -39,6 +39,7 @@ export const routes = {
   team: lazyRoute(() => import("@/pages/Team"), (m) => m.TeamPage),
   teamProfile: lazyRoute(() => import("@/pages/TeamProfile"), (m) => m.TeamProfilePage),
   films: lazyRoute(() => import("@/pages/Films"), (m) => m.FilmsPage),
+  gameDevelopment: lazyRoute(() => import("@/pages/GameDevelopment"), (m) => m.GameDevelopmentPage),
   notFound: lazyRoute(() => import("@/pages/not-found"), (m) => m.default),
 };
 
@@ -56,6 +57,7 @@ export const ROUTE_SOURCES: Record<RouteKey, string> = {
   team: "src/pages/Team.tsx",
   teamProfile: "src/pages/TeamProfile.tsx",
   films: "src/pages/Films.tsx",
+  gameDevelopment: "src/pages/GameDevelopment.tsx",
   notFound: "src/pages/not-found.tsx",
 };
 
@@ -81,6 +83,8 @@ export function routeKeyFor(pathname: string): RouteKey {
       return slug ? "teamProfile" : "team";
     case "films":
       return slug ? "notFound" : "films";
+    case "game-development":
+      return slug ? "notFound" : "gameDevelopment";
     default:
       return "notFound";
   }

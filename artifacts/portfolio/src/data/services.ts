@@ -96,7 +96,10 @@ export const services: Service[] = [
       { title: "Saves, store and anti-exploit", desc: "Session-locked DataStore saves, gamepasses and developer products on Roblox's own systems, with scores and rewards validated on the server and every free model read for backdoors." },
     ],
     tools: ["Roblox Studio", "Luau", "DataStoreService", "Claude Code", "Blender"],
-    proof: [{ href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Twenty concept demos across five game types" }],
+    proof: [
+      { href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Twenty concept demos across five game types" },
+      { href: "/game-development", label: "Game development", note: "Roblox story Shorts, client work and game demos on one page" },
+    ],
     faqs: [
       {
         q: "Who owns the game?",

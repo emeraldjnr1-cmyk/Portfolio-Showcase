@@ -7,6 +7,7 @@ import { work } from "@/data/work";
 import { industries } from "@/data/industries";
 import { team } from "@/data/team";
 import { films, filmSrc, filmPoster } from "@/data/films";
+import { allShorts, featuredGame, shortPoster, shortSrc, GAMES_PUBLISHED } from "@/data/games";
 import { FAQS } from "@/data/faqs";
 import { FIVERR, UPWORK, WHATSAPP } from "@/data/portfolio";
 
@@ -282,6 +283,51 @@ const filmsPage: PageMeta = {
   ],
 };
 
+const shortVideo = (s: (typeof allShorts)[number]) => ({
+  "@type": "VideoObject",
+  name: s.title,
+  description: s.desc,
+  thumbnailUrl: abs(shortPoster(s)),
+  contentUrl: abs(shortSrc(s)),
+  uploadDate: GAMES_PUBLISHED,
+  duration: `PT${s.seconds}S`,
+  creator: { "@id": ORG_ID },
+});
+
+// The featured game's film joins the list only once the file exists.
+const gameFilm = featuredGame.videoSrc
+  ? [
+      {
+        "@type": "VideoObject",
+        name: `${featuredGame.name}: gameplay film`,
+        description: featuredGame.desc,
+        thumbnailUrl: abs(featuredGame.poster),
+        contentUrl: abs(featuredGame.videoSrc),
+        uploadDate: GAMES_PUBLISHED,
+        duration: `PT${featuredGame.seconds}S`,
+        creator: { "@id": ORG_ID },
+      },
+    ]
+  : [];
+
+const gameDevelopmentPage: PageMeta = {
+  path: "/game-development",
+  title: "Game Development: Roblox Story Shorts & Game Demos | Denver NoCode",
+  description:
+    "Game development by Denver NoCode: Roblox story Shorts made in-house and for clients, plus twenty Roblox concept demos across five game types, all shown in motion.",
+  image: abs(shortPoster(allShorts[0])),
+  summary: "Game development: Roblox story Shorts, client work and twenty Roblox concept demos, each shown as video.",
+  jsonLd: [
+    breadcrumbs([["Home", "/"], ["Services", "/services"], ["Game development", "/game-development"]]),
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Game development videos",
+      itemListElement: [...gameFilm, ...allShorts.map(shortVideo)].map((v, i) => ({ "@type": "ListItem", position: i + 1, item: v })),
+    },
+  ],
+};
+
 const teamPage: PageMeta = {
   path: "/team",
   title: "The D. Team | Denver NoCode",
@@ -354,5 +400,6 @@ export const PAGES: PageMeta[] = [
   teamPage,
   ...profilePages,
   filmsPage,
+  gameDevelopmentPage,
   notFound,
 ];

@@ -72,6 +72,11 @@ export function Footer() {
               </a>
             </li>
             <li>
+              <a href="/game-development" className={linkCls}>
+                Game development
+              </a>
+            </li>
+            <li>
               <a href="/work" className="text-sm font-semibold text-white transition-colors hover:text-[#FFCB41]">
                 All work
               </a>

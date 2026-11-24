@@ -7,7 +7,7 @@ import { useMotionOff } from "@/lib/motion-pref";
 import { routes } from "@/routes";
 
 const { home: Home, services: ServicesIndex, service: ServicePage, industries: IndustriesIndex, industry: IndustryPage } = routes;
-const { team: TeamPage, teamProfile: TeamProfilePage, films: FilmsPage, work: WorkIndex, workPage: WorkPage, notFound: NotFound } = routes;
+const { team: TeamPage, teamProfile: TeamProfilePage, films: FilmsPage, gameDevelopment: GameDevelopmentPage, work: WorkIndex, workPage: WorkPage, notFound: NotFound } = routes;
 
 // Keep routeKeyFor() in routes.tsx in step with this list.
 function Router() {
@@ -21,6 +21,7 @@ function Router() {
       <Route path="/team" component={TeamPage} />
       <Route path="/team/:slug">{(p) => <TeamProfilePage slug={p.slug} />}</Route>
       <Route path="/films" component={FilmsPage} />
+      <Route path="/game-development" component={GameDevelopmentPage} />
       <Route path="/work" component={WorkIndex} />
       <Route path="/work/:slug">{(p) => <WorkPage slug={p.slug} />}</Route>
       <Route component={NotFound} />
