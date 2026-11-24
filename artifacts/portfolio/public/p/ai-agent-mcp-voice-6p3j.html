@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>AI agent support · Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#E8E5DE;--ink:#0A0A0A;--ink-soft:#4A4A4A;--muted:#7B7770;--blue:#1B1BFF;--coral:#E85445;--green:#4A9F5F;--card:#F1EEE7;--yellow:#F5C842;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  .serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;}
+  .blue{color:var(--blue);} .coral{color:var(--coral);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:28px 0;gap:20px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:16px;}
+  .mark{font-weight:900;font-size:26px;letter-spacing:-.03em;}
+  .brand-dot{color:var(--blue);}
+  .status{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(10,10,10,.18);border-radius:100px;padding:7px 15px;font-size:12.5px;color:var(--ink-soft);}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
+  .pill{display:inline-block;background:var(--ink);color:var(--cream);border-radius:100px;padding:13px 28px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;}
+  .pill.blue-fill{background:var(--blue);color:#fff;}
+  .pill.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);}
+  .pill.client{display:inline-flex;align-items:center;gap:10px;}
+  .pill.client i{width:8px;height:8px;border-radius:50%;background:var(--yellow);display:inline-block;}
+  .hero{padding:70px 0 60px;position:relative;}
+  .label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:26px;display:block;}
+  h1{font-weight:900;letter-spacing:-.045em;line-height:.93;font-size:clamp(46px,7.6vw,98px);}
+  h1 .serif{font-weight:400;letter-spacing:-.02em;}
+  .subhead{max-width:680px;margin-top:34px;font-size:18.5px;color:var(--ink-soft);}
+  .subhead strong{color:var(--ink);font-weight:600;}
+  .cta{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;}
+  .flourish{position:absolute;border-radius:50%;pointer-events:none;}
+  .f1{width:13px;height:13px;background:var(--yellow);top:120px;right:8%;}
+  .f2{width:9px;height:9px;background:var(--blue);top:250px;right:16%;}
+  .f3{width:11px;height:11px;background:var(--coral);bottom:80px;right:5%;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding:56px 0;border-top:1px solid rgba(10,10,10,.14);}
+  .stat .n{font-size:clamp(38px,5vw,58px);font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.4;}
+  .divider{overflow:hidden;padding:26px 0;white-space:nowrap;}
+  .divider span{font-weight:900;font-size:clamp(52px,11vw,150px);letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1.5px rgba(10,10,10,.28);}
+  section{padding:76px 0;}
+  h2{font-weight:900;letter-spacing:-.04em;line-height:1;font-size:clamp(36px,5.6vw,66px);max-width:16ch;}
+  h2 .serif{font-weight:400;}
+  .lede{max-width:680px;margin-top:26px;font-size:18px;color:var(--ink-soft);}
+  .lede strong{color:var(--ink);font-weight:600;}
+  p + p{margin-top:16px;}
+  .quote{margin-top:40px;max-width:880px;border-left:3px solid var(--coral);padding:6px 0 6px 26px;}
+  .quote p{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(24px,3vw,34px);line-height:1.25;color:var(--ink);}
+  .quote span{display:block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .pains{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:46px;}
+  .find{background:var(--card);border-radius:22px;padding:34px;}
+  .find .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);margin-bottom:14px;}
+  .find h3{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2;}
+  .find p{font-size:15.5px;color:var(--ink-soft);}
+  .pains .find .cost{margin-top:16px;padding-top:14px;border-top:1px solid rgba(10,10,10,.1);font-size:14.5px;color:var(--ink);}
+  .pains .find .cost b{color:var(--coral);font-weight:700;}
+  .fix{margin-top:46px;border-top:2px solid var(--ink);max-width:1000px;}
+  .frow{display:grid;grid-template-columns:1fr 36px 1.25fr;gap:22px;padding:22px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .frow.h{padding:12px 0;}
+  .frow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .frow .p{font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink);}
+  .frow .p small{display:block;font-weight:400;font-size:13.5px;color:var(--coral);margin-top:4px;}
+  .frow .ar{font-family:'JetBrains Mono',monospace;color:var(--blue);font-size:18px;text-align:center;}
+  .frow .s{font-size:15.5px;color:var(--ink-soft);}
+  .frow .s b{color:var(--ink);font-weight:700;}
+
+  /* END RESULT MOCKUPS */
+  .mockcap{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  .samples{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;margin-top:50px;align-items:start;}
+  .samples .full{grid-column:1 / -1;}
+  /* Slack status message */
+  .sl{background:#fff;border-radius:18px;border:1px solid rgba(10,10,10,.1);overflow:hidden;font-size:13.5px;}
+  .sl .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid #ECEAE5;background:#FAF9F6;}
+  .sl .ch{font-weight:800;font-size:14px;}
+  .sl .ch span{color:var(--muted);font-weight:400;margin-right:2px;}
+  .sl .mem{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);}
+  .sl .msg{display:grid;grid-template-columns:38px 1fr;gap:12px;padding:16px 18px 18px;}
+  .sl .av{width:38px;height:38px;border-radius:9px;background:var(--ink);color:var(--cream);font-weight:900;font-size:17px;display:flex;align-items:center;justify-content:center;letter-spacing:-.03em;}
+  .sl .av span{color:var(--yellow);}
+  .sl .who{font-weight:800;font-size:14px;}
+  .sl .app{font-family:'JetBrains Mono',monospace;font-size:9.5px;background:#ECEAE5;color:var(--ink-soft);padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:2px;}
+  .sl .tm{font-size:11.5px;color:var(--muted);margin-left:6px;}
+  .sl .ttl{margin-top:4px;font-weight:700;}
+  .sl .prog{margin:10px 0 6px;height:8px;border-radius:9px;background:#ECEAE5;overflow:hidden;}
+  .sl .prog i{display:block;height:100%;width:86%;background:var(--green);border-radius:9px;}
+  .sl .pc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+  .sl .blk{margin-top:12px;border-left:3px solid #DAD7D0;padding:2px 0 2px 12px;}
+  .sl .ln{display:flex;gap:8px;align-items:baseline;padding:3px 0;line-height:1.4;}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:999px;white-space:nowrap;flex:none;}
+  .chip.ok{background:#E3F2E7;color:#2C7540;}
+  .chip.miss{background:#FBE5E2;color:#B8382B;}
+  .chip.flag{background:#FCF1CF;color:#8A6A07;}
+  .chip.tr{background:#E6E6FF;color:var(--blue);}
+  .sl .ment{background:#E6E6FF;color:var(--blue);border-radius:4px;padding:0 3px;font-weight:600;}
+  .sl .acts{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .sl .acts span{border:1px solid #DAD7D0;border-radius:7px;padding:5px 11px;font-size:12px;font-weight:600;}
+  .sl .acts span.pr{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+  /* WorkDrive tree */
+  .wd{background:#fff;border-radius:18px;border:1px solid rgba(10,10,10,.1);overflow:hidden;}
+  .wd .bar{padding:12px 18px;border-bottom:1px solid #ECEAE5;background:#FAF9F6;display:flex;justify-content:space-between;gap:10px;align-items:center;}
+  .wd .bar b{font-size:14px;font-weight:800;}
+  .wd .crumb{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);}
+  .wd .tree{padding:14px 18px 18px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.5;}
+  .wd .r{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px dashed #EEECE7;}
+  .wd .r:last-child{border-bottom:0;}
+  .wd .r.l1{padding-left:18px;} .wd .r.l2{padding-left:38px;}
+  .wd .fd{width:15px;height:11px;background:var(--yellow);border-radius:2px;position:relative;flex:none;}
+  .wd .fd:before{content:"";position:absolute;left:0;top:-3px;width:7px;height:4px;background:var(--yellow);border-radius:2px 2px 0 0;}
+  .wd .fl{width:10px;height:13px;border:1.5px solid var(--ink-soft);border-radius:2px;flex:none;}
+  .wd .nm{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .wd .r.folder .nm{font-weight:700;color:var(--ink);font-family:'Inter',sans-serif;font-size:13px;}
+  .wd .tg{font-size:9.5px;padding:1px 6px;border-radius:999px;white-space:nowrap;flex:none;}
+  .wd .tg.new{background:#E3F2E7;color:#2C7540;}
+  .wd .tg.en{background:#E6E6FF;color:var(--blue);}
+  .wd .tg.fr{background:#ECEAE5;color:var(--ink-soft);}
+  .wd .tg.fl2{background:#FCF1CF;color:#8A6A07;}
+  /* Review queue card */
+  .rq{background:#fff;border-radius:18px;border:1px solid rgba(10,10,10,.1);border-left:5px solid var(--coral);display:grid;grid-template-columns:230px 1fr;gap:26px;padding:22px 24px;}
+  .rq .doc{background:#FAF9F6;border:1px solid #ECEAE5;border-radius:10px;padding:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-soft);position:relative;}
+  .rq .doc b{display:block;font-family:'Inter',sans-serif;font-size:12px;color:var(--ink);margin-bottom:8px;}
+  .rq .doc .dl{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #EEECE7;}
+  .rq .doc .dl.hot{background:rgba(232,84,69,.12);outline:1.5px dashed var(--coral);outline-offset:1px;border-radius:3px;padding:3px 4px;margin:2px -4px;}
+  .rq .doc .bars{margin-top:10px;display:grid;gap:5px;}
+  .rq .doc .bars i{display:block;height:5px;border-radius:3px;background:#E6E3DC;}
+  .rq .hd{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap;}
+  .rq .q{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);}
+  .rq h4{font-size:18px;font-weight:800;letter-spacing:-.02em;margin-top:4px;line-height:1.25;}
+  .rq .meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:4px;}
+  .rq .sig{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;}
+  .rq .sig div{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);line-height:1.4;}
+  .rq .sig div b{color:var(--ink);font-weight:700;}
+  .rq .sev{width:9px;height:9px;border-radius:50%;margin-top:5px;flex:none;}
+  .rq .sev.h{background:var(--coral);} .rq .sev.m{background:var(--yellow);} .rq .sev.l{background:#C9C5BC;}
+  .rq .rule{margin-top:14px;font-size:13px;color:var(--ink);background:var(--card);border-radius:9px;padding:9px 12px;}
+  .rq .btns{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .rq .btns span{border:1px solid #DAD7D0;border-radius:8px;padding:6px 12px;font-size:12.5px;font-weight:600;}
+  .rq .btns span.pr{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+
+  .roi{margin-top:48px;border-top:2px solid var(--ink);}
+  .rrow{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:24px;padding:24px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .rrow.h{padding:12px 0;}
+  .rrow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .rrow .m{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+  .rrow .m small{display:block;font-weight:400;font-size:13.5px;color:var(--muted);margin-top:3px;letter-spacing:0;}
+  .rv{font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .rv.was{font-size:clamp(22px,2.8vw,30px);color:var(--muted);}
+  .rv.now{font-size:clamp(26px,3.4vw,40px);color:var(--blue);}
+  .rv span{display:block;font-size:12px;font-weight:500;letter-spacing:0;color:var(--muted);margin-top:7px;font-family:'JetBrains Mono',monospace;}
+  .roinote{margin-top:32px;background:var(--ink);color:var(--cream);border-radius:24px;padding:36px 38px;max-width:900px;}
+  .roinote .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:14px;}
+  .roinote p{font-size:17px;color:rgba(232,229,222,.82);}
+  .roinote b{color:var(--cream);font-weight:700;}
+  .get{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px;}
+  .get>div{background:var(--card);border-radius:20px;padding:28px;}
+  .get .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .get b{display:block;font-size:17.5px;font-weight:800;letter-spacing:-.02em;margin-bottom:9px;}
+  .get p{font-size:14.5px;color:var(--ink-soft);}
+  .lede + .sys{margin-top:40px;}
+  .sys{display:grid;grid-template-columns:88px 1fr;gap:28px;padding:38px 0;border-top:1px solid rgba(10,10,10,.14);align-items:start;}
+  .sys .num{font-weight:900;font-size:52px;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.4px var(--ink);line-height:.9;}
+  .sys h3{font-size:27px;font-weight:800;letter-spacing:-.03em;margin-bottom:14px;}
+  .sys p{font-size:16.5px;color:var(--ink-soft);max-width:720px;}
+  .sys ul{margin-top:18px;list-style:none;max-width:720px;}
+  .sys li{position:relative;padding-left:24px;font-size:15.5px;color:var(--ink-soft);margin-bottom:9px;}
+  .sys li:before{content:"";position:absolute;left:0;top:11px;width:9px;height:1.5px;background:var(--blue);}
+  .sys li b{color:var(--ink);font-weight:600;}
+  .yes{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:46px;}
+  .yes>div{background:var(--card);border-radius:22px;padding:30px 32px;}
+  .yes .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .yes b{display:block;font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px;line-height:1.2;}
+  .yes p{font-size:15px;color:var(--ink-soft);}
+  .yes .wide{grid-column:1 / -1;background:var(--ink);color:var(--cream);}
+  .yes .wide .k{color:var(--yellow);}
+  .yes .wide p{color:rgba(232,229,222,.82);}
+  .yes .wide b{color:var(--cream);}
+  /* PIPEDA table */
+  .pip{margin-top:40px;border-top:2px solid var(--ink);}
+  .prow{display:grid;grid-template-columns:240px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:start;}
+  .prow.h{padding:12px 0;}
+  .prow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .prow .p{font-weight:800;font-size:16.5px;letter-spacing:-.01em;}
+  .prow .s{font-size:15.5px;color:var(--ink-soft);}
+  /* Proof */
+  .proof{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:46px;}
+  .pf{background:var(--card);border-radius:22px;padding:32px 34px;}
+  .pf.main{grid-column:1 / -1;background:#fff;border:1px solid rgba(10,10,10,.1);}
+  .pf .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .pf h3{font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;}
+  .pf p{font-size:15.5px;color:var(--ink-soft);}
+  .pf .cols{display:grid;grid-template-columns:1fr 1fr;gap:10px 34px;margin-top:20px;list-style:none;}
+  .pf .cols li{position:relative;padding-left:22px;font-size:15px;color:var(--ink-soft);line-height:1.45;}
+  .pf .cols li:before{content:"";position:absolute;left:0;top:10px;width:9px;height:1.5px;background:var(--blue);}
+  .pf .why{margin-top:22px;padding-top:16px;border-top:1px solid rgba(10,10,10,.1);font-size:15px;color:var(--ink);}
+  .pf .why b{color:var(--blue);}
+  /* Estimate tables */
+  .est{margin-top:46px;border-top:2px solid var(--ink);}
+  .erow{display:grid;grid-template-columns:44px 1fr 90px 120px;gap:20px;padding:16px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .erow.h{padding:12px 0;}
+  .erow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .erow .i{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue);}
+  .erow .p{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+  .erow .p small{display:block;font-weight:400;font-size:13.5px;color:var(--muted);margin-top:3px;letter-spacing:0;}
+  .erow .hr{font-weight:900;font-size:22px;letter-spacing:-.03em;text-align:right;}
+  .erow .usd{font-weight:600;font-size:15px;color:var(--ink-soft);text-align:right;font-family:'JetBrains Mono',monospace;}
+  .erow.tot{border-bottom:2px solid var(--ink);padding:22px 0;}
+  .erow.tot .p{font-size:19px;font-weight:900;}
+  .erow.tot .hr{font-size:34px;color:var(--blue);}
+  .erow.tot .usd{font-size:17px;color:var(--ink);font-weight:700;}
+  .erow .hr.r,.erow.h .r{text-align:right;}
+  .mod{margin-top:30px;border-top:2px solid var(--ink);}
+  .mrow{display:grid;grid-template-columns:1.05fr 1fr 1.45fr;gap:22px;padding:18px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:start;}
+  .mrow.h{padding:12px 0;}
+  .mrow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .mrow .p{font-weight:700;font-size:15.5px;letter-spacing:-.01em;}
+  .mrow .md{font-weight:800;font-size:15.5px;color:var(--blue);}
+  .mrow .md small{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:2px;}
+  .mrow .s{font-size:15px;color:var(--ink-soft);}
+  .sub{margin-top:64px;}
+  .sub h3{font-size:clamp(26px,3.2vw,36px);font-weight:900;letter-spacing:-.03em;line-height:1.05;}
+  .sub h3 .serif{font-weight:400;}
+  .sub .lede{margin-top:14px;font-size:16.5px;}
+  .note{margin-top:28px;font-size:15px;color:var(--muted);max-width:820px;}
+  .note b{color:var(--ink);font-weight:600;}
+  .report{margin-top:30px;background:var(--ink);color:var(--cream);border-radius:24px;padding:34px 38px;display:grid;grid-template-columns:1fr 1.3fr;gap:34px;align-items:start;}
+  .report .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:12px;}
+  .report h4{font-size:24px;font-weight:900;letter-spacing:-.03em;line-height:1.15;}
+  .report ul{list-style:none;}
+  .report li{position:relative;padding-left:22px;font-size:15px;color:rgba(232,229,222,.84);margin-bottom:9px;line-height:1.5;}
+  .report li:before{content:"";position:absolute;left:0;top:10px;width:9px;height:1.5px;background:var(--yellow);}
+  .report li b{color:var(--cream);}
+  /* Roadmap */
+  .road{margin-top:40px;border-top:2px solid var(--ink);}
+  .wrow{display:grid;grid-template-columns:54px 1.05fr 1.5fr;gap:22px;padding:18px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:start;}
+  .wrow .n{font-weight:900;font-size:26px;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.2px var(--ink);line-height:1;}
+  .wrow .p{font-weight:800;font-size:16.5px;letter-spacing:-.01em;line-height:1.3;}
+  .wrow .p small{display:block;font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-top:6px;}
+  .wrow .s{font-size:15px;color:var(--ink-soft);}
+  .close{background:var(--ink);color:var(--cream);border-radius:32px;padding:clamp(44px,7vw,84px);margin:30px 0 90px;}
+  .close h2{max-width:18ch;color:var(--cream);}
+  .close p{max-width:660px;margin-top:26px;font-size:18px;color:rgba(232,229,222,.72);}
+  .close p b{color:var(--cream);}
+  .valid{margin-top:34px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  @media(max-width:980px){
+    .samples{grid-template-columns:1fr;}
+    .rq{grid-template-columns:1fr;}
+    .rq .doc{max-width:320px;}
+  }
+  @media(max-width:900px){
+    .stats{grid-template-columns:repeat(2,1fr);gap:26px;}
+    .pains,.get,.yes,.proof,.report{grid-template-columns:1fr;}
+    .yes .wide,.pf.main{grid-column:auto;}
+    .pf .cols{grid-template-columns:1fr;}
+    .sys{grid-template-columns:1fr;gap:12px;}
+    .frow{grid-template-columns:1fr;gap:8px;}
+    .frow .ar,.frow.h,.rrow.h,.prow.h,.mrow.h{display:none;}
+    .rrow{grid-template-columns:1fr 1fr;gap:16px;}
+    .rrow .m{grid-column:1 / -1;}
+    .prow{grid-template-columns:1fr;gap:6px;}
+    .mrow{grid-template-columns:1fr;gap:6px;}
+    .wrow{grid-template-columns:44px 1fr;gap:6px 16px;}
+    .wrow .s{grid-column:2;}
+    .rq .sig{grid-template-columns:1fr;}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 16px;}
+    .find,.get>div,.yes>div,.pf{padding:26px;}
+    .roinote,.report{padding:28px;}
+    .erow{grid-template-columns:28px 1fr 60px;gap:12px;}
+    .erow .usd{display:none;}
+    .erow.h .usd-h{display:none;}
+    .rq{padding:18px;}
+  }
+  @media print{
+    @page{size:A3;margin:14mm;}
+    body{background:#fff;font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .pains,.yes,.proof{grid-template-columns:repeat(2,1fr)!important;}
+    .get{grid-template-columns:repeat(3,1fr)!important;}
+    .samples{grid-template-columns:1.1fr 1fr!important;}
+    .rq{grid-template-columns:230px 1fr!important;}
+    .frow{grid-template-columns:1fr 36px 1.25fr!important;}
+    .frow.h,.rrow.h,.prow.h,.mrow.h{display:grid!important;}
+    .rrow{grid-template-columns:1.35fr 1fr 1fr!important;}
+    .report{grid-template-columns:1fr 1.3fr!important;}
+    section{padding:34px 0;}
+    .find,.roinote,.sl,.wd,.rq,.get>div,.yes>div,.pf,.sys,.frow,.rrow,.prow,.erow,.mrow,.wrow,.report,.close,.quote{break-inside:avoid;}
+    h2,.sub h3,.label{break-after:avoid;}
+    .divider,.flourish{display:none;}
+    .pill,.btn{display:none!important;}
+  }
+
+  /* PROPOSAL-SPECIFIC MOCKUPS */
+  .samples>div{min-width:0;}
+  .pn{background:#fff;border-radius:18px;border:1px solid rgba(10,10,10,.1);overflow:hidden;font-size:13.5px;}
+  .pn .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px;border-bottom:1px solid #ECEAE5;background:#FAF9F6;flex-wrap:wrap;}
+  .pn .bar b{font-size:14px;font-weight:800;}
+  .pn .crumb{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);}
+  .pn .live{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#2C7540;}
+  .pn .live i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
+  .pn .bd{padding:16px 18px 18px;}
+  .chip.ho{background:var(--coral);color:#fff;}
+  .chip.rd{background:#E3F2E7;color:#2C7540;}
+  .chip.wr{background:#FCF1CF;color:#8A6A07;}
+  .chip.off{background:#ECEAE5;color:var(--muted);}
+  /* Health panel */
+  .kp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .kp div{background:#FAF9F6;border:1px solid #ECEAE5;border-radius:11px;padding:10px 12px;min-width:0;}
+  .kp b{display:block;font-size:22px;font-weight:900;letter-spacing:-.03em;line-height:1.1;}
+  .kp span{display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+  .spark{display:flex;align-items:flex-end;gap:4px;height:46px;margin:14px 0 4px;padding:0 2px;border-bottom:1px solid #ECEAE5;}
+  .spark i{flex:1;background:#D9D9FF;border-radius:3px 3px 0 0;display:block;}
+  .spark i.hot{background:var(--coral);}
+  .sparkl{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--muted);}
+  .ev{margin-top:12px;}
+  .ev .ln{display:grid;grid-template-columns:44px auto 1fr;gap:8px;align-items:baseline;padding:6px 0;border-bottom:1px dashed #EEECE7;line-height:1.4;}
+  .ev .ln:last-child{border-bottom:0;}
+  .ev .t{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);}
+  .ev .ln.hand{background:rgba(232,84,69,.07);border:1.5px dashed var(--coral);border-radius:10px;padding:9px 10px;margin:6px 0;}
+  .ev .ln.hand small{display:block;color:var(--ink-soft);font-size:12px;margin-top:3px;}
+  /* MCP tool list */
+  .tl .r{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 0;border-bottom:1px solid #F0EEE9;align-items:center;}
+  .tl .r:last-child{border-bottom:0;}
+  .tl .fn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--ink);overflow-wrap:anywhere;}
+  .tl .ds{grid-column:1 / -1;font-size:12.5px;color:var(--ink-soft);}
+  .tl .r.off .fn{color:var(--muted);text-decoration:line-through;}
+  .aud{margin-top:12px;background:var(--ink);color:var(--cream);border-radius:10px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.6;overflow-wrap:anywhere;}
+  .aud span{color:var(--yellow);}
+  /* RAG answer */
+  .qb{background:#ECEAE5;border-radius:14px 14px 14px 4px;padding:10px 14px;font-weight:600;display:inline-block;max-width:92%;}
+  .ab{margin-top:12px;border:1px solid #ECEAE5;border-radius:14px 14px 4px 14px;padding:14px 16px;line-height:1.55;}
+  .ab sup{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--blue);font-weight:700;margin-left:1px;}
+  .src{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+  .src span{display:inline-flex;align-items:center;gap:6px;border:1px solid #DAD7D0;border-radius:999px;padding:4px 10px;font-size:11.5px;font-weight:600;background:#FAF9F6;max-width:100%;}
+  .src span em{font-style:normal;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#fff;background:var(--blue);border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex:none;}
+  .src span small{font-weight:400;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;}
+  .rule2{margin-top:12px;font-size:12.5px;color:var(--ink);background:var(--card);border-radius:9px;padding:9px 12px;}
+  /* Roles matrix */
+  .mx-wrap{overflow-x:auto;}
+  .mx{display:grid;grid-template-columns:1.5fr repeat(4,1fr);min-width:430px;font-size:12.5px;}
+  .mx div{padding:9px 6px;border-bottom:1px solid #F0EEE9;display:flex;align-items:center;}
+  .mx .hd{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1.5px solid var(--ink);}
+  .mx .rn{font-weight:700;color:var(--ink);}
+  .pol{margin-top:12px;background:#FAF9F6;border:1px solid #ECEAE5;border-radius:10px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-soft);line-height:1.6;overflow-wrap:anywhere;}
+  .pol b{color:var(--blue);font-weight:700;}
+  /* Tiers (from the house template) */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:50px;align-items:start;}
+  .tier{background:var(--card);border-radius:26px;padding:38px 32px;display:flex;flex-direction:column;height:100%;}
+  .tier.feat{background:var(--ink);color:var(--cream);transform:translateY(-16px);}
+  .tier .tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+  .tier.feat .tag{color:var(--yellow);}
+  .tier h3{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px;}
+  .tier .who{font-size:14.5px;color:var(--muted);margin-bottom:26px;min-height:44px;}
+  .tier .amt{font-size:clamp(40px,5.4vw,56px);font-weight:900;letter-spacing:-.05em;line-height:1;}
+  .tier .amt small{font-size:.4em;letter-spacing:-.02em;font-weight:700;}
+  .tier .cur{font-size:13px;color:var(--muted);margin-top:9px;margin-bottom:28px;font-family:'JetBrains Mono',monospace;}
+  .tier ul{list-style:none;flex:1;}
+  .tier li{position:relative;padding-left:23px;font-size:14.5px;margin-bottom:11px;color:var(--ink-soft);line-height:1.45;}
+  .tier.feat li{color:rgba(232,229,222,.86);}
+  .tier li:before{content:"";position:absolute;left:0;top:8px;width:9px;height:1.5px;background:var(--blue);}
+  .tier.feat li:before{background:var(--yellow);}
+  .tier li.no{color:var(--muted);text-decoration:line-through;}
+  .tier li.no:before{background:var(--coral);}
+  .tier .btn{margin-top:30px;display:block;text-align:center;border-radius:100px;padding:14px;font-size:14.5px;font-weight:600;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);}
+  .tier.feat .btn{background:var(--yellow);border-color:var(--yellow);color:var(--ink);}
+  .ms{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:44px;}
+  .ms>div{border-top:2px solid var(--ink);padding-top:18px;}
+  .ms .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.13em;color:var(--blue);margin-bottom:10px;}
+  .ms b{display:block;font-size:16.5px;font-weight:700;margin-bottom:7px;letter-spacing:-.01em;}
+  .ms p{font-size:14.5px;color:var(--ink-soft);}
+  @media(max-width:900px){
+    .tiers{grid-template-columns:1fr;}
+    .tier.feat{transform:none;}
+    .ms{grid-template-columns:repeat(2,1fr);}
+  }
+  @media(max-width:600px){
+    .tier{padding:28px 24px;}
+    .ms{grid-template-columns:1fr;}
+    .kp b{font-size:18px;}
+    .pn .bd{padding:14px;}
+    .ev .ln{grid-template-columns:40px 1fr;}
+    .ev .ln > span:last-child{grid-column:1 / -1;}
+    .mx{min-width:0;grid-template-columns:1.25fr repeat(4,1fr);}
+    .mx div{padding:8px 3px;}
+    .mx .hd{font-size:8.5px;letter-spacing:.02em;}
+    .mx .chip{font-size:8.5px;padding:2px 5px;}
+    .mx .rn{font-size:11.5px;}
+  }
+  @media print{
+    .tiers{grid-template-columns:repeat(3,1fr)!important;}
+    .tier.feat{transform:none;}
+    .ms{grid-template-columns:repeat(4,1fr)!important;}
+    .tier,.pn,.ms>div{break-inside:avoid;}
+  }
+</style></head><body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">D<span class="brand-dot">.</span></div>
+      <div class="status"><span class="dot"></span> Available to start this week</div>
+    </div>
+    <a class="pill client" href="#invest"><i></i>See the options</a>
+  </div>
+  <div class="hero">
+    <span class="flourish f1"></span><span class="flourish f2"></span><span class="flourish f3"></span>
+    <span class="label">01 · Proposal for your team · AI agent support, MCP, RAG and voice</span>
+    <h1>Your agent is live.<br>Make it <span class="serif blue">steady</span> first,<br>then let it <span class="serif coral">grow every month</span>.</h1>
+    <p class="subhead">You need someone to <strong>look after an AI agent that is already in production</strong> and keep building on it. The order matters: <strong>stability first</strong> (fixes, monitoring and a handoff to a person when the agent is not sure), then an <strong>MCP server for your CRM</strong>, a <strong>RAG assistant that shows its sources</strong>, <strong>roles and data access</strong> on your Next.js and Supabase dashboard, and a <strong>voice assistant</strong> for calls and bookings.</p>
+    <div class="cta">
+      <a class="pill blue-fill" href="#result">See the end result</a>
+      <a class="pill ghost" href="#build">How the work runs</a>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">Day 1</div><div class="l">the stability audit starts the day you pick an option</div></div>
+    <div class="stat"><div class="n">4</div><div class="l">builds on the roadmap after stability: MCP, RAG, roles, voice</div></div>
+    <div class="stat"><div class="n">Weekly</div><div class="l">written update: what shipped, what is next, what worries me</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">changes shipped to production without a test first</div></div>
+  </div>
+  <div class="divider"><span>FIX · MONITOR · HAND OVER · BUILD</span></div>
+
+  <section id="problem">
+    <span class="label">02 · Your problem</span>
+    <h2>The agent works, but <span class="serif coral">not reliably enough</span> to build on.</h2>
+    <div class="quote">
+      <p>"First, the agent needs to be more stable. That means fixing issues, better monitoring and handing the conversation to a person when it isn't sure."</p>
+      <span>Your job post, Upwork, November 2026</span>
+    </div>
+    <div class="pains">
+      <div class="find">
+        <div class="k">Pain 01</div>
+        <h3>Issues in a live agent</h3>
+        <p>The agent is already talking to your customers, so every open issue happens in front of them, not in a test environment.</p>
+        <div class="cost">Cost today: <b>customer conversations that go wrong</b> while the issue is still open.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 02</div>
+        <h3>Not enough monitoring</h3>
+        <p>Without clear monitoring, a failed API call, a slow response or a bad answer is easy to miss until someone notices it by chance.</p>
+        <div class="cost">Cost today: <b>problems found late</b>, often by a customer before your team.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 03</div>
+        <h3>No handoff when it is not sure</h3>
+        <p>When the agent is unsure, it should pass the conversation to a person. Without that, it either guesses or leaves the customer stuck.</p>
+        <div class="cost">Cost today: <b>wrong answers and lost bookings</b> that a person would have handled.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 04</div>
+        <h3>The roadmap waits on a fragile base</h3>
+        <p>MCP for the CRM, RAG over your documents, voice for calls and roles on the dashboard all sit on top of the agent and your data. Building them on a shaky base multiplies the problems.</p>
+        <div class="cost">Cost today: <b>new features on hold</b>, or built on something that is not yet safe to extend.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fix">
+    <span class="label">03 · The fix</span>
+    <h2>One pain, <span class="serif blue">one answer</span>, no extras.</h2>
+    <div class="fix">
+      <div class="frow h"><div>What hurts</div><div></div><div>What removes it</div></div>
+      <div class="frow"><div class="p">Issues in a live agent<small>Pain 01</small></div><div class="ar">→</div><div class="s"><b>Stability audit, then fixes in priority order.</b> I read the code, logs and recent conversations, list every issue by impact, and fix the worst first. Each fix gets a test that reproduces the issue before it ships.</div></div>
+      <div class="frow"><div class="p">Not enough monitoring<small>Pain 02</small></div><div class="ar">→</div><div class="s"><b>Monitoring and alerts.</b> Errors, latency, tool-call failures and handoffs logged per conversation, with an alert to your team when something crosses a threshold.</div></div>
+      <div class="frow"><div class="p">No handoff when it is not sure<small>Pain 03</small></div><div class="ar">→</div><div class="s"><b>Human handoff on low confidence.</b> A confidence check on every answer. Below the line, the conversation and a short summary go to a person, and the customer is told someone will reply.</div></div>
+      <div class="frow"><div class="p">The roadmap waits on a fragile base<small>Pain 04</small></div><div class="ar">→</div><div class="s"><b>A roadmap in a safe order.</b> MCP server with read-scoped tools and confirmed writes, then RAG with sources, then Supabase roles and RLS, then voice. Each one built on the stable, monitored agent.</div></div>
+    </div>
+  </section>
+
+  <div class="divider"><span>CLAUDE · SUPABASE · NEXT.JS</span></div>
+
+  <section id="result">
+    <span class="label">04 · The end result</span>
+    <h2>What your team sees <span class="serif blue">once it runs</span>.</h2>
+    <p class="lede">These four screens are built for this proposal with <strong>sample data</strong>. Your real tools, documents, roles and thresholds replace them once I have access.</p>
+    <div class="samples">
+      <div>
+        <div class="mockcap">Agent health · last 24 hours</div>
+        <div class="pn">
+          <div class="bar"><b>Agent monitor</b><span class="live"><i></i>LIVE · SAMPLE DATA</span></div>
+          <div class="bd">
+            <div class="kp">
+              <div><b>412</b><span>Conversations</span></div>
+              <div><b>0.4%</b><span>Error rate</span></div>
+              <div><b>9</b><span>Handed over</span></div>
+            </div>
+            <div class="spark"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:62%"></i><i style="height:70%"></i><i style="height:66%"></i><i class="hot" style="height:90%"></i><i style="height:58%"></i><i style="height:52%"></i><i style="height:60%"></i><i style="height:45%"></i><i style="height:38%"></i></div>
+            <div class="sparkl"><span>00:00</span><span>Response time</span><span>now</span></div>
+            <div class="ev">
+              <div class="ln"><span class="t">14:02</span><span class="chip ok">OK</span><span>Booking created and confirmed to the customer</span></div>
+              <div class="ln hand"><span class="t">14:05</span><span class="chip ho">HANDED TO A PERSON</span><span><b>Confidence 0.42, below the 0.70 line.</b><small>Conversation and summary sent to the support queue. Customer told a person will reply.</small></span></div>
+              <div class="ln"><span class="t">14:11</span><span class="chip flag">RETRY</span><span>CRM call timed out, retried once, succeeded</span></div>
+              <div class="ln"><span class="t">14:18</span><span class="chip miss">ALERT</span><span>Slow responses for 5 minutes, team notified</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="mockcap">MCP server · CRM tools Claude can use</div>
+        <div class="pn">
+          <div class="bar"><b>crm-mcp</b><span class="crumb">6 tools · scoped</span></div>
+          <div class="bd tl">
+            <div class="r"><span class="fn">search_contacts</span><span class="chip rd">READ</span><span class="ds">Find contacts by name, phone or tag</span></div>
+            <div class="r"><span class="fn">get_contact_history</span><span class="chip rd">READ</span><span class="ds">Notes, bookings and past conversations</span></div>
+            <div class="r"><span class="fn">list_open_bookings</span><span class="chip rd">READ</span><span class="ds">Upcoming bookings for a date range</span></div>
+            <div class="r"><span class="fn">add_note</span><span class="chip wr">WRITE · CONFIRM</span><span class="ds">Shows the note first, writes only after a person confirms</span></div>
+            <div class="r"><span class="fn">update_contact</span><span class="chip wr">WRITE · CONFIRM</span><span class="ds">Shows the before and after, then asks to confirm</span></div>
+            <div class="r off"><span class="fn">delete_contact</span><span class="chip off">NOT EXPOSED</span><span class="ds">Deletes never go through Claude</span></div>
+            <div class="aud"><span>audit</span> 14:22 · user: ops-team · tool: add_note · contact: #c-1042 · confirmed: yes</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="mockcap">RAG assistant · an answer with its sources</div>
+        <div class="pn">
+          <div class="bar"><b>Ask your documents</b><span class="crumb">answers only from your files</span></div>
+          <div class="bd">
+            <div class="qb">Can a customer move a booking less than 24 hours before it starts?</div>
+            <div class="ab">Yes, once per booking, if a slot is free that week.<sup>1</sup> A second change within 24 hours is treated as a cancellation and the cancellation terms apply.<sup>2</sup> Staff can override this for medical reasons.<sup>3</sup></div>
+            <div class="src">
+              <span><em>1</em>Booking policy.pdf <small>p.2</small></span>
+              <span><em>2</em>Terms of service.pdf <small>§4.1</small></span>
+              <span><em>3</em>Staff handbook.docx <small>p.11</small></span>
+            </div>
+            <div class="rule2">No matching source means no answer: the assistant says it could not find it and offers to pass the question to a person.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="mockcap">Supabase · who can see and change what</div>
+        <div class="pn">
+          <div class="bar"><b>Roles and data access</b><span class="crumb">enforced by RLS</span></div>
+          <div class="bd">
+            <div class="mx-wrap"><div class="mx">
+              <div class="hd">Data</div><div class="hd">Admin</div><div class="hd">Manager</div><div class="hd">Staff</div><div class="hd">Viewer</div>
+              <div class="rn">Customers</div><div><span class="chip ok">ALL</span></div><div><span class="chip ok">ALL</span></div><div><span class="chip tr">OWN</span></div><div><span class="chip off">READ</span></div>
+              <div class="rn">Bookings</div><div><span class="chip ok">ALL</span></div><div><span class="chip ok">TEAM</span></div><div><span class="chip tr">OWN</span></div><div><span class="chip off">READ</span></div>
+              <div class="rn">Conversations</div><div><span class="chip ok">ALL</span></div><div><span class="chip ok">TEAM</span></div><div><span class="chip tr">OWN</span></div><div><span class="chip miss">NONE</span></div>
+              <div class="rn">Billing</div><div><span class="chip ok">ALL</span></div><div><span class="chip off">READ</span></div><div><span class="chip miss">NONE</span></div><div><span class="chip miss">NONE</span></div>
+              <div class="rn">Users and settings</div><div><span class="chip ok">ALL</span></div><div><span class="chip miss">NONE</span></div><div><span class="chip miss">NONE</span></div><div><span class="chip miss">NONE</span></div>
+            </div></div>
+            <div class="pol"><b>policy</b> staff_own_bookings: select on bookings using (assigned_to = auth.uid())</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="roi">
+      <div class="rrow h"><div>What changes</div><div>Today</div><div>After the work</div></div>
+      <div class="rrow"><div class="m">Agent problems<small>Errors, timeouts, bad answers</small></div><div class="rv was">Found late</div><div class="rv now">Alerted<span>LOGGED PER CONVERSATION</span></div></div>
+      <div class="rrow"><div class="m">When the agent is unsure<small>Low-confidence answers</small></div><div class="rv was">It guesses</div><div class="rv now">A person<span>WITH A SUMMARY ATTACHED</span></div></div>
+      <div class="rrow"><div class="m">Claude and your CRM<small>Reading and updating records</small></div><div class="rv was">Not connected</div><div class="rv now">MCP<span>READ SCOPED, WRITES CONFIRMED</span></div></div>
+      <div class="rrow"><div class="m">Questions about your documents<small>Policies, terms, guides</small></div><div class="rv was">Searched by hand</div><div class="rv now">Answered<span>WITH THE SOURCE SHOWN</span></div></div>
+      <div class="rrow"><div class="m">Dashboard data access<small>Who sees and changes what</small></div><div class="rv was">Needs work</div><div class="rv now">Per role<span>ENFORCED IN THE DATABASE</span></div></div>
+      <div class="rrow"><div class="m">Incoming calls and bookings<small>Voice assistant</small></div><div class="rv was">By a person</div><div class="rv now">Answered<span>BOOKED IN YOUR CALENDAR</span></div></div>
+    </div>
+    <div class="roinote">
+      <div class="k">The maths against your own budget</div>
+      <p>The recommended block is <b>40 hours a month at $40 an hour, $1,600 at most</b>, and you are billed only for hours worked. That is about <b>one day a week of an AI developer</b> who already knows your agent, with no hiring, no onboarding of a new person each time and no long contract. Set it against what <b>one lost booking a week</b> or one wrong answer to a good customer costs you today.</p>
+    </div>
+    <div class="get">
+      <div><div class="k">You get 01</div><b>A steady, watched agent</b><p>Issues fixed at the cause, monitoring with alerts, and a handoff to a person when it is not sure.</p></div>
+      <div><div class="k">You get 02</div><b>Claude on your own data, safely</b><p>An MCP server for the CRM with scoped tools and an audit log, plus a RAG assistant that shows its sources.</p></div>
+      <div><div class="k">You get 03</div><b>A developer who reports</b><p>A written update every week, problems flagged early, and every change tested before it reaches production.</p></div>
+    </div>
+  </section>
+
+  <section id="build">
+    <span class="label">05 · How the work runs</span>
+    <h2>Three stages, <span class="serif blue">stability before features</span>.</h2>
+    <p class="lede">I work in <strong>Claude Code every day</strong>, in your repo, on branches you can review. Nothing reaches production without a test, and anything risky goes to a staging copy first.</p>
+    <div class="sys">
+      <div class="num">01</div>
+      <div>
+        <h3>Stabilise · month 1</h3>
+        <p>Week 1 is the audit and the worst fixes. Weeks 2 to 4 add the monitoring and the handoff.</p>
+        <ul><li><b>Stability audit:</b> code, logs, prompts, tool calls and recent conversations, with a ranked issue list</li><li><b>Fixes in priority order</b>, each with a test that reproduces the issue</li><li><b>Monitoring:</b> errors, latency, tool failures and handoffs per conversation, with alerts</li><li><b>Human handoff</b> below a confidence line you agree, with a summary for the person taking over</li></ul>
+      </div>
+    </div>
+    <div class="sys">
+      <div class="num">02</div>
+      <div>
+        <h3>Connect · month 2</h3>
+        <p>Claude gets safe access to your CRM, and your documents become answerable.</p>
+        <ul><li><b>MCP server for the CRM:</b> read-scoped tools first, write actions only after a person confirms, deletes not exposed</li><li><b>Audit log</b> of every tool call: who, which tool, what changed</li><li><b>RAG assistant</b> over your documents in Supabase with pgvector, every answer showing its source, no source means no answer</li></ul>
+      </div>
+    </div>
+    <div class="sys">
+      <div class="num">03</div>
+      <div>
+        <h3>Extend · month 3</h3>
+        <p>The dashboard gets proper access control, and the agent starts answering the phone.</p>
+        <ul><li><b>Supabase roles and RLS</b> on the admin dashboard, so access is enforced in the database, not only hidden in the interface</li><li><b>Voice assistant for calls and bookings.</b> To be straight with you: I have not shipped a voice assistant for a client yet. I would build it on a managed voice layer such as Vapi or Twilio, with Claude behind it and bookings made through your calendar API, reusing the same tools, handoff and monitoring from stages 1 and 2</li><li><b>New monthly tasks</b> from your list once the roadmap is in place</li></ul>
+      </div>
+    </div>
+    <div class="report">
+      <div><div class="k">How you hear from me</div><h4>A written update every week, and bad news early.</h4></div>
+      <ul>
+        <li><b>Weekly update:</b> what shipped, hours used, what is next</li>
+        <li><b>Problems flagged the day I find them</b>, with the options, not after they grow</li>
+        <li><b>Every change tested</b> before it ships, with the test kept in the repo</li>
+        <li><b>Hours tracked on Upwork</b> against the block, so you see the cap coming</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"><span>TESTED · MONITORED · REPORTED</span></div>
+
+  <section id="yes">
+    <span class="label">06 · Why this is an easy yes</span>
+    <h2>Real production work, <span class="serif blue">no big commitment</span>.</h2>
+    <div class="yes">
+      <div><div class="k">Done before, in production</div><b>Next.js, Supabase and Claude, live</b><p>I built and run Cashout Singapore, an AI-first property platform, on Next.js, Supabase and Claude. It is live in production and I handle its ongoing maintenance, the same kind of work you are hiring for.</p></div>
+      <div><div class="k">MCP is not new to me</div><b>A hosted MCP server in daily use</b><p>I built a hosted MCP server on Render that lets a client's Claude publish to WordPress and read and write a Google tracker. It is live and used every day.</p></div>
+      <div><div class="k">The stop rule</div><b>Hourly, capped, no long contract</b><p>The block is a cap, not a minimum. If the first weeks of stability work do not convince you, you stop and keep every fix, test and log already in your repo.</p></div>
+      <div><div class="k">What you keep</div><b>Everything is yours</b><p>Code in your repo, keys in your accounts, monitoring in your tools. Nothing runs on my machines, and my access comes off when you say so.</p></div>
+      <div class="wide"><div class="k">Bonus on Stable and growing</div><b>A written runbook for your agent</b><p>Pick Option 02 and in month 1 you also get a short runbook: how the agent is wired, what each alert means, what to do when it fires and how handoffs reach your team. Your team keeps it whoever works on the agent next.</p></div>
+    </div>
+  </section>
+
+  <section id="invest">
+    <span class="label">07 · Investment</span>
+    <h2>Three monthly blocks. <span class="serif coral">Most teams pick the middle.</span></h2>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tag">Option 01</div>
+        <h3>Keep it running</h3>
+        <div class="who">For keeping the current agent alive, with no new builds.</div>
+        <div class="amt">$800<small>/month</small></div>
+        <div class="cur">USD · up to 20 hrs a month · $40/hr</div>
+        <ul>
+          <li>Fixes on the live agent</li>
+          <li>Monitoring and alerts</li>
+          <li>Monthly written note</li>
+          <li class="no">Human handoff when unsure</li>
+          <li class="no">MCP server for the CRM</li>
+          <li class="no">RAG assistant with sources</li>
+          <li class="no">Voice assistant</li>
+          <li class="no">Dashboard roles and data access</li>
+        </ul>
+        <a class="btn" href="#next">Choose Keep it running</a>
+      </div>
+      <div class="tier feat">
+        <div class="tag">Option 02 · Recommended</div>
+        <h3>Stable and growing</h3>
+        <div class="who">Everything in your post, in the right order, with the runbook bonus.</div>
+        <div class="amt">$1,600<small>/month</small></div>
+        <div class="cur">USD · up to 40 hrs a month · $40/hr</div>
+        <ul>
+          <li>Month 1: stability audit, fixes, monitoring and human handoff</li>
+          <li>MCP server for the CRM: scoped reads, confirmed writes, audit log</li>
+          <li>RAG assistant with source citations</li>
+          <li>Supabase roles and RLS on the dashboard</li>
+          <li>Voice assistant for calls and bookings next</li>
+          <li>Weekly written update, problems flagged early</li>
+          <li>Every change tested before it ships</li>
+          <li>Agent runbook (bonus)</li>
+        </ul>
+        <a class="btn" href="#next">Choose Stable and growing</a>
+      </div>
+      <div class="tier">
+        <div class="tag">Option 03</div>
+        <h3>Priority build</h3>
+        <div class="who">For moving through the whole roadmap fast.</div>
+        <div class="amt">$2,800<small>/month</small></div>
+        <div class="cur">USD · up to 70 hrs a month · $40/hr</div>
+        <ul>
+          <li>Everything in Stable and growing</li>
+          <li>Double the build pace on the roadmap</li>
+          <li>Same-day response on production issues</li>
+          <li>Voice assistant in month 2</li>
+          <li>Room for your new monthly tasks sooner</li>
+        </ul>
+        <a class="btn" href="#next">Choose Priority build</a>
+      </div>
+    </div>
+    <p class="note"><b>Billed hourly on Upwork at $40/hr. Blocks are a cap, not a minimum.</b></p>
+    <div class="ms">
+      <div><div class="k">WEEK 1</div><b>Audit and first fixes</b><p>Ranked issue list, the worst issues fixed and tested.</p></div>
+      <div><div class="k">WEEKS 2 TO 4</div><b>Monitoring and handoff</b><p>Alerts live, handoff to a person below the confidence line.</p></div>
+      <div><div class="k">MONTH 2</div><b>MCP and RAG</b><p>CRM tools for Claude with an audit log, answers with sources.</p></div>
+      <div><div class="k">MONTH 3</div><b>Voice and roles</b><p>Voice assistant for calls and bookings, Supabase roles and RLS.</p></div>
+    </div>
+  </section>
+
+  <div class="close" id="next">
+    <span class="label" style="color:var(--yellow)">08 · Next step</span>
+    <h2>Pick a block and I start on <span class="serif" style="color:var(--yellow)">stability</span> today.</h2>
+    <p>Reply on Upwork with the option you want and I start with the stability audit the same day. <b>Repo access and read access to the agent's logs are all I need to begin.</b></p>
+    <div class="valid">Valid 14 days · All amounts in USD · 24 November 2026 · Emerald, Denver No Code</div>
+  </div>
+</div>
+</body></html>
