@@ -209,7 +209,37 @@ export function FeaturedGameFilm({ game }: { game: FeaturedGame }) {
     return () => io.disconnect();
   }, [off]);
 
-  if (!game.videoSrc || failed) return null;
+  // Before the gameplay film exists, the still stands in, and it opens the game when it is hosted.
+  if (!game.videoSrc || failed) {
+    if (!game.poster) return null;
+    const still = (
+      <img
+        src={game.poster}
+        alt={`${game.name}: Mac runs with the T-rex behind him`}
+        width={1200}
+        height={630}
+        loading="eager"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    );
+    const frame = "game-film relative block aspect-video overflow-hidden rounded-2xl border-2 border-black bg-[#141414] shadow-[8px_8px_0_#0015D4]";
+    return game.playUrl ? (
+      <a
+        href={game.playUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Play ${game.name} in your browser`}
+        className={`${frame} group ${TOUCH} ${RING}`}
+      >
+        {still}
+        <span className={`absolute bottom-3 left-3 ${CHIP} group-active:scale-95`}>
+          <Play className="ml-0.5 h-4 w-4 fill-current" />
+        </span>
+      </a>
+    ) : (
+      <div className={frame}>{still}</div>
+    );
+  }
   const toggle = () => {
     const v = videoRef.current;
     if (!v) return;

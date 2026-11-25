@@ -44,7 +44,7 @@ function Intro({ withGame }: { withGame: boolean }) {
 
 export function GameDevelopmentPage() {
   // The featured game takes the top of the page once its film exists.
-  const withGame = featuredGame.videoSrc !== "";
+  const withGame = featuredGame.videoSrc !== "" || (featuredGame.poster !== "" && featuredGame.playUrl !== "");
 
   return (
     <PageShell cta="Want a game or a Short like these?">

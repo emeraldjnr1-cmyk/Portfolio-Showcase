@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>if(!location.pathname.endsWith("/")&&!/\.[a-z0-9]+$/i.test(location.pathname)){location.replace(location.pathname+"/"+location.search+location.hash)}</script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1d2a1f" />
+    <title>Mac vs the Rex: outrun the T-rex</title>
+    <meta name="description" content="Mac vs the Rex is a free 3D endless runner. Sprint through a prehistoric jungle, dodge the traps and stay ahead of a hungry T-rex. Plays in your browser on phone or laptop." />
+    <!-- Remove this line at launch (Milestone 7). -->
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://denvernocode.com/play/mac-vs-the-rex/" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Mac vs Rex" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mac vs the Rex" />
+    <meta property="og:title" content="Mac vs the Rex" />
+    <meta property="og:description" content="Outrun a T-rex through a prehistoric jungle full of traps. Free to play in your browser." />
+    <meta property="og:url" content="https://denvernocode.com/play/mac-vs-the-rex/" />
+    <meta property="og:image" content="https://denvernocode.com/play/mac-vs-the-rex/share.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Mac sprinting down a jungle track with a T-rex right behind him" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mac vs the Rex" />
+    <meta name="twitter:description" content="Outrun a T-rex through a prehistoric jungle full of traps. Free to play in your browser." />
+    <meta name="twitter:image" content="https://denvernocode.com/play/mac-vs-the-rex/share.jpg" />
+    <script type="module" crossorigin src="./assets/index-CdhRP9G3.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DgJhSlYc.css">
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game"></canvas>
+
+      <div id="hud" class="hud" hidden>
+        <div class="hud-top">
+          <div class="stat">
+            <span class="label">Distance</span>
+            <span class="value" id="hud-distance">0 m</span>
+          </div>
+          <div class="rex">
+            <span class="label">Rex</span>
+            <div class="rex-bar"><div class="rex-fill" id="hud-rex"></div></div>
+          </div>
+          <div class="stat stat-right">
+            <span class="label">Amber</span>
+            <span class="value" id="hud-amber">0</span>
+          </div>
+        </div>
+        <div class="rush" id="hud-rush">
+          <span class="label">Adrenaline</span>
+          <div class="rush-bar"><div class="rush-fill" id="hud-rush-fill"></div></div>
+        </div>
+        <p class="popup" id="hud-popup" hidden></p>
+        <p class="hint" id="hud-hint" hidden></p>
+      </div>
+
+      <div class="fx fx-slowmo" id="fx-slowmo"></div>
+      <div class="fx fx-sprint" id="fx-sprint"></div>
+
+      <div class="fps" id="hud-fps" hidden>0 fps</div>
+
+      <section class="screen" id="screen-start">
+        <h1 class="title">Mac vs the Rex</h1>
+        <div class="loading" id="loading">
+          <div class="loading-bar"><div class="loading-fill" id="loading-fill"></div></div>
+          <p class="loading-text" id="loading-text">Loading 0%</p>
+        </div>
+        <p class="prompt" id="start-prompt" hidden>Tap to run</p>
+        <p class="sub" id="start-controls"></p>
+        <button class="button button-small" id="install" type="button" hidden>Install the game</button>
+        <p class="ios-hint" id="ios-hint" hidden>
+          <span>Tap Share, then Add to Home Screen</span>
+          <button class="link-button" id="ios-hint-close" type="button">Got it</button>
+        </p>
+        <button class="link-button" id="credits-open" type="button">Credits</button>
+      </section>
+
+      <section class="screen screen-credits" id="screen-credits" data-ui hidden>
+        <h2 class="title title-small">Credits</h2>
+        <ul class="credits">
+          <li>
+            Rex model:
+            <a href="https://sketchfab.com/3d-models/animated-tyrannosaurus-rex-dinosaur-running-loop-38007d947ae74dea83988cb0b08ee053" target="_blank" rel="noopener">Animated Tyrannosaurus Rex Dinosaur Running Loop</a>
+            by <a href="https://sketchfab.com/LasquetiSpice" target="_blank" rel="noopener">LasquetiSpice</a>,
+            licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+            Skin recoloured and model optimised for phones.
+          </li>
+          <li>
+            Raptor model:
+            <a href="https://sketchfab.com/3d-models/pbr-velociraptor-animated-8f1744af7b0847a2aabe3df90be802f0" target="_blank" rel="noopener">PBR Velociraptor (Animated)</a>
+            by <a href="https://sketchfab.com/ferociousindustries.matthias" target="_blank" rel="noopener">Ferocious Industries</a>, CC BY 4.0. Optimised for phones.
+          </li>
+          <li>
+            Pterosaur model:
+            <a href="https://sketchfab.com/3d-models/flying-pterodactyl-dinosaur-soars-over-island-da9af2e809fb4c97825a015302198469" target="_blank" rel="noopener">Flying Pterodactyl Dinosaur Soars Over Island</a>
+            by <a href="https://sketchfab.com/LasquetiSpice" target="_blank" rel="noopener">LasquetiSpice</a>, CC BY 4.0. Island removed, mesh reduced.
+          </li>
+          <li>Mac: built with MakeHuman assets (CC0).</li>
+          <li>Textures: Poly Haven (CC0).</li>
+        </ul>
+        <button class="button" id="credits-close" type="button">Close</button>
+      </section>
+
+      <section class="screen" id="screen-over" hidden>
+        <h2 class="title title-small" id="over-title">The Rex caught you</h2>
+        <p class="sub" id="over-reason"></p>
+        <dl class="results">
+          <div><dt>Score</dt><dd id="over-score">0</dd></div>
+          <div><dt>Distance</dt><dd id="over-distance">0 m</dd></div>
+          <div><dt>Amber</dt><dd id="over-amber">0</dd></div>
+          <div><dt>Close calls</dt><dd id="over-close">0</dd></div>
+          <div><dt>Best score</dt><dd id="over-best-score">0</dd></div>
+          <div><dt>Best</dt><dd id="over-best">0 m</dd></div>
+        </dl>
+        <button class="button" id="over-again" type="button">Run again</button>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,718 @@
+{
+ "version": 1,
+ "basePath": "assets/audio/",
+ "sampleRate": 44100,
+ "format": "mp3",
+ "notes": [
+  "Loops: every loop file holds the loop plus 0.35 s of the loop start repeated at the end. Loop between loopStart and loopEnd (seconds) with Web Audio (three.js: audio.setLoopStart / setLoopEnd, or AudioBufferSourceNode.loopStart / loopEnd). Do not loop the whole file.",
+  "Variants: when variants is not empty, pick one at random per play (avoid repeating the last one). A pitch jitter of plus or minus 4 percent on footsteps hides repetition further.",
+  "music_chase_calm and music_chase_intense are the same length and tempo: start both on the same audio clock time and crossfade gains with setMusicIntensity.",
+  "aliases map the game hook names (<trap>_warn, <trap>_danger, <trap>_hit, close_call) onto sound names.",
+  "volume is a suggested starting gain per sound; SFX are peak-normalised to -1 dBFS."
+ ],
+ "aliases": {
+  "close_call": "closecall_ding",
+  "music_chase_loop_calm": "music_chase_calm",
+  "music_chase_loop_intense": "music_chase_intense",
+  "tar_warn": "tar_bubble_warn",
+  "tar_danger": "tar_bubble_warn",
+  "tar_hit": "tar_splash",
+  "tree_warn": "tree_crack",
+  "tree_danger": "tree_fall",
+  "tree_hit": "hit_body",
+  "collapse_warn": "floor_crack_warn",
+  "collapse_danger": "floor_collapse",
+  "collapse_hit": "fall_scream_short",
+  "swinglog_warn": "log_creak_warn",
+  "swinglog_danger": "log_swing_whoosh",
+  "swinglog_hit": "hit_body",
+  "geyser_warn": "geyser_hiss_warn",
+  "geyser_danger": "geyser_blast",
+  "geyser_hit": "hit_body",
+  "raptor_warn": "raptor_bush_rustle_warn",
+  "raptor_danger": "raptor_call",
+  "raptor_hit": "raptor_leap",
+  "ptero_warn": "ptero_screech_warn",
+  "ptero_danger": "ptero_swoop_whoosh",
+  "ptero_hit": "hit_body",
+  "boulder_warn": "boulder_rumble_warn",
+  "boulder_danger": "boulder_roll_pass",
+  "boulder_hit": "boulder_impact",
+  "bridge_warn": "bridge_creak_warn",
+  "bridge_danger": "plank_snap",
+  "bridge_hit": "rope_snap"
+ },
+ "sounds": {
+  "footstep_dirt": {
+   "name": "footstep_dirt",
+   "file": "footstep_dirt_1.mp3",
+   "type": "sfx",
+   "volume": 0.45,
+   "loop": false,
+   "variants": [
+    "footstep_dirt_1.mp3",
+    "footstep_dirt_2.mp3",
+    "footstep_dirt_3.mp3",
+    "footstep_dirt_4.mp3"
+   ],
+   "description": "Mac running on packed dirt, pick a random variant per step",
+   "duration": [
+    0.166,
+    0.174,
+    0.171,
+    0.187
+   ],
+   "source": "synthesised + Kenney RPG Audio footstep00/02/06/09"
+  },
+  "footstep_wood": {
+   "name": "footstep_wood",
+   "file": "footstep_wood_1.mp3",
+   "type": "sfx",
+   "volume": 0.5,
+   "loop": false,
+   "variants": [
+    "footstep_wood_1.mp3",
+    "footstep_wood_2.mp3",
+    "footstep_wood_3.mp3"
+   ],
+   "description": "Mac running on bridge planks, hollow wooden knock",
+   "duration": [
+    0.202,
+    0.202,
+    0.202
+   ],
+   "source": "synthesised + Kenney RPG Audio footstep03/07/08"
+  },
+  "footstep_tar": {
+   "name": "footstep_tar",
+   "file": "footstep_tar_1.mp3",
+   "type": "sfx",
+   "volume": 0.5,
+   "loop": false,
+   "variants": [
+    "footstep_tar_1.mp3",
+    "footstep_tar_2.mp3"
+   ],
+   "description": "Sticky step in tar, a wet squelch and pull",
+   "duration": [
+    0.229,
+    0.229
+   ],
+   "source": "synthesised + NPS Fountain Paint Pot mud plops"
+  },
+  "jump": {
+   "name": "jump",
+   "file": "jump.mp3",
+   "type": "sfx",
+   "volume": 0.55,
+   "loop": false,
+   "variants": [],
+   "description": "Jump: short wordless effort grunt with a cloth whoosh",
+   "duration": 0.336,
+   "source": "synthesised + Kenney RPG Audio cloth2"
+  },
+  "land": {
+   "name": "land",
+   "file": "land.mp3",
+   "type": "sfx",
+   "volume": 0.6,
+   "loop": false,
+   "variants": [],
+   "description": "Landing after a jump, two-foot thud on dirt",
+   "duration": 0.292,
+   "source": "synthesised + Kenney RPG Audio footstep01, dropLeather"
+  },
+  "slide": {
+   "name": "slide",
+   "file": "slide.mp3",
+   "type": "sfx",
+   "volume": 0.55,
+   "loop": false,
+   "variants": [],
+   "description": "Slide under an obstacle, dirt and gravel scrape",
+   "duration": 0.616,
+   "source": "synthesised + Kenney RPG Audio cloth1"
+  },
+  "stumble": {
+   "name": "stumble",
+   "file": "stumble.mp3",
+   "type": "sfx",
+   "volume": 0.65,
+   "loop": false,
+   "variants": [],
+   "description": "Clipped an obstacle: body thud then a sharp gasp, no words",
+   "duration": 0.362,
+   "source": "synthesised + Kenney RPG Audio bookPlace2"
+  },
+  "caught": {
+   "name": "caught",
+   "file": "caught.mp3",
+   "type": "sfx",
+   "volume": 0.8,
+   "loop": false,
+   "variants": [],
+   "description": "Run over: heavy impact, winded grunt and the body hitting the ground",
+   "duration": 1.212,
+   "source": "synthesised + Kenney RPG Audio doorClose_4, dropLeather"
+  },
+  "fall_scream_short": {
+   "name": "fall_scream_short",
+   "file": "fall_scream_short.mp3",
+   "type": "sfx",
+   "volume": 0.6,
+   "loop": false,
+   "variants": [],
+   "description": "Short wordless yell as Mac drops through the floor, fading with distance",
+   "duration": 1.325,
+   "source": "synthesised"
+  },
+  "pickup_amber": {
+   "name": "pickup_amber",
+   "file": "pickup_amber_1.mp3",
+   "type": "sfx",
+   "volume": 0.5,
+   "loop": false,
+   "variants": [
+    "pickup_amber_1.mp3",
+    "pickup_amber_2.mp3",
+    "pickup_amber_3.mp3"
+   ],
+   "description": "Amber pickup chime, three rising pitches for streaks",
+   "duration": [
+    0.708,
+    0.723,
+    0.71
+   ],
+   "source": "synthesised"
+  },
+  "heartbeat_loop": {
+   "name": "heartbeat_loop",
+   "file": "heartbeat_loop.mp3",
+   "type": "loop",
+   "volume": 0.6,
+   "loop": true,
+   "variants": [],
+   "description": "Mac's heartbeat at 120 bpm, fade in as the Rex closes",
+   "duration": 2.35,
+   "source": "synthesised",
+   "loopStart": 0.0,
+   "loopEnd": 2.0
+  },
+  "rex_footstep_heavy": {
+   "name": "rex_footstep_heavy",
+   "file": "rex_footstep_heavy_1.mp3",
+   "type": "sfx",
+   "volume": 0.9,
+   "loop": false,
+   "variants": [
+    "rex_footstep_heavy_1.mp3",
+    "rex_footstep_heavy_2.mp3",
+    "rex_footstep_heavy_3.mp3"
+   ],
+   "description": "Rex footfall: sub boom with ground shake and loose debris; pair with camera shake",
+   "duration": [
+    1.519,
+    1.631,
+    1.613
+   ],
+   "source": "synthesised"
+  },
+  "rex_roar": {
+   "name": "rex_roar",
+   "file": "rex_roar_1.mp3",
+   "type": "sfx",
+   "volume": 1.0,
+   "loop": false,
+   "variants": [
+    "rex_roar_1.mp3",
+    "rex_roar_2.mp3"
+   ],
+   "description": "Rex roar, original design: slowed bison bellows and elk bugle with a synthesised throat rattle and sub",
+   "duration": [
+    4.032,
+    4.397
+   ],
+   "source": "synthesised + NPS bison (YELLMM8K2005914, YELLMM8K2005918), NPS elk bugle (ElkBugle1, ElkBullandCows)"
+  },
+  "rex_snarl": {
+   "name": "rex_snarl",
+   "file": "rex_snarl.mp3",
+   "type": "sfx",
+   "volume": 0.85,
+   "loop": false,
+   "variants": [],
+   "description": "Short Rex snarl for near misses and the close chase",
+   "duration": 1.393,
+   "source": "synthesised + NPS bison (YELLMM8K2005914)"
+  },
+  "rex_bite": {
+   "name": "rex_bite",
+   "file": "rex_bite.mp3",
+   "type": "sfx",
+   "volume": 0.9,
+   "loop": false,
+   "variants": [],
+   "description": "Jaw snap: hard tooth clack with a low thud",
+   "duration": 0.579,
+   "source": "synthesised + Kenney RPG Audio chop"
+  },
+  "rex_breath_loop": {
+   "name": "rex_breath_loop",
+   "file": "rex_breath_loop.mp3",
+   "type": "loop",
+   "volume": 0.6,
+   "loop": true,
+   "variants": [],
+   "description": "Rex breathing right behind Mac: hissing inhale, rattling low exhale",
+   "duration": 3.55,
+   "source": "synthesised",
+   "loopStart": 0.0,
+   "loopEnd": 3.2
+  },
+  "tree_crack": {
+   "name": "tree_crack",
+   "file": "tree_crack.mp3",
+   "type": "sfx",
+   "volume": 0.8,
+   "loop": false,
+   "variants": [],
+   "description": "Trunk splintering as the Rex hits the tree: quickening cracks then one big snap",
+   "duration": 1.505,
+   "source": "synthesised"
+  },
+  "tree_fall": {
+   "name": "tree_fall",
+   "file": "tree_fall.mp3",
+   "type": "sfx",
+   "volume": 0.9,
+   "loop": false,
+   "variants": [],
+   "description": "Tree coming down across the path: groan, rushing leaves, ground-shaking crash",
+   "duration": 3.224,
+   "source": "synthesised + Kenney RPG Audio doorClose_3"
+  },
+  "floor_crack_warn": {
+   "name": "floor_crack_warn",
+   "file": "floor_crack_warn.mp3",
+   "type": "sfx",
+   "volume": 0.7,
+   "loop": false,
+   "variants": [],
+   "description": "Ground fracturing ahead, quickening stone ticks: jump now",
+   "duration": 0.802,
+   "source": "synthesised"
+  },
+  "floor_collapse": {
+   "name": "floor_collapse",
+   "file": "floor_collapse.mp3",
+   "type": "sfx",
+   "volume": 0.9,
+   "loop": false,
+   "variants": [],
+   "description": "Floor giving way into a pit: crack, falling rock and rubble",
+   "duration": 2.43,
+   "source": "synthesised"
+  },
+  "log_creak_warn": {
+   "name": "log_creak_warn",
+   "file": "log_creak_warn.mp3",
+   "type": "sfx",
+   "volume": 0.65,
+   "loop": false,
+   "variants": [],
+   "description": "Rope and timber straining before the log swings",
+   "duration": 1.658,
+   "source": "synthesised + Kenney RPG Audio creak2"
+  },
+  "log_swing_whoosh": {
+   "name": "log_swing_whoosh",
+   "file": "log_swing_whoosh.mp3",
+   "type": "sfx",
+   "volume": 0.8,
+   "loop": false,
+   "variants": [],
+   "description": "Heavy log sweeping past, low doppler whoosh",
+   "duration": 0.656,
+   "source": "synthesised"
+  },
+  "boulder_rumble_loop": {
+   "name": "boulder_rumble_loop",
+   "file": "boulder_rumble_loop.mp3",
+   "type": "loop",
+   "volume": 0.75,
+   "loop": true,
+   "variants": [],
+   "description": "Boulder rolling: continuous low rumble with rock knocks; raise volume as it nears",
+   "duration": 4.35,
+   "source": "synthesised",
+   "loopStart": 0.0,
+   "loopEnd": 4.0
+  },
+  "boulder_rumble_warn": {
+   "name": "boulder_rumble_warn",
+   "file": "boulder_rumble_warn.mp3",
+   "type": "sfx",
+   "volume": 0.8,
+   "loop": false,
+   "variants": [],
+   "description": "Distant boulder breaking loose, rumble swelling in (one-shot warning)",
+   "duration": 1.957,
+   "source": "synthesised"
+  },
+  "boulder_roll_pass": {
+   "name": "boulder_roll_pass",
+   "file": "boulder_roll_pass.mp3",
+   "type": "sfx",
+   "volume": 0.8,
+   "loop": false,
+   "variants": [],
+   "description": "Boulder thundering past close by (one-shot)",
+   "duration": 1.795,
+   "source": "synthesised"
+  },
+  "boulder_impact": {
+   "name": "boulder_impact",
+   "file": "boulder_impact.mp3",
+   "type": "sfx",
+   "volume": 0.95,
+   "loop": false,
+   "variants": [],
+   "description": "Boulder slamming home: stone crack, sub boom and scattering rubble",
+   "duration": 1.925,
+   "source": "synthesised"
+  },
+  "ptero_screech_warn": {
+   "name": "ptero_screech_warn",
+   "file": "ptero_screech_warn.mp3",
+   "type": "sfx",
+   "volume": 0.75,
+   "loop": false,
+   "variants": [],
+   "description": "Pterosaur shriek from above, original design from sped-up elk bugle and crane call",
+   "duration": 1.84,
+   "source": "synthesised + NPS elk bugle (ElkBugle1), NPS sandhill crane"
+  },
+  "ptero_swoop_whoosh": {
+   "name": "ptero_swoop_whoosh",
+   "file": "ptero_swoop_whoosh.mp3",
+   "type": "sfx",
+   "volume": 0.75,
+   "loop": false,
+   "variants": [],
+   "description": "Pterosaur dive: fast air rush with leathery wing beats",
+   "duration": 0.652,
+   "source": "synthesised + Kenney RPG Audio cloth1-3"
+  },
+  "raptor_bush_rustle_warn": {
+   "name": "raptor_bush_rustle_warn",
+   "file": "raptor_bush_rustle_warn.mp3",
+   "type": "sfx",
+   "volume": 0.7,
+   "loop": false,
+   "variants": [],
+   "description": "Something moving in the bush: leaf rustle bursts and a twig snap",
+   "duration": 0.902,
+   "source": "synthesised + Kenney RPG Audio cloth3"
+  },
+  "raptor_call": {
+   "name": "raptor_call",
+   "file": "raptor_call.mp3",
+   "type": "sfx",
+   "volume": 0.75,
+   "loop": false,
+   "variants": [],
+   "description": "Raptor bark-screech, two-note call; original design from red fox scream and crane rattle",
+   "duration": 1.602,
+   "source": "synthesised + NPS red fox, NPS sandhill crane"
+  },
+  "raptor_leap": {
+   "name": "raptor_leap",
+   "file": "raptor_leap.mp3",
+   "type": "sfx",
+   "volume": 0.8,
+   "loop": false,
+   "variants": [],
+   "description": "Raptor bursting out of cover: leaves, snarl and lunge",
+   "duration": 0.996,
+   "source": "synthesised + NPS red fox"
+  },
+  "tar_bubble_warn": {
+   "name": "tar_bubble_warn",
+   "file": "tar_bubble_warn.mp3",
+   "type": "sfx",
+   "volume": 0.65,
+   "loop": false,
+   "variants": [],
+   "description": "Tar pit ahead: thick glooping bubbles",
+   "duration": 1.098,
+   "source": "synthesised + NPS Fountain Paint Pot mud plops"
+  },
+  "tar_splash": {
+   "name": "tar_splash",
+   "file": "tar_splash.mp3",
+   "type": "sfx",
+   "volume": 0.75,
+   "loop": false,
+   "variants": [],
+   "description": "Foot plunging into tar: thick low splat and suck",
+   "duration": 0.775,
+   "source": "synthesised + NPS Fountain Paint Pot mud plops"
+  },
+  "geyser_hiss_warn": {
+   "name": "geyser_hiss_warn",
+   "file": "geyser_hiss_warn.mp3",
+   "type": "sfx",
+   "volume": 0.65,
+   "loop": false,
+   "variants": [],
+   "description": "Steam vent building pressure: rising hiss with an underground gurgle",
+   "duration": 1.255,
+   "source": "synthesised + NPS Norris fumarole, NPS Dragon's Mouth Spring"
+  },
+  "geyser_blast": {
+   "name": "geyser_blast",
+   "file": "geyser_blast.mp3",
+   "type": "sfx",
+   "volume": 0.9,
+   "loop": false,
+   "variants": [],
+   "description": "Geyser erupting: pressure thump and a roaring steam jet",
+   "duration": 1.979,
+   "source": "synthesised + NPS Old Faithful eruption"
+  },
+  "bridge_creak_warn": {
+   "name": "bridge_creak_warn",
+   "file": "bridge_creak_warn.mp3",
+   "type": "sfx",
+   "volume": 0.65,
+   "loop": false,
+   "variants": [],
+   "description": "Rope bridge groaning under weight, planks about to go",
+   "duration": 1.33,
+   "source": "synthesised + Kenney RPG Audio creak1, creak3"
+  },
+  "plank_snap": {
+   "name": "plank_snap",
+   "file": "plank_snap_1.mp3",
+   "type": "sfx",
+   "volume": 0.8,
+   "loop": false,
+   "variants": [
+    "plank_snap_1.mp3",
+    "plank_snap_2.mp3",
+    "plank_snap_3.mp3"
+   ],
+   "description": "Bridge plank breaking underfoot, dry wooden snap",
+   "duration": [
+    0.285,
+    0.269,
+    0.257
+   ],
+   "source": "synthesised + Kenney RPG Audio chop"
+  },
+  "rope_snap": {
+   "name": "rope_snap",
+   "file": "rope_snap.mp3",
+   "type": "sfx",
+   "volume": 0.8,
+   "loop": false,
+   "variants": [],
+   "description": "Bridge rope parting: whip crack and a falling twang",
+   "duration": 0.508,
+   "source": "synthesised + Kenney RPG Audio beltHandle2"
+  },
+  "hit_body": {
+   "name": "hit_body",
+   "file": "hit_body.mp3",
+   "type": "sfx",
+   "volume": 0.8,
+   "loop": false,
+   "variants": [],
+   "description": "Generic trap hit on Mac: blunt body impact with a winded grunt",
+   "duration": 0.491,
+   "source": "synthesised + Kenney RPG Audio bookPlace1, doorClose_4"
+  },
+  "nearmiss_slowmo_in": {
+   "name": "nearmiss_slowmo_in",
+   "file": "nearmiss_slowmo_in.mp3",
+   "type": "sfx",
+   "volume": 0.7,
+   "loop": false,
+   "variants": [],
+   "description": "Near miss: time-slow whoosh pitching down into a low thump",
+   "duration": 1.505,
+   "source": "synthesised"
+  },
+  "nearmiss_slowmo_out": {
+   "name": "nearmiss_slowmo_out",
+   "file": "nearmiss_slowmo_out.mp3",
+   "type": "sfx",
+   "volume": 0.6,
+   "loop": false,
+   "variants": [],
+   "description": "Time snapping back to full speed, rising whoosh",
+   "duration": 0.787,
+   "source": "synthesised"
+  },
+  "closecall_ding": {
+   "name": "closecall_ding",
+   "file": "closecall_ding.mp3",
+   "type": "sfx",
+   "volume": 0.5,
+   "loop": false,
+   "variants": [],
+   "description": "Close-call reward ding, bright and short",
+   "duration": 0.77,
+   "source": "synthesised"
+  },
+  "adrenaline_full": {
+   "name": "adrenaline_full",
+   "file": "adrenaline_full.mp3",
+   "type": "sfx",
+   "volume": 0.6,
+   "loop": false,
+   "variants": [],
+   "description": "Adrenaline meter full: rising four-note ready cue",
+   "duration": 1.022,
+   "source": "synthesised"
+  },
+  "sprint_start": {
+   "name": "sprint_start",
+   "file": "sprint_start.mp3",
+   "type": "sfx",
+   "volume": 0.7,
+   "loop": false,
+   "variants": [],
+   "description": "Sprint burst: double heartbeat surge into a launch whoosh",
+   "duration": 1.078,
+   "source": "synthesised"
+  },
+  "ui_tap": {
+   "name": "ui_tap",
+   "file": "ui_tap.mp3",
+   "type": "sfx",
+   "volume": 0.4,
+   "loop": false,
+   "variants": [],
+   "description": "Menu button tap, soft wooden tick",
+   "duration": 0.072,
+   "source": "synthesised"
+  },
+  "ui_start": {
+   "name": "ui_start",
+   "file": "ui_start.mp3",
+   "type": "stinger",
+   "volume": 0.75,
+   "loop": false,
+   "variants": [],
+   "description": "Run begins: three drum hits into an open-fifth horn stab",
+   "duration": 1.949,
+   "source": "synthesised"
+  },
+  "gameover_sting": {
+   "name": "gameover_sting",
+   "file": "gameover_sting.mp3",
+   "type": "stinger",
+   "volume": 0.75,
+   "loop": false,
+   "variants": [],
+   "description": "Game over: two falling low chords over heavy drums",
+   "duration": 3.504,
+   "source": "synthesised"
+  },
+  "new_best_sting": {
+   "name": "new_best_sting",
+   "file": "new_best_sting.mp3",
+   "type": "stinger",
+   "volume": 0.75,
+   "loop": false,
+   "variants": [],
+   "description": "New best distance: rising fanfare ending on a bright major chord with chimes",
+   "duration": 2.866,
+   "source": "synthesised"
+  },
+  "jungle_ambience_loop": {
+   "name": "jungle_ambience_loop",
+   "file": "jungle_ambience_loop.mp3",
+   "type": "loop",
+   "volume": 0.45,
+   "loop": true,
+   "variants": [],
+   "description": "Prehistoric jungle bed: birds, insects, frogs and distant animal calls (stereo)",
+   "duration": 40.35,
+   "source": "synthesised + NPS dawn chorus, NPS chorus frogs, NPS sandhill crane, NPS elk bugle, NPS killdeer, NPS warbling vireo",
+   "loopStart": 0.0,
+   "loopEnd": 40.0
+  },
+  "wind_loop": {
+   "name": "wind_loop",
+   "file": "wind_loop.mp3",
+   "type": "loop",
+   "volume": 0.3,
+   "loop": true,
+   "variants": [],
+   "description": "Light wind through the canopy, slow gusts",
+   "duration": 20.35,
+   "source": "synthesised",
+   "loopStart": 0.0,
+   "loopEnd": 20.0
+  },
+  "music_chase_calm": {
+   "name": "music_chase_calm",
+   "file": "music_chase_calm.mp3",
+   "type": "music",
+   "volume": 0.55,
+   "loop": true,
+   "variants": [],
+   "description": "Chase music, calm layer (144 bpm, D minor): pad, pulse drum, shaker. Start in sync with the intense layer and crossfade by Rex distance",
+   "duration": 60.35,
+   "source": "synthesised",
+   "loopStart": 0.0,
+   "loopEnd": 60.0
+  },
+  "music_chase_intense": {
+   "name": "music_chase_intense",
+   "file": "music_chase_intense.mp3",
+   "type": "music",
+   "volume": 0.6,
+   "loop": true,
+   "variants": [],
+   "description": "Chase music, intense layer: full tribal drums, string ostinato and brass stabs. Same length and tempo as the calm layer",
+   "duration": 60.35,
+   "source": "synthesised",
+   "loopStart": 0.0,
+   "loopEnd": 60.0
+  },
+  "music_chase_loop": {
+   "name": "music_chase_loop",
+   "type": "music",
+   "loop": true,
+   "layers": [
+    "music_chase_calm",
+    "music_chase_intense"
+   ],
+   "file": "music_chase_intense.mp3",
+   "volume": 0.6,
+   "variants": [],
+   "description": "Layered chase music: play both layers together from the same start time, calm gain = 1 - intensity, intense gain = intensity (equal-power)",
+   "loopStart": 0.0,
+   "loopEnd": 60.0,
+   "bpm": 144,
+   "bars": 36,
+   "source": "synthesised"
+  },
+  "music_menu_loop": {
+   "name": "music_menu_loop",
+   "file": "music_menu_loop.mp3",
+   "type": "music",
+   "volume": 0.5,
+   "loop": true,
+   "variants": [],
+   "description": "Menu music (80 bpm): slow pad, soft drum, kalimba notes and far-off calls",
+   "duration": 36.35,
+   "source": "synthesised",
+   "loopStart": 0.0,
+   "loopEnd": 36.0
+  }
+ }
+}

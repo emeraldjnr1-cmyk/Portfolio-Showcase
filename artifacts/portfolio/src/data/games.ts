@@ -36,8 +36,8 @@ export const featuredGame: FeaturedGame = {
   desc: "A 3D endless runner built for the browser with three.js. A T-rex chases Mac through a prehistoric jungle, and the run gets faster the longer you last.",
   stack: ["three.js", "Runs in the browser", "Endless runner"],
   videoSrc: "",
-  poster: "",
-  playUrl: "",
+  poster: still("mac-vs-the-rex"),
+  playUrl: `${BASE}/play/mac-vs-the-rex/`,
   seconds: 35,
   hasAudio: false,
 };
