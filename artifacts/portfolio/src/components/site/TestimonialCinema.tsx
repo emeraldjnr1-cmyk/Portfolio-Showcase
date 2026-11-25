@@ -40,7 +40,7 @@ export function TestimonialCinema() {
   return (
     <section id="clients" className="section-y relative overflow-hidden border-t border-black/10 px-6 md:px-12">
       {/* giant background word */}
-      <div className="pointer-events-none absolute left-1/2 top-16 -translate-x-1/2 select-none font-display text-[16vw] font-extrabold leading-none text-black/[0.04]">
+      <div aria-hidden className="pointer-events-none absolute left-1/2 top-16 -translate-x-1/2 select-none font-display text-[16vw] font-extrabold leading-none text-black/[0.04]">
         PROOF
       </div>
 

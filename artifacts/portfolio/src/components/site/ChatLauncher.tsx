@@ -61,8 +61,12 @@ export function ChatLauncher({ onAskPax, onWarm }: { onAskPax: () => void; onWar
     if (overCta || overFooter) setMenu(false);
   }, [overCta, overFooter]);
 
-  // Reduced motion: the button fades, it does not travel.
-  const aside = "pointer-events-none invisible translate-y-2 opacity-0 motion-reduce:translate-y-0";
+  // Reduced motion: the button fades, it does not travel. Stepping aside never
+  // takes it out of the Tab order: a keyboard user who reaches it (after the
+  // footer) brings it back into view.
+  const aside =
+    "pointer-events-none translate-y-2 opacity-0 motion-reduce:translate-y-0 " +
+    "focus-within:pointer-events-auto focus-within:translate-y-0 focus-within:opacity-100";
   const here = "translate-y-0 opacity-100";
   const move = "transition-[opacity,transform,visibility] duration-200 ease-out";
   const row = "flex min-h-14 w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition-colors duration-150 active:bg-black/5";

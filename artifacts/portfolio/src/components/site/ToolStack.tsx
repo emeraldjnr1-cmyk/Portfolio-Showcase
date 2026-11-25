@@ -161,7 +161,7 @@ export function ToolStack() {
   return (
     <section id="stack" className="section-y relative overflow-hidden border-y border-black bg-black px-6 text-on-dark md:px-12">
       {/* ghost word behind, same trick as the proof section */}
-      <div className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 select-none font-display text-[15vw] font-extrabold leading-none text-white/[0.035]">
+      <div aria-hidden className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 select-none font-display text-[15vw] font-extrabold leading-none text-white/[0.035]">
         STACK
       </div>
 
