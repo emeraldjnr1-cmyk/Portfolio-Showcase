@@ -1,15 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
-import { SplitWords, Reveal } from "@/components/fx/SplitWords";
-import { ScrollProgress, VelocitySkew } from "@/components/fx/ScrollFX";
-import { BigMarquee } from "@/components/fx/BigMarquee";
-import { useLenis } from "@/hooks/use-lenis";
+import { Reveal } from "@/components/fx/SplitWords";
+import { ScrollProgress } from "@/components/fx/ScrollFX";
 import { useMotionOff } from "@/lib/motion-pref";
-import { HeroBackground, type HeroBgVariant } from "@/components/fx/HeroBackground";
+import { HeroBackground } from "@/components/fx/HeroBackground";
 
 import { SiteNav } from "@/components/site/SiteNav";
 import { SkipLink } from "@/components/site/SkipLink";
@@ -21,90 +17,56 @@ import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { WebProjectsSection } from "@/components/site/WebProjects";
 import { TestimonialCinema } from "@/components/site/TestimonialCinema";
 import { WrittenReviews } from "@/components/site/WrittenReviews";
-import { Logo } from "@/components/site/Logo";
-import { Avatar } from "@/components/site/Portrait";
 import { ToolStack } from "@/components/site/ToolStack";
 import { HireMe } from "@/components/site/HireMe";
 import { FAQSection } from "@/components/site/FAQ";
 import { Footer } from "@/components/site/Footer";
 import { ClaudeFullStack } from "@/components/site/ClaudeFullStack";
 import { AutomationStory } from "@/components/site/AutomationStory";
+import { FACT_STATS } from "@/data/facts";
+import { profilePicSmall } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Claude first, then the automation stack — the order is the positioning.
-const ROTATING = [
-  { word: "Claude Code", color: "#0015D4" },
-  { word: "Claude Design", color: "#F32317" },
-  { word: "Claude Cowork", color: "#0015D4" },
-  { word: "n8n", color: "#F32317" },
-  { word: "Make.com", color: "#FF8FCA" },
-  { word: "AI agents", color: "#0015D4" },
-];
+// Claude first, then the automation stack. The headline runs through the list
+// once and comes to rest on "Claude Code", which is also what the prerendered
+// page and anyone with reduced motion sees from the start.
+const ROTATING = ["Claude Code", "Claude Design", "Claude Cowork", "n8n", "Make.com", "AI agents"];
+const FIRST_HOLD_MS = 1800;
+const STEP_MS = 1500;
 
 function RotatingWord() {
   const [i, setI] = useState(0);
   const off = useMotionOff();
   useEffect(() => {
     if (off) return setI(0);
-    const t = setInterval(() => setI((v) => (v + 1) % ROTATING.length), 2200);
-    return () => clearInterval(t);
+    let step = 0;
+    let timer: ReturnType<typeof setTimeout>;
+    const next = () => {
+      step += 1;
+      // One pass: after the last word it returns to the first and stops.
+      setI(step % ROTATING.length);
+      if (step < ROTATING.length) timer = setTimeout(next, STEP_MS);
+    };
+    timer = setTimeout(next, FIRST_HOLD_MS);
+    return () => clearTimeout(timer);
   }, [off]);
-  const longest = ROTATING.reduce((a, b) => (b.word.length > a.length ? b.word : a), "");
+  const longest = ROTATING.reduce((a, b) => (b.length > a.length ? b : a), "");
   return (
-    <span className="relative inline-grid overflow-hidden align-bottom">
+    <span className="relative -my-[0.14em] inline-grid overflow-hidden py-[0.14em] align-bottom">
       {/* Invisible sizer keeps layout stable. The word lives in CSS content,
           not the DOM, so crawlers read the headline without a stray word. */}
       <span aria-hidden data-w={longest} className="invisible col-start-1 row-start-1 font-editorial before:content-[attr(data-w)]" />
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
           key={i}
           initial={{ y: "105%" }}
           animate={{ y: 0 }}
           exit={{ y: "-105%" }}
-          transition={{ duration: 0.55, ease: EASE }}
-          className="col-start-1 row-start-1 whitespace-nowrap font-editorial"
-          style={{ color: ROTATING[i].color }}
+          transition={{ duration: 0.45, ease: EASE }}
+          className="col-start-1 row-start-1 whitespace-nowrap font-editorial text-cobalt"
         >
-          {ROTATING[i].word}
-        </motion.span>
-      </AnimatePresence>
-    </span>
-  );
-}
-
-// The watchword: quality, value, speed — rolls forever under the headline.
-const WATCHWORDS = [
-  { word: "quality.", color: "#0015D4" },
-  { word: "value.", color: "#F32317" },
-  { word: "speed.", color: "#BA7517" },
-];
-
-function WatchwordRoller() {
-  const [i, setI] = useState(0);
-  const off = useMotionOff();
-  useEffect(() => {
-    if (off) return setI(0);
-    // 2600ms vs the headline's 2200ms so the two rollers interleave
-    // instead of ticking in unison.
-    const t = setInterval(() => setI((v) => (v + 1) % WATCHWORDS.length), 2600);
-    return () => clearInterval(t);
-  }, [off]);
-  const longest = WATCHWORDS.reduce((a, b) => (b.word.length > a.length ? b.word : a), "");
-  return (
-    <span className="relative inline-grid overflow-hidden align-bottom">
-      <span aria-hidden data-w={longest} className="invisible col-start-1 row-start-1 font-editorial italic before:content-[attr(data-w)]" />
-      <AnimatePresence mode="popLayout">
-        <motion.span
-          key={i}
-          initial={{ y: "105%" }}
-          animate={{ y: 0 }}
-          exit={{ y: "-105%" }}
-          transition={{ duration: 0.55, ease: EASE }}
-          className="col-start-1 row-start-1 whitespace-nowrap font-editorial italic"
-          style={{ color: WATCHWORDS[i].color }}
-        >
-          {WATCHWORDS[i].word}
+          {ROTATING[i]}
         </motion.span>
       </AnimatePresence>
     </span>
@@ -115,187 +77,65 @@ function WatchwordRoller() {
 const HERO_QUALIFIER = "Built for businesses doing $10k+ a month";
 
 // ─────────────────────────────── HERO ───────────────────────────────
-function Hero({ ready }: { ready: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-  // Default is the node network: it is drawn, not decoded, so it costs the
-  // browser nothing next to the hero's other running animations.
-  // ?bg=film|paths|dots|nodes still switches, for comparison. The query is
-  // read after hydration (the prerender has no URL to read, and the first
-  // client render must match it), in a layout effect so the override is in
-  // place before the first paint.
-  const [bg, setBg] = useState<HeroBgVariant>("nodes");
-  const [picker, setPicker] = useState(false);
-  useLayoutEffect(() => {
-    const q = new URLSearchParams(window.location.search);
-    if (!q.has("bg")) return;
-    const v = q.get("bg");
-    setBg(v === "film" || v === "paths" || v === "dots" ? v : "nodes");
-    setPicker(true);
-  }, []);
-
-  const line = (delay: number) => ({
-    initial: { y: "110%" },
-    animate: ready ? { y: 0 } : {},
-    transition: { duration: 0.9, ease: EASE, delay },
-  });
-
+// Everything a buyer needs sits on the first phone screen: the headline, one
+// outcome line, who it is for, and both buttons. The text is in the page's
+// HTML and visible at first paint; the lines settle a few pixels once (CSS,
+// transform only) and nothing fades with the scroll.
+function Hero() {
   return (
-    <section ref={ref} id="top" className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pb-16 pt-24 md:px-12">
-      <HeroBackground variant={bg} />
-      {picker && (
-        <div className="fixed left-1/2 top-24 z-[70] flex -translate-x-1/2 md:top-auto gap-1 rounded-full border-2 border-black bg-white p-1 shadow-[4px_4px_0_#0015D4] md:bottom-6">
-          {(["film", "paths", "dots", "nodes"] as const).map((v) => (
-            <button
-              key={v}
-              onClick={() => {
-                setBg(v);
-                window.history.replaceState(null, "", `?bg=${v}`);
-              }}
-              className={`rounded-full px-4 py-1.5 text-sm font-bold ${bg === v ? "bg-black text-white" : "text-black"}`}
-            >
-              {v}
-            </button>
-          ))}
-        </div>
-      )}
+    <section
+      id="top"
+      // The floating chat button stays out of the way for the whole hero.
+      data-chat-clear
+      className="relative overflow-hidden px-6 pb-10 pt-[6.5rem] md:px-12 md:pb-14 md:pt-36 lg:flex lg:min-h-[calc(100svh-5.5rem)] lg:flex-col lg:justify-center"
+    >
+      <HeroBackground variant="nodes" />
 
-      {/* dani-style color pops floating in the field */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <motion.div
-          className="absolute right-[12%] top-[18%] h-6 w-6 rounded-full bg-[#FFCB41]"
-          animate={{ y: [0, -18, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute left-[8%] top-[30%] hidden h-4 w-4 rounded-full bg-[#F32317] md:block"
-          animate={{ y: [0, 14, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-        />
-        <motion.div
-          className="absolute bottom-[28%] right-[22%] h-5 w-5 rounded-full bg-[#84DEF9]"
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
-        />
-        <motion.div
-          className="absolute bottom-[20%] left-[16%] hidden h-3.5 w-3.5 rounded-full bg-[#FF8FCA] md:block"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-        />
-      </div>
-
-      <motion.div
-        animate={{ y: [0, -10, 0], rotate: [0, 4, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute right-[7%] top-[30%] z-10 hidden xl:block"
-        aria-hidden
-      >
-        <Logo size={120} />
-      </motion.div>
-
-      <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto w-full max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={ready ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-black/15 bg-white/80 py-1.5 pl-1.5 pr-4 text-sm font-medium text-ink-body md:bg-white/60 md:backdrop-blur-md"
-        >
-          <Avatar size={30} ring="#0BB07B" />
-          <span className="h-2 w-2 animate-pulse rounded-full bg-[#0BB07B]" />
+      <div className="relative z-10 mx-auto w-full max-w-7xl">
+        <p className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-black/15 bg-white/80 py-1.5 pl-1.5 pr-4 text-sm font-medium text-ink-body md:mb-7">
+          <img
+            src={profilePicSmall}
+            alt=""
+            width={30}
+            height={30}
+            className="h-[30px] w-[30px] rounded-full object-cover object-top ring-2 ring-green"
+          />
+          <span className="h-2 w-2 rounded-full bg-green" aria-hidden />
           Available for new projects
-        </motion.div>
+        </p>
 
         <h1 className="font-display font-extrabold leading-[1.02] tracking-tight text-black text-[11.5vw] sm:text-[9vw] lg:text-[min(6.6rem,10.5vh)]">
-          <span className="block overflow-hidden pb-2 -mb-2">
-            <motion.span className="block" {...line(0.15)}>
-              I build with{" "}
-            </motion.span>
+          <span className="hero-rise block">I build with </span>
+          <span className="hero-rise block [--i:1]">
+            <RotatingWord />{" "}
           </span>
-          <span className="block overflow-hidden pb-3 -mb-3">
-            <motion.span className="block" {...line(0.28)}>
-              <RotatingWord />{" "}
-            </motion.span>
-          </span>
-          <span className="block overflow-hidden pb-2 -mb-2">
-            <motion.span className="block" {...line(0.41)}>
-              so you don't have to<span className="text-primary">.</span>
-            </motion.span>
+          <span className="hero-rise block [--i:2]">
+            so you don't have to<span className="text-primary">.</span>
           </span>
         </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          animate={ready ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: EASE, delay: 0.54 }}
-          className="mt-5 font-display text-xl font-bold tracking-tight text-black md:text-2xl"
-        >
-          Delivered with <WatchwordRoller />
-        </motion.p>
+        <p className="mt-4 max-w-2xl text-[17px] font-medium leading-normal text-black md:mt-7 md:text-xl md:leading-relaxed">
+          Websites, apps and AI automations that capture every enquiry, follow up in minutes and take repetitive work
+          off your team.
+        </p>
 
         {/* The qualifier: tells buyers who this is for before they scroll. */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={ready ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: EASE, delay: 0.62 }}
-          className="mt-4 inline-flex items-center gap-2 whitespace-nowrap font-mono text-[11px] font-semibold uppercase tracking-wide text-ink-body sm:gap-2.5 sm:text-xs sm:tracking-widest md:text-sm"
-        >
+        <p className="mt-3 inline-flex items-center gap-2 whitespace-nowrap font-mono text-[11px] font-semibold uppercase tracking-wide text-ink-body sm:gap-2.5 sm:text-xs sm:tracking-widest md:mt-4 md:text-sm">
           <span className="h-2 w-2 shrink-0 bg-primary" aria-hidden />
           {HERO_QUALIFIER}
-        </motion.p>
+        </p>
 
-        <div data-hero-row className="mt-9 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={ready ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.6, ease: EASE }}
-            className="max-w-[47.5rem]"
-          >
-            {/* Problem first, then the outcome, then how: a buyer should see
-                their own situation before they see a tool list. */}
-            <p className="text-lg font-semibold leading-snug text-black md:text-xl">
-              Leads going cold, hours lost to admin, tools that don't talk to each other. I fix the problems quietly
-              costing your business time and revenue.
-            </p>
-            <p className="mt-3 text-base leading-relaxed text-ink-body md:text-lg">
-              I design and build websites, apps and AI-powered automations that capture every enquiry, follow up in
-              minutes and take repetitive work off your team, built with Claude Code, n8n and Make.com. Everything is
-              delivered in your own accounts, fully documented and built to keep running long after handover.
-            </p>
-            <p className="mt-4 font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">
-              Denver <span className="text-green-text">Emerald</span> Peter · Founder, Denver NoCode
-            </p>
-          </motion.div>
+        <CtaPair className="mt-6 md:mt-9" />
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={ready ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.75, ease: EASE }}
-            className="flex w-full shrink-0 flex-col items-start md:w-auto md:items-end md:pr-48"
-          >
-            <CtaPair stack className="w-full md:w-auto">
-              <a
-                href="#websites"
-                className="tap inline-flex items-center gap-1.5 self-start text-[15px] font-bold text-ink transition-colors hover:text-cobalt md:self-end"
-              >
-                See the work <ArrowDown className="h-4 w-4" aria-hidden />
-              </a>
-            </CtaPair>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={ready ? { opacity: 1 } : {}}
-        transition={{ delay: 1.4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-ink-label"
-      >
-        <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}>
-          <ArrowDown className="h-5 w-5" />
-        </motion.div>
-      </motion.div>
+        <dl className="mt-9 grid max-w-2xl grid-cols-3 gap-4 border-t border-black/15 pt-6 md:mt-12 md:gap-10 md:pt-7">
+          {FACT_STATS.map((s) => (
+            <div key={s.label} className="flex flex-col-reverse">
+              <dt className="mt-1 text-[13px] leading-snug text-ink-label md:text-sm">{s.label}</dt>
+              <dd className="whitespace-nowrap font-display text-2xl font-extrabold text-black md:text-4xl">{s.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </section>
   );
 }
@@ -303,41 +143,17 @@ function Hero({ ready }: { ready: boolean }) {
 // ────────────────────────────── CTA ─────────────────────────────────
 function FinalCTA() {
   return (
-    <section className="section-y relative overflow-hidden bg-black px-6 text-on-dark md:px-12">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <motion.div
-          className="absolute left-[10%] top-[20%] h-5 w-5 rounded-full bg-[#FFCB41]"
-          animate={{ y: [0, -14, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute right-[14%] top-[30%] h-4 w-4 rounded-full bg-[#FF8FCA]"
-          animate={{ y: [0, 12, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
-        />
-        <motion.div
-          className="absolute bottom-[24%] left-[20%] h-4 w-4 rounded-full bg-[#84DEF9]"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
-        />
-      </div>
-
-      <div className="relative mx-auto max-w-5xl text-center">
-        <SplitWords
-          as="h2"
-          text="Ready to automate your business?"
-          className="flex flex-wrap justify-center type-h2 text-white"
-        />
-        <Reveal delay={0.3}>
-          <div className="mt-8 flex flex-col items-center gap-4">
-            <Avatar size={72} ring="#0015D4" float />
-            <p className="mx-auto max-w-xl type-body text-on-dark-body">
-              Tell me what eats your week. You get a plan and a fixed price within 24 hours.
-            </p>
-          </div>
+    <section className="section-y bg-black px-6 text-on-dark md:px-12">
+      <div className="mx-auto max-w-5xl text-center">
+        <Reveal>
+          <h2 className="type-h2 text-balance text-white">
+            Ready to <span className="font-editorial font-normal text-sky">automate</span> your business?
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl type-body text-on-dark-body">
+            Tell me what eats your week. You get a plan and a fixed price within 24 hours.
+          </p>
         </Reveal>
-
-        <Reveal delay={0.45} className="mt-10">
+        <Reveal delay={0.08} className="mt-9">
           <CtaPair tone="dark" align="center" />
         </Reveal>
       </div>
@@ -346,39 +162,30 @@ function FinalCTA() {
 }
 
 // ─────────────────────────────── PAGE ───────────────────────────────
+// Order: what I build, the work, how it runs, what clients say, prices, how
+// to start. The page scrolls natively; nothing shears, loops or drifts.
 export default function Home() {
-  const [ready, setReady] = useState(false);
-  useLenis();
-
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Preloader onDone={() => setReady(true)} />
       <ScrollProgress />
       <CustomCursor />
       <SkipLink />
       <SiteNav />
 
       <main id="main" tabIndex={-1}>
-        {/* The hero sits outside VelocitySkew on purpose: a skew is not an
-            axis-aligned transform, so shearing a playing <video> every scroll
-            frame makes the film visibly wobble. */}
-        <Hero ready={ready} />
+        <Hero />
         <ProofStrip />
-        <VelocitySkew>
-          <ToolStack />
-          <ClaudeFullStack />
-          <BigMarquee items={["Claude Code", "Websites", "Apps", "AI Products"]} accent="#0015D4" />
-          <WebProjectsSection />
-          <AutomationStory num="03" />
-          <FeaturedWork />
-          <TestimonialCinema />
-          <WrittenReviews />
-          <Pricing num="06" />
-          <HireMe />
-          <FAQSection />
-          <BigMarquee items={["Let's build", "Your system", "Starts here"]} accent="#FFCB41" />
-          <FinalCTA />
-        </VelocitySkew>
+        <ClaudeFullStack />
+        <WebProjectsSection />
+        <FeaturedWork />
+        <AutomationStory num="04" />
+        <ToolStack />
+        <TestimonialCinema />
+        <WrittenReviews />
+        <Pricing num="06" />
+        <HireMe />
+        <FAQSection />
+        <FinalCTA />
       </main>
 
       <Footer />

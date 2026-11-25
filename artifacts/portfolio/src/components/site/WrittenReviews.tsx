@@ -9,15 +9,11 @@ import { writtenReviews } from "@/data/portfolio";
  */
 export function WrittenReviews() {
   return (
-    <section aria-label="Written client reviews" className="px-6 pb-16 md:px-12 md:pb-24">
+    <section aria-label="Written client reviews" className="px-6 pb-16 md:px-12 md:pb-24" data-chat-clear>
       <div className="mx-auto max-w-6xl space-y-8">
         {writtenReviews.map((r, i) => (
-          <Reveal key={r.name} delay={i * 0.08}>
-            <figure className="relative overflow-hidden rounded-3xl border-2 border-black bg-black text-white shadow-2xl">
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-primary/30 blur-3xl md:h-72 md:w-72"
-              />
+          <Reveal key={r.name} delay={i * 0.04}>
+            <figure className="relative overflow-hidden rounded-3xl border-2 border-black bg-black text-white">
               <div className="grid gap-8 p-7 md:grid-cols-[260px_1fr] md:gap-12 md:p-12">
                 <div className="mx-auto w-44 md:mx-0 md:w-full">
                   <img

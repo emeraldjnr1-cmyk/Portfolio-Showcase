@@ -446,7 +446,7 @@ function Header({ num }: { num: string }) {
 
 function Closing() {
   return (
-    <div className="mx-auto mt-20 grid max-w-7xl gap-10 border-t-2 border-black pt-12 md:mt-28 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-end md:pt-16">
+    <div className="mx-auto mt-16 grid max-w-7xl gap-10 border-t-2 border-black pt-12 md:mt-16 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-end md:pt-16">
       <Reveal>
         <p className="font-display text-4xl font-extrabold leading-[1.02] tracking-tight text-black md:text-6xl">
           Two minutes. One tap. <span className="font-editorial font-normal text-primary">Even after hours.</span>

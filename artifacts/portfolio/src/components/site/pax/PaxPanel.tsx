@@ -206,8 +206,8 @@ export default function PaxPanel({
 
       {view === "chat" ? (
         <>
-          {/* Messages. data-lenis-prevent lets this scroll natively under Lenis. */}
-          <div ref={listRef} data-lenis-prevent aria-live="polite" className="flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-5">
+          {/* Messages */}
+          <div ref={listRef} aria-live="polite" className="flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-5">
             <PaxBubble>{GREETING}</PaxBubble>
             {messages.length === 0 && (
               <div className="flex flex-wrap gap-2 pl-9">
@@ -272,7 +272,7 @@ export default function PaxPanel({
                   }
                 }}
                 rows={1}
-                data-lenis-prevent
+               
                 placeholder="Ask Pax anything about your project"
                 aria-label="Message Pax"
                 className="max-h-32 min-h-[1.75rem] flex-1 resize-none bg-transparent py-1 text-base leading-snug text-black outline-none placeholder:text-black/40 [field-sizing:content]"
@@ -410,7 +410,7 @@ function Handoff({
     "w-full rounded-xl border-2 border-black bg-white px-3.5 py-2.5 text-base text-black outline-none placeholder:text-black/40 focus:border-primary";
 
   return (
-    <div data-lenis-prevent className="flex-1 overflow-y-auto px-5 py-5">
+    <div className="flex-1 overflow-y-auto px-5 py-5">
       <button onClick={onBack} className="inline-flex items-center gap-1.5 text-sm font-semibold text-black/60 hover:text-black">
         <ArrowLeft className="h-4 w-4" /> Back to chat
       </button>

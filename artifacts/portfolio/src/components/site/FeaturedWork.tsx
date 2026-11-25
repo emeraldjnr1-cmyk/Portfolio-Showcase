@@ -1,14 +1,23 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowUpRight, Play, X } from "lucide-react";
+import { ArrowUpRight, Check, Play, Plus, X } from "lucide-react";
+import { Reveal } from "@/components/fx/SplitWords";
+import { buttonClass } from "@/components/site/Button";
 import { SectionHeader } from "@/components/site/SectionHeader";
-import { MaskReveal } from "@/components/fx/ScrollFX";
-import { featured, archive, TAG_STYLE, FeaturedProject, WorkflowTag } from "@/data/portfolio";
+import { featured, archive, TAG_STYLE, ArchiveItem, FeaturedProject, WorkflowTag } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/** A featured card: autoplays its 60s cinematic video when scrolled into view. */
+// Home shows six flagship systems; the rest open with "See all systems".
+const SHOWN = 6;
+
+/**
+ * A featured card: plays its film, muted, while it is on screen.
+ * On a phone the first card is full size and the others become compact rows
+ * (cover on the left, name and result on the right), so six systems take a
+ * couple of screens instead of six.
+ */
 function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index: number; onOpen: (p: FeaturedProject) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -16,6 +25,7 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
   const [videoOk, setVideoOk] = useState(true);
   const style = TAG_STYLE[project.tag];
   const hasFilm = Boolean(project.video);
+  const row = index > 0;
 
   useEffect(() => {
     const v = videoRef.current;
@@ -25,90 +35,82 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
   }, [inView, hasFilm]);
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 80 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8% 0px" }}
-      transition={{ duration: 0.9, ease: EASE, delay: (index % 2) * 0.12 }}
-      className="group relative cursor-pointer rounded-2xl"
-      onClick={() => onOpen(project)}
-      data-cursor-label="Play"
-      // A div with onClick is invisible to keyboards and screen readers, so
-      // the lightbox could only ever be opened with a mouse.
-      role="button"
-      tabIndex={0}
-      aria-label={`Open ${project.title} preview`}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onOpen(project);
-        }
-      }}
-      data-cursor="hover"
-    >
-      <div
-        style={{ "--pop": style.glow } as CSSProperties}
-        className="relative overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-[border-color,box-shadow] duration-200 group-hover:border-black group-hover:shadow-[8px_8px_0_var(--pop)]"
-      >
-        <MaskReveal>
-          <div className="relative aspect-video overflow-hidden bg-[#DDDBD2]">
-            {hasFilm && videoOk ? (
-              <video
-                ref={videoRef}
-                src={project.video}
-                poster={project.poster}
-                muted
-                loop
-                playsInline
-                preload="none"
-                onError={() => setVideoOk(false)}
-                className="h-full w-full transform-gpu object-cover"
-                style={{ willChange: "auto", backfaceVisibility: "hidden" }}
-              />
-            ) : (
-              <img
-                src={project.img}
-                alt={project.title}
-                loading="lazy"
-                className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
-              />
-            )}
+    <div ref={ref} className="h-full">
+      <Reveal className="h-full">
+        <div
+          className="group relative h-full cursor-pointer rounded-2xl"
+          onClick={() => onOpen(project)}
+          data-cursor-label="Play"
+          // A div with onClick is invisible to keyboards and screen readers, so
+          // the lightbox could only ever be opened with a mouse.
+          role="button"
+          tabIndex={0}
+          aria-label={`Open ${project.title} preview`}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onOpen(project);
+            }
+          }}
+          data-cursor="hover"
+        >
+          <div
+            style={{ "--pop": style.glow } as CSSProperties}
+            className={`relative h-full overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-[border-color,box-shadow,transform] duration-200 group-hover:border-black group-hover:shadow-[8px_8px_0_var(--pop)] group-active:scale-[0.99] ${row ? "flex sm:flex-col" : "flex flex-col"}`}
+          >
+            <div className={`relative aspect-video shrink-0 overflow-hidden bg-[#DDDBD2] ${row ? "max-sm:aspect-auto max-sm:w-[7.25rem]" : ""}`}>
+              {hasFilm && videoOk ? (
+                <video
+                  ref={videoRef}
+                  src={project.video}
+                  poster={project.poster}
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                  onError={() => setVideoOk(false)}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <img
+                  src={project.img}
+                  alt=""
+                  width={1200}
+                  height={675}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                />
+              )}
 
-            {hasFilm && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/25 group-hover:opacity-100">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white scale-75 transition-transform duration-400 group-hover:scale-100 shadow-lg">
-                  <Play className="h-6 w-6 text-black fill-black" />
+              {hasFilm && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-[background-color,opacity] duration-200 group-hover:bg-black/25 group-hover:opacity-100">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg">
+                    <Play className="h-6 w-6 fill-black text-black" aria-hidden />
+                  </div>
                 </div>
+              )}
+            </div>
+
+            <div className={`flex flex-col items-start p-5 flex-1 md:p-6 ${row ? "max-sm:min-w-0 max-sm:flex-1 max-sm:p-3.5" : ""}`}>
+              <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold ${style.chip} ${row ? "max-sm:px-2 max-sm:py-0.5 max-sm:text-[11px]" : ""}`}>
+                <span className={`h-1.5 w-1.5 rounded-full ${style.dot}`} />
+                {project.tag}
               </div>
-            )}
-
-            <div className="absolute right-4 top-4 rounded-full bg-black px-2.5 py-1 font-display text-xs font-bold text-white">
-              {String(index + 1).padStart(2, "0")}
-            </div>
-            {/* bg is already near-opaque; a backdrop-filter over a playing
-                video is one of the most expensive things a phone can composite */}
-            <div className="absolute bottom-3 left-3 rounded-full bg-black/85 px-3 py-1.5 text-xs font-bold text-[#FFCB41]">
-              {project.stat}
+              <h3 className={`mt-3 font-display text-xl font-bold text-black transition-colors group-hover:text-primary ${row ? "max-sm:mt-2 max-sm:text-base max-sm:leading-snug" : ""}`}>
+                {project.title}
+              </h3>
+              <p className={`mt-2 text-sm leading-relaxed text-ink-body ${row ? "max-sm:hidden" : ""}`}>{project.desc}</p>
+              {/* The result, as the client would say it. */}
+              <p className={`mt-auto flex items-start gap-1.5 pt-3 text-sm font-bold text-ink ${row ? "max-sm:pt-1.5 max-sm:text-[13px] max-sm:leading-snug" : ""}`}>
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-text" aria-hidden />
+                {project.stat}
+              </p>
             </div>
           </div>
-        </MaskReveal>
-
-        <div className="flex items-start justify-between gap-4 p-6">
-          <div>
-            <div className={`mb-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold ${style.chip}`}>
-              <span className={`h-1.5 w-1.5 rounded-full ${style.dot}`} />
-              {project.tag}
-            </div>
-            <h3 className="font-display text-xl font-bold text-black transition-colors group-hover:text-primary">
-              {project.title}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink-body line-clamp-2">{project.desc}</p>
-          </div>
-          <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-ink-label transition-all duration-300 group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1" />
         </div>
-      </div>
-    </motion.div>
+      </Reveal>
+    </div>
   );
 }
 
@@ -137,10 +139,8 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
     };
   }, [project, onClose]);
 
-  // Portalled to <body> on purpose. This overlay sits inside VelocitySkew,
-  // whose skew transform makes it the containing block for position: fixed,
-  // so an inline overlay would size itself to the whole document and fly off
-  // as soon as the page moved.
+  // Portalled to <body> on purpose, so no transformed ancestor can ever
+  // become the containing block for this position: fixed overlay.
   if (!mounted) return null;
   return createPortal(
     <AnimatePresence>
@@ -156,10 +156,10 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
           onClick={onClose}
         >
           <motion.div
-            initial={{ scale: 0.92, y: 30 }}
+            initial={{ scale: 0.97, y: 8 }}
             animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.94, y: 20 }}
-            transition={{ duration: 0.45, ease: EASE }}
+            exit={{ scale: 0.98, y: 4 }}
+            transition={{ duration: 0.2, ease: EASE }}
             className="relative w-full max-w-5xl overflow-hidden rounded-2xl border-2 border-white/20 bg-[#F6F5F1]"
             onClick={(e) => e.stopPropagation()}
           >
@@ -213,101 +213,98 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
 
 const FILTERS: Array<WorkflowTag | "All"> = ["All", "AI Agents", "n8n", "Make.com", "Airtable"];
 
-/** The expandable archive grid, revealed by "View all systems". */
+// Everything not on a card above: the remaining flagship systems first, then
+// the wider archive.
+const MORE: ArchiveItem[] = [
+  ...featured.slice(SHOWN).map((f) => ({ img: f.img, title: f.title, desc: f.desc, tag: f.tag })),
+  ...archive,
+];
+
+/** The archive grid, opened by "See all systems". */
 function ViewAllArchive() {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<WorkflowTag | "All">("All");
 
-  const items = filter === "All" ? archive : archive.filter((a) => a.tag === filter);
+  const items = filter === "All" ? MORE : MORE.filter((a) => a.tag === filter);
 
   return (
-    <div className="mt-16">
+    <div className="mt-10 md:mt-12">
       <div className="flex justify-center">
-        <motion.button
+        <button
+          type="button"
           onClick={() => setOpen((v) => !v)}
-          className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border-2 border-black px-8 py-4 font-display text-sm font-bold text-black transition-colors"
-          whileTap={{ scale: 0.97 }}
+          aria-expanded={open}
+          aria-controls="all-systems"
+          className={buttonClass({ variant: "outline", full: true })}
           data-cursor="hover"
         >
-          <span className="absolute inset-0 origin-bottom scale-y-0 bg-black transition-transform duration-250 ease-out group-hover:scale-y-100" />
-          <span className="relative z-10 transition-colors group-hover:text-white">
-            {open ? "Close archive" : "See all systems"}
-          </span>
-          <motion.span
-            className="relative z-10 transition-colors group-hover:text-white"
-            animate={{ rotate: open ? 45 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            +
-          </motion.span>
-        </motion.button>
+          {open ? "Close the list" : "See all systems"}
+          <Plus className={`h-5 w-5 shrink-0 transition-transform duration-200 ease-out ${open ? "rotate-45" : ""}`} aria-hidden />
+        </button>
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {open && (
           <motion.div
+            id="all-systems"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: 0.3, ease: EASE }}
             className="overflow-hidden"
           >
-            <div className="mt-12 flex flex-wrap justify-center gap-3">
+            <div className="mt-10 flex flex-wrap justify-center gap-2 sm:gap-3">
               {FILTERS.map((f) => {
                 const active = filter === f;
-                const count = f === "All" ? archive.length : archive.filter((a) => a.tag === f).length;
+                const count = f === "All" ? MORE.length : MORE.filter((a) => a.tag === f).length;
                 return (
                   <button
                     key={f}
+                    type="button"
                     onClick={() => setFilter(f)}
+                    aria-pressed={active}
                     className={`relative min-h-11 rounded-full border-2 px-5 py-2 text-sm font-bold transition-colors duration-200 ${
                       active
                         ? "border-black bg-black text-white"
                         : "border-black/15 bg-white text-ink-label hover:border-black/50 hover:text-black"
                     }`}
                   >
-                    {f} <span className="ml-1 text-xs opacity-60">{count}</span>
+                    {f} <span className={`ml-1 text-xs ${active ? "text-on-dark-label" : "text-ink-label"}`}>{count}</span>
                   </button>
                 );
               })}
             </div>
 
-            <motion.div layout className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              <AnimatePresence mode="popLayout">
-                {items.map((item) => {
-                  const style = TAG_STYLE[item.tag];
-                  return (
-                    <motion.div
-                      key={item.img}
-                      layout
-                      initial={{ opacity: 0, scale: 0.9, y: 30 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.35, ease: EASE }}
-                      className="group overflow-hidden rounded-xl border-2 border-black/10 bg-white transition-all hover:border-black hover:shadow-[6px_6px_0_rgba(0,21,212,0.15)]"
-                    >
-                      <div className="relative aspect-[4/3] overflow-hidden bg-[#DDDBD2]">
-                        <img
-                          src={item.img}
-                          alt={item.title}
-                          loading="lazy"
-                          className="h-full w-full object-cover object-top transition-all duration-600 group-hover:scale-105"
-                        />
-                        <span className={`absolute left-3 top-3 rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${style.chip}`}>
-                          {item.tag}
-                        </span>
-                      </div>
-                      <div className="p-5">
-                        <h4 className="font-display text-base font-bold text-black group-hover:text-primary transition-colors">
-                          {item.title}
-                        </h4>
-                        <p className="mt-1.5 text-sm text-ink-body line-clamp-2">{item.desc}</p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
-            </motion.div>
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
+              {items.map((item) => {
+                const style = TAG_STYLE[item.tag];
+                return (
+                  <div
+                    key={item.img}
+                    className="group overflow-hidden rounded-xl border-2 border-black/10 bg-white transition-[border-color,box-shadow] duration-200 hover:border-black hover:shadow-[6px_6px_0_rgba(0,21,212,0.15)]"
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden bg-[#DDDBD2]">
+                      <img
+                        src={item.img}
+                        alt=""
+                        width={800}
+                        height={600}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover object-top"
+                      />
+                      <span className={`absolute left-2 top-2 rounded-full border px-2.5 py-0.5 text-[11px] font-bold sm:left-3 sm:top-3 ${style.chip}`}>
+                        {item.tag}
+                      </span>
+                    </div>
+                    <div className="p-3.5 sm:p-5">
+                      <h4 className="font-display text-[15px] font-bold leading-snug text-black sm:text-base">{item.title}</h4>
+                      <p className="mt-1.5 hidden text-sm text-ink-body sm:block">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -322,7 +319,7 @@ export function FeaturedWork() {
     <section id="work" className="section-y relative border-t border-black/10 px-6 md:px-12">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
-          num="04"
+          num="03"
           label="Automations and AI agents"
           title="Featured systems. Real businesses. Zero manual work."
           lead="The flagship builds get the film treatment. Every card opens the real system, tools and outcome included."
@@ -340,8 +337,8 @@ export function FeaturedWork() {
           </div>
         </SectionHeader>
 
-        <div className="grid gap-8 md:grid-cols-2">
-          {featured.map((p, i) => (
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+          {featured.slice(0, SHOWN).map((p, i) => (
             <VideoCard key={p.id} project={p} index={i} onOpen={setOpenProject} />
           ))}
         </div>

@@ -11,8 +11,9 @@ const PAX_AVATAR = "/pax/pax-96.webp";
  *
  * Phone: ONE button. Tapping it offers the two routes, WhatsApp (Emerald) or
  * Ask Pax (the AI assistant), so nothing is stacked over the page. It steps
- * aside while a page button (`data-chat-clear`) or the footer is on screen,
- * and keeps clear of the home indicator.
+ * aside while the visitor scrolls down (reading), while a page button or a
+ * marked section (`data-chat-clear`: the hero, the price row, the written
+ * review) or the footer is on screen, and keeps clear of the home indicator.
  *
  * Desktop: Ask Pax with its label always showing, so the face is never taken
  * for Emerald, and a WhatsApp button under it. Both step aside over the footer.
@@ -24,7 +25,34 @@ export function ChatLauncher({ onAskPax, onWarm }: { onAskPax: () => void; onWar
   const [menu, setMenu] = useState(false);
   const [overCta, setOverCta] = useState(false);
   const [overFooter, setOverFooter] = useState(false);
+  // Phone: true while the visitor is scrolling down the page, reading.
+  const [reading, setReading] = useState(false);
   const phoneRef = useRef<HTMLDivElement>(null);
+
+  // On a phone the button would sit on top of whatever is being read, so it
+  // behaves like the header: it leaves while the page moves down and comes
+  // back the moment the visitor scrolls up (or reaches the top). Passive
+  // listener, one check per frame, and it only ever flips a boolean.
+  useEffect(() => {
+    let last = window.scrollY;
+    let frame = 0;
+    const check = () => {
+      frame = 0;
+      const y = window.scrollY;
+      const moved = y - last;
+      if (Math.abs(moved) < 6) return;
+      last = y;
+      setReading(moved > 0 && y > 240);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(check);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof IntersectionObserver !== "function") return;
@@ -58,8 +86,8 @@ export function ChatLauncher({ onAskPax, onWarm }: { onAskPax: () => void; onWar
     };
   }, [menu]);
   useEffect(() => {
-    if (overCta || overFooter) setMenu(false);
-  }, [overCta, overFooter]);
+    if (overCta || overFooter || reading) setMenu(false);
+  }, [overCta, overFooter, reading]);
 
   // Reduced motion: the button fades, it does not travel. Stepping aside never
   // takes it out of the Tab order: a keyboard user who reaches it (after the
@@ -76,7 +104,7 @@ export function ChatLauncher({ onAskPax, onWarm }: { onAskPax: () => void; onWar
       {/* Phone: one button, two choices */}
       <div
         ref={phoneRef}
-        className={`fixed bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] right-[calc(1rem+env(safe-area-inset-right,0px))] z-30 flex flex-col items-end gap-3 md:hidden ${move} ${overCta || overFooter ? aside : here}`}
+        className={`fixed bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] right-[calc(1rem+env(safe-area-inset-right,0px))] z-30 flex flex-col items-end gap-3 md:hidden ${move} ${overCta || overFooter || reading ? aside : here}`}
       >
         <div
           id="chat-choices"

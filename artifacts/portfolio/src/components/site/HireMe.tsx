@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { IconType } from "react-icons";
 import { SiUpwork, SiWise, SiPaypal } from "react-icons/si";
@@ -8,8 +7,6 @@ import { Card } from "@/components/site/Card";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { FACT_STATS } from "@/data/facts";
 import { UPWORK } from "@/data/portfolio";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 // Methods only, never account details. Payment instructions belong on an
 // invoice sent to a named client, not on a public page where anyone could
@@ -70,7 +67,7 @@ export function HireMe() {
           </Reveal>
 
           {/* Direct: the route that keeps the platform fee out of the price */}
-          <Reveal delay={0.1} className="h-full">
+          <Reveal delay={0.05} className="h-full">
             <Card tone="cobalt" pad="none" className="flex h-full flex-col overflow-hidden">
               <div className="flex flex-1 flex-col p-6 md:p-8">
                 <span className="self-start rounded-full bg-white/15 px-3 py-1 type-label text-white">No platform fee</span>
@@ -87,13 +84,9 @@ export function HireMe() {
               <div className="flex flex-col gap-3 border-t border-white/20 bg-black/15 px-6 py-5 md:px-8">
                 <span className="type-label text-on-dark-body">Pay however suits you</span>
                 <ul className="flex flex-wrap items-center gap-2.5">
-                  {PAY_METHODS.map((m, i) => (
-                    <motion.li
+                  {PAY_METHODS.map((m) => (
+                    <li
                       key={m.name}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.1 + i * 0.07, duration: 0.4, ease: EASE }}
                       className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-[13px] font-semibold"
                     >
                       {m.Icon ? (
@@ -104,7 +97,7 @@ export function HireMe() {
                         </span>
                       )}
                       {m.name}
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
               </div>

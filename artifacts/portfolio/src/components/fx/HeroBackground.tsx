@@ -120,7 +120,7 @@ function FlowingPaths({ animate }: { animate: boolean }) {
 // ── Shared canvas plumbing ──────────────────────────────────────────────
 type Draw = (ctx: CanvasRenderingContext2D, w: number, h: number, mouse: { x: number; y: number }, t: number) => void;
 
-function CanvasBg({ draw, animate }: { draw: Draw; animate: boolean }) {
+function CanvasBg({ draw, animate, respond = false }: { draw: Draw; animate: boolean; /** In still mode, redraw when the pointer moves. */ respond?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inView = useInView(canvasRef, { margin: "0px" });
 
@@ -176,13 +176,34 @@ function CanvasBg({ draw, animate }: { draw: Draw; animate: boolean }) {
       draw(ctx, w, h, mouse, 0);
     }
 
+    // Still mode: no loop. One frame is drawn when the pointer moves, so the
+    // network answers the cursor and is otherwise at rest.
+    let queued = 0;
+    const still = (e: PointerEvent) => {
+      if (e.type === "pointermove") onMove(e);
+      else onLeave();
+      if (queued) return;
+      queued = requestAnimationFrame(() => {
+        queued = 0;
+        draw(ctx, w, h, mouse, 0);
+      });
+    };
+    const answers = !animate && inView && respond;
+    if (answers) {
+      window.addEventListener("pointermove", still, { passive: true });
+      document.addEventListener("pointerleave", still);
+    }
+
     return () => {
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(queued);
+      window.removeEventListener("pointermove", still);
+      document.removeEventListener("pointerleave", still);
       ro.disconnect();
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onLeave);
     };
-  }, [draw, animate, inView]);
+  }, [draw, animate, inView, respond]);
 
   return <canvas ref={canvasRef} className="h-full w-full" />;
 }
@@ -316,20 +337,46 @@ function useNodesDraw(): Draw {
 }
 
 /**
- * Hero backdrop. Pointer-events off, sits under the content, and never
- * animates on phones or for reduced-motion users.
+ * Hero backdrop. Pointer-events off and under the content.
+ *
+ * "nodes" (the home hero) is a still drawing: no loop, nothing moving behind
+ * the words. With a mouse it lights the nodes near the cursor, one frame per
+ * pointer move. It shows from large screens up only, faded out toward the
+ * left so the headline sits on clean bone.
  */
 export function HeroBackground({ variant }: { variant: HeroBgVariant }) {
   const animate = useMotionAllowed();
   const dots = useDotsDraw();
   const nodes = useNodesDraw();
+  const [mouse, setMouse] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const apply = () => setMouse(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  if (variant === "nodes") {
+    return (
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0 hidden lg:block"
+        style={{
+          maskImage: "linear-gradient(to right, transparent 46%, #000 78%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 46%, #000 78%)",
+        }}
+      >
+        <CanvasBg draw={nodes} animate={false} respond={mouse && animate} />
+      </div>
+    );
+  }
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
       {variant === "film" && <Film />}
       {variant === "paths" && <FlowingPaths animate={animate} />}
       {variant === "dots" && <CanvasBg draw={dots} animate={animate} />}
-      {variant === "nodes" && <CanvasBg draw={nodes} animate={animate} />}
     </div>
   );
 }

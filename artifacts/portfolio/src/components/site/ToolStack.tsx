@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import type { IconType } from "react-icons";
 import {
   SiClaude, SiN8N, SiMake, SiZapier, SiAirtable, SiOpenai, SiGooglegemini, SiElevenlabs,
@@ -143,10 +143,11 @@ const CATEGORIES: Category[] = [
 const LIGHT_ON = new Set(["#0015D4", "#8B5CF6"]);
 
 function ToolMark({ tool, i }: { tool: Tool; i: number }) {
-  if (tool.Icon) return <tool.Icon className="h-7 w-7" />;
+  if (tool.Icon) return <tool.Icon className="h-6 w-6 md:h-7 md:w-7" aria-hidden />;
   return (
     <span
-      className="flex h-7 w-7 items-center justify-center rounded-md text-[11px] font-extrabold leading-none"
+      aria-hidden
+      className="flex h-6 w-6 items-center justify-center rounded-md text-[10px] md:h-7 md:w-7 md:text-[11px] font-extrabold leading-none"
       style={{ background: POPS[i % POPS.length], color: "#0B0B0B" }}
     >
       {tool.mark}
@@ -159,120 +160,66 @@ export function ToolStack() {
   const cat = CATEGORIES[active];
 
   return (
-    <section id="stack" className="section-y relative overflow-hidden border-y border-black bg-black px-6 text-on-dark md:px-12">
-      {/* ghost word behind, same trick as the proof section */}
-      <div aria-hidden className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 select-none font-display text-[15vw] font-extrabold leading-none text-white/[0.035]">
-        STACK
-      </div>
-
-      <div className="relative mx-auto max-w-7xl">
+    <section id="stack" className="section-y-sm border-y border-black bg-black px-6 text-on-dark md:px-12">
+      <div className="mx-auto max-w-7xl">
         <SectionHeader tone="dark" label="The toolkit" title="Pick a job. See what I build it with." className="!mb-0" />
 
         {/* category pills */}
-        <div className="mt-8 flex flex-wrap items-center gap-2 md:mt-10 md:gap-3">
+        <div className="mt-8 flex flex-wrap items-center gap-2 md:gap-3">
           {CATEGORIES.map((c, i) => {
             const on = i === active;
             return (
               <button
                 key={c.id}
+                type="button"
                 onClick={() => setActive(i)}
                 data-cursor="hover"
                 aria-pressed={on}
-                className="relative min-h-11 rounded-full px-5 font-display text-sm font-bold transition-colors md:text-base"
-                style={{ color: on ? (LIGHT_ON.has(c.accent) ? "#FFFFFF" : "#0B0B0B") : "rgba(255,255,255,0.78)" }}
+                className={`min-h-11 rounded-full border px-4 font-display text-sm font-bold transition-[background-color,border-color,color,transform] duration-150 ease-out active:scale-[0.97] md:px-5 md:text-base ${
+                  on ? "border-transparent" : "border-white/20 hover:border-white/50"
+                }`}
+                style={
+                  on
+                    ? { background: c.accent, color: LIGHT_ON.has(c.accent) ? "#FFFFFF" : "#0B0B0B" }
+                    : { color: "rgba(255,255,255,0.78)" }
+                }
               >
-                {on && (
-                  <motion.span
-                    layoutId="stack-pill"
-                    className="absolute inset-0 rounded-full"
-                    style={{ background: c.accent }}
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  />
-                )}
-                <span className="relative z-10 whitespace-nowrap">{c.label}</span>
+                <span className="whitespace-nowrap">{c.label}</span>
               </button>
             );
           })}
         </div>
 
-        {/* tools */}
-        <AnimatePresence mode="wait">
-          {/* min-height holds the box open during the swap, otherwise the
-              page below jumps while one set exits and the next enters. */}
+        {/* tools: the box keeps the height of the fullest set, so the page
+            below never jumps when a shorter set is picked. */}
+        <div className="mt-8 min-h-[500px] sm:min-h-[300px] lg:min-h-[230px]">
           <motion.div
             key={cat.id}
-            initial="hide"
-            animate="show"
-            exit="out"
-            className="mt-10 min-h-[520px] sm:min-h-[420px] lg:min-h-[360px]"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
           >
-            <motion.p
-              variants={{
-                hide: { opacity: 0, y: 12 },
-                show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-                out: { opacity: 0, y: -8, transition: { duration: 0.2 } },
-              }}
-              className="font-editorial text-xl text-on-dark-body md:text-2xl"
-            >
-              {cat.blurb}
-            </motion.p>
+            <p className="font-editorial text-xl text-on-dark-body md:text-2xl">{cat.blurb}</p>
 
-            <motion.div
-              variants={{
-                hide: {},
-                show: { transition: { staggerChildren: 0.045, delayChildren: 0.08 } },
-                out: { transition: { staggerChildren: 0.015, staggerDirection: -1 } },
-              }}
-              className="mt-8 flex flex-wrap items-center gap-3"
-            >
+            <ul className="mt-6 flex flex-wrap items-center gap-2.5 md:gap-3">
               {cat.tools.map((t, i) => (
-                <motion.div
+                <li
                   key={`${cat.id}-${t.name}`}
-                  variants={{
-                    hide: { opacity: 0, y: 26, scale: 0.75, rotate: -8 },
-                    show: {
-                      opacity: 1, y: 0, scale: 1, rotate: 0,
-                      transition: { type: "spring", stiffness: 320, damping: 20 },
-                    },
-                    out: { opacity: 0, scale: 0.9, y: -12, transition: { duration: 0.18 } },
-                  }}
-                  whileHover={{ y: -6, scale: 1.06 }}
-                  data-cursor="hover"
-                  // No backdrop-blur here on purpose: over a solid black panel
-                  // it is visually indistinguishable, but every chip forces its
-                  // own backdrop snapshot each frame while the page scrolls.
-                  className="group flex items-center gap-3 rounded-2xl border border-white/12 bg-white/[0.04] px-5 py-3.5 transition-colors hover:border-white/35"
-                  style={{ willChange: "transform" }}
+                  className="flex items-center gap-2.5 rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3 md:gap-3 md:px-5 md:py-3.5"
                 >
-                  <span className="block text-on-dark-body transition-all duration-300 group-hover:scale-110 group-hover:text-white">
+                  <span className="block text-on-dark-body">
                     <ToolMark tool={t} i={i} />
                   </span>
-                  <span className="font-display text-sm font-bold tracking-tight whitespace-nowrap md:text-[15px]">
-                    {t.name}
-                  </span>
-                  {t.name === "Claude Code" && (
-                    <span
-                      className="ml-0.5 h-1.5 w-1.5 shrink-0 rounded-full"
-                      style={{ background: cat.accent }}
-                      aria-hidden
-                    />
-                  )}
-                </motion.div>
+                  <span className="whitespace-nowrap font-display text-sm font-bold tracking-tight md:text-[15px]">{t.name}</span>
+                </li>
               ))}
-            </motion.div>
+            </ul>
 
-            <motion.p
-              variants={{
-                hide: { opacity: 0 },
-                show: { opacity: 1, transition: { delay: 0.5 } },
-                out: { opacity: 0, transition: { duration: 0.15 } },
-              }}
-              className="mt-10 type-label text-on-dark-label"
-            >
+            <p className="mt-8 type-label text-on-dark-label">
               {cat.tools.length} tools · Claude Code runs through all of it
-            </motion.p>
+            </p>
           </motion.div>
-        </AnimatePresence>
+        </div>
       </div>
     </section>
   );

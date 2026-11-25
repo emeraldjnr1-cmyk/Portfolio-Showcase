@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { profilePic } from "@/data/portfolio";
+import { profilePicSmall } from "@/data/portfolio";
 
 /**
  * Rotating circular wordmark that orbits the About portrait.
@@ -40,7 +40,7 @@ export function SpinningBadge({
 
 /**
  * Small circular headshot used wherever the page speaks in first person.
- * Springs in, then breathes on a slow loop.
+ * Fades in once.
  */
 export function Avatar({
   size = 40,
@@ -55,10 +55,10 @@ export function Avatar({
 }) {
   const head = (
     <motion.span
-      initial={{ scale: 0, rotate: -25 }}
-      whileInView={{ scale: 1, rotate: 0 }}
+      initial={{ opacity: 0, scale: 0.94 }}
+      whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ type: "spring", stiffness: 260, damping: 18 }}
+      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
       className={`relative inline-block shrink-0 ${float ? "" : className}`}
       style={{ width: size, height: size }}
     >
@@ -67,8 +67,10 @@ export function Avatar({
         style={{ boxShadow: `0 0 0 2px ${ring}` }}
       >
         <img
-          src={profilePic}
+          src={profilePicSmall}
           alt="Denver Emerald Peter"
+          width={size}
+          height={size}
           loading="lazy"
           className="h-full w-full object-cover object-top"
         />
@@ -76,18 +78,8 @@ export function Avatar({
     </motion.span>
   );
 
+  // `float` once added an endless bob. Nothing on the site loops now, so it
+  // only decides which element takes the caller's class.
   if (!float) return head;
-
-  // The bob lives on its own wrapper. Keeping it on the entrance element meant
-  // three keyframes under a spring, which framer rejects: it threw in dev and
-  // in prod silently drifted to -5px and stopped instead of looping.
-  return (
-    <motion.span
-      animate={{ y: [0, -6, 0] }}
-      transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
-      className={`inline-block ${className}`}
-    >
-      {head}
-    </motion.span>
-  );
+  return <span className={`inline-block ${className}`}>{head}</span>;
 }

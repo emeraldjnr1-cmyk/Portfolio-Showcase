@@ -73,7 +73,7 @@ export function SiteNav() {
             Denver<span className="text-primary">®</span>
           </a>
 
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
             {links.map((l) => {
               const current = l.href === currentHref;
               return (
@@ -94,16 +94,20 @@ export function SiteNav() {
 
           <div className="flex items-center gap-3">
             {/* Same label as every other WhatsApp button. Between 1024 and
-                1280px the seven links leave no room for the words, so only
-                the icon shows; the name stays for screen readers. */}
+                1280px the seven links leave no room for all the words, so the
+                button reads "WhatsApp"; the name read out stays the full label. */}
             <a
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className={buttonClass({ size: "sm", className: "max-sm:hidden lg:max-xl:w-11 lg:max-xl:px-0" })}
+              aria-label={CTA_WHATSAPP}
+              className={buttonClass({ size: "sm", className: "max-sm:hidden lg:max-xl:px-4" })}
             >
               <SiWhatsapp className="h-4 w-4 shrink-0" aria-hidden />
-              <span className="lg:max-xl:sr-only">{CTA_WHATSAPP}</span>
+              <span className="lg:max-xl:hidden">{CTA_WHATSAPP}</span>
+              <span aria-hidden className="hidden lg:max-xl:inline">
+                WhatsApp
+              </span>
             </a>
 
             {/* Burger: the six section links had no mobile equivalent at all */}

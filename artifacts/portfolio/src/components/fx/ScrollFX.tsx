@@ -1,6 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
-import { motion, useScroll, useSpring, useVelocity, useTransform } from "framer-motion";
-import { useMotionOff } from "@/lib/motion-pref";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 /** Thin cobalt progress line pinned to the very top. */
 export function ScrollProgress() {
@@ -12,73 +10,5 @@ export function ScrollProgress() {
       style={{ scaleX }}
       aria-hidden
     />
-  );
-}
-
-/** Velocity skew: the page shears slightly with scroll speed and springs back at rest.
- *
- * Desktop only, by design. A skew is not axis-aligned, so the compositor cannot
- * reuse a cached layer: every frame the value changes re-rasterizes the whole
- * document, which on a phone GPU shows up as visible stutter over heavy
- * sections (the black toolkit panel with its 15vw ghost word was the worst of
- * them). It is a decorative flourish, so on touch devices and for
- * reduced-motion users it simply does not run.
- *
- * The wrapper element stays a motion.div in both cases. Swapping it for a plain
- * div would remount the entire page subtree and kill any playing video. */
-export function VelocitySkew({ children }: { children: ReactNode }) {
-  const reduced = useMotionOff();
-  const [pointerFine, setPointerFine] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px) and (pointer: fine)");
-    const apply = () => setPointerFine(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-
-  const { scrollY } = useScroll();
-  const velocity = useVelocity(scrollY);
-  const raw = useTransform(velocity, [-2500, 0, 2500], [-1.6, 0, 1.6]);
-  const sprung = useSpring(raw, { stiffness: 250, damping: 40, mass: 0.6 });
-  // Snap to exactly 0 below a small threshold, otherwise the transform keeps
-  // micro-changing after scrolling stops and never lets the raster settle.
-  const skewY = useTransform(sprung, (v) => (Math.abs(v) < 0.04 ? 0 : v));
-
-  const active = pointerFine && !reduced;
-  return <motion.div style={active ? { skewY } : undefined}>{children}</motion.div>;
-}
-
-/** Curtain-wipe image reveal: unmasks upward while settling from a slight zoom.
- * Once the entrance finishes, both animated wrappers drop their live styles entirely —
- * a lingering clip-path/transform on a <video> ancestor blocks clean GPU compositing. */
-export function MaskReveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
-  const [done, setDone] = useState(false);
-
-  // The tree shape must never change here. Swapping the wrapper element type
-  // once the reveal finished remounted every child, which killed any <video>
-  // mid-playback (it came back paused, preload="none", showing its poster).
-  // Instead keep both wrappers mounted and just clear the finished styles.
-  return (
-    <motion.div
-      className={`overflow-hidden ${className}`}
-      initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
-      whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
-      viewport={{ once: true, margin: "-12% 0px" }}
-      transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1], delay }}
-      style={done ? { clipPath: "none" } : undefined}
-    >
-      <motion.div
-        initial={{ scale: 1.18 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true, margin: "-12% 0px" }}
-        transition={{ duration: 1.3, ease: [0.22, 1, 0.36, 1], delay }}
-        onAnimationComplete={() => setDone(true)}
-        style={done ? { transform: "none" } : undefined}
-      >
-        {children}
-      </motion.div>
-    </motion.div>
   );
 }

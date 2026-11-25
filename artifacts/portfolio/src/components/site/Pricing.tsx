@@ -19,9 +19,18 @@ export function Pricing({ num = "06" }: { num?: string }) {
           lead="Every project gets its own fixed quote within 24 hours, so you know the full price before anything starts. These are where typical projects begin."
         />
 
-        <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Phone: one swipe row. Each card snaps into place with the next one
+            peeking in from the right, and the row ends with "Something else?".
+            From tablet up it is a grid: six packages in even rows, then
+            "Something else?" across the full width. The row scrolls natively
+            (scroll snap), so the browser's own momentum does the work. */}
+        <ul
+          data-chat-clear
+          aria-label="Typical projects"
+          className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-px-6 px-6 pb-1 md:mx-0 md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3"
+        >
           {packages.map((p) => (
-            <li key={p.name}>
+            <li key={p.name} className="w-[82%] max-w-[21rem] shrink-0 snap-start md:w-auto md:max-w-none">
               <Card
                 href={p.href}
                 aria-label={`${p.name}, from ${usd(p.from)}. See the service`}
@@ -59,21 +68,24 @@ export function Pricing({ num = "06" }: { num?: string }) {
               </Card>
             </li>
           ))}
-          <li>
-            <div className="flex h-full flex-col justify-between rounded-2xl border-2 border-dashed border-ink/40 p-6 md:p-8">
-              <div>
+          <li className="w-[82%] max-w-[21rem] shrink-0 snap-start md:col-span-2 md:w-auto md:max-w-none lg:col-span-3">
+            <div className="flex h-full flex-col justify-between gap-7 rounded-2xl border-2 border-dashed border-ink/40 p-6 md:flex-row md:items-center md:gap-12 md:p-8">
+              <div className="md:max-w-xl">
                 <h3 className="type-h3 text-ink">Something else?</h3>
                 <p className="mt-3 leading-relaxed text-ink-body">
                   Web3, MCP servers, rescues of half-built projects. Describe it and you get a plan and a fixed price
                   within 24 hours.
                 </p>
               </div>
-              <CtaPair stack className="mt-7" />
+              <CtaPair stack className="md:w-80 md:shrink-0" />
             </div>
           </li>
         </ul>
+        <p className="mt-4 type-small text-ink-label md:hidden" aria-hidden>
+          Swipe to see all seven
+        </p>
 
-        <ol className="mt-14 grid gap-4 border-t border-black/15 pt-8 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-10 grid gap-4 border-t border-black/15 pt-8 sm:grid-cols-2 md:mt-14 lg:grid-cols-4">
           {STEPS.map((s, i) => (
             <li key={s} className="flex items-baseline gap-3">
               <span className="font-mono text-sm font-bold text-primary">{String(i + 1).padStart(2, "0")}</span>

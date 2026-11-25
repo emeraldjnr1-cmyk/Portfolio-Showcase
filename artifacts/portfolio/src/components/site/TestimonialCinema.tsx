@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { testimonials } from "@/data/portfolio";
 
-const EASE = [0.32, 0.72, 0, 1] as const;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function TestimonialCinema() {
   const [current, setCurrent] = useState(0);
@@ -31,52 +31,37 @@ export function TestimonialCinema() {
     else v.pause();
   }, [current, muted, inView]);
 
-  const variants = {
-    enter: (d: number) => ({ x: d > 0 ? "60%" : "-60%", opacity: 0, scale: 0.9 }),
-    center: { x: 0, opacity: 1, scale: 1, transition: { duration: 0.55, ease: EASE } },
-    exit: (d: number) => ({ x: d > 0 ? "-60%" : "60%", opacity: 0, scale: 0.9, transition: { duration: 0.4, ease: EASE } }),
-  };
+  const arrow =
+    "flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-black/25 text-black transition-[background-color,border-color,color,transform] duration-150 ease-out hover:border-black hover:bg-black hover:text-white active:scale-[0.97]";
 
   return (
-    <section id="clients" className="section-y relative overflow-hidden border-t border-black/10 px-6 md:px-12">
-      {/* giant background word */}
-      <div aria-hidden className="pointer-events-none absolute left-1/2 top-16 -translate-x-1/2 select-none font-display text-[16vw] font-extrabold leading-none text-black/[0.04]">
-        PROOF
-      </div>
-
-      <div className="relative mx-auto max-w-6xl">
+    <section id="clients" className="section-y border-t border-black/10 px-6 md:px-12">
+      <div className="mx-auto max-w-6xl">
         <SectionHeader num="05" label="Client stories" title="Don't take my word for it." />
 
         <div className="flex items-center gap-4 md:gap-8">
-          <button
-            onClick={() => go(-1)}
-            className="group flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-black/20 text-black transition-all hover:border-black hover:bg-black hover:text-white"
-            aria-label="Previous testimonial"
-            data-cursor="hover"
-          >
-            <ChevronLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" />
+          <button type="button" onClick={() => go(-1)} className={`${arrow} max-md:hidden`} aria-label="Previous testimonial" data-cursor="hover">
+            <ChevronLeft className="h-5 w-5" aria-hidden />
           </button>
 
-          <div className="flex-1">
+          <div className="min-w-0 flex-1">
             <div
               ref={frameRef}
-              className={`relative mx-auto overflow-hidden rounded-3xl border-2 border-black bg-black shadow-2xl transition-all duration-500 ${
-                t.aspect === "portrait" ? "max-w-sm aspect-[9/16] max-h-[70vh]" : "w-full aspect-video"
+              className={`relative mx-auto overflow-hidden rounded-3xl border-2 border-black bg-black ${
+                t.aspect === "portrait" ? "aspect-[9/16] max-h-[70vh] max-w-sm" : "aspect-video w-full"
               }`}
             >
-              <AnimatePresence custom={direction} mode="popLayout">
+              <AnimatePresence initial={false} mode="popLayout">
                 <motion.div
                   key={current}
-                  custom={direction}
-                  variants={variants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
+                  initial={{ opacity: 0, x: direction * 8 }}
+                  animate={{ opacity: 1, x: 0, transition: { duration: 0.25, ease: EASE } }}
+                  exit={{ opacity: 0, transition: { duration: 0.15 } }}
                   className="absolute inset-0"
                 >
                   <video
                     // Callback ref: only capture on attach. AnimatePresence unmounts the
-                    // OLD slide after the new one mounts — a plain ref object would get
+                    // OLD slide after the new one mounts; a plain ref object would get
                     // nulled by that late unmount, silently breaking the mute toggle for
                     // every slide after the first.
                     ref={(el) => {
@@ -95,59 +80,58 @@ export function TestimonialCinema() {
               </AnimatePresence>
 
               <button
+                type="button"
                 onClick={() => setMuted((m) => !m)}
-                className="absolute bottom-4 right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white transition-colors md:bg-black/50 md:backdrop-blur-md hover:bg-primary"
+                className="absolute bottom-4 right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-black/70 text-white transition-colors hover:bg-primary"
                 aria-label={muted ? "Unmute" : "Mute"}
                 data-cursor="hover"
               >
-                {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                {muted ? <VolumeX className="h-5 w-5" aria-hidden /> : <Volume2 className="h-5 w-5" aria-hidden />}
               </button>
             </div>
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={current}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0, transition: { duration: 0.35, delay: 0.15 } }}
-                exit={{ opacity: 0, y: -10, transition: { duration: 0.2 } }}
-                className="mx-auto mt-8 max-w-lg text-center"
-              >
-                <p className="font-editorial text-xl text-ink-body md:text-2xl">"{t.quote}"</p>
-                <p className="mt-3 font-display text-sm font-bold uppercase tracking-widest text-primary">{t.name}</p>
-              </motion.div>
-            </AnimatePresence>
+            {/* The quote box keeps a steady height, so the controls under it
+                do not jump from one client to the next. */}
+            <div key={current} className="mx-auto mt-6 flex min-h-[7.5rem] max-w-lg flex-col justify-center text-center md:mt-8 md:min-h-[6.5rem]">
+              <p className="font-editorial text-xl text-ink-body md:text-2xl">"{t.quote}"</p>
+              <p className="mt-3 font-display text-sm font-bold uppercase tracking-widest text-primary">{t.name}</p>
+            </div>
 
-            <div className="mt-3 flex items-center justify-center gap-1" role="tablist" aria-label="Testimonials">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  role="tab"
-                  aria-selected={i === current}
-                  aria-label={`Testimonial ${i + 1}`}
-                  onClick={() => {
-                    setDirection(i > current ? 1 : -1);
-                    setMuted(true);
-                    setCurrent(i);
-                  }}
-                  className="group flex h-11 min-w-6 items-center justify-center px-1"
-                >
-                  <span
-                    className={`block h-2 rounded-full transition-[width,background-color] duration-300 ${
-                      i === current ? "w-8 bg-cobalt" : "w-2 bg-black/35 group-hover:bg-black/60"
-                    }`}
-                  />
-                </button>
-              ))}
+            <div className="mt-2 flex items-center justify-center gap-2">
+              <button type="button" onClick={() => go(-1)} className={`${arrow} md:hidden`} aria-label="Previous testimonial">
+                <ChevronLeft className="h-5 w-5" aria-hidden />
+              </button>
+              <div className="flex items-center justify-center gap-1" role="tablist" aria-label="Testimonials">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === current}
+                    aria-label={`Testimonial ${i + 1}`}
+                    onClick={() => {
+                      setDirection(i > current ? 1 : -1);
+                      setMuted(true);
+                      setCurrent(i);
+                    }}
+                    className="group flex h-11 min-w-6 items-center justify-center px-1"
+                  >
+                    <span
+                      className={`block h-2 rounded-full transition-[width,background-color] duration-200 ${
+                        i === current ? "w-8 bg-cobalt" : "w-2 bg-black/35 group-hover:bg-black/60"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+              <button type="button" onClick={() => go(1)} className={`${arrow} md:hidden`} aria-label="Next testimonial">
+                <ChevronRight className="h-5 w-5" aria-hidden />
+              </button>
             </div>
           </div>
 
-          <button
-            onClick={() => go(1)}
-            className="group flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-black/20 text-black transition-all hover:border-black hover:bg-black hover:text-white"
-            aria-label="Next testimonial"
-            data-cursor="hover"
-          >
-            <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+          <button type="button" onClick={() => go(1)} className={`${arrow} max-md:hidden`} aria-label="Next testimonial" data-cursor="hover">
+            <ChevronRight className="h-5 w-5" aria-hidden />
           </button>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { useLenis } from "@/hooks/use-lenis";
 import { SiteNav } from "@/components/site/SiteNav";
 import { Footer } from "@/components/site/Footer";
 import { AskPax } from "@/components/site/pax/AskPax";
@@ -10,7 +9,6 @@ import { Avatar } from "@/components/site/Portrait";
 
 /** Layout for every page except home: same nav and footer, no preloader. */
 export function PageShell({ children, cta = "Want a system like this?" }: { children: ReactNode; cta?: string }) {
-  useLenis();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SkipLink />
@@ -87,7 +85,7 @@ function PageCTA({ heading }: { heading: string }) {
         <p className="mx-auto mt-5 max-w-xl type-body text-on-dark-body">
           Tell me what eats your week. You get a plan and a fixed price within 24 hours.
         </p>
-        <div className="mt-10 w-full sm:w-auto">
+        <div className="mt-10 w-full">
           <StartButtons dark />
         </div>
       </div>

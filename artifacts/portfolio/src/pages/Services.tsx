@@ -6,6 +6,7 @@ import { cardClass } from "@/components/site/Card";
 import { PageShell, Breadcrumbs, AccentHeading, StartButtons } from "@/components/site/PageShell";
 import { services, serviceBySlug } from "@/data/services";
 import { filmsFor } from "@/data/films";
+import { industries } from "@/data/industries";
 import { FilmGrid } from "@/components/site/Films";
 import { Web3ProjectsSection } from "@/components/site/Web3Projects";
 import { RobloxProjectsSection } from "@/components/site/RobloxProjects";
@@ -57,6 +58,23 @@ export function ServicesIndex() {
             </li>
           ))}
         </ul>
+
+        {/* Every industry page, one click from here. */}
+        <div className="mx-auto mt-12 max-w-7xl border-t border-black/15 pt-8">
+          <h2 className="type-label text-ink-label">Built for your industry</h2>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {industries.map((ind) => (
+              <li key={ind.slug}>
+                <a
+                  href={`/industries/${ind.slug}`}
+                  className="inline-flex min-h-11 items-center rounded-full border border-black/20 bg-white px-4 text-sm font-medium text-ink transition-colors duration-150 hover:border-black hover:bg-black hover:text-white md:min-h-9"
+                >
+                  {ind.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     </PageShell>
   );

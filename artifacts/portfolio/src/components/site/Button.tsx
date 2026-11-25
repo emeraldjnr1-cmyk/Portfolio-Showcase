@@ -56,6 +56,9 @@ export function buttonClass({
 
 type CtaProps = { tone?: Tone; size?: Size; full?: boolean; className?: string };
 
+/** Shown instead of the full WhatsApp label where the pair's box is too narrow for it. */
+const CTA_WHATSAPP_SHORT = "Message me";
+
 /** Always opens WhatsApp. */
 export function WhatsAppButton({ tone = "light", size = "md", full = false, className = "" }: CtaProps) {
   return (
@@ -64,10 +67,17 @@ export function WhatsAppButton({ tone = "light", size = "md", full = false, clas
       target="_blank"
       rel="noopener noreferrer"
       data-cursor="hover"
+      aria-label={CTA_WHATSAPP}
       className={buttonClass({ variant: "solid", tone, size, full, className })}
     >
       <SiWhatsapp className="h-5 w-5 shrink-0" aria-hidden />
-      {CTA_WHATSAPP}
+      {/* Inside a CtaPair narrower than 17rem (a card on a 320px phone) the
+          words shorten so the button stays one line. The name read out stays
+          the full label. Outside a CtaPair the full label always shows. */}
+      <span className="@max-[17rem]:hidden">{CTA_WHATSAPP}</span>
+      <span aria-hidden className="hidden @max-[17rem]:inline">
+        {CTA_WHATSAPP_SHORT}
+      </span>
     </a>
   );
 }
@@ -87,9 +97,12 @@ export function QuoteButton({ tone = "light", size = "md", full = false, classNa
 }
 
 /**
- * The pair, WhatsApp first. Stacked and full width on a phone, side by side
- * from tablet up. `data-chat-clear` tells the floating chat button to step
+ * The pair, WhatsApp first. The layout follows the box the pair sits in, not
+ * the screen: side by side where both fit on one line (34rem and up), one
+ * above the other at full width everywhere else, so a narrow card never gets
+ * two ragged buttons. `data-chat-clear` tells the floating chat button to step
  * aside while this is on screen, so it never sits on top of a page button.
+ * Give the pair a box with a real width (a block, or w-full in a flex column).
  */
 export function CtaPair({
   tone = "light",
@@ -98,12 +111,15 @@ export function CtaPair({
   className = "",
   children,
 }: { tone?: Tone; align?: "start" | "center"; /** One above the other at every width. */ stack?: boolean; className?: string; children?: ReactNode }) {
-  const row = `sm:flex-row sm:flex-wrap sm:items-center md:gap-4 ${align === "center" ? "sm:justify-center" : ""}`;
+  const row = `@[34rem]:flex-row @[34rem]:flex-wrap @[34rem]:items-center @[34rem]:gap-4 ${align === "center" ? "@[34rem]:justify-center" : ""}`;
+  const each = stack ? "w-full" : "w-full @[34rem]:w-auto";
   return (
-    <div data-chat-clear className={`flex flex-col gap-3 ${stack ? "" : row} ${className}`}>
-      <WhatsAppButton tone={tone} full={!stack} className={stack ? "w-full" : ""} />
-      <QuoteButton tone={tone} full={!stack} className={stack ? "w-full" : ""} />
-      {children}
+    <div data-chat-clear className={`@container ${className}`}>
+      <div className={`flex flex-col gap-3 ${stack ? "" : row}`}>
+        <WhatsAppButton tone={tone} className={each} />
+        <QuoteButton tone={tone} className={each} />
+        {children}
+      </div>
     </div>
   );
 }
