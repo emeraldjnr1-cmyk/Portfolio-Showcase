@@ -31,8 +31,8 @@
     <meta name="twitter:title" content="Mac vs the Rex" />
     <meta name="twitter:description" content="Outrun a T-rex through a prehistoric jungle full of traps. Free to play in your browser." />
     <meta name="twitter:image" content="https://denvernocode.com/play/mac-vs-the-rex/share.jpg" />
-    <script type="module" crossorigin src="./assets/index-CdhRP9G3.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DgJhSlYc.css">
+    <script type="module" crossorigin src="./assets/index-DWt30tdC.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Bb-u7s_k.css">
   </head>
   <body>
     <div id="app">
@@ -61,6 +61,7 @@
         <p class="hint" id="hud-hint" hidden></p>
       </div>
 
+      <div class="fx fx-vignette"></div>
       <div class="fx fx-slowmo" id="fx-slowmo"></div>
       <div class="fx fx-sprint" id="fx-sprint"></div>
 
@@ -79,7 +80,10 @@
           <span>Tap Share, then Add to Home Screen</span>
           <button class="link-button" id="ios-hint-close" type="button">Got it</button>
         </p>
-        <button class="link-button" id="credits-open" type="button">Credits</button>
+        <div class="start-links">
+          <button class="link-button" id="quality" type="button">Graphics: Auto</button>
+          <button class="link-button" id="credits-open" type="button">Credits</button>
+        </div>
       </section>
 
       <section class="screen screen-credits" id="screen-credits" data-ui hidden>
@@ -103,7 +107,16 @@
             by <a href="https://sketchfab.com/LasquetiSpice" target="_blank" rel="noopener">LasquetiSpice</a>, CC BY 4.0. Island removed, mesh reduced.
           </li>
           <li>Mac: built with MakeHuman assets (CC0).</li>
-          <li>Textures: Poly Haven (CC0).</li>
+          <li>
+            Jungle plants (CC BY 4.0, reduced and re-textured for phones):
+            <a href="https://sketchfab.com/3d-models/tropical-plants-pack-m02p-2f093afb792742438f0f7ba7eaab90f0" target="_blank" rel="noopener">Tropical Plants Pack M02P</a>
+            by <a href="https://sketchfab.com/mozzarellaARC" target="_blank" rel="noopener">MozzarellaARC</a>;
+            <a href="https://sketchfab.com/3d-models/jungle-tree-46f83ec5f6c04abf9d509c1070f67d1e" target="_blank" rel="noopener">Jungle Tree</a>
+            by <a href="https://sketchfab.com/kobaltsecond6c7d6150917a4267" target="_blank" rel="noopener">kobalt</a>;
+            <a href="https://sketchfab.com/3d-models/coconut-palm-26e787f2ff2e4c0fb004c3b0210805a3" target="_blank" rel="noopener">Coconut Palm</a>
+            by <a href="https://sketchfab.com/evolveduk" target="_blank" rel="noopener">evolveduk</a>.
+          </li>
+          <li>Rocks, logs, roots, ground textures and the rainforest sky light: Poly Haven (CC0).</li>
         </ul>
         <button class="button" id="credits-close" type="button">Close</button>
       </section>
