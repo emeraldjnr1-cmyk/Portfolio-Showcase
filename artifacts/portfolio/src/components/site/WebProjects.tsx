@@ -178,7 +178,7 @@ export function WebProjectsSection() {
     <section id="websites" className="section-y relative border-t border-black/10 bg-card px-6 md:px-12">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
-          num="02"
+          num="01"
           label="Apps and websites"
           title="Products designed and shipped with Claude Code."
           lead="Dashboards, storefronts, booking flows and AI products. Full builds, not templates."

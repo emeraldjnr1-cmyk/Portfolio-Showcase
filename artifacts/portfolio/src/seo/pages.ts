@@ -313,17 +313,17 @@ const gameFilm = featuredGame.videoSrc
 
 const gameDevelopmentPage: PageMeta = {
   path: "/game-development",
-  title: "Game Development: Roblox Story Shorts & Game Demos | Denver NoCode",
+  title: "Games: Mac vs the Rex, Roblox Story Shorts & Game Demos | Denver NoCode",
   description:
     "Game development by Denver NoCode: Roblox story Shorts made in-house and for clients, plus twenty Roblox concept demos across five game types, all shown in motion.",
   image: abs(shortPoster(allShorts[0])),
-  summary: "Game development: Roblox story Shorts, client work and twenty Roblox concept demos, each shown as video.",
+  summary: "Games: an original browser game, Roblox story Shorts, client work and twenty Roblox concept demos, each shown as video.",
   jsonLd: [
-    breadcrumbs([["Home", "/"], ["Services", "/services"], ["Game development", "/game-development"]]),
+    breadcrumbs([["Home", "/"], ["Games", "/game-development"]]),
     {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      name: "Game development videos",
+      name: "Games and Shorts",
       itemListElement: [...gameFilm, ...allShorts.map(shortVideo)].map((v, i) => ({ "@type": "ListItem", position: i + 1, item: v })),
     },
   ],

@@ -98,7 +98,7 @@ export const services: Service[] = [
     tools: ["Roblox Studio", "Luau", "DataStoreService", "Claude Code", "Blender"],
     proof: [
       { href: "/services/roblox#roblox", label: "The Roblox gallery", note: "Twenty concept demos across five game types" },
-      { href: "/game-development", label: "Game development", note: "Roblox story Shorts, client work and game demos on one page" },
+      { href: "/game-development", label: "Games", note: "Roblox story Shorts, client work and game demos on one page" },
     ],
     faqs: [
       {

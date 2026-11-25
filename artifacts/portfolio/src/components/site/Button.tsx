@@ -71,11 +71,11 @@ export function WhatsAppButton({ tone = "light", size = "md", full = false, clas
       className={buttonClass({ variant: "solid", tone, size, full, className })}
     >
       <SiWhatsapp className="h-5 w-5 shrink-0" aria-hidden />
-      {/* Inside a CtaPair narrower than 17rem (a card on a 320px phone) the
+      {/* Inside a CtaPair narrower than about 17rem (a card on a 320px phone) the
           words shorten so the button stays one line. The name read out stays
           the full label. Outside a CtaPair the full label always shows. */}
-      <span className="@max-[17rem]:hidden">{CTA_WHATSAPP}</span>
-      <span aria-hidden className="hidden @max-[17rem]:inline">
+      <span className="@max-[17rem]:hidden md:@max-[17.5rem]:hidden">{CTA_WHATSAPP}</span>
+      <span aria-hidden className="hidden @max-[17rem]:inline md:@max-[17.5rem]:inline">
         {CTA_WHATSAPP_SHORT}
       </span>
     </a>

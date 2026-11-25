@@ -30,7 +30,7 @@ export function Pricing({ num = "06" }: { num?: string }) {
           className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-px-6 px-6 pb-1 md:mx-0 md:grid md:snap-none md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3"
         >
           {packages.map((p) => (
-            <li key={p.name} className="w-[82%] max-w-[21rem] shrink-0 snap-start md:w-auto md:max-w-none">
+            <li key={p.name} className="w-[88%] min-w-[17rem] max-w-[21rem] shrink-0 snap-start md:w-auto md:max-w-none">
               <Card
                 href={p.href}
                 aria-label={`${p.name}, from ${usd(p.from)}. See the service`}
@@ -68,8 +68,8 @@ export function Pricing({ num = "06" }: { num?: string }) {
               </Card>
             </li>
           ))}
-          <li className="w-[82%] max-w-[21rem] shrink-0 snap-start md:col-span-2 md:w-auto md:max-w-none lg:col-span-3">
-            <div className="flex h-full flex-col justify-between gap-7 rounded-2xl border-2 border-dashed border-ink/40 p-6 md:flex-row md:items-center md:gap-12 md:p-8">
+          <li className="w-[88%] min-w-[17rem] max-w-[21rem] shrink-0 snap-start md:col-span-2 md:w-auto md:max-w-none lg:col-span-3">
+            <div className="flex h-full flex-col justify-between gap-7 rounded-2xl border-2 border-dashed border-ink/40 p-5 md:flex-row md:items-center md:gap-12 md:p-8">
               <div className="md:max-w-xl">
                 <h3 className="type-h3 text-ink">Something else?</h3>
                 <p className="mt-3 leading-relaxed text-ink-body">

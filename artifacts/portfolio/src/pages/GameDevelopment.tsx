@@ -6,7 +6,7 @@ import { clientShorts, featuredGame, formatShorts, storyShorts } from "@/data/ga
 import { robloxProjects } from "@/data/portfolio";
 
 const ACCENT = "#0015D4";
-const TRAIL: Array<[string, string]> = [["Home", "/"], ["Services", "/services"], ["Game development", "/game-development"]];
+const TRAIL: Array<[string, string]> = [["Home", "/"], ["Games", "/game-development"]];
 
 const JUMPS = [
   { href: "#shorts", label: "Story Shorts", count: storyShorts.length + formatShorts.length },

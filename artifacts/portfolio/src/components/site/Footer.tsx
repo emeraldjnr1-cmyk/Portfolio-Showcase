@@ -2,19 +2,24 @@ import { useEffect, useState } from "react";
 import { SiUpwork, SiWhatsapp } from "react-icons/si";
 import { Logo } from "@/components/site/Logo";
 import { UPWORK, WHATSAPP } from "@/data/portfolio";
-import { services } from "@/data/services";
-import { work } from "@/data/work";
-import { industries } from "@/data/industries";
 import { useUserMotionOff } from "@/lib/motion-pref";
 
-// Every page carries these links, which is how crawlers find the service and
-// work pages without relying on the sitemap alone.
+// The same five places as the header, then the two ways to reach Emerald.
+// Service, work and industry pages are linked from their own index pages.
+const LINKS = [
+  { label: "Services", href: "/services" },
+  { label: "Work", href: "/work" },
+  { label: "Games", href: "/game-development" },
+  { label: "Prices", href: "/#pricing" },
+  { label: "About", href: "/team/emerald" },
+];
+
 export function Footer() {
   const linkCls = "tap text-sm text-on-dark-label transition-colors hover:text-white";
   const listCls = "mt-4 space-y-2.5 [@media(pointer:coarse)]:mt-2 [@media(pointer:coarse)]:space-y-0";
   return (
-    <footer className="border-t border-white/10 bg-black px-6 pb-12 pt-20 text-[#E7E7E1] md:px-12">
-      <div className="mx-auto grid max-w-7xl gap-12 border-b border-white/10 pb-14 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.3fr)_repeat(4,minmax(0,1fr))]">
+    <footer className="border-t border-white/10 bg-black px-6 pb-12 pt-16 text-[#E7E7E1] md:px-12 md:pt-20">
+      <div className="mx-auto grid max-w-7xl gap-10 border-b border-white/10 pb-12 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] md:pb-14">
         <div className="max-w-xs">
           <a href="/" className="tap flex items-center gap-2.5 font-display text-xl font-extrabold">
             <Logo size={26} color="#E7E7E1" />
@@ -26,86 +31,30 @@ export function Footer() {
           </p>
         </div>
 
-        <nav aria-label="Services">
-          <p className="type-label text-sky">Services</p>
+        <nav aria-label="Site">
+          <p className="type-label text-sky">Menu</p>
           <ul className={listCls}>
-            {services.map((s) => (
-              <li key={s.slug}>
-                <a href={`/services/${s.slug}`} className={linkCls}>
-                  {s.name}
+            {LINKS.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} className={linkCls}>
+                  {l.label}
                 </a>
               </li>
             ))}
-          </ul>
-        </nav>
-
-        <nav aria-label="Industries">
-          <p className="type-label text-green">Industries</p>
-          <ul className={listCls}>
-            {industries.slice(0, 6).map((ind) => (
-              <li key={ind.slug}>
-                <a href={`/industries/${ind.slug}`} className={linkCls}>
-                  {ind.name}
-                </a>
-              </li>
-            ))}
-            <li>
-              <a href="/industries" className="tap text-sm font-semibold text-white transition-colors hover:text-green">
-                All industries
-              </a>
-            </li>
-          </ul>
-        </nav>
-
-        <nav aria-label="Work">
-          <p className="type-label text-gold">Work</p>
-          <ul className={listCls}>
-            {work.slice(0, 5).map((w) => (
-              <li key={w.slug}>
-                <a href={`/work/${w.slug}`} className={linkCls}>
-                  {w.title.split(":")[0]}
-                </a>
-              </li>
-            ))}
-            <li>
-              <a href="/films" className={linkCls}>
-                Build films
-              </a>
-            </li>
-            <li>
-              <a href="/game-development" className={linkCls}>
-                Game development
-              </a>
-            </li>
-            <li>
-              <a href="/work" className="tap text-sm font-semibold text-white transition-colors hover:text-gold">
-                All work
-              </a>
-            </li>
           </ul>
         </nav>
 
         <nav aria-label="Contact">
-          <p className="type-label text-pink">Hire</p>
+          <p className="type-label text-pink">Contact</p>
           <ul className={listCls}>
             <li>
               <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className={`${linkCls} inline-flex items-center gap-2`}>
-                <SiWhatsapp className="h-4 w-4" /> WhatsApp
+                <SiWhatsapp className="h-4 w-4" aria-hidden /> WhatsApp
               </a>
             </li>
             <li>
               <a href={UPWORK} target="_blank" rel="noopener noreferrer" className={`${linkCls} inline-flex items-center gap-2`}>
-                <SiUpwork className="h-4 w-4" /> Upwork
-              </a>
-            </li>
-            <li>
-              <a href="/#hire" className={linkCls}>
-                Ways to work together
-              </a>
-            </li>
-            <li>
-              <a href="/team" className={linkCls}>
-                The D. Team
+                <SiUpwork className="h-4 w-4" aria-hidden /> Upwork
               </a>
             </li>
           </ul>
@@ -143,7 +92,7 @@ function MotionToggle() {
     requestAnimationFrame(() =>
       requestAnimationFrame(() => {
         const after = btn.getBoundingClientRect().top;
-        if (Math.abs(after - before) > 1) window.scrollBy(0, after - before);
+        if (Math.abs(after - before) > 1) window.scrollBy({ top: after - before, behavior: "instant" });
       }),
     );
   };
@@ -151,7 +100,7 @@ function MotionToggle() {
     <button
       onClick={toggle}
       aria-pressed={off}
-      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/30 px-4 text-sm font-semibold text-on-dark-body transition-colors hover:border-white hover:text-white md:min-h-9 md:text-xs"
+      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/30 px-4 text-sm font-semibold text-on-dark-body transition-colors hover:border-white hover:text-white lg:min-h-9 lg:text-xs"
     >
       <span className={`h-2 w-2 rounded-full ${off ? "bg-white/40" : "bg-green"}`} aria-hidden />
       Animations {off ? "off" : "on"}

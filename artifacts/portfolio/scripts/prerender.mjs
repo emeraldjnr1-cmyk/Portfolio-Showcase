@@ -155,7 +155,7 @@ fs.writeFileSync(
 
 - [All services](${urlOf("/services")}): overview of the seven services.
 ${list("/services")}
-${PAGES.filter((p) => p.path === "/game-development").map((p) => `- [Game development](${urlOf(p.path)}): ${p.summary}`).join("\n")}
+${PAGES.filter((p) => p.path === "/game-development").map((p) => `- [Games](${urlOf(p.path)}): ${p.summary}`).join("\n")}
 
 ## Industries
 

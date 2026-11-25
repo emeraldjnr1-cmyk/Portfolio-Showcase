@@ -37,7 +37,7 @@ export function TestimonialCinema() {
   return (
     <section id="clients" className="section-y border-t border-black/10 px-6 md:px-12">
       <div className="mx-auto max-w-6xl">
-        <SectionHeader num="05" label="Client stories" title="Don't take my word for it." />
+        <SectionHeader num="06" label="Client stories" title="Don't take my word for it." />
 
         <div className="flex items-center gap-4 md:gap-8">
           <button type="button" onClick={() => go(-1)} className={`${arrow} max-md:hidden`} aria-label="Previous testimonial" data-cursor="hover">

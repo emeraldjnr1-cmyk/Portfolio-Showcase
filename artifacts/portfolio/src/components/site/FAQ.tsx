@@ -17,7 +17,7 @@ export function FAQSection() {
       <div className="mx-auto grid max-w-7xl gap-14 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         {/* Sticky intro column */}
         <div className="md:sticky md:top-32 md:self-start">
-          <SectionHeader num="07" label="Questions" title="Asked all the time." className="!mb-0" />
+          <SectionHeader num="08" label="Questions" title="Asked all the time." className="!mb-0" />
           <Reveal delay={0.2}>
             <div className="mt-6 flex max-w-sm items-center gap-3.5">
               <Avatar size={52} ring="#0015D4" />

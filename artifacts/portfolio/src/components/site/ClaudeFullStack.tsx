@@ -53,7 +53,7 @@ export function ClaudeFullStack() {
             what I build about it, and who is speaking. */}
         <div className="grid gap-x-16 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-end">
           <SectionHeader
-            num="01"
+            num="05"
             label="Claude Code"
             title={
               <>

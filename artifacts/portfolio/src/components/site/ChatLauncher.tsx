@@ -25,6 +25,8 @@ export function ChatLauncher({ onAskPax, onWarm }: { onAskPax: () => void; onWar
   const [menu, setMenu] = useState(false);
   const [overCta, setOverCta] = useState(false);
   const [overFooter, setOverFooter] = useState(false);
+  // The home hero is on screen (it fills a tablet, where the buttons would sit on its numbers).
+  const [overHero, setOverHero] = useState(false);
   // Phone: true while the visitor is scrolling down the page, reading.
   const [reading, setReading] = useState(false);
   const phoneRef = useRef<HTMLDivElement>(null);
@@ -65,6 +67,7 @@ export function ChatLauncher({ onAskPax, onWarm }: { onAskPax: () => void; onWar
       }
       setOverFooter(footer ? seen.has(footer) : false);
       setOverCta([...seen].some((el) => el !== footer));
+      setOverHero([...seen].some((el) => el.id === "top"));
     });
     document.querySelectorAll("[data-chat-clear]").forEach((el) => io.observe(el));
     if (footer) io.observe(footer);
@@ -158,7 +161,7 @@ export function ChatLauncher({ onAskPax, onWarm }: { onAskPax: () => void; onWar
 
       {/* Desktop: Ask Pax, labelled, with WhatsApp under it */}
       <div
-        className={`fixed bottom-6 right-6 z-30 hidden flex-col items-end gap-3 md:flex ${move} ${overFooter ? aside : here}`}
+        className={`fixed bottom-6 right-6 z-30 hidden flex-col items-end gap-3 md:flex ${move} ${overFooter ? aside : here} ${overHero ? "max-lg:pointer-events-none max-lg:opacity-0 max-lg:focus-within:pointer-events-auto max-lg:focus-within:opacity-100" : ""}`}
       >
         <button
           type="button"

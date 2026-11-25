@@ -30,7 +30,9 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !hasFilm) return;
-    if (inView) v.play().catch(() => {});
+    // offsetParent is null while the film is hidden (the phone's compact
+    // rows show the still instead), so nothing downloads or plays unseen.
+    if (inView && v.offsetParent !== null) v.play().catch(() => {});
     else v.pause();
   }, [inView, hasFilm]);
 
@@ -59,7 +61,7 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
             className={`relative h-full overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-[border-color,box-shadow,transform] duration-200 group-hover:border-black group-hover:shadow-[8px_8px_0_var(--pop)] group-active:scale-[0.99] ${row ? "flex sm:flex-col" : "flex flex-col"}`}
           >
             <div className={`relative aspect-video shrink-0 overflow-hidden bg-[#DDDBD2] ${row ? "max-sm:aspect-auto max-sm:w-[7.25rem]" : ""}`}>
-              {hasFilm && videoOk ? (
+              {hasFilm && videoOk && (
                 <video
                   ref={videoRef}
                   src={project.video}
@@ -69,9 +71,12 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
                   playsInline
                   preload="none"
                   onError={() => setVideoOk(false)}
-                  className="absolute inset-0 h-full w-full object-cover"
+                  className={`absolute inset-0 h-full w-full object-cover ${row ? "max-sm:hidden" : ""}`}
                 />
-              ) : (
+              )}
+              {/* The still: for systems without a film, and in place of the
+                  film in the phone's compact rows. */}
+              {(!hasFilm || !videoOk || row) && (
                 <img
                   src={project.img}
                   alt=""
@@ -79,7 +84,7 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
                   height={675}
                   loading="lazy"
                   decoding="async"
-                  className="absolute inset-0 h-full w-full object-cover object-top"
+                  className={`absolute inset-0 h-full w-full object-cover object-top ${hasFilm && videoOk ? "sm:hidden" : ""}`}
                 />
               )}
 
@@ -319,7 +324,7 @@ export function FeaturedWork() {
     <section id="work" className="section-y relative border-t border-black/10 px-6 md:px-12">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
-          num="03"
+          num="02"
           label="Automations and AI agents"
           title="Featured systems. Real businesses. Zero manual work."
           lead="The flagship builds get the film treatment. Every card opens the real system, tools and outcome included."

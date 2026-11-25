@@ -181,10 +181,10 @@
   --chart-4: 0 0% 20%;
   --chart-5: 0 0% 96%;
 
-  --app-font-sans: 'Inter', sans-serif;
+  --app-font-sans: 'Inter', 'Inter Fallback', sans-serif;
   --app-font-serif: 'Libre Baskerville', Georgia, serif;
   --app-font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
-  --font-display: 'Inter', sans-serif;
+  --font-display: 'Inter', 'Inter Fallback', sans-serif;
   --radius: 0.75rem; /* 12px */
   --shadow-2xs: 0px 2px 0px 0px rgba(0,0,0,0.02);
   --shadow-xs: 0px 2px 0px 0px rgba(0,0,0,0.02);
@@ -263,6 +263,17 @@
   --shadow-lg: 0px 2px 0px 0px rgba(0,0,0,0.2), 0px 4px 6px -1px rgba(0,0,0,0.2);
   --shadow-xl: 0px 2px 0px 0px rgba(0,0,0,0.2), 0px 8px 10px -1px rgba(0,0,0,0.2);
   --shadow-2xl: 0px 2px 0px 0px rgba(0,0,0,0.2);
+}
+
+/* Until Inter arrives the page shows in Arial, resized to Inter's metrics, so
+   lines break in the same places and nothing jumps when the font swaps. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Roboto');
+  size-adjust: 107.4%;
+  ascent-override: 90.2%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
 }
 
 @layer base {

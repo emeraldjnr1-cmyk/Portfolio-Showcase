@@ -9,13 +9,12 @@ import { buttonClass, CTA_WHATSAPP } from "@/components/site/Button";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+// Five places, the same on every page and in the footer.
 const LINKS = [
   { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
-  { label: "Claude Code", href: "#claude-code" },
-  { label: "D. Team", href: "/team" },
-  { label: "Clients", href: "#clients" },
-  { label: "Hire me", href: "#pricing" },
+  { label: "Games", href: "/game-development" },
+  { label: "Prices", href: "#pricing" },
   { label: "About", href: "/team/emerald" },
 ];
 
@@ -64,16 +63,18 @@ export function SiteNav() {
         <div
           className={`mx-auto flex items-center justify-between px-6 md:px-12 transition-[padding,background-color,border-color] duration-300 ease-out ${
             scrolled && !menuOpen
-              ? "py-3 bg-[#E7E7E1]/95 md:bg-[#E7E7E1]/80 md:backdrop-blur-xl border-b border-black/10"
-              : "py-6 bg-transparent"
+              ? // Solid bone, so nothing on the page reads through the bar, and
+                // painted up through the notch area on phones.
+                "border-b border-black/10 bg-bone pb-3 pt-[calc(0.75rem+env(safe-area-inset-top,0px))]"
+              : "bg-transparent pb-6 pt-[calc(1.5rem+env(safe-area-inset-top,0px))]"
           }`}
         >
-          <a href={onHome ? "#top" : "/"} className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight text-black">
+          <a href={onHome ? "#top" : "/"} className="flex min-h-11 items-center gap-2 font-display text-lg font-extrabold tracking-tight text-black">
             <Logo size={24} />
             Denver<span className="text-primary">®</span>
           </a>
 
-          <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
+          <nav className="hidden items-center gap-8 lg:flex xl:gap-10">
             {links.map((l) => {
               const current = l.href === currentHref;
               return (
@@ -93,24 +94,18 @@ export function SiteNav() {
           </nav>
 
           <div className="flex items-center gap-3">
-            {/* Same label as every other WhatsApp button. Between 1024 and
-                1280px the seven links leave no room for all the words, so the
-                button reads "WhatsApp"; the name read out stays the full label. */}
+            {/* Same label as every other WhatsApp button, at every width. */}
             <a
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={CTA_WHATSAPP}
-              className={buttonClass({ size: "sm", className: "max-sm:hidden lg:max-xl:px-4" })}
+              className={buttonClass({ size: "sm", className: "max-sm:hidden" })}
             >
               <SiWhatsapp className="h-4 w-4 shrink-0" aria-hidden />
-              <span className="lg:max-xl:hidden">{CTA_WHATSAPP}</span>
-              <span aria-hidden className="hidden lg:max-xl:inline">
-                WhatsApp
-              </span>
+              {CTA_WHATSAPP}
             </a>
 
-            {/* Burger: the six section links had no mobile equivalent at all */}
+            {/* Burger: the same five links on a phone */}
             <button
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
