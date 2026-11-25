@@ -76,8 +76,7 @@ export function FeatureRow({ project, index }: { project: WebProject; index: num
                 v.muted = !v.muted;
                 setMuted(v.muted);
               }}
-              aria-pressed={!muted}
-              aria-label={`Sound for the ${project.name} film`}
+              data-sound
               className="absolute bottom-3 right-3 inline-flex h-11 items-center gap-2 rounded-full bg-black/80 px-4 text-sm font-bold text-white transition-[background-color,transform] duration-150 ease-out hover:bg-cobalt active:scale-[0.97]"
             >
               {muted ? <VolumeX className="h-4 w-4" aria-hidden /> : <Volume2 className="h-4 w-4" aria-hidden />}

@@ -6,7 +6,8 @@ import { clock, shortPoster, shortSrc, type FeaturedGame, type Short } from "@/d
 // Shared by every control that sits on top of a video: no grey tap flash, no
 // double-tap delay, no text selection on a long press.
 const TOUCH = "touch-manipulation select-none [-webkit-tap-highlight-color:transparent]";
-const RING = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+// The site-wide focus ring (index.css) applies; nothing local.
+const RING = "";
 const CHIP =
   "flex h-11 w-11 items-center justify-center rounded-full border-2 border-black bg-white text-black shadow-[3px_3px_0_#141414] transition-transform duration-150 ease-out";
 

@@ -155,13 +155,16 @@ export function SiteNav() {
                   key={l.href}
                   href={l.href}
                   onClick={() => setMenuOpen(false)}
+                  aria-current={l.href === currentHref ? "page" : undefined}
                   initial={{ opacity: 0, y: 26 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.18 + i * 0.055, duration: 0.5, ease: EASE }}
-                  className="group flex items-center justify-between border-b border-black/10 py-3 font-display text-[28px] leading-tight font-extrabold tracking-tight text-black"
+                  className={`group flex items-center justify-between border-b border-black/10 py-3 font-display text-[28px] leading-tight font-extrabold tracking-tight ${
+                    l.href === currentHref ? "text-cobalt" : "text-black"
+                  }`}
                 >
                   <span className="flex items-baseline gap-3">
-                    <span className="font-mono text-xs font-bold text-ink-label">
+                    <span className={`font-mono text-xs font-bold ${l.href === currentHref ? "text-cobalt" : "text-ink-label"}`}>
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {l.label}
