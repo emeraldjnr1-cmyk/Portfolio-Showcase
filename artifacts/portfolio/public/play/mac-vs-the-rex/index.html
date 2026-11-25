@@ -31,8 +31,8 @@
     <meta name="twitter:title" content="Mac vs the Rex" />
     <meta name="twitter:description" content="Outrun a T-rex through a prehistoric jungle full of traps. Free to play in your browser." />
     <meta name="twitter:image" content="https://denvernocode.com/play/mac-vs-the-rex/share.jpg" />
-    <script type="module" crossorigin src="./assets/index-DWt30tdC.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-Bb-u7s_k.css">
+    <script type="module" crossorigin src="./assets/index-C5oeBZUF.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CXEHbpLT.css">
   </head>
   <body>
     <div id="app">
@@ -57,6 +57,7 @@
           <span class="label">Adrenaline</span>
           <div class="rush-bar"><div class="rush-fill" id="hud-rush-fill"></div></div>
         </div>
+        <button class="pause-button" id="pause-open" type="button" aria-label="Pause"><span></span><span></span></button>
         <p class="popup" id="hud-popup" hidden></p>
         <p class="hint" id="hud-hint" hidden></p>
       </div>
@@ -81,9 +82,40 @@
           <button class="link-button" id="ios-hint-close" type="button">Got it</button>
         </p>
         <div class="start-links">
-          <button class="link-button" id="quality" type="button">Graphics: Auto</button>
+          <button class="link-button" id="settings-open" type="button">Settings</button>
           <button class="link-button" id="credits-open" type="button">Credits</button>
         </div>
+      </section>
+
+      <section class="screen screen-panel" id="screen-pause" data-ui hidden>
+        <h2 class="title title-small">Paused</h2>
+        <button class="button" id="pause-resume" type="button">Resume</button>
+        <button class="button button-quiet" id="pause-restart" type="button">Restart</button>
+        <button class="button button-quiet" id="pause-settings" type="button">Settings</button>
+      </section>
+
+      <section class="screen screen-panel" id="screen-settings" data-ui hidden>
+        <h2 class="title title-small">Settings</h2>
+        <div class="settings">
+          <label class="setting">
+            <span>Music</span>
+            <input type="range" id="set-music" min="0" max="100" step="1" value="80" />
+          </label>
+          <label class="setting">
+            <span>Sound effects</span>
+            <input type="range" id="set-sfx" min="0" max="100" step="1" value="90" />
+          </label>
+          <div class="setting">
+            <span>Graphics</span>
+            <button class="chip" id="quality" type="button">Auto</button>
+          </div>
+          <div class="setting">
+            <span>Vibration</span>
+            <button class="chip" id="set-vibration" type="button" aria-pressed="true">On</button>
+          </div>
+        </div>
+        <p class="sub sub-small" id="quality-note" hidden>The new graphics setting applies when the game reloads.</p>
+        <button class="button" id="settings-close" type="button">Done</button>
       </section>
 
       <section class="screen screen-credits" id="screen-credits" data-ui hidden>
@@ -117,12 +149,20 @@
             by <a href="https://sketchfab.com/evolveduk" target="_blank" rel="noopener">evolveduk</a>.
           </li>
           <li>Rocks, logs, roots, ground textures and the rainforest sky light: Poly Haven (CC0).</li>
+          <li>
+            Sound: field recordings from the
+            <a href="https://www.nps.gov/yell/learn/photosmultimedia/soundlibrary.htm" target="_blank" rel="noopener">National Park Service, Yellowstone Sound Library</a>
+            (public domain), and footsteps, cloth and wood from
+            <a href="https://opengameart.org/content/50-rpg-sound-effects" target="_blank" rel="noopener">RPG Audio by Kenney</a> (CC0).
+            Music, creature voices and every other sound were made for this game.
+          </li>
         </ul>
         <button class="button" id="credits-close" type="button">Close</button>
       </section>
 
       <section class="screen" id="screen-over" hidden>
         <h2 class="title title-small" id="over-title">The Rex caught you</h2>
+        <p class="new-best" id="over-new-best" hidden>New best</p>
         <p class="sub" id="over-reason"></p>
         <dl class="results">
           <div><dt>Score</dt><dd id="over-score">0</dd></div>
