@@ -9,7 +9,7 @@ import { writtenReviews } from "@/data/portfolio";
  */
 export function WrittenReviews() {
   return (
-    <section aria-label="Written client reviews" className="px-6 pb-28 md:px-12 md:pb-40">
+    <section aria-label="Written client reviews" className="px-6 pb-16 md:px-12 md:pb-24">
       <div className="mx-auto max-w-6xl space-y-8">
         {writtenReviews.map((r, i) => (
           <Reveal key={r.name} delay={i * 0.08}>
@@ -41,7 +41,7 @@ export function WrittenReviews() {
                     >
                       “
                     </span>
-                    <p className="mt-3 font-editorial text-xl leading-relaxed text-white/90 md:text-2xl md:leading-relaxed">
+                    <p className="mt-3 font-editorial text-xl leading-relaxed text-on-dark-body md:text-2xl md:leading-relaxed">
                       {r.quote}
                     </p>
                   </blockquote>
@@ -49,7 +49,7 @@ export function WrittenReviews() {
                     <span className="block font-display text-base font-extrabold uppercase tracking-widest text-white">
                       {r.name}
                     </span>
-                    <span className="mt-1 block text-sm text-white/60">
+                    <span className="mt-1 block text-sm text-on-dark-label">
                       {r.role} · {r.when}
                     </span>
                   </figcaption>

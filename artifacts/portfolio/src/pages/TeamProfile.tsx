@@ -1,16 +1,18 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { ArrowUpRight, Clock, MapPin } from "lucide-react";
-import { SiFiverr, SiUpwork, SiWhatsapp } from "react-icons/si";
+import { SiUpwork, SiWhatsapp } from "react-icons/si";
 import NotFound from "@/pages/not-found";
 import { PageShell, Breadcrumbs, AccentHeading, StartButtons } from "@/components/site/PageShell";
+import { cardClass } from "@/components/site/Card";
 import { team, memberBySlug, LOCATION, type TeamMember } from "@/data/team";
-import { profilePic, testimonials, FIVERR, UPWORK, WHATSAPP } from "@/data/portfolio";
+import { profilePic, testimonials, UPWORK, WHATSAPP } from "@/data/portfolio";
+import { FACT_STATS } from "@/data/facts";
 
 // Emerald's page takes emerald as its accent. Buttons and the menu stay brand
 // cobalt, so actions look the same on every page. Text uses a deep jewel
 // emerald (about 4.5:1 on the bone background); Pantone Emerald #009B77 is
 // only 2.8:1 there, so it is kept for the portrait's shadow.
-export const EMERALD = "#00795A";
+export const EMERALD = "#006B4F"; // the AA-on-bone green (--green-text)
 const EMERALD_GLOW = "#009B77";
 const COBALT = "#0015D4";
 
@@ -41,9 +43,10 @@ function LocalTime() {
     return () => clearInterval(t);
   }, []);
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 py-2 text-sm font-medium text-black/70">
-      <Clock className="h-4 w-4" />
-      {now ? `${now} in Lagos` : "Lagos time"} <span className="text-black/40">· {LOCATION.zone}</span>
+    <span className="inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 py-2 text-sm font-medium tabular-nums text-ink-body">
+      <Clock className="h-4 w-4" aria-hidden />
+      {/* Fixed-width slot: the time arrives after hydration and must not push the row. */}
+      <span className="inline-block min-w-[6.25rem]">{now ? `${now} in Lagos` : "Lagos time"}</span> <span className="text-ink-label">· {LOCATION.zone}</span>
     </span>
   );
 }
@@ -63,7 +66,7 @@ function Portrait({ m, className = "", accent = COBALT }: { m: TeamMember; class
 
 function Section({ children, tint = false }: { children: ReactNode; tint?: boolean }) {
   return (
-    <section className={`border-t border-black/10 px-6 py-24 md:px-12 md:py-32 ${tint ? "bg-card" : ""}`}>
+    <section className={`border-t border-black/10 px-6 section-y md:px-12 ${tint ? "bg-card" : ""}`}>
       <div className="mx-auto max-w-7xl">{children}</div>
     </section>
   );
@@ -71,7 +74,7 @@ function Section({ children, tint = false }: { children: ReactNode; tint?: boole
 
 function H2({ before, accent, after = ".", color = COBALT }: { before: string; accent: string; after?: string; color?: string }) {
   return (
-    <h2 className="font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
+    <h2 className="type-h2 text-balance text-ink">
       {before}
       <span className="font-editorial font-normal" style={{ color }}>
         {accent}
@@ -85,23 +88,23 @@ function HandlesAndSkills({ m, who, color = COBALT }: { m: TeamMember; who: stri
   return (
     <div className="grid gap-12 md:grid-cols-2">
       <div>
-        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-black/45">{who} handles</p>
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">{who} handles</p>
         <ul className="mt-5 border-t border-black/15">
           {m.handles.map((h, i) => (
             <li key={h} className="flex gap-4 border-b border-black/15 py-4">
               <span className="font-mono text-sm font-bold" style={{ color }}>
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="text-lg text-black/80">{h}</span>
+              <span className="text-lg text-ink-body">{h}</span>
             </li>
           ))}
         </ul>
       </div>
       <div>
-        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-black/45">Skills and tools</p>
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">Skills and tools</p>
         <ul className="mt-5 flex flex-wrap gap-2">
           {m.skills.map((s) => (
-            <li key={s} className="rounded-full border border-black/15 bg-white px-3.5 py-1.5 text-sm font-medium text-black/70">
+            <li key={s} className="rounded-full border border-black/15 bg-white px-3.5 py-1.5 text-sm font-medium text-ink-body">
               {s}
             </li>
           ))}
@@ -117,7 +120,7 @@ function TeamStrip({ exclude }: { exclude: string }) {
     <ul className="grid grid-cols-2 gap-5 md:grid-cols-3">
       {others.map((m) => (
         <li key={m.slug}>
-          <a href={`/team/${m.slug}`} className="group flex items-center gap-4 rounded-2xl border-2 border-black bg-white p-3 transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#141414]">
+          <a href={`/team/${m.slug}`} className={cardClass({ pad: "none", lift: true, className: "group flex items-center gap-3 p-3 md:gap-4" })}>
             {m.founder ? (
               <img src={profilePic} alt="" className="h-14 w-14 shrink-0 rounded-xl object-cover object-top" />
             ) : (
@@ -125,7 +128,7 @@ function TeamStrip({ exclude }: { exclude: string }) {
             )}
             <span className="min-w-0">
               <span className="block font-display text-base font-extrabold text-black group-hover:text-primary">{m.name}</span>
-              <span className="block truncate text-xs text-black/55">{m.title}</span>
+              <span className="mt-0.5 line-clamp-2 text-xs leading-snug text-ink-body">{m.title}</span>
             </span>
           </a>
         </li>
@@ -148,12 +151,7 @@ function FounderProfile({ m }: { m: TeamMember }) {
     { t: "Handover is half the job.", d: "Each build ships with a walkthrough video and plain docs, so you are never stuck waiting on me." },
     { t: "One point of contact.", d: "You deal with me from the first message to handover, even when the team joins in." },
   ];
-  const STATS = [
-    { v: "200+", l: "Systems delivered" },
-    { v: "50+", l: "Clients worldwide" },
-    { v: "4+ yrs", l: "Building automations" },
-    { v: "Level 2", l: "Seller on Fiverr" },
-  ];
+  const STATS = FACT_STATS.map((s) => ({ v: s.value, l: s.label }));
 
   return (
     <PageShell cta="Want to work with Emerald?">
@@ -168,14 +166,14 @@ function FounderProfile({ m }: { m: TeamMember }) {
             <div className="mt-4">
               <AccentHeading before="Meet " accent={m.name} after="." color={EMERALD} />
             </div>
-            <p className="mt-3 font-mono text-sm font-semibold uppercase tracking-widest text-black/45">
+            <p className="mt-3 font-mono text-sm font-semibold uppercase tracking-widest text-ink-label">
               Denver <span style={{ color: EMERALD }}>Emerald</span> Peter
             </p>
             <p className="mt-7 max-w-xl text-xl font-semibold leading-snug text-black md:text-2xl">{m.lead}</p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <LocationButton />
               <LocalTime />
-              <span className="inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 py-2 text-sm font-medium text-black/70">
+              <span className="inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/70 px-4 py-2 text-sm font-medium text-ink-body">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-[#0BB07B]" /> Available for new projects
               </span>
             </div>
@@ -189,11 +187,11 @@ function FounderProfile({ m }: { m: TeamMember }) {
 
       {/* Stats */}
       <section className="bg-black px-6 py-16 text-[#E7E7E1] md:px-12">
-        <ul className="mx-auto grid max-w-7xl grid-cols-2 gap-10 md:grid-cols-4">
+        <ul className="mx-auto grid max-w-7xl grid-cols-3 gap-3 md:gap-10">
           {STATS.map((s) => (
             <li key={s.l}>
-              <p className="font-display text-4xl font-extrabold text-white md:text-5xl">{s.v}</p>
-              <p className="mt-1.5 text-sm text-white/55">{s.l}</p>
+              <p className="whitespace-nowrap font-display text-2xl font-extrabold text-white sm:text-3xl md:text-5xl">{s.v}</p>
+              <p className="mt-1.5 text-xs text-on-dark-label sm:text-sm">{s.l}</p>
             </li>
           ))}
         </ul>
@@ -203,7 +201,7 @@ function FounderProfile({ m }: { m: TeamMember }) {
       <Section>
         <div className="grid gap-12 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
           <H2 before="My " accent="story" color={EMERALD} />
-          <div className="space-y-5 text-lg leading-relaxed text-black/70">
+          <div className="space-y-5 text-lg leading-relaxed text-ink-body">
             {m.bio.map((p) => (
               <p key={p.slice(0, 20)}>{p}</p>
             ))}
@@ -217,9 +215,9 @@ function FounderProfile({ m }: { m: TeamMember }) {
         <ul className="mt-12 grid gap-6 md:grid-cols-2">
           {PRINCIPLES.map((p, i) => (
             <li key={p.t} className="rounded-2xl border-2 border-black bg-white p-7">
-              <span className="font-mono text-sm font-bold text-black/30">{String(i + 1).padStart(2, "0")}</span>
+              <span className="font-mono text-sm font-bold text-ink-label">{String(i + 1).padStart(2, "0")}</span>
               <h3 className="mt-3 font-display text-xl font-bold text-black">{p.t}</h3>
-              <p className="mt-2 leading-relaxed text-black/60">{p.d}</p>
+              <p className="mt-2 leading-relaxed text-ink-body">{p.d}</p>
             </li>
           ))}
         </ul>
@@ -246,7 +244,7 @@ function FounderProfile({ m }: { m: TeamMember }) {
             <li key={t.name}>
               <figure className="h-full rounded-2xl border-2 border-black bg-white p-7">
                 <blockquote className="font-editorial text-lg leading-snug text-black">"{t.quote.replace(/\s*—\s*/g, ", ")}"</blockquote>
-                <figcaption className="mt-4 text-sm font-semibold text-black/55">{t.name}</figcaption>
+                <figcaption className="mt-4 text-sm font-semibold text-ink-body">{t.name}</figcaption>
               </figure>
             </li>
           ))}
@@ -272,7 +270,6 @@ function FounderProfile({ m }: { m: TeamMember }) {
         <div className="mt-10 flex flex-wrap gap-3">
           {[
             { href: WHATSAPP, label: "WhatsApp", Icon: SiWhatsapp },
-            { href: FIVERR, label: "Fiverr", Icon: SiFiverr },
             { href: UPWORK, label: "Upwork", Icon: SiUpwork },
           ].map(({ href, label, Icon }) => (
             <a
@@ -304,7 +301,7 @@ function MemberProfile({ m }: { m: TeamMember }) {
               <AccentHeading before="Meet " accent={m.name} after="." color="#0015D4" />
             </div>
             <p className="mt-7 max-w-xl text-xl font-semibold leading-snug text-black md:text-2xl">{m.lead}</p>
-            <div className="mt-6 space-y-4 text-lg leading-relaxed text-black/65">
+            <div className="mt-6 space-y-4 text-lg leading-relaxed text-ink-body">
               {m.bio.map((p) => (
                 <p key={p.slice(0, 20)} className="max-w-xl">
                   {p}
@@ -315,7 +312,7 @@ function MemberProfile({ m }: { m: TeamMember }) {
               Part of the D. Team, led by Emerald <ArrowUpRight className="h-4 w-4" />
             </a>
             {m.draft && (
-              <p className="mt-6 max-w-xl rounded-xl border-2 border-dashed border-black/25 px-4 py-3 text-sm text-black/50">
+              <p className="mt-6 max-w-xl rounded-xl border-2 border-dashed border-black/25 px-4 py-3 text-sm text-ink-label">
                 Draft profile: {m.name}'s own words are on the way.
               </p>
             )}
@@ -332,7 +329,7 @@ function MemberProfile({ m }: { m: TeamMember }) {
         <div className="grid gap-10 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-center">
           <div>
             <H2 before={`Working with ${m.name}`} accent="" after="" />
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-black/60">
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-body">
               Every project starts with Emerald, who scopes the work, sends a fixed quote within 24 hours and brings{" "}
               {m.name} in. You keep one point of contact from the first message to handover.
             </p>
@@ -342,7 +339,7 @@ function MemberProfile({ m }: { m: TeamMember }) {
       </Section>
 
       <Section tint>
-        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-black/45">The rest of the team</p>
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">The rest of the team</p>
         <div className="mt-6">
           <TeamStrip exclude={m.slug} />
         </div>

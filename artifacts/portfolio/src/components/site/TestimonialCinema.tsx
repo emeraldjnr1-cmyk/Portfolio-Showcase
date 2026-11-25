@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
-import { SplitWords, Reveal } from "@/components/fx/SplitWords";
+import { SectionHeader } from "@/components/site/SectionHeader";
 import { testimonials } from "@/data/portfolio";
 
 const EASE = [0.32, 0.72, 0, 1] as const;
@@ -38,23 +38,14 @@ export function TestimonialCinema() {
   };
 
   return (
-    <section id="clients" className="relative border-t border-black/10 px-6 py-28 md:px-12 md:py-40 overflow-hidden">
+    <section id="clients" className="section-y relative overflow-hidden border-t border-black/10 px-6 md:px-12">
       {/* giant background word */}
       <div className="pointer-events-none absolute left-1/2 top-16 -translate-x-1/2 select-none font-display text-[16vw] font-extrabold leading-none text-black/[0.04]">
         PROOF
       </div>
 
       <div className="relative mx-auto max-w-6xl">
-        <div className="mb-16 text-center">
-          <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">05 — Client stories</span>
-          </Reveal>
-          <SplitWords
-            as="h2"
-            text="Don't take my word for it."
-            className="mt-4 font-display text-4xl font-extrabold tracking-tight text-black md:text-6xl justify-center flex flex-wrap"
-          />
-        </div>
+        <SectionHeader num="05" label="Client stories" title="Don't take my word for it." />
 
         <div className="flex items-center gap-4 md:gap-8">
           <button
@@ -121,12 +112,12 @@ export function TestimonialCinema() {
                 exit={{ opacity: 0, y: -10, transition: { duration: 0.2 } }}
                 className="mx-auto mt-8 max-w-lg text-center"
               >
-                <p className="font-editorial text-xl text-black/85 md:text-2xl">"{t.quote}"</p>
+                <p className="font-editorial text-xl text-ink-body md:text-2xl">"{t.quote}"</p>
                 <p className="mt-3 font-display text-sm font-bold uppercase tracking-widest text-primary">{t.name}</p>
               </motion.div>
             </AnimatePresence>
 
-            <div className="mt-6 flex items-center justify-center gap-2" role="tablist" aria-label="Testimonials">
+            <div className="mt-3 flex items-center justify-center gap-1" role="tablist" aria-label="Testimonials">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
@@ -138,10 +129,14 @@ export function TestimonialCinema() {
                     setMuted(true);
                     setCurrent(i);
                   }}
-                  className={`rounded-full transition-all duration-300 ${
-                    i === current ? "h-2 w-8 bg-primary" : "h-2 w-2 bg-black/20 hover:bg-black/40"
-                  }`}
-                />
+                  className="group flex h-11 min-w-6 items-center justify-center px-1"
+                >
+                  <span
+                    className={`block h-2 rounded-full transition-[width,background-color] duration-300 ${
+                      i === current ? "w-8 bg-cobalt" : "w-2 bg-black/35 group-hover:bg-black/60"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           </div>

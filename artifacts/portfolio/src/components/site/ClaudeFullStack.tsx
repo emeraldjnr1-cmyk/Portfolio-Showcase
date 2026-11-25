@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
-import { SplitWords, Reveal } from "@/components/fx/SplitWords";
+import { Reveal } from "@/components/fx/SplitWords";
+import { SectionHeader } from "@/components/site/SectionHeader";
 import { industries } from "@/data/industries";
 
 // Section 01: Claude Code as the umbrella over everything else on the page.
@@ -46,24 +47,18 @@ const LANES = [
 
 export function ClaudeFullStack() {
   return (
-    <section id="claude-code" className="relative border-t border-black/10 px-6 py-28 md:px-12 md:py-40">
+    <section id="claude-code" className="section-y relative border-t border-black/10 px-6 md:px-12">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-16 grid gap-8 md:mb-24 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-end">
-          <div>
-            <Reveal>
-              <span className="font-mono text-sm font-semibold text-primary">01 — Claude Code</span>
-            </Reveal>
-            <h2 className="mt-4 font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-black md:text-7xl">
-              Claude Code, <span className="whitespace-nowrap font-editorial font-normal text-primary">full stack</span>.
-            </h2>
-          </div>
-          <Reveal delay={0.2}>
-            <p className="max-w-md text-lg leading-relaxed text-black/55">
-              Claude Code is how I build everything on this page. One builder, five kinds of system, all delivered in
-              your own accounts with docs and a walkthrough video.
-            </p>
-          </Reveal>
-        </div>
+        <SectionHeader
+          num="01"
+          label="Claude Code"
+          title={
+            <>
+              Claude Code, <span className="whitespace-nowrap font-editorial font-normal text-cobalt">full stack</span>.
+            </>
+          }
+          lead="Claude Code is how I build everything on this page. One builder, five kinds of system, all delivered in your own accounts with docs and a walkthrough video."
+        />
 
         <ul className="border-b-2 border-black">
           {LANES.map((l, i) => (
@@ -77,16 +72,16 @@ export function ClaudeFullStack() {
                     style={{ backgroundColor: l.color }}
                   />
                   <span className="relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5 py-7 md:grid-cols-[4rem_minmax(0,1.1fr)_minmax(0,1fr)_auto] md:gap-8 md:px-4 md:py-9">
-                    <span className={`font-mono text-sm font-bold text-black/35 transition-colors ${l.ink}`}>
+                    <span className={`font-mono text-sm font-bold text-ink-label transition-colors ${l.ink}`}>
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span>
                       <span className={`block font-display text-2xl font-extrabold tracking-tight text-black transition-colors md:text-4xl ${l.ink}`}>
                         {l.title}
                       </span>
-                      <span className="mt-1.5 block text-sm leading-relaxed text-black/55 md:hidden">{l.desc}</span>
+                      <span className="mt-1.5 block text-sm leading-relaxed text-ink-body md:hidden">{l.desc}</span>
                     </span>
-                    <span className={`hidden leading-relaxed text-black/55 transition-colors md:block ${l.ink}`}>
+                    <span className={`hidden leading-relaxed text-ink-body transition-colors md:block ${l.ink}`}>
                       {l.desc}
                     </span>
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-black bg-white text-black transition-transform duration-300 group-hover:rotate-45">
@@ -101,13 +96,13 @@ export function ClaudeFullStack() {
 
         <Reveal delay={0.2}>
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-semibold">
-            <a href="/services" className="inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
+            <a href="/services" className="tap inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
               All services <ArrowUpRight className="h-4 w-4" />
             </a>
-            <a href="/films" className="inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
+            <a href="/films" className="tap inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
               Watch the build films <ArrowUpRight className="h-4 w-4" />
             </a>
-            <a href="#websites" className="inline-flex items-center gap-1.5 text-black/55 transition-colors hover:text-primary">
+            <a href="#websites" className="tap inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
               See the builds below
             </a>
           </div>
@@ -117,13 +112,13 @@ export function ClaudeFullStack() {
             industry page one click from home. */}
         <Reveal delay={0.25}>
           <div className="mt-14 border-t border-black/10 pt-8">
-            <p className="font-mono text-xs font-semibold uppercase tracking-widest text-black/45">Built for your industry</p>
+            <p className="type-label text-ink-label">Built for your industry</p>
             <ul className="mt-4 flex flex-wrap gap-2">
               {industries.map((ind) => (
                 <li key={ind.slug}>
                   <a
                     href={`/industries/${ind.slug}`}
-                    className="inline-flex rounded-full border border-black/20 bg-white/70 px-3.5 py-1.5 text-sm font-medium text-black/75 transition-colors duration-150 hover:border-black hover:bg-black hover:text-white"
+                    className="inline-flex min-h-11 items-center rounded-full border border-black/20 bg-white/70 px-4 text-sm font-medium text-ink transition-colors duration-150 hover:border-black hover:bg-black hover:text-white md:min-h-9"
                   >
                     {ind.name}
                   </a>

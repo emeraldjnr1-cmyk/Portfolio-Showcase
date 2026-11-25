@@ -43,7 +43,7 @@ export function FilmCard({ film }: { film: Film }) {
       </div>
       <p className="mt-4 font-mono text-[11px] font-bold uppercase tracking-widest text-primary">{film.tag}</p>
       <h3 className="mt-1.5 font-display text-lg font-extrabold leading-snug tracking-tight text-black md:text-xl">{film.title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-black/60">{film.desc}</p>
+      <p className="mt-2 text-sm leading-relaxed text-ink-body">{film.desc}</p>
     </article>
   );
 }

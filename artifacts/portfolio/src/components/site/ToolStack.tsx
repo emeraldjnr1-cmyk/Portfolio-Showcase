@@ -8,9 +8,8 @@ import {
   SiSolidity, SiEthereum, SiSolana, SiWeb3Dotjs, SiSupabase, SiShopify, SiDocker, SiRailway,
   SiGooglesheets, SiWhatsapp, SiWagmi, SiGmail, SiRobloxstudio, SiLuau, SiBlender,
 } from "react-icons/si";
-import { SplitWords, Reveal } from "@/components/fx/SplitWords";
+import { SectionHeader } from "@/components/site/SectionHeader";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 // Site palette, reused for brands that have no icon in the set. Inventing
 // a brand's real colours would be worse than a clean house style.
@@ -26,7 +25,7 @@ const CATEGORIES: Category[] = [
   {
     id: "agents",
     label: "AI Agents & Automation",
-    blurb: "Systems that run the busywork while you sleep.",
+    blurb: "Systems that take the busywork off your team.",
     accent: "#0015D4",
     tools: [
       CLAUDE,
@@ -140,6 +139,9 @@ const CATEGORIES: Category[] = [
   },
 ];
 
+// Accents dark enough that the active tab needs white text to stay readable.
+const LIGHT_ON = new Set(["#0015D4", "#8B5CF6"]);
+
 function ToolMark({ tool, i }: { tool: Tool; i: number }) {
   if (tool.Icon) return <tool.Icon className="h-7 w-7" />;
   return (
@@ -157,26 +159,17 @@ export function ToolStack() {
   const cat = CATEGORIES[active];
 
   return (
-    <section id="stack" className="relative overflow-hidden border-y border-black bg-black px-6 py-24 text-[#E7E7E1] md:px-12 md:py-32">
+    <section id="stack" className="section-y relative overflow-hidden border-y border-black bg-black px-6 text-on-dark md:px-12">
       {/* ghost word behind, same trick as the proof section */}
       <div className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 select-none font-display text-[15vw] font-extrabold leading-none text-white/[0.035]">
         STACK
       </div>
 
-      <div className="relative mx-auto max-w-6xl">
-        <div className="text-center">
-          <Reveal>
-            <span className="font-mono text-sm font-semibold text-[#84DEF9]">The toolkit</span>
-          </Reveal>
-          <SplitWords
-            as="h2"
-            text="Pick a job. See what I build it with."
-            className="mt-4 flex flex-wrap justify-center font-display text-3xl font-extrabold tracking-tight text-white md:text-5xl"
-          />
-        </div>
+      <div className="relative mx-auto max-w-7xl">
+        <SectionHeader tone="dark" label="The toolkit" title="Pick a job. See what I build it with." className="!mb-0" />
 
         {/* category pills */}
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-8 flex flex-wrap items-center gap-2 md:mt-10 md:gap-3">
           {CATEGORIES.map((c, i) => {
             const on = i === active;
             return (
@@ -185,8 +178,8 @@ export function ToolStack() {
                 onClick={() => setActive(i)}
                 data-cursor="hover"
                 aria-pressed={on}
-                className="relative rounded-full px-5 py-2.5 font-display text-sm font-bold transition-colors md:text-base"
-                style={{ color: on ? "#0B0B0B" : "rgba(231,231,225,0.6)" }}
+                className="relative min-h-11 rounded-full px-5 font-display text-sm font-bold transition-colors md:text-base"
+                style={{ color: on ? (LIGHT_ON.has(c.accent) ? "#FFFFFF" : "#0B0B0B") : "rgba(255,255,255,0.78)" }}
               >
                 {on && (
                   <motion.span
@@ -211,7 +204,7 @@ export function ToolStack() {
             initial="hide"
             animate="show"
             exit="out"
-            className="mt-12 min-h-[520px] sm:min-h-[420px] lg:min-h-[360px]"
+            className="mt-10 min-h-[520px] sm:min-h-[420px] lg:min-h-[360px]"
           >
             <motion.p
               variants={{
@@ -219,7 +212,7 @@ export function ToolStack() {
                 show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
                 out: { opacity: 0, y: -8, transition: { duration: 0.2 } },
               }}
-              className="text-center font-editorial text-xl text-[#E7E7E1]/55 md:text-2xl"
+              className="font-editorial text-xl text-on-dark-body md:text-2xl"
             >
               {cat.blurb}
             </motion.p>
@@ -230,7 +223,7 @@ export function ToolStack() {
                 show: { transition: { staggerChildren: 0.045, delayChildren: 0.08 } },
                 out: { transition: { staggerChildren: 0.015, staggerDirection: -1 } },
               }}
-              className="mt-10 flex flex-wrap items-center justify-center gap-3.5"
+              className="mt-8 flex flex-wrap items-center gap-3"
             >
               {cat.tools.map((t, i) => (
                 <motion.div
@@ -251,7 +244,7 @@ export function ToolStack() {
                   className="group flex items-center gap-3 rounded-2xl border border-white/12 bg-white/[0.04] px-5 py-3.5 transition-colors hover:border-white/35"
                   style={{ willChange: "transform" }}
                 >
-                  <span className="block text-[#E7E7E1]/75 transition-all duration-300 group-hover:scale-110 group-hover:text-white">
+                  <span className="block text-on-dark-body transition-all duration-300 group-hover:scale-110 group-hover:text-white">
                     <ToolMark tool={t} i={i} />
                   </span>
                   <span className="font-display text-sm font-bold tracking-tight whitespace-nowrap md:text-[15px]">
@@ -274,7 +267,7 @@ export function ToolStack() {
                 show: { opacity: 1, transition: { delay: 0.5 } },
                 out: { opacity: 0, transition: { duration: 0.15 } },
               }}
-              className="mt-10 text-center font-mono text-xs uppercase tracking-widest text-[#E7E7E1]/35"
+              className="mt-10 type-label text-on-dark-label"
             >
               {cat.tools.length} tools · Claude Code runs through all of it
             </motion.p>

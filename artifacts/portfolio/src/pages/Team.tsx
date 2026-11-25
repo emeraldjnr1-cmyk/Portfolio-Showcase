@@ -10,7 +10,7 @@ export function TeamPage() {
           <h1 className="mt-8 font-display text-[12vw] font-extrabold leading-[1.02] tracking-tight text-black sm:text-6xl lg:text-[5.4rem]">
             <TeamName />
           </h1>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-black/60 md:text-xl">
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-body md:text-xl">
             Denver NoCode is led by Emerald, who runs every project from the first message to handover. When a build
             needs AI video, web design or Roblox development, the D. Team joins in, and you still deal with one person.
           </p>
@@ -20,7 +20,7 @@ export function TeamPage() {
         </div>
       </section>
 
-      <section className="border-t border-black/10 bg-card px-6 py-20 md:px-12 md:py-28">
+      <section className="border-t border-black/10 bg-card px-6 section-y-sm md:px-12">
         <div className="mx-auto max-w-7xl">
           <TeamGrid />
         </div>

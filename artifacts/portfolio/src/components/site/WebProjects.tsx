@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
-import { SplitWords, Reveal } from "@/components/fx/SplitWords";
+import { ArrowUpRight, Volume2, VolumeX } from "lucide-react";
+import { Reveal } from "@/components/fx/SplitWords";
+import { SectionHeader } from "@/components/site/SectionHeader";
+import { inkFor } from "@/lib/tones";
 import { MaskReveal } from "@/components/fx/ScrollFX";
 import { webProjects, WebProject } from "@/data/portfolio";
 
@@ -13,6 +15,7 @@ export function FeatureRow({ project, index }: { project: WebProject; index: num
   const ref = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoOk, setVideoOk] = useState(true);
+  const [muted, setMuted] = useState(true);
   const inView = useInView(ref, { margin: "-15% 0px", amount: 0.4 });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const imgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
@@ -37,9 +40,8 @@ export function FeatureRow({ project, index }: { project: WebProject; index: num
         data-cursor="hover"
       >
         <div
-          className="relative overflow-hidden rounded-2xl border-2 border-black/10 transition-all duration-200 group-hover:border-black"
-          onMouseEnter={(e) => (e.currentTarget.style.boxShadow = `10px 10px 0 ${pop}`)}
-          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
+          style={{ "--pop": pop } as CSSProperties}
+          className="relative overflow-hidden rounded-2xl border-2 border-black/10 transition-[border-color,box-shadow] duration-200 group-hover:border-black group-hover:shadow-[10px_10px_0_var(--pop)]"
         >
           <MaskReveal>
             {project.video && videoOk ? (
@@ -67,11 +69,19 @@ export function FeatureRow({ project, index }: { project: WebProject; index: num
           </MaskReveal>
           {project.video && videoOk && (
             <button
-              onClick={() => { const v = videoRef.current; if (v) v.muted = !v.muted; }}
-              className="absolute bottom-4 right-4 rounded-full bg-black/70 px-4 py-2 text-xs font-bold text-white backdrop-blur-sm transition-colors hover:bg-primary"
-              aria-label="Toggle sound"
+              type="button"
+              onClick={() => {
+                const v = videoRef.current;
+                if (!v) return;
+                v.muted = !v.muted;
+                setMuted(v.muted);
+              }}
+              aria-pressed={!muted}
+              aria-label={`Sound for the ${project.name} film`}
+              className="absolute bottom-3 right-3 inline-flex h-11 items-center gap-2 rounded-full bg-black/80 px-4 text-sm font-bold text-white transition-[background-color,transform] duration-150 ease-out hover:bg-cobalt active:scale-[0.97]"
             >
-              Sound on/off
+              {muted ? <VolumeX className="h-4 w-4" aria-hidden /> : <Volume2 className="h-4 w-4" aria-hidden />}
+              {muted ? "Unmute" : "Mute"}
             </button>
           )}
         </div>
@@ -82,14 +92,14 @@ export function FeatureRow({ project, index }: { project: WebProject; index: num
 
       <div className={`md:col-span-4 ${flip ? "md:order-1 md:text-right" : ""}`}>
         <Reveal delay={0.15}>
-          <p className="font-mono text-xs font-bold uppercase tracking-widest" style={{ color: pop === "#FFCB41" ? "#B8860B" : pop }}>
+          <p className="type-label" style={{ color: inkFor(pop) }}>
             {project.kind}
           </p>
           <h3 className="mt-3 font-display text-3xl font-extrabold text-black md:text-4xl">{project.name}</h3>
-          <p className="mt-4 leading-relaxed text-black/55">{project.desc}</p>
+          <p className="mt-4 leading-relaxed text-ink-body">{project.desc}</p>
           <div className={`mt-5 flex flex-wrap gap-2 ${flip ? "md:justify-end" : ""}`}>
             {project.stack.map((s) => (
-              <span key={s} className="rounded-md border border-black/15 bg-white px-2.5 py-1 text-xs font-medium text-black/70">
+              <span key={s} className="rounded-md border border-black/15 bg-white px-2.5 py-1 text-xs font-medium text-ink-body">
                 {s}
               </span>
             ))}
@@ -122,9 +132,8 @@ export function CompactCard({ project, index }: { project: WebProject; index: nu
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8% 0px" }}
       transition={{ duration: 0.7, ease: EASE, delay: (index % 3) * 0.1 }}
-      className="group overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-all duration-200 hover:border-black"
-      onMouseEnter={(e) => (e.currentTarget.style.boxShadow = `6px 6px 0 ${pop}`)}
-      onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
+      style={{ "--pop": pop } as CSSProperties}
+      className="group overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-[border-color,box-shadow] duration-200 hover:border-black hover:shadow-[6px_6px_0_var(--pop)]"
       data-cursor="hover"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-[#DDDBD2]">
@@ -151,9 +160,9 @@ export function CompactCard({ project, index }: { project: WebProject; index: nu
         )}
       </div>
       <div className="p-5">
-        <p className="font-mono text-[11px] font-bold uppercase tracking-widest text-black/40">{project.kind}</p>
+        <p className="font-mono text-[11px] font-bold uppercase tracking-widest text-ink-label">{project.kind}</p>
         <h3 className="mt-1 font-display text-xl font-extrabold text-black">{project.name}</h3>
-        <p className="mt-1.5 text-sm text-black/55 line-clamp-1">{project.desc}</p>
+        <p className="mt-1.5 text-sm text-ink-body line-clamp-1">{project.desc}</p>
       </div>
     </motion.div>
   );
@@ -164,28 +173,19 @@ export function WebProjectsSection() {
   const gridProjects = webProjects.slice(4);
 
   return (
-    <section id="websites" className="relative border-t border-black/10 bg-card px-6 py-28 md:px-12 md:py-40">
+    <section id="websites" className="section-y relative border-t border-black/10 bg-card px-6 md:px-12">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-20 md:mb-28">
-          <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">02 — Apps and websites</span>
-          </Reveal>
-          <SplitWords
-            as="h2"
-            text="Products designed and shipped with Claude Code."
-            className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl"
-          />
-          <Reveal delay={0.25}>
-            <p className="mt-6 max-w-xl text-lg text-black/55">
-              Dashboards, storefronts, booking flows and AI products. Full builds, not templates.
-            </p>
-          </Reveal>
-          <Reveal delay={0.35}>
-            <a href="/services/websites-apps" className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-black transition-colors hover:text-primary">
-              Websites and web apps service <ArrowUpRight className="h-4 w-4" />
-            </a>
-          </Reveal>
-        </div>
+        <SectionHeader
+          num="02"
+          label="Apps and websites"
+          title="Products designed and shipped with Claude Code."
+          lead="Dashboards, storefronts, booking flows and AI products. Full builds, not templates."
+          className="md:!mb-20"
+        >
+          <a href="/services/websites-apps" className="tap mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-ink transition-colors hover:text-cobalt">
+            Websites and web apps service <ArrowUpRight className="h-4 w-4" aria-hidden />
+          </a>
+        </SectionHeader>
 
         <div className="space-y-24 md:space-y-32">
           {heroProjects.map((p, i) => (

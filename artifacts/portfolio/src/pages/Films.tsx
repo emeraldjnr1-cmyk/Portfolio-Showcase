@@ -12,11 +12,11 @@ export function FilmsPage() {
           <div className="mt-8">
             <AccentHeading before="Watch the " accent="builds" after="." color="#0015D4" />
           </div>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-black/60 md:text-xl">
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-body md:text-xl">
             {films.length} short films showing how the systems work, from the problem to the run to the result. Each
             one is under a minute.
           </p>
-          <p className="mt-3 max-w-2xl text-sm text-black/45">
+          <p className="mt-3 max-w-2xl text-sm text-ink-label">
             The films use sample data, so the figures on screen illustrate how a system behaves. They are not client
             results.
           </p>
@@ -44,7 +44,7 @@ export function FilmsPage() {
         >
           <div className="mx-auto max-w-7xl">
             <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
-              <h2 className="font-display text-3xl font-extrabold tracking-tight text-black md:text-5xl">{g.label}</h2>
+              <h2 className="type-h2 text-balance text-ink">{g.label}</h2>
               <a href={`/services/${g.service}`} className="inline-flex items-center gap-1.5 text-sm font-bold text-black transition-colors hover:text-primary">
                 See the service <ArrowUpRight className="h-4 w-4" />
               </a>

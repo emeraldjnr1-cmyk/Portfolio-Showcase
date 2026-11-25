@@ -19,7 +19,7 @@ export function RobloxProjectsSection() {
   const byGenre = groups();
 
   return (
-    <section id="roblox" className="relative border-t border-black/10 px-6 py-28 md:px-12 md:py-40">
+    <section id="roblox" className="relative border-t border-black/10 px-6 section-y md:px-12">
       <div className="mx-auto max-w-7xl">
         <div className="mb-20 md:mb-28">
           <Reveal>
@@ -31,11 +31,11 @@ export function RobloxProjectsSection() {
             className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl"
           />
           <Reveal delay={0.25}>
-            <p className="mt-6 max-w-xl text-lg text-black/55">
+            <p className="mt-6 max-w-xl text-lg text-ink-body">
               The core loop of each game type, played through four ways, so you can see the pacing before anything is
               built for you.
             </p>
-            <p className="mt-4 inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
+            <p className="mt-4 inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">
               <span className="h-2 w-2 bg-[#F32317]" aria-hidden />
               Concept demos made for this page, not published games. Client games ship in the client's own Roblox group.
             </p>
@@ -51,7 +51,7 @@ export function RobloxProjectsSection() {
                   <div className="mb-12 flex items-baseline gap-4 md:mb-16">
                     <span className="font-mono text-sm font-semibold text-primary">0{gi + 1}</span>
                     <h3 className="font-display text-2xl font-extrabold tracking-tight text-black md:text-3xl">{genre}</h3>
-                    <span className="font-mono text-xs uppercase tracking-widest text-black/40">{items.length} demos</span>
+                    <span className="font-mono text-xs uppercase tracking-widest text-ink-label">{items.length} demos</span>
                   </div>
                 </Reveal>
                 <FeatureRow project={lead} index={gi} />

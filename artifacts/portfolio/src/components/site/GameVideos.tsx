@@ -155,7 +155,7 @@ export function ShortCard({ short }: { short: Short }) {
         <h3 className="mt-1.5 font-display text-lg font-extrabold leading-snug tracking-tight text-black [overflow-wrap:anywhere] md:text-xl">
           {short.title}
         </h3>
-        <p className="mt-2 text-sm leading-relaxed text-black/60 [overflow-wrap:anywhere]">{short.desc}</p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-body [overflow-wrap:anywhere]">{short.desc}</p>
       </div>
     </article>
   );
@@ -294,10 +294,10 @@ export function FeaturedGameText({ game }: { game: FeaturedGame }) {
     <div>
       <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">{game.kind}</p>
       <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-black md:text-4xl">{game.name}</h2>
-      <p className="mt-3 max-w-xl leading-relaxed text-black/60">{game.desc}</p>
+      <p className="mt-3 max-w-xl leading-relaxed text-ink-body">{game.desc}</p>
       <ul className="mt-4 flex flex-wrap gap-2" aria-label="Built with">
         {game.stack.map((s) => (
-          <li key={s} className="rounded-md border border-black/15 bg-white px-2.5 py-1 text-xs font-medium text-black/70">
+          <li key={s} className="rounded-md border border-black/15 bg-white px-2.5 py-1 text-xs font-medium text-ink-body">
             {s}
           </li>
         ))}

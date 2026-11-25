@@ -4,6 +4,7 @@ import { preloadAllRoutes } from "./routes";
 
 export { PAGES, SITE } from "./seo/pages";
 export { buildKnowledge } from "./seo/knowledge";
+export { FACT_LONG } from "./data/facts";
 export { ROUTE_SOURCES, routeKeyFor } from "./routes";
 
 /**

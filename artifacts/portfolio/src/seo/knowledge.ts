@@ -9,7 +9,8 @@ import { team } from "@/data/team";
 import { films, FILM_GROUPS } from "@/data/films";
 import { packages, usd } from "@/data/pricing";
 import { FAQS } from "@/data/faqs";
-import { webProjects, web3Projects, robloxProjects, testimonials, writtenReviews, WHATSAPP, FIVERR, UPWORK } from "@/data/portfolio";
+import { webProjects, web3Projects, robloxProjects, testimonials, writtenReviews, WHATSAPP, UPWORK } from "@/data/portfolio";
+import { FACT_LONG } from "@/data/facts";
 
 const SITE = "https://www.denvernocode.com";
 
@@ -22,8 +23,7 @@ export function buildKnowledge(): string {
     "",
     "Denver NoCode is the studio of Denver Emerald Peter (Emerald), a Claude Code developer who builds web apps, websites, business automations, AI agents, MCP servers and Roblox games for businesses worldwide, with Claude Code, n8n, Make.com and Airtable.",
     "",
-    "- 200+ systems delivered for 50+ clients worldwide, over 4+ years of building automations.",
-    "- Level 2 seller on Fiverr.",
+    `- ${FACT_LONG}`,
     "- Built for businesses doing $10k+ a month.",
     "- Every system is delivered in the client's own accounts, with a walkthrough video and plain docs. The client owns everything.",
     "- Calm, direct, allergic to jargon. If something will not work, Emerald says so before the client pays for it.",
@@ -31,10 +31,9 @@ export function buildKnowledge(): string {
 
   h("How to hire Emerald");
   out.push(
-    `- Fiverr (${FIVERR}): Level 2 seller. Fixed scope, fixed price, escrow held until the client approves. Best if you want the platform holding the paperwork.`,
     `- Upwork (${UPWORK}): hourly or milestone contracts with time tracking. Best for longer builds and ongoing retainers where scope evolves.`,
     "- Direct: no platform fee. Scope is agreed, Emerald invoices, and the work starts. Same delivery, same support, lower price. Payment by Wise, Remitly, PayPal or bank transfer.",
-    `- Fastest start: WhatsApp (${WHATSAPP}) or the onboarding form on the home page (the Start your project button). Emerald sends a plan and a fixed quote within 24 hours.`,
+    `- Fastest start: WhatsApp (${WHATSAPP}) or the quote form on any page (the Get a fixed quote button). Emerald sends a plan and a fixed quote within 24 hours.`,
   );
 
   h("Typical projects and starting prices (USD)");

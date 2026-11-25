@@ -3,9 +3,9 @@ import { useLocation } from "wouter";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
-import { Magnetic } from "@/components/fx/Magnetic";
 import { Logo } from "@/components/site/Logo";
 import { WHATSAPP } from "@/data/portfolio";
+import { buttonClass, CTA_WHATSAPP } from "@/components/site/Button";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -15,7 +15,7 @@ const LINKS = [
   { label: "Claude Code", href: "#claude-code" },
   { label: "D. Team", href: "/team" },
   { label: "Clients", href: "#clients" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Hire me", href: "#pricing" },
   { label: "About", href: "/team/emerald" },
 ];
 
@@ -62,7 +62,7 @@ export function SiteNav() {
         transition={{ duration: 0.45, ease: EASE }}
       >
         <div
-          className={`mx-auto flex items-center justify-between px-6 md:px-12 transition-all duration-500 ${
+          className={`mx-auto flex items-center justify-between px-6 md:px-12 transition-[padding,background-color,border-color] duration-300 ease-out ${
             scrolled && !menuOpen
               ? "py-3 bg-[#E7E7E1]/95 md:bg-[#E7E7E1]/80 md:backdrop-blur-xl border-b border-black/10"
               : "py-6 bg-transparent"
@@ -81,7 +81,7 @@ export function SiteNav() {
                   key={l.href}
                   href={l.href}
                   aria-current={current ? "page" : undefined}
-                  className={`group relative text-sm font-medium transition-colors hover:text-black ${current ? "text-black" : "text-black/60"}`}
+                  className={`group relative text-sm font-medium transition-colors hover:text-ink ${current ? "text-ink" : "text-ink-body"}`}
                 >
                   {l.label}
                   <span
@@ -93,17 +93,18 @@ export function SiteNav() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Magnetic>
-              <a
-                href={WHATSAPP}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary sm:inline-flex"
-              >
-                Let's talk
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#84DEF9] animate-pulse" />
-              </a>
-            </Magnetic>
+            {/* Same label as every other WhatsApp button. Between 1024 and
+                1280px the seven links leave no room for the words, so only
+                the icon shows; the name stays for screen readers. */}
+            <a
+              href={WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={buttonClass({ size: "sm", className: "max-sm:hidden lg:max-xl:w-11 lg:max-xl:px-0" })}
+            >
+              <SiWhatsapp className="h-4 w-4 shrink-0" aria-hidden />
+              <span className="lg:max-xl:sr-only">{CTA_WHATSAPP}</span>
+            </a>
 
             {/* Burger: the six section links had no mobile equivalent at all */}
             <button
@@ -111,7 +112,7 @@ export function SiteNav() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
-              className="relative z-50 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/20 bg-white/90 lg:hidden"
+              className="relative z-50 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-white transition-transform duration-150 ease-out active:scale-[0.97] lg:hidden"
             >
               <span className="relative block h-4 w-5">
                 <motion.span
@@ -160,12 +161,12 @@ export function SiteNav() {
                   className="group flex items-center justify-between border-b border-black/10 py-3 font-display text-[28px] leading-tight font-extrabold tracking-tight text-black"
                 >
                   <span className="flex items-baseline gap-3">
-                    <span className="font-mono text-xs font-bold text-black/30">
+                    <span className="font-mono text-xs font-bold text-ink-label">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {l.label}
                   </span>
-                  <ArrowUpRight className="h-6 w-6 text-black/25 transition-transform group-active:translate-x-1" />
+                  <ArrowUpRight className="h-6 w-6 text-ink-label transition-transform group-active:translate-x-1" />
                 </motion.a>
               ))}
             </nav>
@@ -178,10 +179,10 @@ export function SiteNav() {
               initial={{ opacity: 0, y: 26 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.18 + LINKS.length * 0.055, duration: 0.5, ease: EASE }}
-              className="mt-10 inline-flex h-14 items-center justify-center gap-3 rounded-full bg-primary font-display text-base font-bold text-white"
+              className={buttonClass({ className: "mt-10" })}
             >
-              <SiWhatsapp className="h-5 w-5" />
-              Message me on WhatsApp
+              <SiWhatsapp className="h-5 w-5" aria-hidden />
+              {CTA_WHATSAPP}
             </motion.a>
           </motion.div>
         )}

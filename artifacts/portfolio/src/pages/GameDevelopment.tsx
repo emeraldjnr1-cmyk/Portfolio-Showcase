@@ -17,7 +17,7 @@ const JUMPS = [
 function Intro({ withGame }: { withGame: boolean }) {
   return (
     <>
-      <p className="max-w-2xl text-lg leading-relaxed text-black/60 md:text-xl">
+      <p className="max-w-2xl text-lg leading-relaxed text-ink-body md:text-xl">
         {withGame
           ? "An original browser game, Roblox story Shorts and Roblox concept demos, each one shown as it plays. Pick a film to watch it."
           : "Roblox story Shorts and Roblox concept demos, each one shown as it plays. Pick a film to watch it."}
@@ -81,25 +81,25 @@ export function GameDevelopmentPage() {
       )}
 
       {/* In-house Shorts */}
-      <section id="shorts" className="scroll-mt-24 border-t border-black/10 bg-card px-6 py-20 md:px-12 md:py-28">
+      <section id="shorts" className="scroll-mt-24 border-t border-black/10 bg-card px-6 section-y-sm md:px-12">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-x-6 gap-y-10 lg:grid-cols-4">
             <div className="lg:col-span-2 lg:pr-12">
-              <h2 className="font-display text-4xl font-extrabold tracking-tight text-balance text-black md:text-6xl">
+              <h2 className="type-h2 text-balance text-ink">
                 Roblox stories, told in a{" "}
                 <span className="font-editorial font-normal" style={{ color: ACCENT }}>
                   minute
                 </span>
                 .
               </h2>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-black/55">
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-body">
                 Vertical Shorts written and animated in-house, with captions on screen. They start muted, and each
                 one has a sound control once it is playing.
               </p>
               <h3 className="mt-12 font-display text-2xl font-extrabold tracking-tight text-black md:text-3xl lg:mt-16">
                 One story, two parts
               </h3>
-              <p className="mt-3 max-w-md leading-relaxed text-black/60">
+              <p className="mt-3 max-w-md leading-relaxed text-ink-body">
                 A world where hair colour gives your mood away, and the morning that rule breaks. Part one sets the
                 hook in 30 seconds. Part two takes a full minute to pay it off.
               </p>
@@ -109,7 +109,7 @@ export function GameDevelopmentPage() {
 
           <div className="mt-16 border-t border-black/10 pt-14 lg:mt-24 lg:pt-20">
             <h3 className="font-display text-2xl font-extrabold tracking-tight text-black md:text-3xl">Four formats</h3>
-            <p className="mt-3 max-w-md leading-relaxed text-black/60">
+            <p className="mt-3 max-w-md leading-relaxed text-ink-body">
               The same build pipeline, pointed at science, history, horror and motivation.
             </p>
             <ShortList shorts={formatShorts} className="mt-10 lg:grid-cols-4" />
@@ -118,17 +118,17 @@ export function GameDevelopmentPage() {
       </section>
 
       {/* Client work */}
-      <section id="client-work" className="scroll-mt-24 border-t border-black/10 px-6 py-20 md:px-12 md:py-28">
+      <section id="client-work" className="scroll-mt-24 border-t border-black/10 px-6 section-y-sm md:px-12">
         <div className="mx-auto grid max-w-7xl gap-x-6 gap-y-10 lg:grid-cols-4">
           <div className="lg:pr-6">
-            <h2 className="font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl">
+            <h2 className="type-h2 text-balance text-ink">
               Made for{" "}
               <span className="font-editorial font-normal" style={{ color: ACCENT }}>
                 clients
               </span>
               .
             </h2>
-            <p className="mt-5 max-w-md leading-relaxed text-black/60">
+            <p className="mt-5 max-w-md leading-relaxed text-ink-body">
               One finished story Short and two style tests, made for clients' channels. Client names stay private.
             </p>
           </div>
@@ -145,7 +145,7 @@ export function GameDevelopmentPage() {
             <h2 className="font-display text-2xl font-extrabold tracking-tight text-black md:text-3xl">
               Need a Roblox game built in your own group?
             </h2>
-            <p className="mt-2 max-w-xl leading-relaxed text-black/60">
+            <p className="mt-2 max-w-xl leading-relaxed text-ink-body">
               The Roblox service page covers what gets built, how milestones work and what you own at handover.
             </p>
           </div>

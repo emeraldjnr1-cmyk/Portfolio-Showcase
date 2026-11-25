@@ -70,7 +70,7 @@ export type WorkflowTag = "n8n" | "Make.com" | "AI Agents" | "Airtable";
 
 export const TAG_STYLE: Record<WorkflowTag, { chip: string; dot: string; glow: string }> = {
   "AI Agents": { chip: "bg-[#0015D4] text-white border-[#0015D4]", dot: "bg-white", glow: "rgba(0,21,212,0.22)" },
-  "n8n": { chip: "bg-[#F32317] text-white border-[#F32317]", dot: "bg-white", glow: "rgba(243,35,23,0.22)" },
+  "n8n": { chip: "bg-[#F32317] text-black border-[#F32317]", dot: "bg-black", glow: "rgba(243,35,23,0.22)" },
   "Airtable": { chip: "bg-[#FFCB41] text-black border-[#FFCB41]", dot: "bg-black", glow: "rgba(255,203,65,0.35)" },
   "Make.com": { chip: "bg-[#FF8FCA] text-black border-[#FF8FCA]", dot: "bg-black", glow: "rgba(255,143,202,0.35)" },
 };
@@ -504,5 +504,4 @@ export const writtenReviews: WrittenReview[] = [
 ];
 
 export const WHATSAPP = "https://wa.me/2348143046516";
-export const FIVERR = "https://www.fiverr.com/s/pdD2k9E";
 export const UPWORK = "https://www.upwork.com/freelancers/denvernocode";

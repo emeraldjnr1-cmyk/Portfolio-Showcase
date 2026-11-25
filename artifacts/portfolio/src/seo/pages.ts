@@ -9,7 +9,8 @@ import { team } from "@/data/team";
 import { films, filmSrc, filmPoster } from "@/data/films";
 import { allShorts, featuredGame, shortPoster, shortSrc, GAMES_PUBLISHED } from "@/data/games";
 import { FAQS } from "@/data/faqs";
-import { FIVERR, UPWORK, WHATSAPP } from "@/data/portfolio";
+import { UPWORK, WHATSAPP } from "@/data/portfolio";
+import { FACT_SHORT } from "@/data/facts";
 
 export const SITE = {
   url: "https://www.denvernocode.com",
@@ -18,7 +19,7 @@ export const SITE = {
   image: "https://www.denvernocode.com/og-image.png",
   logo: "https://www.denvernocode.com/logo.png",
   whatsapp: WHATSAPP,
-  sameAs: [UPWORK, FIVERR],
+  sameAs: [UPWORK],
 };
 
 export interface PageMeta {
@@ -65,7 +66,7 @@ const home: PageMeta = {
   path: "/",
   title: "Claude Code Developer & AI Automation Expert | Denver NoCode",
   description:
-    "Denver Emerald Peter builds apps, websites, AI agents, MCP servers and automations with Claude Code, n8n and Make.com. 200+ systems for 50+ clients worldwide.",
+    `Denver Emerald Peter builds apps, websites, AI agents, MCP servers and automations with Claude Code, n8n and Make.com. ${FACT_SHORT}`,
   image: SITE.image,
   imageSize: { w: 1200, h: 630 },
   summary: "Home: who Denver NoCode is, the work, video testimonials, how to hire.",

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ArrowUpRight, Play, X } from "lucide-react";
-import { SplitWords, Reveal } from "@/components/fx/SplitWords";
+import { SectionHeader } from "@/components/site/SectionHeader";
 import { MaskReveal } from "@/components/fx/ScrollFX";
 import { featured, archive, TAG_STYLE, FeaturedProject, WorkflowTag } from "@/data/portfolio";
 
@@ -48,9 +48,8 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
       data-cursor="hover"
     >
       <div
-        className="relative overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-all duration-200 group-hover:border-black"
-        onMouseEnter={(e) => (e.currentTarget.style.boxShadow = `8px 8px 0 ${style.glow}`)}
-        onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
+        style={{ "--pop": style.glow } as CSSProperties}
+        className="relative overflow-hidden rounded-2xl border-2 border-black/10 bg-white transition-[border-color,box-shadow] duration-200 group-hover:border-black group-hover:shadow-[8px_8px_0_var(--pop)]"
       >
         <MaskReveal>
           <div className="relative aspect-video overflow-hidden bg-[#DDDBD2]">
@@ -104,9 +103,9 @@ function VideoCard({ project, index, onOpen }: { project: FeaturedProject; index
             <h3 className="font-display text-xl font-bold text-black transition-colors group-hover:text-primary">
               {project.title}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-black/55 line-clamp-2">{project.desc}</p>
+            <p className="mt-2 text-sm leading-relaxed text-ink-body line-clamp-2">{project.desc}</p>
           </div>
-          <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-black/30 transition-all duration-300 group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1" />
+          <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-ink-label transition-all duration-300 group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1" />
         </div>
       </div>
     </motion.div>
@@ -187,11 +186,11 @@ function Lightbox({ project, onClose }: { project: FeaturedProject | null; onClo
             <div className="flex flex-wrap items-center justify-between gap-4 p-5">
               <div>
                 <h3 className="font-display text-lg font-bold text-black">{project.title}</h3>
-                <p className="text-sm text-black/55">{project.result}</p>
+                <p className="text-sm text-ink-body">{project.result}</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 {project.tools.map((t) => (
-                  <span key={t} className="rounded-md border border-black/15 bg-white px-2.5 py-1 text-xs font-medium text-black/70">
+                  <span key={t} className="rounded-md border border-black/15 bg-white px-2.5 py-1 text-xs font-medium text-ink-body">
                     {t}
                   </span>
                 ))}
@@ -232,7 +231,7 @@ function ViewAllArchive() {
         >
           <span className="absolute inset-0 origin-bottom scale-y-0 bg-black transition-transform duration-250 ease-out group-hover:scale-y-100" />
           <span className="relative z-10 transition-colors group-hover:text-white">
-            {open ? "Close archive" : `View all ${archive.length} systems`}
+            {open ? "Close archive" : "See all systems"}
           </span>
           <motion.span
             className="relative z-10 transition-colors group-hover:text-white"
@@ -261,10 +260,10 @@ function ViewAllArchive() {
                   <button
                     key={f}
                     onClick={() => setFilter(f)}
-                    className={`relative rounded-full border-2 px-5 py-2 text-sm font-bold transition-all duration-300 ${
+                    className={`relative min-h-11 rounded-full border-2 px-5 py-2 text-sm font-bold transition-colors duration-200 ${
                       active
                         ? "border-black bg-black text-white"
-                        : "border-black/15 bg-white text-black/50 hover:border-black/50 hover:text-black"
+                        : "border-black/15 bg-white text-ink-label hover:border-black/50 hover:text-black"
                     }`}
                   >
                     {f} <span className="ml-1 text-xs opacity-60">{count}</span>
@@ -302,7 +301,7 @@ function ViewAllArchive() {
                         <h4 className="font-display text-base font-bold text-black group-hover:text-primary transition-colors">
                           {item.title}
                         </h4>
-                        <p className="mt-1.5 text-sm text-black/55 line-clamp-2">{item.desc}</p>
+                        <p className="mt-1.5 text-sm text-ink-body line-clamp-2">{item.desc}</p>
                       </div>
                     </motion.div>
                   );
@@ -320,36 +319,26 @@ export function FeaturedWork() {
   const [openProject, setOpenProject] = useState<FeaturedProject | null>(null);
 
   return (
-    <section id="work" className="relative border-t border-black/10 px-6 py-28 md:px-12 md:py-40">
+    <section id="work" className="section-y relative border-t border-black/10 px-6 md:px-12">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-16 md:mb-24">
-          <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">04 — Automations and AI agents</span>
-          </Reveal>
-          <SplitWords
-            as="h2"
-            text="Eleven systems. Real businesses. Zero manual work."
-            className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl"
-          />
-          <Reveal delay={0.25}>
-            <p className="mt-6 max-w-xl text-lg text-black/55">
-              The flagship builds get the film treatment. Every card opens the real system, tools and outcome included.
-            </p>
-          </Reveal>
-          <Reveal delay={0.35}>
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold">
-              <a href="/services/automation" className="inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
-                Automation service <ArrowUpRight className="h-4 w-4" />
-              </a>
-              <a href="/services/ai-agents" className="inline-flex items-center gap-1.5 text-black transition-colors hover:text-primary">
-                AI agents service <ArrowUpRight className="h-4 w-4" />
-              </a>
-              <a href="/work" className="inline-flex items-center gap-1.5 text-black/55 transition-colors hover:text-primary">
-                Every system, step by step <ArrowUpRight className="h-4 w-4" />
-              </a>
-            </div>
-          </Reveal>
-        </div>
+        <SectionHeader
+          num="04"
+          label="Automations and AI agents"
+          title="Featured systems. Real businesses. Zero manual work."
+          lead="The flagship builds get the film treatment. Every card opens the real system, tools and outcome included."
+        >
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-1 text-sm font-bold">
+            <a href="/services/automation" className="tap inline-flex items-center gap-1.5 text-ink transition-colors hover:text-cobalt">
+              Automation service <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </a>
+            <a href="/services/ai-agents" className="tap inline-flex items-center gap-1.5 text-ink transition-colors hover:text-cobalt">
+              AI agents service <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </a>
+            <a href="/work" className="tap inline-flex items-center gap-1.5 text-ink transition-colors hover:text-cobalt">
+              Every system, step by step <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </a>
+          </div>
+        </SectionHeader>
 
         <div className="grid gap-8 md:grid-cols-2">
           {featured.map((p, i) => (

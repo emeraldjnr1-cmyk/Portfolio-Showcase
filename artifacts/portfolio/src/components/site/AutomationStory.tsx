@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useMotionValueEvent, type Variants } f
 import { ArrowUpRight, Bell, Check, Globe, Sparkles, Table2 } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import { Reveal } from "@/components/fx/SplitWords";
+import { WhatsAppButton } from "@/components/site/Button";
 import { useMotionOff } from "@/lib/motion-pref";
 import { STORY, STORY_STEPS } from "@/data/story";
 
@@ -26,7 +27,6 @@ const N = STORY_STEPS.length;
 // its second state (approved, read, briefed).
 const BEATS = 1 + N * 2;
 const SCROLL_VH_PER_BEAT = 32; // 15 beats = 480vh of wrapper
-const WHATSAPP = "https://wa.me/2348143046516";
 const EMERALD = "#0BB07B";
 
 type Mode = "flow" | "pin";
@@ -95,7 +95,7 @@ const slot: Variants = {
  * the fill follows the parent's variants; in pin mode it follows `lit`. */
 function Node({ n, lit, pulse }: { n: number; lit?: boolean; pulse?: boolean }) {
   const byVariant = lit === undefined;
-  const color = n === N ? "bg-[#0BB07B]" : "bg-primary";
+  const color = n === N ? "bg-green-text" : "bg-primary";
   return (
     <span className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-black bg-white font-mono text-[11px] font-bold text-black">
       {pulse ? <span aria-hidden className="absolute -inset-2 animate-ping rounded-full border-2 border-primary/50" /> : null}
@@ -123,7 +123,7 @@ function Card({ children, className = "" }: { children: ReactNode; className?: s
 
 function CardHead({ dot, children, right }: { dot?: string; children: ReactNode; right?: ReactNode }) {
   return (
-    <div className="flex items-center gap-2 border-b-2 border-black px-4 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-widest text-black/60">
+    <div className="flex items-center gap-2 border-b-2 border-black px-4 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-widest text-ink-body">
       {dot ? <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: dot }} aria-hidden /> : null}
       <span className="min-w-0 truncate">{children}</span>
       {right ? <span className="ml-auto shrink-0 normal-case tracking-normal text-black">{right}</span> : null}
@@ -133,7 +133,7 @@ function CardHead({ dot, children, right }: { dot?: string; children: ReactNode;
 
 function Chip({ children, tone = "ink" }: { children: ReactNode; tone?: "ink" | "live" | "warn" }) {
   const cls =
-    tone === "live" ? "border-[#0BB07B] bg-[#0BB07B] text-white" : tone === "warn" ? "border-black bg-[#FFCB41] text-black" : "border-black bg-white text-black";
+    tone === "live" ? "border-green-text bg-green-text text-white" : tone === "warn" ? "border-black bg-[#FFCB41] text-black" : "border-black bg-white text-black";
   return <span className={`inline-flex items-center gap-1 rounded-full border-2 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider ${cls}`}>{children}</span>;
 }
 
@@ -160,11 +160,11 @@ function IdleCard() {
   return (
     <Card className="bg-card">
       <CardHead>
-        {STORY.agency} <span className="text-black/35">·</span> 23:46
+        {STORY.agency} <span className="text-ink-label">·</span> 23:46
       </CardHead>
       <div className="px-5 py-7">
         <p className="font-display text-3xl font-extrabold tracking-tight text-black">Office closed.</p>
-        <p className="mt-2 text-sm leading-relaxed text-black/55">Everyone has gone home. The system has not.</p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-body">Everyone has gone home. The system has not.</p>
         <div className="mt-5 flex items-center gap-2" aria-hidden>
           {[0, 1, 2, 3, 4].map((i) => (
             <span key={i} className="flex items-center gap-2">
@@ -182,21 +182,21 @@ function EnquiryCard() {
   return (
     <Card>
       <CardHead dot="#F32317" right={<span className="font-mono text-[11px] font-bold">23:47</span>}>
-        New enquiry <span className="text-black/35">·</span> Website form
+        New enquiry <span className="text-ink-label">·</span> Website form
       </CardHead>
       <div className="px-5 py-5">
         <div className="flex items-center gap-3">
           <Initials />
           <div className="min-w-0">
             <p className="font-display text-base font-extrabold tracking-tight text-black">{STORY.lead.name}</p>
-            <p className="whitespace-nowrap font-mono text-xs text-black/50">{STORY.lead.phone}</p>
+            <p className="whitespace-nowrap font-mono text-xs text-ink-label">{STORY.lead.phone}</p>
           </div>
-          <span className="ml-auto hidden items-center gap-1.5 text-xs font-semibold text-black/50 sm:inline-flex">
+          <span className="ml-auto hidden items-center gap-1.5 text-xs font-semibold text-ink-label sm:inline-flex">
             <Globe className="h-3.5 w-3.5" /> Schools page
           </span>
         </div>
         <p className="mt-4 rounded-xl border-l-4 border-primary bg-card px-4 py-3 text-[15px] leading-relaxed text-black">"{STORY.enquiry}"</p>
-        <motion.p variants={later} className="mt-4 flex items-center gap-2 text-xs font-semibold text-black/55">
+        <motion.p variants={later} className="mt-4 flex items-center gap-2 text-xs font-semibold text-ink-body">
           <span className="h-2 w-2 rounded-full bg-[#0BB07B]" aria-hidden />
           Picked up automatically. Nobody is at a desk.
         </motion.p>
@@ -212,19 +212,19 @@ function CapturedCard() {
     <Card>
       <CardHead dot="#0015D4" right={<Chip tone="live">Row 148 added</Chip>}>
         <Table2 className="mr-1.5 inline h-3.5 w-3.5 align-[-2px]" />
-        CRM <span className="text-black/35">·</span> Leads
+        CRM <span className="text-ink-label">·</span> Leads
       </CardHead>
       <div className="overflow-hidden px-4 py-4">
         {/* Phones show Name, Budget and Status; Source and Area join from sm up. */}
         <div className="overflow-hidden rounded-lg border border-black/15 text-[11px] sm:text-xs">
-          <div className="grid grid-cols-[1.6fr_1fr_0.9fr] border-b border-black/15 bg-card font-mono text-[10px] font-bold uppercase tracking-wider text-black/50 sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
+          <div className="grid grid-cols-[1.6fr_1fr_0.9fr] border-b border-black/15 bg-card font-mono text-[10px] font-bold uppercase tracking-wider text-ink-label sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
             {SHEET_COLS.map((c) => (
               <span key={c} className={`truncate px-2 py-2 sm:px-2.5 ${c === "Source" || c === "Area" ? "hidden sm:block" : ""}`}>
                 {c}
               </span>
             ))}
           </div>
-          <div className="grid grid-cols-[1.6fr_1fr_0.9fr] text-black/35 sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
+          <div className="grid grid-cols-[1.6fr_1fr_0.9fr] text-ink-label sm:grid-cols-[1.4fr_1fr_0.8fr_1fr_0.8fr]">
             {["T. Mensah", "Website", "320k", "Eastgate", "Viewed"].map((c, i) => (
               <span key={i} className={`truncate border-b border-black/10 px-2 py-2 sm:px-2.5 ${i === 1 || i === 3 ? "hidden sm:block" : ""}`}>
                 {c}
@@ -242,7 +242,7 @@ function CapturedCard() {
             <span className="truncate px-2 py-2 text-primary sm:px-2.5">New</span>
           </motion.div>
         </div>
-        <motion.p variants={later} className="mt-3 flex items-center gap-2 text-xs font-semibold text-black/55">
+        <motion.p variants={later} className="mt-3 flex items-center gap-2 text-xs font-semibold text-ink-body">
           <Check className="h-3.5 w-3.5 text-[#0BB07B]" strokeWidth={3} />
           Phone, message and page saved against the lead.
         </motion.p>
@@ -262,18 +262,18 @@ function EnrichedCard() {
   return (
     <Card>
       <CardHead dot="#FFCB41" right={<motion.span variants={later}><Chip tone="warn">4 details added</Chip></motion.span>}>
-        Enrichment <span className="text-black/35">·</span> Lead 148
+        Enrichment <span className="text-ink-label">·</span> Lead 148
       </CardHead>
       <div className="px-5 py-5">
         <div className="grid grid-cols-2 gap-3">
           {FIELDS.map((f) => (
             <motion.div key={f.k} variants={f.late ? later : rise} className="rounded-xl border-2 border-black/10 px-3.5 py-3">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-black/45">{f.k}</p>
+              <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-ink-label">{f.k}</p>
               <p className="mt-1 inline-block bg-[#FFCB41]/60 px-1 font-semibold leading-snug text-black">{f.v}</p>
             </motion.div>
           ))}
         </div>
-        <motion.p variants={later} className="mt-4 flex items-center gap-2 text-xs font-semibold text-black/55">
+        <motion.p variants={later} className="mt-4 flex items-center gap-2 text-xs font-semibold text-ink-body">
           <Sparkles className="h-3.5 w-3.5 text-primary" />
           Lead scored Hot: real budget, real timeframe.
         </motion.p>
@@ -287,7 +287,7 @@ function DraftCard() {
     <Card>
       <CardHead dot="#0015D4" right={<span className="font-mono text-[11px] font-bold">23:48</span>}>
         <Sparkles className="mr-1.5 inline h-3.5 w-3.5 align-[-2px] text-primary" />
-        Claude <span className="text-black/35">·</span> <span className="sm:hidden">drafting</span>
+        Claude <span className="text-ink-label">·</span> <span className="sm:hidden">drafting</span>
         <span className="hidden sm:inline">drafting in the agency's voice</span>
       </CardHead>
       <div className="px-5 py-5">
@@ -301,7 +301,7 @@ function DraftCard() {
           </motion.div>
           <motion.div variants={later} className="relative text-[15px] leading-relaxed text-black">
             <p>{STORY.reply}</p>
-            <p className="mt-2 text-black/60">{STORY.signoff}</p>
+            <p className="mt-2 text-ink-body">{STORY.signoff}</p>
           </motion.div>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -318,12 +318,12 @@ function ApprovalCard() {
   return (
     <Card>
       <CardHead dot="#FFCB41" right={<span className="font-mono text-[11px] font-bold">23:48</span>}>
-        Needs a human <span className="text-black/35">·</span> push sent to {STORY.agent}
+        Needs a human <span className="text-ink-label">·</span> push sent to {STORY.agent}
       </CardHead>
       <div className="px-5 py-5">
-        <p className="text-sm leading-relaxed text-black/60">{STORY.agent} reads the draft on the phone. The reply waits for that approval.</p>
+        <p className="text-sm leading-relaxed text-ink-body">{STORY.agent} reads the draft on the phone. The reply waits for that approval.</p>
         <div className="mt-3 rounded-xl bg-card px-4 py-3">
-          <p className="line-clamp-2 text-sm leading-relaxed text-black/80">{STORY.reply}</p>
+          <p className="line-clamp-2 text-sm leading-relaxed text-ink-body">{STORY.reply}</p>
         </div>
         <div className="relative mt-4 h-11">
           {/* Styled as controls on purpose, not real buttons: this is a picture of a decision, not one the visitor makes. */}
@@ -334,11 +334,11 @@ function ApprovalCard() {
             <span className="inline-flex h-11 items-center rounded-full border-2 border-black px-5 font-display text-sm font-bold text-black">Edit first</span>
           </motion.div>
           <motion.div variants={later} className="absolute inset-0 flex items-center gap-3">
-            <span className="inline-flex h-11 items-center gap-2 rounded-full bg-[#0BB07B] px-5 font-display text-sm font-bold text-white shadow-[3px_3px_0_#141414]">
+            <span className="inline-flex h-11 items-center gap-2 rounded-full bg-green-text px-5 font-display text-sm font-bold text-white shadow-[3px_3px_0_#141414]">
               <Check className="h-4 w-4" strokeWidth={3} /> Approved
             </span>
-            <span className="text-xs font-semibold text-black/55">
-              by {STORY.agent} <span className="text-black/35">·</span> one tap <span className="text-black/35">·</span> 23:48
+            <span className="text-xs font-semibold text-ink-body">
+              by {STORY.agent} <span className="text-ink-label">·</span> one tap <span className="text-ink-label">·</span> 23:48
             </span>
           </motion.div>
         </div>
@@ -354,21 +354,21 @@ function WhatsAppCard() {
         <Initials />
         <div className="min-w-0 leading-tight">
           <p className="truncate font-display text-sm font-bold">{STORY.lead.name}</p>
-          <p className="text-[11px] text-white/55">online</p>
+          <p className="text-[11px] text-on-dark-label">online</p>
         </div>
         <SiWhatsapp className="ml-auto h-5 w-5 text-[#0BB07B]" aria-hidden />
       </div>
       <div className="space-y-3 bg-[#E7E7E1] px-4 py-4">
-        <p className="mx-auto w-fit rounded-full bg-white/80 px-3 py-1 text-center font-mono text-[10px] font-semibold uppercase tracking-wider text-black/50">
+        <p className="mx-auto w-fit rounded-full bg-white/80 px-3 py-1 text-center font-mono text-[10px] font-semibold uppercase tracking-wider text-ink-label">
           Enquiry from the website form · 23:47
         </p>
         <motion.div variants={rise} className="ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-[#DCF8C6] px-3.5 py-2.5 text-sm leading-relaxed text-black">
           <p>{STORY.reply}</p>
           <p className="mt-1">{STORY.signoff}</p>
-          <p className="mt-1 flex items-center justify-end gap-1 font-mono text-[10px] text-black/45">
+          <p className="mt-1 flex items-center justify-end gap-1 font-mono text-[10px] text-ink-label">
             23:49
             <span className="relative inline-block h-3 w-4">
-              <motion.span variants={earlier} className="absolute inset-0 text-black/45">
+              <motion.span variants={earlier} className="absolute inset-0 text-ink-label">
                 <Ticks />
               </motion.span>
               <motion.span variants={later} className="absolute inset-0 text-[#1FA2D8]">
@@ -377,7 +377,7 @@ function WhatsAppCard() {
             </span>
           </p>
         </motion.div>
-        <motion.p variants={later} className="text-center font-mono text-[10px] font-semibold uppercase tracking-wider text-black/45">
+        <motion.p variants={later} className="text-center font-mono text-[10px] font-semibold uppercase tracking-wider text-ink-label">
           Read 23:50
         </motion.p>
       </div>
@@ -391,7 +391,7 @@ function LoggedCard() {
   return (
     <Card>
       <CardHead dot={EMERALD} right={<Chip tone="live">Done</Chip>}>
-        CRM updated <span className="text-black/35">·</span> 23:49
+        CRM updated <span className="text-ink-label">·</span> 23:49
       </CardHead>
       <div className="px-5 py-5">
         <ul className="space-y-2.5">
@@ -406,7 +406,7 @@ function LoggedCard() {
         </ul>
         <motion.div variants={later} className="mt-5 rounded-xl border-2 border-black bg-black px-4 py-3.5 text-[#E7E7E1]">
           <p className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-wider text-[#FFCB41]">
-            <Bell className="h-3.5 w-3.5" /> 07:30 <span className="text-white/40">·</span> Morning brief for {STORY.agent}
+            <Bell className="h-3.5 w-3.5" /> 07:30 <span className="text-on-dark-label">·</span> Morning brief for {STORY.agent}
           </p>
           <p className="mt-1.5 text-sm leading-relaxed">{STORY.brief}</p>
         </motion.div>
@@ -424,18 +424,18 @@ function Header({ num }: { num: string }) {
     <div className="mb-14 grid gap-8 md:mb-20 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-end">
       <div>
         <Reveal>
-          <span className="font-mono text-sm font-semibold text-primary">{num} — How it runs</span>
+          <p className="type-label text-cobalt">{num} · How it runs</p>
         </Reveal>
-        <h2 id="how-it-runs-title" className="mt-4 font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-black md:text-7xl">
+        <h2 id="how-it-runs-title" className="mt-3 type-h2 text-ink">
           Watch an automation <span className="whitespace-nowrap font-editorial font-normal text-primary">run</span>.
         </h2>
       </div>
       <Reveal delay={0.2}>
-        <p className="max-w-md text-lg leading-relaxed text-black/55">
+        <p className="max-w-md text-lg leading-relaxed text-ink-body">
           A small estate agency. An enquiry at 23:47, nobody at a desk. Scroll, and the system handles it step by step. A
           person still approves the reply before it goes out.
         </p>
-        <p className="mt-4 inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
+        <p className="mt-4 inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">
           <span className="h-2 w-2 bg-[#FFCB41]" aria-hidden />
           Example system, sample data
         </p>
@@ -453,27 +453,17 @@ function Closing() {
         </p>
       </Reveal>
       <Reveal delay={0.15}>
-        <p className="text-base leading-relaxed text-black/55">
+        <p className="text-base leading-relaxed text-ink-body">
           That was one enquiry. Yours arrive all week, and every one is picked up the moment it lands, with the reply going
           out as soon as someone approves it. Built in your own accounts, with a person in the loop where it matters.
         </p>
-        <div className="mt-6 flex flex-wrap items-center gap-4">
-          <a
-            href={WHATSAPP}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative inline-flex h-14 items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-full bg-primary px-7 font-display text-[15px] font-bold text-white md:text-base"
-            data-cursor="hover"
-          >
-            <span className="absolute inset-0 origin-left scale-x-0 bg-black transition-transform duration-250 ease-out group-hover:scale-x-100" aria-hidden />
-            <SiWhatsapp className="relative z-10 h-5 w-5 shrink-0" />
-            <span className="relative z-10">Build mine</span>
-          </a>
-          <a href="/services/automation" className="inline-flex items-center gap-1.5 text-sm font-semibold text-black transition-colors hover:text-primary">
+        <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center" data-chat-clear>
+          <WhatsAppButton full />
+          <a href="/services/automation" className="tap inline-flex items-center gap-1.5 text-sm font-semibold text-black transition-colors hover:text-primary">
             See the automation service <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
-        <p className="mt-5 font-mono text-[11px] font-semibold uppercase tracking-widest text-black/40">
+        <p className="mt-5 font-mono text-[11px] font-semibold uppercase tracking-widest text-ink-label">
           Example system, sample data. The names and numbers are made up.
         </p>
       </Reveal>
@@ -506,11 +496,11 @@ function FlowStory({ motionOff }: { motionOff: boolean }) {
             <Node n={i + 1} />
             <div className="min-w-0">
               <motion.div variants={rise}>
-                <p className="font-mono text-xs font-bold text-black/45">
-                  {s.time} <span className="text-black/30">·</span> <span className="uppercase tracking-wider">Example</span>
+                <p className="font-mono text-xs font-bold text-ink-label">
+                  {s.time} <span className="text-ink-label">·</span> <span className="uppercase tracking-wider">Example</span>
                 </p>
                 <h3 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-black">{s.title}</h3>
-                <p className="mt-1.5 text-base leading-relaxed text-black/55">{s.desc}</p>
+                <p className="mt-1.5 text-base leading-relaxed text-ink-body">{s.desc}</p>
               </motion.div>
               <motion.div variants={riseLate} className="mt-5 pr-2">
                 <Art />
@@ -567,14 +557,14 @@ function PinnedStory() {
       <div className="sticky top-0 flex h-screen flex-col justify-center pb-8 pt-20">
         <div className="mx-auto w-full max-w-7xl">
           {/* Stage header: who, the caption, and the clock. */}
-          <div className="mb-6 flex items-center justify-between gap-6 border-b-2 border-black pb-3 font-mono text-xs font-semibold uppercase tracking-widest text-black/50">
+          <div className="mb-6 flex items-center justify-between gap-6 border-b-2 border-black pb-3 font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">
             <span className="flex items-center gap-3">
               <span className="text-black">{STORY.agency}</span>
-              <span className="text-black/30">·</span>
+              <span className="text-ink-label">·</span>
               <span>Example system, sample data</span>
             </span>
             <span className="flex items-center gap-3">
-              <span className="flex items-center gap-2" style={{ color: status === "Done" ? EMERALD : status === "Running" ? "#0015D4" : undefined }}>
+              <span className="flex items-center gap-2" style={{ color: status === "Done" ? "#006B4F" : status === "Running" ? "#0015D4" : undefined }}>
                 <span
                   className={`h-2 w-2 rounded-full ${status === "Running" ? "animate-pulse bg-primary" : status === "Done" ? "bg-[#0BB07B]" : "bg-black/30"}`}
                   aria-hidden
@@ -617,9 +607,9 @@ function PinnedStory() {
                     <div className={`min-w-0 transition-opacity duration-300 ${state === "pending" ? "opacity-40" : "opacity-100"}`}>
                       <div className="flex items-baseline gap-2">
                         <h3 className="font-display text-lg font-extrabold leading-tight tracking-tight text-black xl:text-xl">{s.title}</h3>
-                        <span className="font-mono text-[11px] font-bold text-black/40">{s.time}</span>
+                        <span className="font-mono text-[11px] font-bold text-ink-label">{s.time}</span>
                       </div>
-                      <p className="mt-1 text-sm leading-snug text-black/55">{s.desc}</p>
+                      <p className="mt-1 text-sm leading-snug text-ink-body">{s.desc}</p>
                     </div>
                   </li>
                 );
@@ -659,7 +649,7 @@ export function AutomationStory({ num = "03" }: { num?: string }) {
   const mode = useStoryMode();
   const motionOff = useMotionOff();
   return (
-    <section id="how-it-runs" aria-labelledby="how-it-runs-title" className="relative border-t border-black/10 bg-card px-6 py-28 md:px-12 md:py-40">
+    <section id="how-it-runs" aria-labelledby="how-it-runs-title" className="relative border-t border-black/10 bg-card px-6 section-y md:px-12">
       <div className="mx-auto max-w-7xl">
         <Header num={num} />
       </div>

@@ -1,11 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { SiWhatsapp } from "react-icons/si";
+import { ArrowDown } from "lucide-react";
 
 import { Preloader } from "@/components/fx/Preloader";
 import { CustomCursor } from "@/components/fx/CustomCursor";
-import { Magnetic } from "@/components/fx/Magnetic";
 import { SplitWords, Reveal } from "@/components/fx/SplitWords";
 import { ScrollProgress, VelocitySkew } from "@/components/fx/ScrollFX";
 import { BigMarquee } from "@/components/fx/BigMarquee";
@@ -14,7 +12,8 @@ import { useMotionOff } from "@/lib/motion-pref";
 import { HeroBackground, type HeroBgVariant } from "@/components/fx/HeroBackground";
 
 import { SiteNav } from "@/components/site/SiteNav";
-import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
+import { SkipLink } from "@/components/site/SkipLink";
+import { CtaPair } from "@/components/site/Button";
 import { AskPax } from "@/components/site/pax/AskPax";
 import { ProofStrip } from "@/components/site/ProofStrip";
 import { Pricing } from "@/components/site/Pricing";
@@ -22,7 +21,6 @@ import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { WebProjectsSection } from "@/components/site/WebProjects";
 import { TestimonialCinema } from "@/components/site/TestimonialCinema";
 import { WrittenReviews } from "@/components/site/WrittenReviews";
-import { OnboardingModal } from "@/components/site/OnboardingModal";
 import { Logo } from "@/components/site/Logo";
 import { Avatar } from "@/components/site/Portrait";
 import { ToolStack } from "@/components/site/ToolStack";
@@ -31,8 +29,6 @@ import { FAQSection } from "@/components/site/FAQ";
 import { Footer } from "@/components/site/Footer";
 import { ClaudeFullStack } from "@/components/site/ClaudeFullStack";
 import { AutomationStory } from "@/components/site/AutomationStory";
-
-import { WHATSAPP } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -150,7 +146,7 @@ function Hero({ ready }: { ready: boolean }) {
     <section ref={ref} id="top" className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pb-16 pt-24 md:px-12">
       <HeroBackground variant={bg} />
       {picker && (
-        <div className="fixed bottom-6 left-1/2 z-[70] flex -translate-x-1/2 gap-1 rounded-full border-2 border-black bg-white p-1 shadow-[4px_4px_0_#0015D4]">
+        <div className="fixed left-1/2 top-24 z-[70] flex -translate-x-1/2 md:top-auto gap-1 rounded-full border-2 border-black bg-white p-1 shadow-[4px_4px_0_#0015D4] md:bottom-6">
           {(["film", "paths", "dots", "nodes"] as const).map((v) => (
             <button
               key={v}
@@ -204,7 +200,7 @@ function Hero({ ready }: { ready: boolean }) {
           initial={{ opacity: 0, y: 20 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-black/15 bg-white/80 py-1.5 pl-1.5 pr-4 text-sm font-medium text-black/70 md:bg-white/60 md:backdrop-blur-md"
+          className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-black/15 bg-white/80 py-1.5 pl-1.5 pr-4 text-sm font-medium text-ink-body md:bg-white/60 md:backdrop-blur-md"
         >
           <Avatar size={30} ring="#0BB07B" />
           <span className="h-2 w-2 animate-pulse rounded-full bg-[#0BB07B]" />
@@ -243,7 +239,7 @@ function Hero({ ready }: { ready: boolean }) {
           initial={{ opacity: 0, y: 16 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: EASE, delay: 0.62 }}
-          className="mt-4 inline-flex items-center gap-2 whitespace-nowrap font-mono text-[11px] font-semibold uppercase tracking-wide text-black/55 sm:gap-2.5 sm:text-xs sm:tracking-widest md:text-sm"
+          className="mt-4 inline-flex items-center gap-2 whitespace-nowrap font-mono text-[11px] font-semibold uppercase tracking-wide text-ink-body sm:gap-2.5 sm:text-xs sm:tracking-widest md:text-sm"
         >
           <span className="h-2 w-2 shrink-0 bg-primary" aria-hidden />
           {HERO_QUALIFIER}
@@ -262,13 +258,13 @@ function Hero({ ready }: { ready: boolean }) {
               Leads going cold, hours lost to admin, tools that don't talk to each other. I fix the problems quietly
               costing your business time and revenue.
             </p>
-            <p className="mt-3 text-base leading-relaxed text-black/60 md:text-lg">
+            <p className="mt-3 text-base leading-relaxed text-ink-body md:text-lg">
               I design and build websites, apps and AI-powered automations that capture every enquiry, follow up in
               minutes and take repetitive work off your team, built with Claude Code, n8n and Make.com. Everything is
               delivered in your own accounts, fully documented and built to keep running long after handover.
             </p>
-            <p className="mt-4 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
-              Denver <span className="text-[#00795A]">Emerald</span> Peter · Founder, Denver NoCode
+            <p className="mt-4 font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">
+              Denver <span className="text-green-text">Emerald</span> Peter · Founder, Denver NoCode
             </p>
           </motion.div>
 
@@ -276,33 +272,16 @@ function Hero({ ready }: { ready: boolean }) {
             initial={{ opacity: 0, y: 30 }}
             animate={ready ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.75, ease: EASE }}
-            className="flex shrink-0 flex-col items-start md:items-end md:pr-36 xl:pr-28"
+            className="flex w-full shrink-0 flex-col items-start md:w-auto md:items-end md:pr-48"
           >
-            {/* wraps on narrow screens; labels never break mid-phrase */}
-            <div className="flex flex-wrap items-center gap-3 md:gap-4">
-            <Magnetic strength={0.45}>
-              <a
-                href={WHATSAPP}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative inline-flex h-14 items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-full bg-primary px-6 font-display text-[15px] font-bold text-white md:gap-3 md:px-8 md:text-base"
-                data-cursor="hover"
-              >
-                <span className="absolute inset-0 origin-left scale-x-0 bg-black transition-transform duration-250 ease-out group-hover:scale-x-100" />
-                <SiWhatsapp className="relative z-10 h-5 w-5 shrink-0" />
-                <span className="relative z-10">Start a project</span>
-              </a>
-            </Magnetic>
-            <Magnetic strength={0.45}>
+            <CtaPair stack className="w-full md:w-auto">
               <a
                 href="#websites"
-                className="inline-flex h-14 items-center whitespace-nowrap rounded-full border border-black/25 px-6 font-display text-[15px] font-bold text-black transition-all hover:border-black hover:bg-black hover:text-white md:px-8 md:text-base"
-                data-cursor="hover"
+                className="tap inline-flex items-center gap-1.5 self-start text-[15px] font-bold text-ink transition-colors hover:text-cobalt md:self-end"
               >
-                See the work
+                See the work <ArrowDown className="h-4 w-4" aria-hidden />
               </a>
-            </Magnetic>
-            </div>
+            </CtaPair>
           </motion.div>
         </div>
       </motion.div>
@@ -311,7 +290,7 @@ function Hero({ ready }: { ready: boolean }) {
         initial={{ opacity: 0 }}
         animate={ready ? { opacity: 1 } : {}}
         transition={{ delay: 1.4 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-black/40"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-ink-label"
       >
         <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}>
           <ArrowDown className="h-5 w-5" />
@@ -324,7 +303,7 @@ function Hero({ ready }: { ready: boolean }) {
 // ────────────────────────────── CTA ─────────────────────────────────
 function FinalCTA() {
   return (
-    <section className="relative overflow-hidden bg-black px-6 py-32 text-[#E7E7E1] md:px-12 md:py-48">
+    <section className="section-y relative overflow-hidden bg-black px-6 text-on-dark md:px-12">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <motion.div
           className="absolute left-[10%] top-[20%] h-5 w-5 rounded-full bg-[#FFCB41]"
@@ -347,47 +326,19 @@ function FinalCTA() {
         <SplitWords
           as="h2"
           text="Ready to automate your business?"
-          className="flex flex-wrap justify-center font-display text-5xl font-extrabold tracking-tight text-white md:text-7xl"
+          className="flex flex-wrap justify-center type-h2 text-white"
         />
         <Reveal delay={0.3}>
           <div className="mt-8 flex flex-col items-center gap-4">
             <Avatar size={72} ring="#0015D4" float />
-            <p className="mx-auto max-w-xl font-editorial text-2xl text-[#E7E7E1]/70">
-              Let's build a system that works while you sleep.
+            <p className="mx-auto max-w-xl type-body text-on-dark-body">
+              Tell me what eats your week. You get a plan and a fixed price within 24 hours.
             </p>
           </div>
         </Reveal>
 
-        <Reveal delay={0.45} className="mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row">
-          <Magnetic strength={0.4}>
-            <a
-              href={WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-flex h-16 items-center gap-3 overflow-hidden rounded-full bg-[#E7E7E1] px-10 font-display text-lg font-bold text-black"
-              data-cursor="hover"
-            >
-              <span className="absolute inset-0 origin-bottom scale-y-0 bg-primary transition-transform duration-250 ease-out group-hover:scale-y-100" />
-              <SiWhatsapp className="relative z-10 h-6 w-6 transition-colors group-hover:text-white" />
-              <span className="relative z-10 transition-colors group-hover:text-white">Message me on WhatsApp</span>
-            </a>
-          </Magnetic>
-          <Magnetic strength={0.4}>
-            <OnboardingModal
-              trigger={
-                <button
-                  className="inline-flex h-16 items-center gap-3 rounded-full border border-white/30 px-10 font-display text-lg font-bold text-white transition-colors hover:border-white hover:bg-white hover:text-black"
-                  data-cursor="hover"
-                >
-                  Start your project <ArrowUpRight className="h-6 w-6" />
-                </button>
-              }
-            />
-          </Magnetic>
-        </Reveal>
-
-        <Reveal delay={0.65}>
-          <p className="mt-4 text-sm text-white/40">Limited availability for new projects this month.</p>
+        <Reveal delay={0.45} className="mt-10">
+          <CtaPair tone="dark" align="center" />
         </Reveal>
       </div>
     </section>
@@ -404,11 +355,10 @@ export default function Home() {
       <Preloader onDone={() => setReady(true)} />
       <ScrollProgress />
       <CustomCursor />
+      <SkipLink />
       <SiteNav />
-      <FloatingWhatsApp />
-      <AskPax />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         {/* The hero sits outside VelocitySkew on purpose: a skew is not an
             axis-aligned transform, so shearing a playing <video> every scroll
             frame makes the film visibly wobble. */}
@@ -432,6 +382,9 @@ export default function Home() {
       </main>
 
       <Footer />
+      {/* Last in the page on purpose: the keyboard reaches the page's own
+          buttons before the floating one. */}
+      <AskPax />
     </div>
   );
 }

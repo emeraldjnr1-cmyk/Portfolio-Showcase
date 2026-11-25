@@ -12,7 +12,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const out = path.join(root, "dist/public");
 const template = fs.readFileSync(path.join(out, "index.html"), "utf8");
-const { render, PAGES, SITE, buildKnowledge, ROUTE_SOURCES, routeKeyFor } = await import(
+const { render, PAGES, SITE, buildKnowledge, FACT_LONG, ROUTE_SOURCES, routeKeyFor } = await import(
   pathToFileURL(path.join(root, "dist/server/entry-server.js")).href
 );
 
@@ -146,8 +146,8 @@ fs.writeFileSync(
 
 > ${SITE.name} is the studio of ${SITE.person}, a Claude Code developer who builds web apps, websites, business automations, AI agents, MCP servers and Roblox games for businesses worldwide, using Claude Code, n8n, Make.com and Airtable.
 
-- 200+ systems delivered for 50+ clients worldwide, over 4+ years of building automations.
-- Level 2 seller on Fiverr, also hireable on Upwork or directly on WhatsApp.
+- ${FACT_LONG}
+- Hireable on Upwork or directly on WhatsApp.
 - A fixed quote within 24 hours of the onboarding form. Most automations ship in 3 to 7 days; websites and web apps in 1 to 3 weeks; full platforms in 3 weeks and up, delivered in milestones.
 - Every system is delivered in the client's own accounts, with a walkthrough video and plain docs.
 
@@ -174,7 +174,7 @@ ${list("/work")}
 ## Contact
 
 - [WhatsApp](${SITE.whatsapp}): fastest way to start a project.
-${SITE.sameAs.map((u) => `- [${u.includes("upwork") ? "Upwork" : "Fiverr"}](${u})`).join("\n")}
+${SITE.sameAs.map((u) => `- [Upwork](${u})`).join("\n")}
 - [Home](${SITE.url}/): video testimonials, web builds, the automation story, starting prices and the onboarding form.
 
 ## Optional

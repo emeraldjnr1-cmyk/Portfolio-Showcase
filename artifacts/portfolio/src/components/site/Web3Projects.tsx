@@ -6,7 +6,7 @@ export function Web3ProjectsSection() {
   const [apax, ...grid] = web3Projects;
 
   return (
-    <section id="web3" className="relative border-t border-black/10 px-6 py-28 md:px-12 md:py-40">
+    <section id="web3" className="relative border-t border-black/10 px-6 section-y md:px-12">
       <div className="mx-auto max-w-7xl">
         <div className="mb-20 md:mb-28">
           <Reveal>
@@ -18,11 +18,11 @@ export function Web3ProjectsSection() {
             className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-black md:text-6xl"
           />
           <Reveal delay={0.25}>
-            <p className="mt-6 max-w-xl text-lg text-black/55">
+            <p className="mt-6 max-w-xl text-lg text-ink-body">
               Solana trading systems, EVM contracts, DeFi interfaces and full client builds. Contract to UI, end to
               end.
             </p>
-            <p className="mt-4 inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-black/45">
+            <p className="mt-4 inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">
               <span className="h-2 w-2 bg-[#FFCB41]" aria-hidden />
               APAX is a client build. The other 20 are showcase builds with sample data.
             </p>

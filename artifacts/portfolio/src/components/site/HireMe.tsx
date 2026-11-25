@@ -1,20 +1,13 @@
-import { useRef, type ReactNode } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useMotionTemplate,
-  } from "framer-motion";
-import { useMotionOff } from "@/lib/motion-pref";
+import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { IconType } from "react-icons";
-import { SiFiverr, SiUpwork, SiWise, SiPaypal } from "react-icons/si";
-import { SplitWords, Reveal } from "@/components/fx/SplitWords";
-import { Magnetic } from "@/components/fx/Magnetic";
-import { OnboardingModal } from "@/components/site/OnboardingModal";
-import { FiverrLevelBadge, L1_THEME, L2_THEME } from "@/components/site/FiverrBadge";
-import { FIVERR, UPWORK } from "@/data/portfolio";
+import { SiUpwork, SiWise, SiPaypal } from "react-icons/si";
+import { Reveal } from "@/components/fx/SplitWords";
+import { buttonClass, CtaPair } from "@/components/site/Button";
+import { Card } from "@/components/site/Card";
+import { SectionHeader } from "@/components/site/SectionHeader";
+import { FACT_STATS } from "@/data/facts";
+import { UPWORK } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -28,230 +21,96 @@ const PAY_METHODS: { name: string; Icon?: IconType; mark?: string }[] = [
   { name: "Bank transfer", mark: "Bk" },
 ];
 
-/**
- * Card that leans toward the pointer and carries a spotlight under it.
- * Everything runs on motion values, so tracking the cursor never triggers a
- * React render. Tilt is disabled for reduced-motion and for coarse pointers,
- * where there is no cursor to follow and the transform only costs battery.
- */
-function TiltCard({ accent, children }: { accent: string; children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduced = useMotionOff();
-
-  const px = useMotionValue(0.5);
-  const py = useMotionValue(0.5);
-
-  const spring = { stiffness: 150, damping: 18, mass: 0.4 };
-  const rotateX = useSpring(useTransform(py, [0, 1], [7, -7]), spring);
-  const rotateY = useSpring(useTransform(px, [0, 1], [-9, 9]), spring);
-  const glowX = useTransform(px, (v) => `${v * 100}%`);
-  const glowY = useTransform(py, (v) => `${v * 100}%`);
-  const spotlight = useMotionTemplate`radial-gradient(340px circle at ${glowX} ${glowY}, ${accent}26, transparent 72%)`;
-
-  function onMove(e: React.PointerEvent<HTMLDivElement>) {
-    if (reduced || e.pointerType !== "mouse") return;
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    px.set((e.clientX - r.left) / r.width);
-    py.set((e.clientY - r.top) / r.height);
-  }
-
-  function reset() {
-    px.set(0.5);
-    py.set(0.5);
-  }
-
-  return (
-    <motion.div
-      ref={ref}
-      onPointerMove={onMove}
-      onPointerLeave={reset}
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-12% 0px" }}
-      transition={{ duration: 0.8, ease: EASE }}
-      style={{ perspective: 1200 }}
-      className="relative"
-    >
-      <motion.div
-        style={reduced ? undefined : { rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="group relative h-full overflow-hidden rounded-3xl border-2 border-black bg-[#101014] p-8 text-[#E7E7E1] md:p-10"
-      >
-        <motion.span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: spotlight }} />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{ boxShadow: `inset 0 0 0 2px ${accent}` }}
-        />
-        <div className="relative" style={reduced ? undefined : { transform: "translateZ(40px)" }}>
-          {children}
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div>
-      <p className="font-display text-2xl font-extrabold text-white">{value}</p>
-      <p className="mt-0.5 text-xs text-[#E7E7E1]/45">{label}</p>
-    </div>
-  );
-}
-
 export function HireMe() {
   return (
-    <section id="hire" className="relative overflow-hidden border-t border-black/10 bg-card px-6 py-28 md:px-12 md:py-40">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-16 text-center md:mb-20">
-          <Reveal>
-            <span className="font-mono text-sm font-semibold text-primary">Ways to hire</span>
-          </Reveal>
-          <SplitWords
-            as="h2"
-            text="Three ways to start working together."
-            className="mt-4 flex flex-wrap justify-center font-display text-4xl font-extrabold tracking-tight text-black md:text-5xl"
-          />
-          <Reveal delay={0.25}>
-            <p className="mx-auto mt-6 max-w-xl text-lg text-black/55">
-              Through a platform with buyer protection and escrow, or straight to me. Same work either way.
-            </p>
-          </Reveal>
-        </div>
+    <section id="hire" className="section-y relative overflow-hidden border-t border-black/10 bg-card px-6 md:px-12">
+      <div className="mx-auto max-w-7xl">
+        <SectionHeader
+          label="Ways to hire"
+          title="Two ways to start working together."
+          lead="Through a platform with buyer protection and escrow, or straight to me. Same work either way."
+        />
 
         <div className="grid gap-6 md:grid-cols-2">
-          {/* Fiverr */}
-          <TiltCard accent="#1DBF73">
-            <div className="flex items-center justify-between">
-              <SiFiverr className="h-9 w-9 text-[#1DBF73]" />
-              <span className="rounded-full bg-[#1DBF73]/15 px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest text-[#1DBF73]">
-                Level 2 seller
-              </span>
-            </div>
-            <h3 className="mt-6 font-display text-2xl font-extrabold">Fiverr</h3>
-            <p className="mt-2 text-[15px] leading-relaxed text-[#E7E7E1]/55">
-              Fixed scope, fixed price, escrow held until you approve. Best if you want the platform holding the
-              paperwork.
-            </p>
-
-            <div className="mt-7 flex flex-wrap items-start gap-4">
-              <FiverrLevelBadge level={2} lit={2} theme={L2_THEME} times="attained once" delay={0.1} />
-              <FiverrLevelBadge level={1} lit={1} theme={L1_THEME} times="attained 3×" delay={0.22} />
-            </div>
-
-            <div className="mt-8">
-              <Magnetic strength={0.4}>
-                <a
-                  href={FIVERR}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-cursor="hover"
-                  className="group/btn relative inline-flex h-13 items-center gap-2.5 overflow-hidden rounded-full bg-[#1DBF73] px-7 py-3.5 font-display text-[15px] font-bold text-white"
-                >
-                  <span className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-250 ease-out group-hover/btn:scale-x-100" />
-                  <span className="relative z-10 transition-colors group-hover/btn:text-[#0B7A45]">Hire me on Fiverr</span>
-                  <ArrowUpRight className="relative z-10 h-4 w-4 transition-all group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 group-hover/btn:text-[#0B7A45]" />
-                </a>
-              </Magnetic>
-            </div>
-          </TiltCard>
-
           {/* Upwork */}
-          <TiltCard accent="#14A800">
-            <div className="flex items-center justify-between">
-              <SiUpwork className="h-9 w-9 text-[#14A800]" />
-              <span className="rounded-full bg-[#14A800]/15 px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest text-[#14A800]">
-                Open to contracts
-              </span>
-            </div>
-            <h3 className="mt-6 font-display text-2xl font-extrabold">Upwork</h3>
-            <p className="mt-2 text-[15px] leading-relaxed text-[#E7E7E1]/55">
-              Hourly or milestone contracts with time tracking. Best for longer builds and ongoing retainers where
-              scope evolves.
-            </p>
+          <Reveal className="h-full">
+            <Card tone="ink" className="flex h-full flex-col">
+              <div className="flex items-center justify-between gap-3">
+                <SiUpwork className="h-9 w-9 text-[#14A800]" aria-hidden />
+                <span className="rounded-full bg-[#14A800]/25 px-3 py-1 type-label text-white">Open to contracts</span>
+              </div>
+              <h3 className="mt-6 type-h3 text-white">Upwork</h3>
+              <p className="mt-2 type-small text-on-dark-body">
+                Hourly or milestone contracts with time tracking. Best for longer builds and ongoing retainers where
+                scope evolves.
+              </p>
 
-            <div className="mt-7 grid grid-cols-3 gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-              <Stat value="50+" label="Clients" />
-              <Stat value="200+" label="Systems" />
-              <Stat value="4+ yrs" label="Building" />
-            </div>
+              <dl className="mt-6 grid grid-cols-3 gap-2 rounded-xl border border-white/15 p-4 sm:gap-4 md:p-5">
+                {FACT_STATS.map((s) => (
+                  <div key={s.short} className="flex flex-col-reverse">
+                    <dt className="mt-0.5 text-xs text-on-dark-label">{s.short}</dt>
+                    <dd className="whitespace-nowrap font-display text-lg font-extrabold text-white sm:text-xl md:text-2xl">{s.value}</dd>
+                  </div>
+                ))}
+              </dl>
 
-            <div className="mt-8">
-              <Magnetic strength={0.4}>
+              <div className="mt-auto pt-8" data-chat-clear>
                 <a
                   href={UPWORK}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-cursor="hover"
-                  className="group/btn relative inline-flex h-13 items-center gap-2.5 overflow-hidden rounded-full bg-[#14A800] px-7 py-3.5 font-display text-[15px] font-bold text-white"
+                  className={buttonClass({ variant: "bare", full: true, className: "bg-[#0E7A00] text-white hover:bg-white hover:text-[#0E7A00]" })}
                 >
-                  <span className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-250 ease-out group-hover/btn:scale-x-100" />
-                  <span className="relative z-10 transition-colors group-hover/btn:text-[#0E7A00]">Hire me on Upwork</span>
-                  <ArrowUpRight className="relative z-10 h-4 w-4 transition-all group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 group-hover/btn:text-[#0E7A00]" />
+                  Hire me on Upwork
+                  <ArrowUpRight className="h-5 w-5 shrink-0" aria-hidden />
                 </a>
-              </Magnetic>
-            </div>
-          </TiltCard>
-        </div>
+              </div>
+            </Card>
+          </Reveal>
 
-        {/* direct: the route that keeps the platform fee out of the price */}
-        <Reveal delay={0.2}>
-          <div className="mt-6 overflow-hidden rounded-3xl border-2 border-black bg-primary text-white">
-            <div className="flex flex-col items-start justify-between gap-6 px-8 py-8 md:flex-row md:items-center md:px-10">
-              <div className="max-w-xl">
-                <span className="inline-block rounded-full bg-white/15 px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-widest">
-                  No platform fee
-                </span>
-                <h3 className="mt-3 font-display text-xl font-extrabold md:text-2xl">Or work with me directly</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-white/75">
+          {/* Direct: the route that keeps the platform fee out of the price */}
+          <Reveal delay={0.1} className="h-full">
+            <Card tone="cobalt" pad="none" className="flex h-full flex-col overflow-hidden">
+              <div className="flex flex-1 flex-col p-6 md:p-8">
+                <span className="self-start rounded-full bg-white/15 px-3 py-1 type-label text-white">No platform fee</span>
+                <h3 className="mt-6 type-h3 text-white">Work with me directly</h3>
+                <p className="mt-2 type-small text-on-dark-body">
                   Skip the middle layer and the commission that comes with it. We agree the scope, I invoice you, and
                   the work starts. Same delivery, same support, lower price.
                 </p>
+                <div className="mt-auto pt-8">
+                  <CtaPair tone="dark" />
+                </div>
               </div>
-              <Magnetic strength={0.4}>
-                <OnboardingModal
-                  trigger={
-                    <button
-                      data-cursor="hover"
-                      className="group/btn inline-flex h-14 shrink-0 items-center gap-2.5 whitespace-nowrap rounded-full bg-white px-8 font-display text-[15px] font-bold text-primary transition-transform hover:scale-[1.04]"
-                    >
-                      Start your project
-                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-                    </button>
-                  }
-                />
-              </Magnetic>
-            </div>
 
-            <div className="flex flex-col gap-4 border-t border-white/20 bg-black/15 px-8 py-5 md:flex-row md:items-center md:px-10">
-              <span className="shrink-0 font-mono text-[11px] font-bold uppercase tracking-widest text-white/60">
-                Pay however suits you
-              </span>
-              <div className="flex flex-wrap items-center gap-2.5">
-                {PAY_METHODS.map((m, i) => (
-                  <motion.span
-                    key={m.name}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 + i * 0.07, duration: 0.4, ease: EASE }}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-[13px] font-semibold backdrop-blur-sm"
-                  >
-                    {m.Icon ? (
-                      <m.Icon className="h-4 w-4" />
-                    ) : (
-                      <span className="flex h-4 w-4 items-center justify-center rounded-[3px] bg-white text-[8px] font-extrabold leading-none text-primary">
-                        {m.mark}
-                      </span>
-                    )}
-                    {m.name}
-                  </motion.span>
-                ))}
+              <div className="flex flex-col gap-3 border-t border-white/20 bg-black/15 px-6 py-5 md:px-8">
+                <span className="type-label text-on-dark-body">Pay however suits you</span>
+                <ul className="flex flex-wrap items-center gap-2.5">
+                  {PAY_METHODS.map((m, i) => (
+                    <motion.li
+                      key={m.name}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.1 + i * 0.07, duration: 0.4, ease: EASE }}
+                      className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-[13px] font-semibold"
+                    >
+                      {m.Icon ? (
+                        <m.Icon className="h-4 w-4" aria-hidden />
+                      ) : (
+                        <span aria-hidden className="flex h-4 w-4 items-center justify-center rounded-[3px] bg-white text-[8px] font-extrabold leading-none text-cobalt">
+                          {m.mark}
+                        </span>
+                      )}
+                      {m.name}
+                    </motion.li>
+                  ))}
+                </ul>
               </div>
-            </div>
-          </div>
-        </Reveal>
+            </Card>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

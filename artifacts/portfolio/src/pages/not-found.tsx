@@ -10,7 +10,7 @@ export default function NotFound() {
           <div className="mt-4">
             <AccentHeading before="This page " accent="doesn't" after=" exist." color="#F32317" />
           </div>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-black/60">
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-body">
             The link may be old, or mistyped. Everything that does exist is one click away.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">

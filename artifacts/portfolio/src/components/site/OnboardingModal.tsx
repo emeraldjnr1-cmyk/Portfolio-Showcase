@@ -53,10 +53,10 @@ export function OnboardingModal({ trigger }: { trigger: React.ReactNode }) {
       <DialogContent className="max-h-[90vh] max-w-xl overflow-y-auto rounded-3xl border-2 border-black bg-[#E7E7E1] p-8 text-black">
         <DialogHeader>
           <DialogTitle className="font-display text-3xl font-extrabold tracking-tight">
-            Start your project
+            Get a fixed quote
           </DialogTitle>
-          <DialogDescription className="font-editorial text-lg text-black/60">
-            A few quick details and I will reach out to you directly.
+          <DialogDescription className="type-body text-ink-body">
+            A few details about the work. You get a plan and a fixed price within 24 hours.
           </DialogDescription>
         </DialogHeader>
 

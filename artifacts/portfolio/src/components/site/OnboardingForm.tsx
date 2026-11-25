@@ -47,7 +47,7 @@ const SERVICES = [
 ];
 
 const inputCls =
-  "h-12 rounded-xl border-2 border-black/15 bg-white px-4 font-sans text-base text-black placeholder:text-black/35 focus-visible:border-primary focus-visible:ring-0 focus-visible:ring-offset-0";
+  "h-12 rounded-xl border-2 border-black/15 bg-white px-4 font-sans text-base text-black placeholder:text-ink-label focus-visible:border-primary focus-visible:ring-0 focus-visible:ring-offset-0";
 
 export default function OnboardingForm({ onSent }: { onSent: () => void }) {
   const [sending, setSending] = useState(false);
@@ -97,7 +97,7 @@ export default function OnboardingForm({ onSent }: { onSent: () => void }) {
       if (!ok) throw new Error(body?.message ?? "Submission rejected");
       toast({
         title: "Request sent",
-        description: "Thanks! I will get back to you on WhatsApp within 24 hours.",
+        description: "Thanks. I will get back to you on WhatsApp within 24 hours.",
       });
       form.reset();
       onSent();
@@ -208,7 +208,7 @@ export default function OnboardingForm({ onSent }: { onSent: () => void }) {
               <FormLabel className="font-display text-xs font-bold uppercase tracking-widest">What would you like to automate?</FormLabel>
               <FormControl>
                 <Textarea
-                  className="min-h-28 rounded-xl border-2 border-black/15 bg-white px-4 py-3 font-sans text-base text-black placeholder:text-black/35 focus-visible:border-primary focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="min-h-28 rounded-xl border-2 border-black/15 bg-white px-4 py-3 font-sans text-base text-black placeholder:text-ink-label focus-visible:border-primary focus-visible:ring-0 focus-visible:ring-offset-0"
                   placeholder="Tell me about your business and what eats up your time..."
                   {...field}
                 />
@@ -227,7 +227,7 @@ export default function OnboardingForm({ onSent }: { onSent: () => void }) {
           {sending ? "Sending..." : "Send request"}
           {!sending && <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />}
         </button>
-        <p className="text-center text-xs text-black/40">
+        <p className="text-center text-xs text-ink-label">
           Your details go straight to me. No spam, ever.
         </p>
       </form>

@@ -56,6 +56,30 @@
   --color-sidebar-accent-border: var(--sidebar-accent-border);
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
+  /* Site design tokens (Phase 1). One name per role; pages use these
+     instead of hard-coded hex values and ad hoc opacity greys. */
+  --color-bone: var(--bone);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-body: var(--ink-body);
+  --color-ink-label: var(--ink-label);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-body: var(--on-dark-body);
+  --color-on-dark-label: var(--on-dark-label);
+  --color-cobalt: var(--cobalt);
+  --color-red: var(--red);
+  --color-red-text: var(--red-text);
+  --color-gold: var(--gold);
+  --color-gold-text: var(--gold-text);
+  --color-pink: var(--pink);
+  --color-pink-text: var(--pink-text);
+  --color-sky: var(--sky);
+  --color-sky-text: var(--sky-text);
+  --color-green: var(--green);
+  --color-green-text: var(--green-text);
+  --color-violet: var(--violet);
+  --color-violet-text: var(--violet-text);
+
   --font-sans: var(--app-font-sans);
   --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
@@ -67,6 +91,53 @@
 }
 
 :root {
+  /* ── Colour roles ──
+     Bone page, paper cards, ink text. Two greys only: body and label, both
+     AA on bone, paper and white. Cobalt is for actions and links. The pop
+     colours are for chips and marks; each has a darker "-text" partner that
+     passes AA as small text on the light surfaces. */
+  --bone: #E7E7E1;
+  --paper: #F6F5F1;
+  --ink: #141414;
+  --ink-body: rgb(0 0 0 / 0.72);
+  --ink-label: rgb(0 0 0 / 0.62);
+  --on-dark: #E7E7E1;
+  --on-dark-body: rgb(255 255 255 / 0.78);
+  --on-dark-label: rgb(255 255 255 / 0.64);
+  --cobalt: #0015D4;
+  --red: #F32317;
+  --red-text: #B3140A;
+  --gold: #FFCB41;
+  --gold-text: #7D5200;
+  --pink: #FF8FCA;
+  --pink-text: #A8196B;
+  --sky: #84DEF9;
+  --sky-text: #005F80;
+  --green: #0BB07B;
+  --green-text: #006B4F;
+  --violet: #8B5CF6;
+  --violet-text: #5B2BD6;
+
+  /* ── Type scale ── */
+  --type-h1: clamp(2.75rem, 7vw, 6rem);
+  --type-h2: clamp(2rem, 4.5vw, 3.5rem);
+  --type-h3: 1.5rem;
+  --type-body: 1.125rem;
+  --type-small: 0.9375rem;
+  --type-label: 0.75rem;
+
+  /* ── Spacing ── inner steps 8, 16, 24, 32, 48; sections 64 or 96 on
+     desktop, 48 or 64 on phone (see .section-y / .section-y-sm). */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --section-y: 4rem;
+  --section-y-sm: 3rem;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
   --button-outline: rgba(0,0,0, .10);
   --badge-outline: rgba(0,0,0, .05);
 
@@ -112,7 +183,7 @@
 
   --app-font-sans: 'Inter', sans-serif;
   --app-font-serif: 'Libre Baskerville', Georgia, serif;
-  --app-font-mono: Menlo, monospace;
+  --app-font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
   --font-display: 'Inter', sans-serif;
   --radius: 0.75rem; /* 12px */
   --shadow-2xs: 0px 2px 0px 0px rgba(0,0,0,0.02);
@@ -200,6 +271,34 @@
   }
   html {
     scroll-behavior: initial; /* Lenis owns scrolling */
+    /* Phone basics: no grey flash on tap, no text inflation in landscape. */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  /* No double-tap-zoom wait on controls, so a tap answers at once. */
+  a, button, summary, [role="button"], [role="tab"] {
+    touch-action: manipulation;
+  }
+  /* Long-press must not select a control's label. Content stays selectable. */
+  button, summary, [role="button"], [role="tab"] {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  /* One focus ring for the whole site: cobalt outside, a white line inside,
+     so it reads on bone, paper, cobalt and black alike. */
+  :focus-visible {
+    outline: 3px solid var(--cobalt);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px #fff;
+  }
+  input, textarea {
+    caret-color: var(--cobalt);
+  }
+  /* <main> takes focus from the skip link only; it needs no ring of its own. */
+  main:focus-visible {
+    outline: none;
+    box-shadow: none;
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
@@ -209,11 +308,99 @@
        scroll container, which silently breaks position: sticky (the FAQ
        intro column). `clip` does not. */
     overflow-x: clip;
+    /* With viewport-fit=cover the page runs edge to edge; keep content clear
+       of the notch when the phone is on its side. */
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
   }
   ::selection {
-    background: #0015D4;
+    background: var(--cobalt);
     color: #fff;
   }
+}
+
+/* ── Type roles ── */
+@utility type-h1 {
+  font-family: var(--font-display);
+  font-size: var(--type-h1);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-size: var(--type-h2);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+@utility type-body {
+  font-size: var(--type-body);
+  line-height: 1.6;
+}
+@utility type-small {
+  font-size: var(--type-small);
+  line-height: 1.55;
+}
+@utility type-label {
+  font-family: var(--app-font-mono);
+  font-size: var(--type-label);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── Section rhythm ── 64 phone / 96 desktop, or 48 / 64 for the quieter ones. */
+@utility section-y {
+  padding-block: var(--section-y);
+  @media (min-width: 48rem) {
+    padding-block: 6rem;
+  }
+}
+@utility section-y-sm {
+  padding-block: var(--section-y-sm);
+  @media (min-width: 48rem) {
+    padding-block: 4rem;
+  }
+}
+
+/* A 44px tap area for small text links and chips, on touch screens only, so
+   desktop rows keep their tighter rhythm. */
+@utility tap {
+  @media (pointer: coarse) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}
+
+/* Skip link: first stop for the keyboard, off screen until it has focus. */
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 200;
+  transform: translateY(-200%);
+  border: 2px solid var(--ink);
+  border-radius: 9999px;
+  background: #fff;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-display);
+  font-size: var(--type-small);
+  font-weight: 700;
+  color: var(--ink);
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
 }
 
 @layer utilities {
