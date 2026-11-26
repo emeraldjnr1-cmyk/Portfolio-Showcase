@@ -1,7 +1,7 @@
 // ── Work pages: /work/:slug ──
 // One page per featured system. The steps only unpack the description the
 // project already carries on the home page; nothing here adds new claims.
-import { featured, testimonials, type FeaturedProject } from "@/data/portfolio";
+import { featured, testimonials, writtenReviews, type FeaturedProject } from "@/data/portfolio";
 
 interface WorkExtra {
   slug: string;
@@ -123,12 +123,64 @@ const EXTRA: Record<number, WorkExtra> = {
   },
 };
 
-export type WorkItem = FeaturedProject & WorkExtra & { quote?: string };
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
-export const work: WorkItem[] = featured.map((p) => {
+/** Cover for the work grid and the top of each case study: `${cover}-480.webp`, `-960.webp`, `-1600.webp`. */
+export const coverBase = (slug: string) => `${BASE}/work/${slug}`;
+
+export type WorkItem = FeaturedProject &
+  WorkExtra & {
+    quote?: string;
+    /** Who said the quote and in what role, when it is a written review. */
+    quoteBy?: string;
+    /** Base path of the 16:9 cover. */
+    cover: string;
+    /** Short muted screen recording that plays in place of the cover. */
+    loop?: string;
+    /** False where the stored canvas screenshot shows a different workflow, so the page leaves it out. */
+    showCanvas: boolean;
+  };
+
+// The canvas screenshots stored for these two show other workflows (a pickup
+// reminder and a bill import), so their pages show the cover only.
+const CANVAS_MISMATCH = new Set([7, 10]);
+
+const fromFeatured: WorkItem[] = featured.map((p) => {
   const extra = EXTRA[p.id];
   const t = extra.testimonial ? testimonials.find((x) => x.name === extra.testimonial) : undefined;
-  return { ...p, ...extra, quote: t?.quote };
+  return { ...p, ...extra, quote: t?.quote, cover: coverBase(extra.slug), showCanvas: p.id !== 11 && !CANVAS_MISMATCH.has(p.id) };
 });
+
+// ── Cashout Singapore ──
+// Client and platform are public through Maverick Tsao's written review. The
+// steps describe what the product does; no figures are claimed.
+const review = writtenReviews.find((r) => r.name === "Maverick Tsao");
+const cashout: WorkItem = {
+  id: 12,
+  slug: "cashout-ai-property-platform",
+  service: "ai-agents",
+  title: "Cashout Singapore: AI Property Platform",
+  desc: "A property platform for Singapore where owners and agents list a home by talking, and buyers and tenants find one by describing it in their own words.",
+  tag: "AI Agents",
+  tools: ["Claude", "Next.js", "Supabase", "Railway"],
+  stat: "Search by conversation, answers from the listing",
+  result: "The chat finds listings and answers from what owners and agents have told it",
+  img: `${coverBase("cashout-ai-property-platform")}-1600.webp`,
+  cover: coverBase("cashout-ai-property-platform"),
+  loop: `${BASE}/videos/work/cashout-ai-property-platform.mp4`,
+  showCanvas: false,
+  quote: review?.quote,
+  quoteBy: review ? `${review.name}, ${review.role}` : undefined,
+  steps: [
+    "An owner or agent describes the property by voice or text, and Claude turns the answers into a structured listing they confirm before it is saved.",
+    "The nearest MRT station and the district are measured from the map, so they are never taken on trust.",
+    "A buyer or tenant says what they need in plain words, and the chat searches the approved listings by filters and by meaning.",
+    "Answers come from the listing record and from what the owner or agent said, so the AI never holds the facts itself.",
+    "A question the listing cannot answer goes to the lister, and the reply is kept on the listing for the next person.",
+  ],
+};
+
+// Appended last on purpose: the footer links the first five.
+export const work: WorkItem[] = [...fromFeatured, cashout];
 
 export const workBySlug = (slug: string) => work.find((w) => w.slug === slug);

@@ -1,64 +1,244 @@
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { ArrowUpRight, ArrowRight, Pause, Play } from "lucide-react";
 import NotFound from "@/pages/not-found";
 import { PageShell, Breadcrumbs, AccentHeading, StartButtons } from "@/components/site/PageShell";
 import { cardClass } from "@/components/site/Card";
 import { TAG_STYLE } from "@/data/portfolio";
 import { work, workBySlug } from "@/data/work";
 import { serviceBySlug } from "@/data/services";
+import { categories, totalWork, type Category, type CategoryId, type Tile } from "@/data/showcase";
 
 // ─────────────────────────────── /work ───────────────────────────────
-export function WorkIndex() {
-  return (
-    <PageShell>
-      <section className="px-6 pb-20 pt-36 md:px-12 md:pb-24 md:pt-44">
-        <div className="mx-auto max-w-7xl">
-          <Breadcrumbs trail={[["Home", "/"], ["Work", "/work"]]} />
-          <div className="mt-8">
-            <AccentHeading before="Systems that " accent="run" after=" businesses." color="#F32317" />
-          </div>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-body md:text-xl">
-            The flagship AI agent and automation builds, each broken down step by step. Web builds and Web3 projects
-            live in their own galleries.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href="/#websites" className="inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-black hover:text-white">
-              Web builds gallery <ArrowUpRight className="h-4 w-4" />
-            </a>
-            <a href="/services/web3#web3" className="inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-black hover:text-white">
-              Web3 gallery <ArrowUpRight className="h-4 w-4" />
-            </a>
-          </div>
-        </div>
-      </section>
+// Everything on one page, grouped by kind. The filter chips are plain anchor
+// links, so without JavaScript they jump to a section and every section stays
+// visible. With JavaScript they show one section at a time.
 
-      <section className="border-t border-black/10 bg-card px-6 section-y-sm md:px-12">
-        <ul className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {work.map((w, i) => (
-            <li key={w.slug}>
-              <a href={`/work/${w.slug}`} className="group block" data-cursor-label="View">
-                <div className="overflow-hidden rounded-2xl border-2 border-ink bg-white transition-[transform,box-shadow] duration-200 ease-out group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[6px_6px_0_#0015D4]">
-                  <img
-                    src={w.poster ?? w.img}
-                    alt={`${w.title} workflow`}
-                    loading={i < 3 ? "eager" : "lazy"}
-                    className="aspect-video w-full object-cover object-top"
-                  />
-                </div>
-                <div className="mt-5 flex items-start justify-between gap-4">
-                  <div>
-                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${TAG_STYLE[w.tag].chip}`}>
-                      {w.tag}
-                    </span>
-                    <h2 className="mt-3 font-display text-xl font-bold text-black transition-colors group-hover:text-primary">{w.title}</h2>
-                    <p className="mt-1.5 text-sm text-ink-body">{w.stat}</p>
-                  </div>
-                  <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-ink-label transition-colors group-hover:text-primary" />
-                </div>
-              </a>
+type Filter = "all" | CategoryId;
+const isCategory = (v: string): v is CategoryId => categories.some((c) => c.id === v);
+
+/** Only one tile preview plays at a time: starting one stops the last. */
+let stopPlaying: (() => void) | null = null;
+
+function Cover({ tile, lead, eager }: { tile: Tile; lead: boolean; eager: boolean }) {
+  return (
+    <img
+      src={`${tile.cover}-960.webp`}
+      srcSet={`${tile.cover}-480.webp 480w, ${tile.cover}-960.webp 960w`}
+      sizes={lead ? "(min-width: 1024px) 580px, (min-width: 640px) 46vw, 92vw" : "(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw"}
+      width={960}
+      height={540}
+      alt=""
+      loading={eager ? "eager" : "lazy"}
+      fetchPriority={eager && lead ? "high" : undefined}
+      decoding="async"
+      className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+    />
+  );
+}
+
+function WorkTile({ tile, lead, eager }: { tile: Tile; lead: boolean; eager: boolean }) {
+  const [playing, setPlaying] = useState(false);
+  const [ready, setReady] = useState(false);
+  const video = useRef<HTMLVideoElement>(null);
+
+  const stop = () => {
+    setPlaying(false);
+    setReady(false);
+  };
+  const start = () => {
+    if (!tile.video || playing) return;
+    stopPlaying?.();
+    stopPlaying = stop;
+    setPlaying(true);
+  };
+  // Hover plays the preview only where there is a real pointer and motion is welcome.
+  const onEnter = () => {
+    if (!tile.video) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    start();
+  };
+  const onLeave = () => {
+    if (playing && window.matchMedia("(hover: hover) and (pointer: fine)").matches) stop();
+  };
+  useEffect(
+    () => () => {
+      if (stopPlaying === stop) stopPlaying = null;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  return (
+    <li className={`relative ${lead ? "lg:col-span-3" : "lg:col-span-2"}`} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+      <a href={tile.href} className="group block rounded-2xl" data-cursor-label={tile.external ? "Play" : "View"}>
+        <div className="relative aspect-video overflow-hidden rounded-2xl border-2 border-ink bg-ink transition-[transform,box-shadow] duration-200 ease-out group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[6px_6px_0_#0015D4] group-active:translate-x-0 group-active:translate-y-0 group-active:shadow-none motion-reduce:transition-none">
+          <Cover tile={tile} lead={lead} eager={eager} />
+          {playing && tile.video && (
+            <video
+              ref={video}
+              src={tile.video}
+              muted
+              playsInline
+              autoPlay
+              loop={!tile.clip}
+              preload="auto"
+              aria-hidden
+              tabIndex={-1}
+              onLoadedMetadata={(e) => {
+                const v = e.currentTarget;
+                if (tile.clip) v.currentTime = tile.clip[0];
+                void v.play().catch(() => {});
+              }}
+              onPlaying={() => setReady(true)}
+              onTimeUpdate={(e) => {
+                const v = e.currentTarget;
+                if (tile.clip && v.currentTime >= tile.clip[1]) v.currentTime = tile.clip[0];
+              }}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${ready ? "opacity-100" : "opacity-0"}`}
+            />
+          )}
+        </div>
+        <div className="mt-4 flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p className="type-label text-cobalt">{tile.label}</p>
+            <h3 className={`mt-1.5 font-display font-bold leading-snug text-ink transition-colors group-hover:text-cobalt ${lead ? "text-xl md:text-2xl" : "text-xl"}`}>
+              {tile.name}
+            </h3>
+          </div>
+          <ArrowUpRight className="mt-5 h-5 w-5 shrink-0 text-ink-label transition-colors group-hover:text-cobalt" aria-hidden />
+        </div>
+        <p className="mt-2 max-w-[60ch] text-[15px] leading-relaxed text-ink-body">{tile.line}</p>
+        <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Built with">
+          {tile.stack.map((t) => (
+            <li key={t} className="rounded-md border border-black/15 bg-white px-2 py-0.5 text-xs font-medium text-ink-body">
+              {t}
             </li>
           ))}
         </ul>
+      </a>
+      {tile.video && (
+        // On a touch screen there is no hover, so the preview gets its own button.
+        <button
+          type="button"
+          onClick={() => (playing ? stop() : start())}
+          aria-pressed={playing}
+          aria-label={`${playing ? "Stop" : "Play"} the preview of ${tile.name}`}
+          className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-ink/85 text-white transition-transform active:scale-95 [@media(hover:hover)_and_(pointer:fine)]:hidden"
+        >
+          {playing ? <Pause className="h-4 w-4" aria-hidden /> : <Play className="h-4 w-4 translate-x-px" aria-hidden />}
+        </button>
+      )}
+    </li>
+  );
+}
+
+function CategorySection({ c, index, hidden }: { c: Category; index: number; hidden: boolean }) {
+  // The first two websites run two to a row; everything else three.
+  const leads = c.id === "websites" ? 2 : 0;
+  return (
+    <section
+      id={c.id}
+      hidden={hidden}
+      aria-labelledby={`${c.id}-title`}
+      className="scroll-mt-24 border-t border-black/10 px-6 py-10 md:px-12 md:py-14"
+    >
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-x-10 gap-y-3 md:mb-8">
+          <div>
+            <p className="type-label text-ink-label">
+              {String(index + 1).padStart(2, "0")} · {c.tiles.length === c.total ? `${c.total} shown` : `${c.tiles.length} of ${c.total} shown`}
+            </p>
+            <h2 id={`${c.id}-title`} className="mt-2 font-display text-[1.75rem] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink md:text-[2.5rem]">
+              {c.name}
+            </h2>
+          </div>
+          <p className="max-w-md text-[15px] leading-relaxed text-ink-body md:text-base">{c.lead}</p>
+        </div>
+        <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-6 lg:gap-y-12">
+          {c.tiles.map((t, i) => (
+            <WorkTile key={t.id} tile={t} lead={i < leads} eager={index === 0 && i < 2} />
+          ))}
+        </ul>
+        {c.more && (
+          <a
+            href={c.more.href}
+            className="group mt-10 inline-flex min-h-11 items-center gap-2 font-display text-base font-bold text-ink transition-colors hover:text-cobalt"
+          >
+            <span className="underline decoration-2 underline-offset-4">{c.more.label}</span>
+            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden />
+          </a>
+        )}
+      </div>
+    </section>
+  );
+}
+
+export function WorkIndex() {
+  const [filter, setFilter] = useState<Filter>("all");
+
+  // A link such as /work#games opens with that filter on.
+  useEffect(() => {
+    const fromHash = () => {
+      const h = window.location.hash.slice(1);
+      setFilter(isCategory(h) ? h : "all");
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
+  }, []);
+
+  const pick = (e: MouseEvent, next: Filter) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    stopPlaying?.();
+    setFilter(next);
+    window.history.replaceState(null, "", next === "all" ? window.location.pathname : `#${next}`);
+  };
+
+  const chip = (active: boolean) =>
+    `inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border-2 px-4 font-display text-sm font-bold transition-[background-color,color,border-color,transform] duration-150 ease-out active:scale-[0.97] ${
+      active ? "border-ink bg-ink text-white" : "border-ink/20 bg-white text-ink hover:border-ink"
+    }`;
+  const count = (active: boolean) => `font-mono text-xs font-medium ${active ? "text-white/70" : "text-ink-label"}`;
+  const current = categories.find((c) => c.id === filter);
+
+  return (
+    <PageShell cta="Want something like this built?">
+      <section className="px-6 pb-6 pt-28 md:px-12 md:pb-8 md:pt-36">
+        <div className="mx-auto max-w-7xl">
+          <Breadcrumbs trail={[["Home", "/"], ["Work", "/work"]]} />
+          <div className="mt-5 grid gap-x-12 gap-y-4 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-end">
+            <AccentHeading before="The " accent="work" after="." color="#0015D4" />
+            <p className="max-w-xl text-base leading-relaxed text-ink-body md:pb-2 md:text-xl lg:justify-self-end">
+              Websites, apps, AI agents, automations and games, all built with Claude Code. Every piece here is one you can open.
+            </p>
+          </div>
+          <nav id="filter" aria-label="Filter the work by kind" className="-mx-6 mt-6 scroll-mt-28 overflow-x-auto px-6 [scrollbar-width:none] md:mx-0 md:mt-10 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
+            <ul className="flex w-max gap-2 md:w-auto md:flex-wrap">
+              <li>
+                <a href="#filter" onClick={(e) => pick(e, "all")} aria-current={filter === "all" ? "true" : undefined} className={chip(filter === "all")}>
+                  All <span className={count(filter === "all")}>{totalWork}</span>
+                </a>
+              </li>
+              {categories.map((c) => (
+                <li key={c.id}>
+                  <a href={`#${c.id}`} onClick={(e) => pick(e, c.id)} aria-current={filter === c.id ? "true" : undefined} className={chip(filter === c.id)}>
+                    {c.name} <span className={count(filter === c.id)}>{c.total}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <p className="sr-only" aria-live="polite">
+            {current ? `Showing ${current.name}` : "Showing all work"}
+          </p>
+        </div>
       </section>
+
+      {categories.map((c, i) => (
+        <CategorySection key={c.id} c={c} index={i} hidden={filter !== "all" && filter !== c.id} />
+      ))}
     </PageShell>
   );
 }
@@ -106,20 +286,29 @@ export function WorkPage({ slug }: { slug: string }) {
 
       <section className="px-6 pb-24 md:px-12">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-[1.5rem] border-2 border-black bg-black shadow-[10px_10px_0_#0015D4]">
-          {w.video ? (
+          {w.loop ? (
             <video
-              src={w.video}
-              poster={w.poster}
+              src={w.loop}
+              poster={`${w.cover}-1600.webp`}
               className="aspect-video w-full"
               autoPlay
               muted
               loop
               playsInline
               preload="metadata"
-              aria-label={`${w.title} film`}
+              aria-label={`${name} screen recording`}
             />
           ) : (
-            <img src={w.img} alt={`${w.title} workflow`} className="w-full bg-white" />
+            <img
+              src={`${w.cover}-1600.webp`}
+              srcSet={`${w.cover}-960.webp 960w, ${w.cover}-1600.webp 1600w`}
+              sizes="(min-width: 1280px) 1280px, 92vw"
+              width={1600}
+              height={900}
+              alt={`${name}: what it delivers`}
+              fetchPriority="high"
+              className="aspect-video w-full object-cover"
+            />
           )}
         </div>
       </section>
@@ -153,7 +342,7 @@ export function WorkPage({ slug }: { slug: string }) {
             {w.quote && (
               <figure className="rounded-2xl border-2 border-black bg-white p-7">
                 <blockquote className="font-editorial text-xl leading-snug text-black">"{w.quote}"</blockquote>
-                <figcaption className="mt-4 text-sm font-semibold text-ink-body">{w.testimonial}, client</figcaption>
+                <figcaption className="mt-4 text-sm font-semibold text-ink-body">{w.quoteBy ?? `${w.testimonial}, client`}</figcaption>
               </figure>
             )}
             {service && (
@@ -166,12 +355,26 @@ export function WorkPage({ slug }: { slug: string }) {
             <StartButtons />
           </div>
         </div>
+        {(w.video || w.showCanvas) && (
+          <figure className="mx-auto mt-16 max-w-7xl">
+            <figcaption className="font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">
+              {w.video ? "The build film" : "The workflow behind it"}
+            </figcaption>
+            <div className="mt-4 overflow-hidden rounded-2xl border-2 border-ink bg-white">
+              {w.video ? (
+                <video src={w.video} poster={w.poster} className="aspect-video w-full" controls muted playsInline preload="none" aria-label={`${name} build film`} />
+              ) : (
+                <img src={w.img} alt={`${name} workflow canvas`} loading="lazy" decoding="async" className="w-full" />
+              )}
+            </div>
+          </figure>
+        )}
       </section>
 
       <section className="border-t border-black/10 px-6 py-16 md:px-12">
         <a href={`/work/${next.slug}`} className="group mx-auto flex max-w-7xl items-center justify-between gap-6">
           <span>
-            <span className="font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">Next system</span>
+            <span className="font-mono text-xs font-semibold uppercase tracking-widest text-ink-label">Next project</span>
             <span className="mt-2 block font-display text-2xl font-extrabold tracking-tight text-black transition-colors group-hover:text-primary md:text-4xl">
               {next.title}
             </span>

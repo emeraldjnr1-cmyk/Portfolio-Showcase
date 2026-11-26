@@ -164,12 +164,12 @@ const servicePages: PageMeta[] = services.map((s) => ({
 
 const workIndex: PageMeta = {
   path: "/work",
-  title: "Work: AI Agent & Automation Case Studies | Denver NoCode",
+  title: "Work: Websites, Apps, AI Agents, Automations and Games | Denver NoCode",
   description:
-    "Flagship systems built by Denver NoCode: AI client pipelines, lead generation, RAG chatbots, knowledge bots, onboarding and CRM automation.",
+    "Everything Denver NoCode builds with Claude Code, on one page: websites and apps, an AI property platform, AI agents, automations, games, Web3 and build films.",
   image: SITE.image,
   imageSize: { w: 1200, h: 630 },
-  summary: "Index of flagship systems, each with its own page.",
+  summary: "All the work on one page, filtered by kind: websites and apps, AI agents and platforms, games, automations, Web3 and films.",
   jsonLd: [
     breadcrumbs([["Home", "/"], ["Work", "/work"]]),
     {
@@ -187,7 +187,7 @@ const workPages: PageMeta[] = work.map((w) => ({
   path: `/work/${w.slug}`,
   title: `${w.title} | Denver NoCode`,
   description: `${w.desc} Built with ${w.tools.join(", ")}.`.slice(0, 300),
-  image: abs(w.poster ?? w.img),
+  image: abs(`${w.cover}-1600.webp`),
   summary: w.desc,
   jsonLd: [
     breadcrumbs([["Home", "/"], ["Work", "/work"], [w.title, `/work/${w.slug}`]]),
@@ -197,7 +197,7 @@ const workPages: PageMeta[] = work.map((w) => ({
       name: w.title,
       description: w.desc,
       url: abs(`/work/${w.slug}`),
-      image: abs(w.poster ?? w.img),
+      image: abs(`${w.cover}-1600.webp`),
       creator: { "@id": ORG_ID },
       keywords: w.tools.join(", "),
       ...(w.video ? { video: { "@type": "VideoObject", name: w.title, description: w.desc, contentUrl: abs(w.video), thumbnailUrl: abs(w.poster ?? w.img), uploadDate: FILM_DATES[w.id] } } : {}),
