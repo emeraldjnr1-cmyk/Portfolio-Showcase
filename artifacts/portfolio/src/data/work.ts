@@ -139,7 +139,12 @@ export type WorkItem = FeaturedProject &
     loop?: string;
     /** False where the stored canvas screenshot shows a different workflow, so the page leaves it out. */
     showCanvas: boolean;
+    /** The cover is an illustration of the output with sample data, not a screenshot. */
+    example?: boolean;
   };
+
+// Covers drawn from the workflow's output with sample data. They carry an "Example output" label.
+const REAL_COVER = new Set(["entsorger-circle"]);
 
 // The canvas screenshots stored for these two show other workflows (a pickup
 // reminder and a bill import), so their pages show the cover only.
@@ -148,7 +153,7 @@ const CANVAS_MISMATCH = new Set([7, 10]);
 const fromFeatured: WorkItem[] = featured.map((p) => {
   const extra = EXTRA[p.id];
   const t = extra.testimonial ? testimonials.find((x) => x.name === extra.testimonial) : undefined;
-  return { ...p, ...extra, quote: t?.quote, cover: coverBase(extra.slug), showCanvas: p.id !== 11 && !CANVAS_MISMATCH.has(p.id) };
+  return { ...p, ...extra, quote: t?.quote, cover: coverBase(extra.slug), example: !REAL_COVER.has(extra.slug), showCanvas: p.id !== 11 && !CANVAS_MISMATCH.has(p.id) };
 });
 
 // ── Cashout Singapore ──

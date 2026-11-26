@@ -19,6 +19,8 @@ const isCategory = (v: string): v is CategoryId => categories.some((c) => c.id =
 /** Only one tile preview plays at a time: starting one stops the last. */
 let stopPlaying: (() => void) | null = null;
 
+const EXAMPLE_CHIP = "pointer-events-none absolute bottom-3 left-3 rounded-md bg-ink/85 px-2 py-1 font-mono text-[10px] md:text-[11px] font-semibold uppercase tracking-wider text-white";
+
 function Cover({ tile, lead, eager }: { tile: Tile; lead: boolean; eager: boolean }) {
   return (
     <img
@@ -74,6 +76,7 @@ function WorkTile({ tile, lead, eager }: { tile: Tile; lead: boolean; eager: boo
       <a href={tile.href} className="group block rounded-2xl" data-cursor-label={tile.external ? "Play" : "View"}>
         <div className="relative aspect-video overflow-hidden rounded-2xl border-2 border-ink bg-ink transition-[transform,box-shadow] duration-200 ease-out group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[6px_6px_0_#0015D4] group-active:translate-x-0 group-active:translate-y-0 group-active:shadow-none motion-reduce:transition-none">
           <Cover tile={tile} lead={lead} eager={eager} />
+          {tile.example && <span className={EXAMPLE_CHIP}>Example output</span>}
           {playing && tile.video && (
             <video
               ref={video}
@@ -285,7 +288,7 @@ export function WorkPage({ slug }: { slug: string }) {
       </section>
 
       <section className="px-6 pb-24 md:px-12">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[1.5rem] border-2 border-black bg-black shadow-[10px_10px_0_#0015D4]">
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[1.5rem] border-2 border-black bg-black shadow-[10px_10px_0_#0015D4]">
           {w.loop ? (
             <video
               src={w.loop}
@@ -310,6 +313,7 @@ export function WorkPage({ slug }: { slug: string }) {
               className="aspect-video w-full object-cover"
             />
           )}
+          {w.example && !w.loop && <span className={EXAMPLE_CHIP}>Example output</span>}
         </div>
       </section>
 

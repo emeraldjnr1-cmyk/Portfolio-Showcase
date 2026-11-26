@@ -27,6 +27,8 @@ export interface Tile {
   video?: string;
   /** Seconds to loop between, for clips that open or close on a title card. */
   clip?: [number, number];
+  /** The cover is an illustration with sample data: it shows an "Example output" label. */
+  example?: boolean;
 }
 
 export interface Category {
@@ -68,6 +70,7 @@ const caseStudy = (slug: string, label: string): Tile => {
     cover: w.cover,
     href: `/work/${w.slug}`,
     video: w.loop,
+    example: w.example,
   };
 };
 
