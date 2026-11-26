@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Skeyo Outdoors · Multichannel design proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#E8E5DE;--ink:#0A0A0A;--ink-soft:#4A4A4A;--muted:#7B7770;--blue:#1B1BFF;--coral:#E85445;--green:#4A9F5F;--card:#F1EEE7;--yellow:#F5C842;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  .serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;}
+  .blue{color:var(--blue);} .coral{color:var(--coral);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:28px 0;gap:20px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:16px;}
+  .mark{font-weight:900;font-size:26px;letter-spacing:-.03em;}
+  .brand-dot{color:var(--blue);}
+  .status{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(10,10,10,.18);border-radius:100px;padding:7px 15px;font-size:12.5px;color:var(--ink-soft);}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
+  .pill{display:inline-block;background:var(--ink);color:var(--cream);border-radius:100px;padding:13px 28px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;}
+  .pill.blue-fill{background:var(--blue);color:#fff;}
+  .pill.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);}
+  .pill.client{display:inline-flex;align-items:center;gap:10px;}
+  .pill.client i{width:8px;height:8px;border-radius:50%;background:var(--yellow);display:inline-block;}
+  .hero{padding:70px 0 60px;position:relative;}
+  .label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:26px;display:block;}
+  h1{font-weight:900;letter-spacing:-.045em;line-height:.93;font-size:clamp(46px,7.6vw,98px);}
+  h1 .serif{font-weight:400;letter-spacing:-.02em;}
+  .subhead{max-width:680px;margin-top:34px;font-size:18.5px;color:var(--ink-soft);}
+  .subhead strong{color:var(--ink);font-weight:600;}
+  .cta{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;}
+  .flourish{position:absolute;border-radius:50%;pointer-events:none;}
+  .f1{width:13px;height:13px;background:var(--yellow);top:120px;right:8%;}
+  .f2{width:9px;height:9px;background:var(--blue);top:250px;right:16%;}
+  .f3{width:11px;height:11px;background:var(--coral);bottom:80px;right:5%;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding:56px 0;border-top:1px solid rgba(10,10,10,.14);}
+  .stat .n{font-size:clamp(38px,5vw,58px);font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.4;}
+  .divider{overflow:hidden;padding:26px 0;white-space:nowrap;}
+  .divider span{font-weight:900;font-size:clamp(52px,11vw,150px);letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1.5px rgba(10,10,10,.28);}
+  section{padding:76px 0;}
+  h2{font-weight:900;letter-spacing:-.04em;line-height:1;font-size:clamp(36px,5.6vw,66px);max-width:16ch;}
+  h2 .serif{font-weight:400;}
+  .lede{max-width:680px;margin-top:26px;font-size:18px;color:var(--ink-soft);}
+  .lede strong{color:var(--ink);font-weight:600;}
+  p + p{margin-top:16px;}
+  .quote{margin-top:40px;max-width:880px;border-left:3px solid var(--coral);padding:6px 0 6px 26px;}
+  .quote p{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(24px,3vw,34px);line-height:1.25;color:var(--ink);}
+  .quote span{display:block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .pains{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:46px;}
+  .find{background:var(--card);border-radius:22px;padding:34px;}
+  .find .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);margin-bottom:14px;}
+  .find h3{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2;}
+  .find p{font-size:15.5px;color:var(--ink-soft);}
+  .pains .find .cost{margin-top:16px;padding-top:14px;border-top:1px solid rgba(10,10,10,.1);font-size:14.5px;color:var(--ink);}
+  .pains .find .cost b{color:var(--coral);font-weight:700;}
+  .fix{margin-top:46px;border-top:2px solid var(--ink);max-width:1000px;}
+  .frow{display:grid;grid-template-columns:1fr 36px 1.25fr;gap:22px;padding:22px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .frow.h{padding:12px 0;}
+  .frow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .frow .p{font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink);}
+  .frow .p small{display:block;font-weight:400;font-size:13.5px;color:var(--coral);margin-top:4px;}
+  .frow .ar{font-family:'JetBrains Mono',monospace;color:var(--blue);font-size:18px;text-align:center;}
+  .frow .s{font-size:15.5px;color:var(--ink-soft);}
+  .frow .s b{color:var(--ink);font-weight:700;}
+
+  /* END RESULT MOCKUPS */
+  .mockcap{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  .samples{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;margin-top:50px;align-items:start;}
+  .samples .full{grid-column:1 / -1;}
+
+  .roi{margin-top:48px;border-top:2px solid var(--ink);}
+  .rrow{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:24px;padding:24px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .rrow.h{padding:12px 0;}
+  .rrow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .rrow .m{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+  .rrow .m small{display:block;font-weight:400;font-size:13.5px;color:var(--muted);margin-top:3px;letter-spacing:0;}
+  .rv{font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .rv.was{font-size:clamp(22px,2.8vw,30px);color:var(--muted);}
+  .rv.now{font-size:clamp(26px,3.4vw,40px);color:var(--blue);}
+  .rv span{display:block;font-size:12px;font-weight:500;letter-spacing:0;color:var(--muted);margin-top:7px;font-family:'JetBrains Mono',monospace;}
+  .roinote{margin-top:32px;background:var(--ink);color:var(--cream);border-radius:24px;padding:36px 38px;max-width:900px;}
+  .roinote .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:14px;}
+  .roinote p{font-size:17px;color:rgba(232,229,222,.82);}
+  .roinote b{color:var(--cream);font-weight:700;}
+  .get{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px;}
+  .get>div{background:var(--card);border-radius:20px;padding:28px;}
+  .get .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .get b{display:block;font-size:17.5px;font-weight:800;letter-spacing:-.02em;margin-bottom:9px;}
+  .get p{font-size:14.5px;color:var(--ink-soft);}
+  .lede + .sys{margin-top:40px;}
+  .sys{display:grid;grid-template-columns:88px 1fr;gap:28px;padding:38px 0;border-top:1px solid rgba(10,10,10,.14);align-items:start;}
+  .sys .num{font-weight:900;font-size:52px;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.4px var(--ink);line-height:.9;}
+  .sys h3{font-size:27px;font-weight:800;letter-spacing:-.03em;margin-bottom:14px;}
+  .sys p{font-size:16.5px;color:var(--ink-soft);max-width:720px;}
+  .sys ul{margin-top:18px;list-style:none;max-width:720px;}
+  .sys li{position:relative;padding-left:24px;font-size:15.5px;color:var(--ink-soft);margin-bottom:9px;}
+  .sys li:before{content:"";position:absolute;left:0;top:11px;width:9px;height:1.5px;background:var(--blue);}
+  .sys li b{color:var(--ink);font-weight:600;}
+  .yes{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:46px;}
+  .yes>div{background:var(--card);border-radius:22px;padding:30px 32px;}
+  .yes .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .yes b{display:block;font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px;line-height:1.2;}
+  .yes p{font-size:15px;color:var(--ink-soft);}
+  .yes .wide{grid-column:1 / -1;background:var(--ink);color:var(--cream);}
+  .yes .wide .k{color:var(--yellow);}
+  .yes .wide p{color:rgba(232,229,222,.82);}
+  .yes .wide b{color:var(--cream);}
+  .wrow .s{font-size:15px;color:var(--ink-soft);}
+  .close{background:var(--ink);color:var(--cream);border-radius:32px;padding:clamp(44px,7vw,84px);margin:30px 0 90px;}
+  .close h2{max-width:18ch;color:var(--cream);}
+  .close p{max-width:660px;margin-top:26px;font-size:18px;color:rgba(232,229,222,.72);}
+  .close p b{color:var(--cream);}
+  .valid{margin-top:34px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  @media(max-width:980px){
+    .samples{grid-template-columns:1fr;}
+    .rq{grid-template-columns:1fr;}
+    .rq .doc{max-width:320px;}
+  }
+  @media(max-width:900px){
+    .stats{grid-template-columns:repeat(2,1fr);gap:26px;}
+    .pains,.get,.yes,.proof,.report{grid-template-columns:1fr;}
+    .yes .wide,.pf.main{grid-column:auto;}
+    .pf .cols{grid-template-columns:1fr;}
+    .sys{grid-template-columns:1fr;gap:12px;}
+    .frow{grid-template-columns:1fr;gap:8px;}
+    .frow .ar,.frow.h,.rrow.h,.prow.h,.mrow.h{display:none;}
+    .rrow{grid-template-columns:1fr 1fr;gap:16px;}
+    .rrow .m{grid-column:1 / -1;}
+    .prow{grid-template-columns:1fr;gap:6px;}
+    .mrow{grid-template-columns:1fr;gap:6px;}
+    .wrow{grid-template-columns:44px 1fr;gap:6px 16px;}
+    .wrow .s{grid-column:2;}
+    .rq .sig{grid-template-columns:1fr;}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 16px;}
+    .find,.get>div,.yes>div,.pf{padding:26px;}
+    .roinote,.report{padding:28px;}
+    .erow{grid-template-columns:28px 1fr 60px;gap:12px;}
+    .erow .usd{display:none;}
+    .erow.h .usd-h{display:none;}
+    .rq{padding:18px;}
+  }
+  @media print{
+    @page{size:A3;margin:14mm;}
+    body{background:#fff;font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .pains,.yes,.proof{grid-template-columns:repeat(2,1fr)!important;}
+    .get{grid-template-columns:repeat(3,1fr)!important;}
+    .samples{grid-template-columns:1.1fr 1fr!important;}
+    .rq{grid-template-columns:230px 1fr!important;}
+    .frow{grid-template-columns:1fr 36px 1.25fr!important;}
+    .frow.h,.rrow.h,.prow.h,.mrow.h{display:grid!important;}
+    .rrow{grid-template-columns:1.35fr 1fr 1fr!important;}
+    .report{grid-template-columns:1fr 1.3fr!important;}
+    section{padding:34px 0;}
+    .find,.roinote,.sl,.wd,.rq,.get>div,.yes>div,.pf,.sys,.frow,.rrow,.prow,.erow,.mrow,.wrow,.report,.close,.quote{break-inside:avoid;}
+    h2,.sub h3,.label{break-after:avoid;}
+    .divider,.flourish{display:none;}
+    .pill,.btn{display:none!important;}
+  }
+  /* Tiers and milestones */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:50px;align-items:start;}
+  .tier{background:var(--card);border-radius:26px;padding:38px 32px;display:flex;flex-direction:column;height:100%;}
+  .tier.feat{background:var(--ink);color:var(--cream);transform:translateY(-16px);}
+  .tier .tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+  .tier.feat .tag{color:var(--yellow);}
+  .tier h3{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px;line-height:1.15;}
+  .tier .who{font-size:14.5px;color:var(--muted);margin-bottom:26px;min-height:66px;}
+  .tier.feat .who{color:rgba(232,229,222,.66);}
+  .tier .amt{font-size:clamp(40px,5.4vw,56px);font-weight:900;letter-spacing:-.05em;line-height:1;}
+  .tier .cur{font-size:13px;color:var(--muted);margin-top:9px;margin-bottom:28px;font-family:'JetBrains Mono',monospace;}
+  .tier.feat .cur{color:rgba(232,229,222,.6);}
+  .tier ul{list-style:none;flex:1;}
+  .tier li{position:relative;padding-left:23px;font-size:14.5px;margin-bottom:11px;color:var(--ink-soft);line-height:1.45;}
+  .tier.feat li{color:rgba(232,229,222,.86);}
+  .tier li:before{content:"";position:absolute;left:0;top:8px;width:9px;height:1.5px;background:var(--blue);}
+  .tier.feat li:before{background:var(--yellow);}
+  .tier li.no{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(232,84,69,.6);}
+  .tier li.no:before{background:var(--coral);}
+  .tier .btn{margin-top:30px;display:block;text-align:center;border-radius:100px;padding:14px;font-size:14.5px;font-weight:600;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);}
+  .tier.feat .btn{background:var(--yellow);border-color:var(--yellow);color:var(--ink);}
+  .ms{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:30px;}
+  .ms>div{border-top:2px solid var(--ink);padding-top:18px;}
+  .ms .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.13em;color:var(--blue);margin-bottom:10px;}
+  .ms b{display:block;font-size:16.5px;font-weight:700;margin-bottom:7px;letter-spacing:-.01em;}
+  .ms p{font-size:14.5px;color:var(--ink-soft);}
+  @media(max-width:900px){.tiers,.ms{grid-template-columns:1fr;}.tier.feat{transform:none;}.tier .who{min-height:0;}}
+  @media(max-width:600px){.tier{padding:28px 26px;}}
+  @media print{.tiers,.ms{grid-template-columns:repeat(3,1fr)!important;}.tier.feat{transform:none;}.tier,.ms>div{break-inside:avoid;}}
+  .ms div div{border-top:0;padding-top:0;}
+  .ask .straight div{color:var(--yellow);}
+  .ask{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:0 0 56px;}
+  .ask div{background:var(--card);border-radius:20px;padding:24px;}
+  .ask .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+  .ask b{display:block;font-size:16px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px;line-height:1.25;}
+  .ask p{font-size:14px;color:var(--ink-soft);line-height:1.5;}
+  .ask .straight{background:var(--ink);color:var(--cream);}
+  .ask .straight .k{color:var(--yellow);}
+  .ask .straight p{color:rgba(232,229,222,.8);}
+  @media(max-width:900px){.ask{grid-template-columns:1fr 1fr;}}
+  @media(max-width:600px){.ask{grid-template-columns:1fr;}.ask div{padding:22px;}}
+  @media print{.ask{grid-template-columns:repeat(4,1fr)!important;}.ask div{break-inside:avoid;}}
+  .ask div div{background:none;padding:0;border-radius:0;}
+  .note{margin-top:44px;font-size:15px;color:var(--muted);max-width:820px;}
+  .note b{color:var(--ink);}
+  h2 + .sys{margin-top:40px;}
+  .close .cta{margin-top:40px;}
+  .close .pill.ghost{color:var(--cream);border-color:rgba(232,229,222,.45);}
+  @media(max-width:600px){.f2{display:none;}.pill.client{white-space:normal;text-align:left;}.close .pill{white-space:normal;text-align:center;}}
+
+  /* ===== Skeyo mockups ===== */
+  :root{--sn:#002D42;--st:#45C6C4;--sl:#F7FAD9;--sd:#001F2E;}
+  .samples{grid-template-columns:1fr 320px;}
+  .samples>div{min-width:0;}
+  .pop{font-family:'Poppins','Inter',sans-serif;}
+  .os{font-family:'Open Sans','Inter',sans-serif;}
+  .wm{font-family:'Poppins',sans-serif;font-weight:800;letter-spacing:.16em;text-transform:uppercase;}
+  .topo{background-color:var(--sn);background-image:repeating-radial-gradient(ellipse at 82% 8%,transparent 0 15px,rgba(69,198,196,.13) 15px 16px);}
+  .mtn{position:absolute;left:0;right:0;bottom:0;height:46%;pointer-events:none;}
+  .mtn:before,.mtn:after{content:"";position:absolute;inset:0;}
+  .mtn:before{background:#0B4560;clip-path:polygon(0 100%,0 62%,14% 38%,24% 56%,38% 18%,50% 50%,62% 28%,76% 58%,88% 36%,100% 60%,100% 100%);}
+  .mtn:after{background:#06384F;clip-path:polygon(0 100%,0 82%,18% 62%,30% 80%,46% 56%,60% 78%,74% 60%,90% 82%,100% 70%,100% 100%);}
+  /* line-drawn bags */
+  .bski{display:block;position:relative;height:16px;border:2px solid currentColor;border-radius:9px 3px 3px 9px;}
+  .bski:before{content:"";position:absolute;right:-2px;top:-5px;bottom:-5px;width:13px;border:2px solid currentColor;border-radius:3px;background:inherit;}
+  .bski:after{content:"";position:absolute;left:12%;right:22%;top:50%;height:2px;margin-top:-1px;background:repeating-linear-gradient(90deg,currentColor 0 7px,transparent 7px 13px);opacity:.75;}
+  .bski.wide{height:24px;border-radius:12px 3px 3px 12px;}
+  .bgar{display:block;position:relative;width:62px;height:38px;border:2px solid currentColor;border-radius:6px;margin-top:12px;}
+  .bgar:before{content:"";position:absolute;left:16px;right:16px;top:-12px;height:12px;border:2px solid currentColor;border-bottom:0;border-radius:9px 9px 0 0;}
+  .bgar:after{content:"";position:absolute;left:-2px;right:-2px;top:11px;height:2px;background:currentColor;opacity:.75;}
+  .sbtn{display:inline-block;font-family:'Poppins',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;background:var(--st);color:var(--sn);border-radius:4px;white-space:nowrap;}
+
+  /* Design system strip */
+  .ds{background:#fff;border-radius:20px;border:1px solid rgba(10,10,10,.1);overflow:hidden;}
+  .ds .bar,.ads .bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid #ECEAE5;background:#FAF9F6;flex-wrap:wrap;}
+  .ds .bar b,.ads .bar b{font-size:14.5px;font-weight:800;}
+  .ds .bar small,.ads .bar small{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);}
+  .ds .cols{display:grid;grid-template-columns:1.25fr 1fr 1.15fr .9fr;}
+  .ds .col{padding:18px 20px;border-right:1px solid #F0EEE9;min-width:0;}
+  .ds .col:last-child{border-right:0;}
+  .ds .ch{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .ds .sw{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .ds .sw i{display:block;height:54px;border-radius:8px;border:1px solid rgba(10,10,10,.08);}
+  .ds .sw span{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:6px;line-height:1.35;}
+  .ds .sw span b{display:block;font-family:'Inter',sans-serif;font-size:11px;color:var(--ink);}
+  .ds .aa{font-family:'Poppins',sans-serif;font-weight:700;font-size:38px;line-height:1;color:var(--sn);}
+  .ds .tl{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+  .ds .tl b{color:var(--ink);}
+  .ds .cmp{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .ds .cmp .sbtn{font-size:10px;padding:9px 14px;}
+  .ds .cmp .gh{font-family:'Poppins',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:10px;padding:8px 13px;border:1.5px solid var(--sn);color:var(--sn);border-radius:4px;}
+  .ds .cmp .bdg{font-family:'Poppins',sans-serif;font-weight:600;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--sl);color:var(--sn);padding:5px 9px;border-radius:99px;}
+  .ds .cmp .pr{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:var(--sn);}
+  .ds .use{display:grid;gap:6px;}
+  .ds .use span{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:5px 9px;border-radius:6px;background:#F0EEE9;color:var(--ink-soft);}
+
+  /* Mail client + email */
+  .mail{background:#fff;border-radius:20px;border:1px solid rgba(10,10,10,.1);overflow:hidden;}
+  .chrome{display:flex;align-items:center;gap:7px;padding:12px 16px;background:#F0EEE9;border-bottom:1px solid #E2DFD8;}
+  .chrome i{width:10px;height:10px;border-radius:50%;background:#CFCBC3;display:block;flex:none;}
+  .chrome span{margin-left:10px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);background:#fff;border-radius:6px;padding:4px 12px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mhead{display:grid;grid-template-columns:38px 1fr auto;gap:12px;padding:16px 18px;border-bottom:1px solid #F0EEE9;align-items:start;}
+  .mhead .mav{width:38px;height:38px;border-radius:50%;background:var(--sn);color:var(--st);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:15px;}
+  .mhead b{display:block;font-size:14px;line-height:1.3;}
+  .mhead .subj{font-size:15.5px;font-weight:800;letter-spacing:-.01em;line-height:1.3;margin-top:2px;}
+  .mhead small{display:block;font-size:12px;color:var(--muted);line-height:1.4;}
+  .mhead em{font-style:normal;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);}
+  .mbody{background:#EEF1EF;padding:22px 16px;}
+  .em{max-width:440px;margin:0 auto;background:#fff;box-shadow:0 14px 34px -22px rgba(0,45,66,.5);}
+  .eb{position:relative;}
+  .eb>.bt{position:absolute;top:6px;right:6px;z-index:3;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;background:rgba(255,255,255,.92);color:var(--blue);border:1px dashed rgba(27,27,255,.5);padding:2px 6px;border-radius:4px;}
+  .e-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 20px;background:#fff;color:var(--sn);}
+  .e-top .wm{font-size:16px;}
+  .e-top nav{display:flex;gap:12px;font-family:'Poppins',sans-serif;font-weight:600;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding-right:74px;}
+  .e-hero{color:var(--sl);padding:34px 24px 96px;overflow:hidden;}
+  .e-hero .lb{font-family:'Poppins',sans-serif;font-weight:600;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--st);position:relative;z-index:2;}
+  .e-hero h4{font-family:'Poppins',sans-serif;font-weight:700;font-size:34px;line-height:1.02;letter-spacing:-.02em;margin:10px 0 12px;position:relative;z-index:2;}
+  .e-hero p{font-family:'Open Sans',sans-serif;font-size:13px;line-height:1.55;max-width:300px;color:rgba(247,250,217,.86);position:relative;z-index:2;}
+  .e-hero .sbtn{font-size:10.5px;padding:12px 20px;margin-top:18px;position:relative;z-index:2;}
+  .e-prod{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:30px 16px 22px;background:#fff;}
+  .pc{background:var(--sl);border-radius:8px;padding:12px 10px;color:var(--sn);display:flex;flex-direction:column;min-width:0;}
+  .pc .art{height:62px;display:flex;align-items:center;justify-content:center;}
+  .pc .art .bski{width:86%;}
+  .pc b{font-family:'Poppins',sans-serif;font-weight:700;font-size:11.5px;line-height:1.25;display:block;}
+  .pc span{font-family:'Open Sans',sans-serif;font-size:10.5px;display:block;margin-top:2px;opacity:.8;line-height:1.35;}
+  .pc .p{font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;margin-top:8px;opacity:1;}
+  .e-why{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:30px 16px 20px;background:var(--sn);color:var(--sl);}
+  .e-why b{font-family:'Poppins',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--st);display:block;margin-bottom:5px;line-height:1.3;}
+  .e-why span{font-family:'Open Sans',sans-serif;font-size:10.5px;line-height:1.45;display:block;color:rgba(247,250,217,.85);}
+  .e-foot{padding:16px 20px;background:var(--sl);color:var(--sn);font-family:'Open Sans',sans-serif;font-size:10.5px;line-height:1.5;text-align:center;}
+  .e-foot b{font-family:'Poppins',sans-serif;font-weight:700;display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;}
+
+  /* Phone + feed */
+  .ph{background:var(--ink);border-radius:42px;padding:12px;max-width:320px;margin:0 auto;box-shadow:0 30px 60px -30px rgba(10,10,10,.45);}
+  .ph .scr{background:#fff;border-radius:32px;overflow:hidden;}
+  .ph .sb{display:flex;justify-content:space-between;align-items:center;padding:10px 22px 6px;font-size:11px;font-weight:700;}
+  .ph .sb i{width:70px;height:18px;background:var(--ink);border-radius:99px;display:block;}
+  .fp .hd{display:flex;align-items:center;gap:9px;padding:9px 12px;font-size:12px;font-weight:700;}
+  .fp .hd i{width:26px;height:26px;border-radius:50%;background:var(--sn);color:var(--st);display:flex;align-items:center;justify-content:center;font-style:normal;font-family:'Poppins',sans-serif;font-weight:800;font-size:11px;flex:none;}
+  .fp .hd small{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:400;color:var(--muted);}
+  .fp .img{aspect-ratio:1/1;position:relative;overflow:hidden;padding:20px;display:flex;flex-direction:column;}
+  .fp .img .wm{font-size:11px;position:relative;z-index:2;}
+  .fp .img h5{font-family:'Poppins',sans-serif;font-weight:700;font-size:27px;line-height:1.04;letter-spacing:-.02em;margin-top:auto;position:relative;z-index:2;}
+  .fp .img p{font-family:'Open Sans',sans-serif;font-size:11px;line-height:1.45;margin-top:8px;position:relative;z-index:2;max-width:210px;}
+  .fp .img.a{color:var(--sl);}
+  .fp .img.a h5 span{color:var(--st);}
+  .fp .img.a .mtn{height:38%;opacity:.9;}
+  .fp .img.b{background:var(--sl);color:var(--sn);}
+  .fp .img.b .bgar{position:absolute;right:22px;top:34px;width:84px;height:52px;}
+  .fp .img.b .tg{position:absolute;left:20px;top:46px;font-family:'Poppins',sans-serif;font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:var(--sn);color:var(--st);padding:5px 9px;border-radius:99px;}
+  .fp .act{display:flex;gap:10px;padding:9px 12px 3px;}
+  .fp .act i{width:16px;height:16px;border:1.6px solid var(--ink);border-radius:50%;display:block;}
+  .fp .act i:nth-child(2){border-radius:4px;}
+  .fp .act i:nth-child(3){border-radius:2px;transform:rotate(45deg) scale(.82);}
+  .fp .cp{padding:2px 12px 12px;font-size:11px;line-height:1.45;color:var(--ink-soft);}
+  .fp .cp b{color:var(--ink);}
+  .phcap{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);text-align:center;margin-top:14px;letter-spacing:.04em;line-height:1.5;}
+
+  /* Meta ads */
+  .ads{background:#fff;border-radius:20px;border:1px solid rgba(10,10,10,.1);overflow:hidden;}
+  .ads .set{display:grid;grid-template-columns:1fr 1fr .72fr;gap:22px;padding:24px;align-items:end;background:#F4F3EF;}
+  .ad{background:#fff;border-radius:12px;border:1px solid #E2DFD8;overflow:hidden;min-width:0;}
+  .ad .hd{display:flex;align-items:center;gap:9px;padding:10px 12px;font-size:12px;font-weight:700;line-height:1.25;}
+  .ad .hd i{width:28px;height:28px;border-radius:50%;background:var(--sn);color:var(--st);display:flex;align-items:center;justify-content:center;font-style:normal;font-family:'Poppins',sans-serif;font-weight:800;font-size:11px;flex:none;}
+  .ad .hd small{display:block;font-weight:400;font-size:10.5px;color:var(--muted);}
+  .cr{position:relative;overflow:hidden;color:var(--sl);padding:20px;display:flex;flex-direction:column;}
+  .cr.r11{aspect-ratio:1/1;} .cr.r45{aspect-ratio:4/5;} .cr.r916{aspect-ratio:9/16;}
+  .cr .rt{position:absolute;top:10px;right:10px;z-index:3;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;background:var(--yellow);color:var(--ink);padding:2px 7px;border-radius:99px;}
+  .cr .wm{font-size:11px;position:relative;z-index:2;}
+  .cr .lb{font-family:'Poppins',sans-serif;font-weight:600;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--st);margin-top:auto;position:relative;z-index:2;}
+  .cr h5{font-family:'Poppins',sans-serif;font-weight:700;font-size:23px;line-height:1.05;letter-spacing:-.02em;margin-top:8px;position:relative;z-index:2;}
+  .cr h5 span{color:var(--st);}
+  .cr .bski{margin-top:16px;width:82%;position:relative;z-index:2;color:var(--sl);background:var(--sn);}
+  .cr .ft{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;position:relative;z-index:2;}
+  .cr .ft span{font-family:'Poppins',sans-serif;font-weight:600;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;background:rgba(247,250,217,.14);border:1px solid rgba(247,250,217,.3);padding:3px 7px;border-radius:99px;}
+  .cr .mtn{height:34%;opacity:.55;}
+  .cr.r916{padding:44px 16px 66px;}
+  .cr.r916 h5{font-size:21px;}
+  .cr.r916 .sp{position:absolute;left:12px;top:12px;z-index:3;display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:#fff;}
+  .cr.r916 .sp i{width:20px;height:20px;border-radius:50%;background:var(--st);display:block;}
+  .cr.r916 .sp small{font-weight:400;opacity:.8;font-size:9px;}
+  .cr.r916 .go{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:3;background:#fff;color:var(--ink);font-size:11px;font-weight:700;padding:8px 18px;border-radius:99px;white-space:nowrap;}
+  .ad .bt{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;background:#F7F6F3;}
+  .ad .bt b{display:block;font-size:12.5px;line-height:1.25;}
+  .ad .bt small{display:block;font-size:10.5px;color:var(--muted);}
+  .ad .bt span{flex:none;font-size:11.5px;font-weight:700;background:#E4E2DC;border-radius:6px;padding:7px 11px;}
+  .ads .ang{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid #ECEAE5;}
+  .ads .ang div{padding:14px 20px;font-size:13px;line-height:1.45;color:var(--ink-soft);}
+  .ads .ang div + div{border-left:1px solid #ECEAE5;}
+  .ads .ang b{color:var(--ink);}
+  .ads .ang .chip{margin-right:6px;}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:999px;white-space:nowrap;}
+  .chip.ty{background:#E6E6FF;color:var(--blue);}
+
+  /* Browser + homepage */
+  .brw{background:#fff;border-radius:20px;border:1px solid rgba(10,10,10,.1);overflow:hidden;}
+  .w-ann{background:var(--st);color:var(--sn);text-align:center;font-family:'Poppins',sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:8px 12px;}
+  .w-nav{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 28px;color:var(--sn);}
+  .w-nav .wm{font-size:18px;}
+  .w-nav nav{display:flex;gap:22px;font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;}
+  .w-nav em{font-style:normal;font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;}
+  .w-hero{position:relative;overflow:hidden;color:var(--sl);padding:56px 28px 150px;}
+  .w-hero .lb{font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--st);position:relative;z-index:2;}
+  .w-hero h4{font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(30px,4.6vw,54px);line-height:1.02;letter-spacing:-.025em;margin:14px 0 16px;max-width:15ch;position:relative;z-index:2;}
+  .w-hero h4 span{color:var(--st);}
+  .w-hero p{font-family:'Open Sans',sans-serif;font-size:15px;line-height:1.55;max-width:430px;color:rgba(247,250,217,.86);position:relative;z-index:2;}
+  .w-hero .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;position:relative;z-index:2;}
+  .w-hero .sbtn{font-size:11.5px;padding:14px 24px;}
+  .w-hero .gh{font-family:'Poppins',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:11.5px;padding:12.5px 22px;border:1.5px solid var(--sl);border-radius:4px;white-space:nowrap;}
+  .w-hero .mtn{height:42%;}
+  .w-hero .car{position:absolute;right:6%;bottom:18%;width:30%;z-index:2;color:var(--sl);}
+  .w-hero .car .bski{background:var(--sn);}
+  .w-hero .car small{display:block;margin-top:14px;font-family:'Poppins',sans-serif;font-weight:600;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--st);}
+  .w-col{padding:26px 28px 30px;}
+  .w-col .t{display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--sn);margin-bottom:16px;flex-wrap:wrap;}
+  .w-col .t b{font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;letter-spacing:-.01em;}
+  .w-col .t span{font-family:'Poppins',sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;}
+  .w-col .g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .w-col .pc{padding:18px 16px;border-radius:10px;}
+  .w-col .pc .art{height:96px;}
+  .w-col .pc b{font-size:14.5px;}
+  .w-col .pc span{font-size:12px;}
+  .w-col .pc .p{font-size:16px;}
+  .w-col .pc .sbtn{font-size:10px;padding:10px 12px;margin-top:12px;text-align:center;opacity:1;}
+  .w-col .pc .bgar{width:92px;height:56px;}
+
+  @media(max-width:980px){
+    .samples{grid-template-columns:1fr;}
+    .ds .cols{grid-template-columns:1fr 1fr;}
+    .ds .col:nth-child(2){border-right:0;}
+    .ds .col:nth-child(-n+2){border-bottom:1px solid #F0EEE9;}
+  }
+  @media(max-width:760px){
+    .ads .set{grid-template-columns:1fr;justify-items:center;padding:18px;}
+    .ads .set .ad{width:100%;max-width:300px;}
+    .ads .set .ad.story{max-width:230px;}
+    .ads .ang{grid-template-columns:1fr;}
+    .ads .ang div + div{border-left:0;border-top:1px solid #ECEAE5;}
+    .w-nav nav{display:none;}
+    .w-hero{padding:40px 20px 150px;}
+    .w-hero .car{right:8%;bottom:14%;width:46%;}
+    .w-hero .car small{display:none;}
+    .w-col{padding:22px 16px;}
+    .w-col .g{grid-template-columns:1fr;}
+    .w-nav{padding:14px 18px;}
+  }
+  @media(max-width:600px){
+    .ds .cols{grid-template-columns:1fr;}
+    .ds .col{border-right:0;border-bottom:1px solid #F0EEE9;}
+    .ds .col:last-child{border-bottom:0;}
+    .mbody{padding:14px 8px;}
+    .e-top nav{display:none;}
+    .e-hero h4{font-size:29px;}
+    .e-prod,.e-why{gap:7px;padding-left:10px;padding-right:10px;}
+    .pc{padding:10px 7px;}
+    .ph{max-width:310px;}
+    .ms.two{grid-template-columns:1fr;}
+  }
+  @media print{
+    .samples{grid-template-columns:1fr 320px!important;}
+    .ds .cols{grid-template-columns:1.25fr 1fr 1.15fr .9fr!important;}
+    .ads .set{grid-template-columns:1fr 1fr .72fr!important;}
+    .mail,.ph,.ads,.brw,.ds,.ask{break-inside:avoid;}
+    .cr,.e-hero,.w-hero,.topo,.pc,.e-why,.e-foot,.w-ann{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">D<span class="brand-dot">.</span></div>
+      <div class="status"><span class="dot"></span> Available to start this week</div>
+    </div>
+    <a class="pill client" href="https://wa.me/2348143046516?text=Hi%20Emerald%2C%20add%20me%20to%20your%20client%20base" target="_blank" rel="noopener"><i></i>Message me to be added to my client base</a>
+  </div>
+
+  <div class="hero">
+    <span class="flourish f1"></span><span class="flourish f2"></span><span class="flourish f3"></span>
+    <span class="label">01 · Proposal for Skeyo Outdoors · Multichannel Digital Design</span>
+    <h1>Four channels.<br>One Skeyo.<br>Build a <span class="serif blue">design system</span>,<br>that <span class="serif coral">holds from ad to inbox</span>.</h1>
+    <p class="subhead">Hi Courtney. You asked for Klaviyo emails, social posts, Meta ads and website layouts with <strong>a cohesive visual presence</strong>. So I build the system first: Skeyo's type, colour and components, taken from your live store and set once. Every email, post, ad and page layout is then made from it, and <strong>you get the editable source</strong>, so the next campaign does not start from a blank file.</p>
+    <div class="cta">
+      <a class="pill blue-fill" href="#result">See the four mockups</a>
+      <a class="pill ghost" href="#invest">See the three options</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n">4</div><div class="l">channels built from one system: Klaviyo email, social, Meta ads and your website</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">Klaviyo templates built as editable blocks, on the recommended option</div></div>
+    <div class="stat"><div class="n">24</div><div class="l">ad files: 8 Meta creatives, each in 1:1, 4:5 and 9:16</div></div>
+    <div class="stat"><div class="n">12</div><div class="l">working days from your yes to the Figma handover</div></div>
+  </div>
+
+  <div class="ask">
+    <div><div class="k">You asked · Klaviyo email</div><b>Built as Klaviyo blocks</b><p>Templates are assembled in Klaviyo's own editor, in your account. Headline, product and button stay editable text, and the graphics are sized for each block.</p></div>
+    <div><div class="k">You asked · Social and Meta ads</div><b>Three ratios, two angles</b><p>Every ad ships in 1:1, 4:5 and 9:16, so it fits Feed, Stories and Reels without cropping. Each concept comes with two copy angles to test.</p></div>
+    <div><div class="k">You asked · Website</div><b>Designed for your theme</b><p>Your store runs on Shopify's Prestige theme. The homepage hero, collection layout and banners are designed to that theme's sections, so they can go live without a rebuild.</p></div>
+    <div class="straight"><div class="k">The honest part</div><b>No Klaviyo case study to quote</b><p>I have no published outdoor-brand campaign or open-rate numbers to show, and I will not invent any. What I have: 47 projects on behance.net/emeraldjnr, including brand work and video ads, and websites I design and build in code. Step one proves it on Skeyo itself.</p></div>
+  </div>
+
+  <div class="divider"><span>EMAIL · SOCIAL · META ADS · WEB</span></div>
+
+  <section id="problem">
+    <span class="label">02 · Your problem</span>
+    <h2>Four channels, made <span class="serif coral">one asset at a time</span>.</h2>
+    <div class="quote">
+      <p>"The work should support a cohesive visual presence across these marketing channels."</p>
+      <span>Your post, Behance, November 2026</span>
+    </div>
+    <div class="pains">
+      <div class="find">
+        <div class="k">Pain 01</div>
+        <h3>The same brand, a different look per channel</h3>
+        <p>You listed "Klaviyo email campaigns, social media posts, website design, and Meta ad creative". When those are designed separately, type, colour and buttons drift. A shopper taps an ad, lands on the site, then opens the email, and meets three slightly different brands.</p>
+        <div class="cost">Cost today: <b>doubt at each step of a $288 purchase</b>, which is a considered buy, not an impulse one.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 02</div>
+        <h3>Every campaign starts from a blank file</h3>
+        <p>You asked for "Klaviyo email campaign templates and email graphics". Without templates, each drop or sale needs a new email, new posts, new ads and a new web banner, all designed from zero.</p>
+        <div class="cost">Cost today: <b>days of design before each send</b>, in a season that does not wait.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 03</div>
+        <h3>Ads that fit one placement and test nothing</h3>
+        <p>"Meta advertising creative" has to work in Feed, Stories and Reels. One square image gets cropped in the vertical placements, and one message gives Meta nothing to compare it with.</p>
+        <div class="cost">Cost today: <b>ad spend on creative that is cropped</b>, with no second angle to learn from.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 04</div>
+        <h3>Finished files nobody on your side can edit</h3>
+        <p>Flat exports look fine on delivery day. Then a price changes or a new bag launches, and every update goes back to a designer, because the email is one image and the ad has no source file.</p>
+        <div class="cost">Cost today: <b>a designer invoice for every small change</b>, and a wait each time.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fix">
+    <span class="label">03 · The fix</span>
+    <h2>One pain, <span class="serif blue">one answer</span>, no extras.</h2>
+    <div class="fix">
+      <div class="frow h"><div>What hurts</div><div></div><div>What removes it</div></div>
+      <div class="frow"><div class="p">A different look per channel<small>Pain 01</small></div><div class="ar">→</div><div class="s"><b>One Skeyo design system.</b> Type scale, colour tokens, buttons, badges, product cards and photo treatment, set once in Figma from your live store. All four channels are built from the same parts.</div></div>
+      <div class="frow"><div class="p">Every campaign from a blank file<small>Pain 02</small></div><div class="ar">→</div><div class="s"><b>Three Klaviyo templates and matching layouts.</b> A campaign template, a product launch template and an abandoned cart or welcome flow template, plus post layouts and web banners in the same system. A new campaign means new words and photos, not a new design.</div></div>
+      <div class="frow"><div class="p">Ads for one placement, one message<small>Pain 03</small></div><div class="ar">→</div><div class="s"><b>8 ad creatives in 3 ratios with 2 copy angles each.</b> 1:1 and 4:5 for Feed, 9:16 for Stories and Reels, with text kept clear of the app buttons. Two angles per concept so the account has something to compare.</div></div>
+      <div class="frow"><div class="p">Files nobody can edit<small>Pain 04</small></div><div class="ar">→</div><div class="s"><b>Editable source, in your name.</b> Klaviyo templates built from editable blocks in your account, the full Figma file, and a reusable ad template kit so your team can make new variants without a designer.</div></div>
+    </div>
+  </section>
+
+  <div class="divider"><span>ONE SYSTEM · EVERY CHANNEL</span></div>
+
+  <section id="result">
+    <span class="label">04 · The end result</span>
+    <h2>The same Skeyo, <span class="serif blue">four times</span>.</h2>
+    <p class="lede">Everything below is a <strong>concept built in code for this proposal</strong>, not finished work. The colours, fonts, product names, prices and copy lines are taken from skeyooutdoors.com as it reads today. The logo is shown as plain text and the bags as line drawings: both are replaced by <strong>your real logo and product photography</strong> in the build.</p>
+
+    <div class="samples">
+      <div class="full">
+        <div class="mockcap">The design system · set once, used four times</div>
+        <div class="ds">
+          <div class="bar"><b>Skeyo design system · v1</b><small>Figma · read from your live store</small></div>
+          <div class="cols">
+            <div class="col">
+              <div class="ch">Colour</div>
+              <div class="sw">
+                <div><i style="background:#002D42"></i><span><b>Navy</b>#002D42</span></div>
+                <div><i style="background:#45C6C4"></i><span><b>Turquoise</b>#45C6C4</span></div>
+                <div><i style="background:#F7FAD9"></i><span><b>Pale lime</b>#F7FAD9</span></div>
+                <div><i style="background:#FFFFFF"></i><span><b>White</b>#FFFFFF</span></div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="ch">Type</div>
+              <div class="aa">Aa</div>
+              <div class="tl"><b>Headings</b> Poppins Bold</div>
+              <div class="tl"><b>Body</b> Open Sans Regular</div>
+            </div>
+            <div class="col">
+              <div class="ch">Components</div>
+              <div class="cmp"><span class="sbtn">Shop Protection</span><span class="gh">Watch the story</span><span class="bdg">Lifetime warranty</span><span class="pr">$288.00</span></div>
+            </div>
+            <div class="col">
+              <div class="ch">Used in</div>
+              <div class="use"><span>Klaviyo email</span><span>Social posts</span><span>Meta ads</span><span>Website</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="mockcap">Klaviyo campaign template · in the inbox</div>
+        <div class="mail">
+          <div class="chrome"><i></i><i></i><i></i><span>Inbox · Skeyo Outdoors</span></div>
+          <div class="mhead">
+            <div class="mav">S</div>
+            <div><b>Skeyo Outdoors</b><div class="subj">Salt. Gravel. Grime. The damage you don't see</div><small>Road salt rusts your edges. Here is what stops it.</small></div>
+            <em>9:02</em>
+          </div>
+          <div class="mbody">
+            <div class="em">
+              <div class="eb e-top"><span class="bt">HEADER BLOCK</span><span class="wm">Skeyo</span><nav><span>Bags</span><span>Apparel</span><span>Stories</span></nav></div>
+              <div class="eb e-hero topo"><span class="bt">HERO BLOCK</span>
+                <div class="lb">Built for the long haul</div>
+                <h4>salt. gravel.<br>grime.</h4>
+                <p>Road salt rusts your edges. The high-altitude sun bleaches your topsheets. Grit works into your bindings. Your gear should arrive the way it left.</p>
+                <span class="sbtn">Shop Protection</span>
+                <div class="mtn"></div>
+              </div>
+              <div class="eb e-prod"><span class="bt">PRODUCT BLOCK</span>
+                <div class="pc"><div class="art"><span class="bski"></span></div><b>Skeyo Ski Bag</b><span>Fits skis up to 190 cm</span><span class="p">$288.00</span></div>
+                <div class="pc"><div class="art"><span class="bski wide"></span></div><b>Skeyo Snowboard Bag</b><span>Fits boards up to 175 cm</span><span class="p">$288.00</span></div>
+                <div class="pc"><div class="art"><span class="bgar"></span></div><b>Skeyo Gear Garage</b><span>42L, every sport</span><span class="p">$275.00</span></div>
+              </div>
+              <div class="eb e-why"><span class="bt">FEATURE BLOCK</span>
+                <div><b>Mountain grade</b><span>Four-way stretch, water-resistant ripstop.</span></div>
+                <div><b>Overbuilt</b><span>Tensile strength rated 3x the industry standard.</span></div>
+                <div><b>Made to fit</b><span>Roll-top closure, padded tip protection.</span></div>
+              </div>
+              <div class="eb e-foot"><b>Protect your adventure</b>Free shipping in the Lower 48 · 30-day returns · Lifetime warranty</div>
+            </div>
+          </div>
+        </div>
+        <div class="phcap">Each dashed tag is one Klaviyo block you can edit,<br>swap or reuse in the launch and flow templates</div>
+      </div>
+
+      <div>
+        <div class="mockcap">Social posts · same parts, feed size</div>
+        <div class="ph">
+          <div class="scr">
+            <div class="sb"><span>9:41</span><i></i><span>5G</span></div>
+            <div class="fp">
+              <div class="hd"><i>S</i>skeyo_outdoors<small>POST 03 / 12</small></div>
+              <div class="img a topo"><span class="wm">Skeyo</span><h5>Arrive the way <span>you left.</span></h5><p>That's the promise.</p><div class="mtn"></div></div>
+              <div class="act"><i></i><i></i><i></i></div>
+              <div class="cp"><b>skeyo_outdoors</b> Roof racks. Cargo boxes. Shuttle vans. Built so your gear survives the drive.</div>
+            </div>
+            <div class="fp">
+              <div class="hd"><i>S</i>skeyo_outdoors<small>POST 04 / 12</small></div>
+              <div class="img b"><span class="wm">Skeyo</span><span class="tg">Gear Garage · 42L</span><span class="bgar"></span><h5>Every sport. Every season. One garage.</h5><p>The padded top zips down into the Gear Deck. Dry socks, even in a slushy parking lot.</p></div>
+              <div class="act"><i></i><i></i><i></i></div>
+              <div class="cp"><b>skeyo_outdoors</b> A place to park all your gear, whatever the season.</div>
+            </div>
+          </div>
+        </div>
+        <div class="phcap">A dark post and a light post,<br>one type scale and one badge style</div>
+      </div>
+
+      <div class="full">
+        <div class="mockcap">Meta ad creative · one concept, three ratios</div>
+        <div class="ads">
+          <div class="bar"><b>Ad 01 · Skeyo Ski Bag · copy angle A</b><small>Feed 1:1 · Feed 4:5 · Stories and Reels 9:16</small></div>
+          <div class="set">
+            <div class="ad">
+              <div class="hd"><i>S</i><div>Skeyo Outdoors<small>Sponsored</small></div></div>
+              <div class="cr r11 topo"><span class="rt">1:1</span><span class="wm">Skeyo</span><div class="lb">Skeyo Ski Bag · $288</div><h5>Better than a roof rack <span>and a prayer.</span></h5><span class="bski"></span><div class="mtn"></div></div>
+              <div class="bt"><div><b>Built so your skis survive the drive</b><small>skeyooutdoors.com</small></div><span>Shop now</span></div>
+            </div>
+            <div class="ad">
+              <div class="hd"><i>S</i><div>Skeyo Outdoors<small>Sponsored</small></div></div>
+              <div class="cr r45 topo"><span class="rt">4:5</span><span class="wm">Skeyo</span><div class="lb">Skeyo Ski Bag · $288</div><h5>Better than a roof rack <span>and a prayer.</span></h5><span class="bski"></span><div class="ft"><span>Fits up to 190 cm</span><span>Lifetime warranty</span></div><div class="mtn"></div></div>
+              <div class="bt"><div><b>Built so your skis survive the drive</b><small>skeyooutdoors.com</small></div><span>Shop now</span></div>
+            </div>
+            <div class="ad story">
+              <div class="cr r916 topo"><div class="sp"><i></i>Skeyo Outdoors <small>Sponsored</small></div><span class="rt">9:16</span><span class="wm">Skeyo</span><div class="lb">Skeyo Ski Bag · $288</div><h5>Better than a roof rack <span>and a prayer.</span></h5><span class="bski"></span><div class="ft"><span>Fits up to 190 cm</span><span>Lifetime warranty</span></div><div class="mtn"></div><span class="go">Shop now</span></div>
+            </div>
+          </div>
+          <div class="ang">
+            <div><span class="chip ty">ANGLE A</span><b>The drive is the risk.</b> "Your skis deserve better than just a roof rack and a prayer."</div>
+            <div><span class="chip ty">ANGLE B</span><b>The promise.</b> "Arrive the way you left." Same layout, second headline, so the two can be compared.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="full">
+        <div class="mockcap">Homepage hero and collection layout · designed for your Prestige theme</div>
+        <div class="brw">
+          <div class="chrome"><i></i><i></i><i></i><span>skeyooutdoors.com</span></div>
+          <div class="w-ann">Free shipping in the Lower 48 · 30-day returns · Lifetime warranty</div>
+          <div class="w-nav"><span class="wm">Skeyo</span><nav><span>Shop</span><span>Stories</span><span>About</span><span>Contact</span></nav><em>Cart</em></div>
+          <div class="w-hero topo">
+            <div class="lb">Protect your adventure</div>
+            <h4>Your gear survives the adventure. <span>Make sure it survives the drive.</span></h4>
+            <p>Bags that protect skis and boards and keep all your gear organized in one Garage.</p>
+            <div class="btns"><span class="sbtn">Shop Protection</span><span class="gh">Watch the story</span></div>
+            <div class="car"><span class="bski wide"></span><small>Your product photo sits here</small></div>
+            <div class="mtn"></div>
+          </div>
+          <div class="w-col">
+            <div class="t"><b>Protection for every setup</b><span>Shop all bags</span></div>
+            <div class="g">
+              <div class="pc"><div class="art"><span class="bski"></span></div><b>Skeyo Ski Bag</b><span>Fits skis up to 190 cm</span><span class="p">$288.00</span><span class="sbtn">Add to cart</span></div>
+              <div class="pc"><div class="art"><span class="bski wide"></span></div><b>Skeyo Snowboard Bag</b><span>Fits snowboards up to 175 cm</span><span class="p">$288.00</span><span class="sbtn">Add to cart</span></div>
+              <div class="pc"><div class="art"><span class="bgar"></span></div><b>Skeyo Gear Garage</b><span>42L, every sport, every season</span><span class="p">$275.00</span><span class="sbtn">Add to cart</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="roi">
+      <div class="rrow h"><div>What changes</div><div>Asset by asset</div><div>With the system</div></div>
+      <div class="rrow"><div class="m">The look across channels<small>Email, social, ads, website</small></div><div class="rv was">Per asset</div><div class="rv now">1 system<span>TYPE, COLOUR, COMPONENTS SET ONCE</span></div></div>
+      <div class="rrow"><div class="m">Starting a new email<small>Campaign, launch, cart or welcome</small></div><div class="rv was">Blank file</div><div class="rv now">3 templates<span>BUILT AS EDITABLE KLAVIYO BLOCKS</span></div></div>
+      <div class="rrow"><div class="m">Meta ad placements covered<small>Feed, Stories, Reels</small></div><div class="rv was">1 size</div><div class="rv now">3 ratios<span>1:1, 4:5 AND 9:16 FOR EVERY AD</span></div></div>
+      <div class="rrow"><div class="m">Messages to test per ad<small>Headline and angle</small></div><div class="rv was">1</div><div class="rv now">2 angles<span>SAME LAYOUT, SO THE COPY IS THE TEST</span></div></div>
+      <div class="rrow"><div class="m">Making a new ad variant<small>New price, new product, new line</small></div><div class="rv was">Brief a designer</div><div class="rv now">Your team<span>WITH THE AD TEMPLATE KIT</span></div></div>
+      <div class="rrow"><div class="m">Who holds the source files<small>Figma, Klaviyo templates, exports</small></div><div class="rv was">The designer</div><div class="rv now">You<span>EVERYTHING IN YOUR ACCOUNTS</span></div></div>
+    </div>
+    <div class="roinote">
+      <div class="k">The maths against your own budget</div>
+      <p>You posted a budget of <b>$250 to $500</b>. The full system is <b>$480</b>, inside that range. It covers <b>3 Klaviyo templates, 12 social posts, 8 Meta ad creatives in 3 ratios, your homepage hero and collection layouts with web banners, and the Figma source</b>. Your Ski Bag is listed at <b>$288</b>. Two bag orders come to $576 in sales, more than the whole project. And every campaign after this one is made from the templates, not commissioned from zero.</p>
+    </div>
+    <div class="get">
+      <div><div class="k">You get 01</div><b>One look, everywhere</b><p>A written design system in Figma, so the ad, the landing page and the email a shopper sees in one week read as one brand.</p></div>
+      <div><div class="k">You get 02</div><b>Campaigns you can repeat</b><p>Three Klaviyo templates, post layouts and web banners. The next drop needs new copy and photos, and the design is already done.</p></div>
+      <div><div class="k">You get 03</div><b>Files your team can change</b><p>Editable Klaviyo blocks, the Figma file and an ad template kit, all in your own accounts, with a one-page guide on how to use them.</p></div>
+    </div>
+  </section>
+
+  <section id="build">
+    <span class="label">05 · How the work runs</span>
+    <h2>Three steps, <span class="serif blue">12 working days</span>.</h2>
+    <div class="sys">
+      <div class="num">01</div>
+      <div>
+        <h3>Days 1 to 4 · the system and the first proof</h3>
+        <p>The design system is set, then proved on a real email, two posts and two ads before the volume work starts.</p>
+        <ul>
+          <li><b>Skeyo design system</b> in Figma: type, colour, buttons, badges, product cards, photo treatment</li>
+          <li>The Klaviyo campaign template, built from editable blocks</li>
+          <li>Two social posts and two ad concepts, as direction for the rest</li>
+          <li>One round of changes, then your approval. <b>Milestone 1 is released here.</b></li>
+        </ul>
+      </div>
+    </div>
+    <div class="sys">
+      <div class="num">02</div>
+      <div>
+        <h3>Days 5 to 9 · email, social and ads in full</h3>
+        <p>With the direction approved, the rest of the email, social and ad set is produced from the system.</p>
+        <ul>
+          <li>Product launch template, and an abandoned cart or welcome flow template (your pick)</li>
+          <li>The remaining social posts, to 12 in total</li>
+          <li><b>8 Meta ad creatives</b> in 1:1, 4:5 and 9:16, with 2 copy angles each</li>
+          <li>Emails checked in Gmail and Apple Mail, on desktop and phone, before you see them</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sys">
+      <div class="num">03</div>
+      <div>
+        <h3>Days 10 to 12 · website layouts and handover</h3>
+        <p>The website pieces are designed last, so they match what the ads and emails now promise.</p>
+        <ul>
+          <li>Homepage hero and collection page layouts, at desktop and phone width</li>
+          <li>Web banners sized for your theme's sections</li>
+          <li><b>The ad template kit</b>, with a one-page guide for your team</li>
+          <li>Figma source, exports and Klaviyo templates handed over. <b>Milestone 2 is released here.</b></li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">What I need from you: your logo files, product and lifestyle photography, and access to Klaviyo as a user you can remove afterwards. A photo shoot and writing long-form copy are not part of this scope: I work from your existing photos and the voice already on your site.</p>
+  </section>
+
+  <div class="divider"><span>SET ONCE · USED EVERYWHERE · YOURS</span></div>
+
+  <section id="yes">
+    <span class="label">06 · Why this is an easy yes</span>
+    <h2>Low risk by <span class="serif blue">design</span>, not by promise.</h2>
+    <div class="yes">
+      <div><div class="k">The value maths</div><b>All four channels, inside your budget</b><p>$480 sits inside the $250 to $500 you posted, and covers every deliverable in your post. Two bag orders at $288 come to more than the whole project.</p></div>
+      <div><div class="k">What you keep</div><b>Everything, in your name</b><p>The Figma file, the Klaviyo templates in your own account, every export and the ad template kit. Nothing depends on me after handover.</p></div>
+      <div><div class="k">The order removes the risk</div><b>You see it on Skeyo first</b><p>Step one puts the system on one real email, two posts and two ads before any volume work. You judge the direction on your own brand, not on a portfolio.</p></div>
+      <div><div class="k">The stop rule</div><b>Stop after step one if it is not right</b><p>If the direction does not feel like Skeyo after the round of changes, say so. You stop there, keep the design system and the first template, and milestone 2 is never released.</p></div>
+      <div class="wide"><div class="k">Included free on the recommended option</div><b>A reusable ad template kit</b><p>Pick the full system and you also get the ad layouts as editable templates, in all three ratios, with the product, headline, price and badge as swappable parts. When a price changes or a new bag launches, your team makes the new variant without a designer.</p></div>
+    </div>
+  </section>
+
+  <section id="invest">
+    <span class="label">07 · Investment</span>
+    <h2>Three ways to do it. <span class="serif coral">Most people pick the middle.</span></h2>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tag">Option 01</div>
+        <h3>Starter set</h3>
+        <div class="who">For when you want a first batch of assets and will decide on the system later.</div>
+        <div class="amt">$250</div>
+        <div class="cur">USD · fixed</div>
+        <ul>
+          <li>One Klaviyo campaign template</li>
+          <li>6 social posts</li>
+          <li>4 Meta ads in 2 sizes</li>
+          <li class="no">No shared design system file</li>
+          <li class="no">No launch or flow templates</li>
+          <li class="no">No homepage or collection layouts</li>
+          <li class="no">No Figma source or ad template kit</li>
+        </ul>
+        <a class="btn" href="#next">Choose Starter set</a>
+      </div>
+      <div class="tier feat">
+        <div class="tag">Option 02 · Recommended</div>
+        <h3>The full system</h3>
+        <div class="who">Everything in your post, built from one shared system across all four channels.</div>
+        <div class="amt">$480</div>
+        <div class="cur">USD · fixed · 2 milestones</div>
+        <ul>
+          <li>Shared design system: type, colour, components</li>
+          <li>3 Klaviyo templates: campaign, product launch, abandoned cart or welcome flow</li>
+          <li>Templates built as editable Klaviyo blocks</li>
+          <li>12 social posts</li>
+          <li>8 Meta ad creatives in 1:1, 4:5 and 9:16, with 2 copy angles each</li>
+          <li>Homepage hero and collection page layouts, with web banners</li>
+          <li>Editable Figma source</li>
+          <li>Reusable ad template kit (free)</li>
+        </ul>
+        <a class="btn" href="#next">Choose The full system</a>
+      </div>
+      <div class="tier">
+        <div class="tag">Option 03</div>
+        <h3>System + monthly</h3>
+        <div class="who">For when you want the system built and the first month of campaigns made from it.</div>
+        <div class="amt">$950</div>
+        <div class="cur">USD · system plus one month</div>
+        <ul>
+          <li>Everything in The full system</li>
+          <li>A month of ongoing creative</li>
+          <li>2 email campaigns designed and built</li>
+          <li>12 more social posts</li>
+          <li>8 new ad variants</li>
+          <li>An ad creative test report: which angles and ratios did best</li>
+        </ul>
+        <a class="btn" href="#next">Choose System + monthly</a>
+      </div>
+    </div>
+    <p class="note">Milestones are <b>shown for the recommended option</b>. Each one is released only after you have seen and approved the work in it.</p>
+    <div class="ms two">
+      <div><div class="k">MILESTONE 1 · $200</div><b>System and first proof</b><p>Design system, the Klaviyo campaign template, two posts and two ad concepts, approved by you. Days 1 to 4.</p></div>
+      <div><div class="k">MILESTONE 2 · $280</div><b>Full set and handover</b><p>Remaining templates, 12 posts, 8 ad creatives, website layouts and banners, ad template kit, Figma source. Days 5 to 12.</p></div>
+      <div><div class="k">TOTAL · $480</div><b>Inside your posted budget</b><p>$200 plus $280. No other costs from me. Your Klaviyo, Meta and Shopify plans stay as they are.</p></div>
+    </div>
+  </section>
+
+  <div class="close" id="next">
+    <span class="label" style="color:var(--yellow)">08 · Next step</span>
+    <h2>Pick an option and send your <span class="serif" style="color:var(--yellow)">logo and photos</span>.</h2>
+    <p>Reply on Behance with the option you want, your logo files and a link to your product photography. The <b>design system and the first Klaviyo template</b> come back within four working days, for you to approve before anything else is made.</p>
+    <div class="cta">
+      <a class="pill" style="background:var(--yellow);color:var(--ink)" href="https://www.behance.net/joblist/freelance/575603/Multichannel-Digital-Design-for-Email-Social-Media-Website-and-Meta-Ads" target="_blank" rel="noopener">Reply on Behance</a>
+      <a class="pill ghost" href="https://wa.me/2348143046516?text=Hi%20Emerald%2C%20add%20me%20to%20your%20client%20base" target="_blank" rel="noopener">Message me to be added to my client base</a>
+    </div>
+    <div class="valid">Valid 14 days · All amounts in USD · Updated 26 November 2026 · Emerald, Denver No Code</div>
+  </div>
+
+</div>
+</body>
+</html>
