@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Communal Release · Instagram template system proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Anton&family=IBM+Plex+Mono:wght@400;500;700&family=Inter+Tight:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#E8E5DE;--ink:#0A0A0A;--ink-soft:#4A4A4A;--muted:#7B7770;--blue:#1B1BFF;--coral:#E85445;--green:#4A9F5F;--card:#F1EEE7;--yellow:#F5C842;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  .serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;}
+  .blue{color:var(--blue);} .coral{color:var(--coral);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:28px 0;gap:20px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:16px;}
+  .mark{font-weight:900;font-size:26px;letter-spacing:-.03em;}
+  .brand-dot{color:var(--blue);}
+  .status{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(10,10,10,.18);border-radius:100px;padding:7px 15px;font-size:12.5px;color:var(--ink-soft);}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
+  .pill{display:inline-block;background:var(--ink);color:var(--cream);border-radius:100px;padding:13px 28px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;}
+  .pill.blue-fill{background:var(--blue);color:#fff;}
+  .pill.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);}
+  .pill.client{display:inline-flex;align-items:center;gap:10px;}
+  .pill.client i{width:8px;height:8px;border-radius:50%;background:var(--yellow);display:inline-block;flex:none;}
+  .hero{padding:70px 0 60px;position:relative;}
+  .label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:26px;display:block;}
+  h1{font-weight:900;letter-spacing:-.045em;line-height:.93;font-size:clamp(44px,7.4vw,96px);}
+  h1 .serif{font-weight:400;letter-spacing:-.02em;}
+  .subhead{max-width:690px;margin-top:34px;font-size:18.5px;color:var(--ink-soft);}
+  .subhead strong{color:var(--ink);font-weight:600;}
+  .cta{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;}
+  .flourish{position:absolute;border-radius:50%;pointer-events:none;}
+  .f1{width:13px;height:13px;background:var(--yellow);top:120px;right:8%;}
+  .f2{width:9px;height:9px;background:var(--blue);top:250px;right:16%;}
+  .f3{width:11px;height:11px;background:var(--coral);bottom:80px;right:5%;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding:56px 0;border-top:1px solid rgba(10,10,10,.14);}
+  .stat .n{font-size:clamp(38px,5vw,58px);font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.4;}
+  .divider{overflow:hidden;padding:26px 0;white-space:nowrap;}
+  .divider span{font-weight:900;font-size:clamp(52px,11vw,150px);letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1.5px rgba(10,10,10,.28);}
+  section{padding:76px 0;}
+  h2{font-weight:900;letter-spacing:-.04em;line-height:1;font-size:clamp(36px,5.6vw,66px);max-width:16ch;}
+  h2 .serif{font-weight:400;}
+  .lede{max-width:700px;margin-top:26px;font-size:18px;color:var(--ink-soft);}
+  .lede strong{color:var(--ink);font-weight:600;}
+  p + p{margin-top:16px;}
+  .quote{margin-top:40px;max-width:880px;border-left:3px solid var(--coral);padding:6px 0 6px 26px;}
+  .quote p{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(24px,3vw,34px);line-height:1.25;color:var(--ink);}
+  .quote span{display:block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .pains{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:46px;}
+  .find{background:var(--card);border-radius:22px;padding:34px;}
+  .find .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);margin-bottom:14px;}
+  .find h3{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2;}
+  .find p{font-size:15.5px;color:var(--ink-soft);}
+  .pains .find .cost{margin-top:16px;padding-top:14px;border-top:1px solid rgba(10,10,10,.1);font-size:14.5px;color:var(--ink);}
+  .pains .find .cost b{color:var(--coral);font-weight:700;}
+  .fix{margin-top:46px;border-top:2px solid var(--ink);max-width:1000px;}
+  .frow{display:grid;grid-template-columns:1fr 36px 1.25fr;gap:22px;padding:22px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .frow.h{padding:12px 0;}
+  .frow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .frow .p{font-weight:700;font-size:16px;letter-spacing:-.01em;color:var(--ink);}
+  .frow .p small{display:block;font-weight:400;font-size:13.5px;color:var(--coral);margin-top:4px;}
+  .frow .ar{font-family:'JetBrains Mono',monospace;color:var(--blue);font-size:18px;text-align:center;}
+  .frow .s{font-size:15.5px;color:var(--ink-soft);}
+  .frow .s b{color:var(--ink);font-weight:700;}
+  .mockcap{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  .roi{margin-top:48px;border-top:2px solid var(--ink);}
+  .rrow{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:24px;padding:24px 0;border-bottom:1px solid rgba(10,10,10,.12);align-items:center;}
+  .rrow.h{padding:12px 0;}
+  .rrow.h div{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .rrow .m{font-weight:700;font-size:16px;letter-spacing:-.01em;}
+  .rrow .m small{display:block;font-weight:400;font-size:13.5px;color:var(--muted);margin-top:3px;letter-spacing:0;}
+  .rv{font-weight:900;letter-spacing:-.04em;line-height:1;}
+  .rv.was{font-size:clamp(22px,2.8vw,30px);color:var(--muted);}
+  .rv.now{font-size:clamp(26px,3.4vw,40px);color:var(--blue);}
+  .rv span{display:block;font-size:12px;font-weight:500;letter-spacing:0;color:var(--muted);margin-top:7px;font-family:'JetBrains Mono',monospace;line-height:1.4;}
+  .roinote{margin-top:32px;background:var(--ink);color:var(--cream);border-radius:24px;padding:36px 38px;max-width:900px;}
+  .roinote .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:14px;}
+  .roinote p{font-size:17px;color:rgba(232,229,222,.82);}
+  .roinote b{color:var(--cream);font-weight:700;}
+  .get{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px;}
+  .get>div{background:var(--card);border-radius:20px;padding:28px;}
+  .get .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .get b{display:block;font-size:17.5px;font-weight:800;letter-spacing:-.02em;margin-bottom:9px;}
+  .get p{font-size:14.5px;color:var(--ink-soft);}
+  h2 + .sys{margin-top:40px;}
+  .sys{display:grid;grid-template-columns:88px 1fr;gap:28px;padding:38px 0;border-top:1px solid rgba(10,10,10,.14);align-items:start;}
+  .sys .num{font-weight:900;font-size:52px;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.4px var(--ink);line-height:.9;}
+  .sys h3{font-size:27px;font-weight:800;letter-spacing:-.03em;margin-bottom:14px;line-height:1.15;}
+  .sys p{font-size:16.5px;color:var(--ink-soft);max-width:720px;}
+  .sys ul{margin-top:18px;list-style:none;max-width:720px;}
+  .sys li{position:relative;padding-left:24px;font-size:15.5px;color:var(--ink-soft);margin-bottom:9px;}
+  .sys li:before{content:"";position:absolute;left:0;top:11px;width:9px;height:1.5px;background:var(--blue);}
+  .sys li b{color:var(--ink);font-weight:600;}
+  .yes{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:46px;}
+  .yes>div{background:var(--card);border-radius:22px;padding:30px 32px;}
+  .yes .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+  .yes b{display:block;font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px;line-height:1.2;}
+  .yes p{font-size:15px;color:var(--ink-soft);}
+  .yes .wide{grid-column:1 / -1;background:var(--ink);color:var(--cream);}
+  .yes .wide .k{color:var(--yellow);}
+  .yes .wide p{color:rgba(232,229,222,.82);}
+  .yes .wide b{color:var(--cream);}
+  .note{max-width:820px;font-size:15px;color:var(--ink-soft);}
+  .note b{color:var(--ink);}
+  .tiers + .note{margin-top:44px;}
+  .close{background:var(--ink);color:var(--cream);border-radius:32px;padding:clamp(34px,7vw,84px);margin:30px 0 90px;}
+  .close h2{max-width:18ch;color:var(--cream);}
+  .close p{max-width:660px;margin-top:26px;font-size:18px;color:rgba(232,229,222,.72);}
+  .close p b{color:var(--cream);}
+  .close .cta{margin-top:40px;}
+  .close .pill{white-space:normal;text-align:center;max-width:100%;}
+  .close .pill.ghost{color:var(--cream);border-color:rgba(232,229,222,.45);}
+  .valid{margin-top:34px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);line-height:1.7;}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:50px;align-items:start;}
+  .tier{background:var(--card);border-radius:26px;padding:38px 32px;display:flex;flex-direction:column;height:100%;}
+  .tier.feat{background:var(--ink);color:var(--cream);transform:translateY(-16px);}
+  .tier .tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+  .tier.feat .tag{color:var(--yellow);}
+  .tier h3{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px;line-height:1.15;}
+  .tier .who{font-size:14.5px;color:var(--muted);margin-bottom:26px;min-height:66px;}
+  .tier.feat .who{color:rgba(232,229,222,.66);}
+  .tier .amt{font-size:clamp(40px,5.4vw,56px);font-weight:900;letter-spacing:-.05em;line-height:1;}
+  .tier .cur{font-size:13px;color:var(--muted);margin-top:9px;margin-bottom:28px;font-family:'JetBrains Mono',monospace;}
+  .tier.feat .cur{color:rgba(232,229,222,.6);}
+  .tier ul{list-style:none;flex:1;}
+  .tier li{position:relative;padding-left:23px;font-size:14.5px;margin-bottom:11px;color:var(--ink-soft);line-height:1.45;}
+  .tier.feat li{color:rgba(232,229,222,.86);}
+  .tier li:before{content:"";position:absolute;left:0;top:8px;width:9px;height:1.5px;background:var(--blue);}
+  .tier.feat li:before{background:var(--yellow);}
+  .tier li.no{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(232,84,69,.6);}
+  .tier li.no:before{background:var(--coral);}
+  .tier .btn{margin-top:30px;display:block;text-align:center;border-radius:100px;padding:14px;font-size:14.5px;font-weight:600;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);}
+  .tier.feat .btn{background:var(--yellow);border-color:var(--yellow);color:var(--ink);}
+  .ms{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:30px;max-width:820px;}
+  .ms>div{border-top:2px solid var(--ink);padding-top:18px;}
+  .ms .k{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.13em;color:var(--blue);margin-bottom:10px;}
+  .ms b{display:block;font-size:16.5px;font-weight:700;margin-bottom:7px;letter-spacing:-.01em;}
+  .ms p{font-size:14.5px;color:var(--ink-soft);}
+  .ask{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:0 0 56px;}
+  .ask>div{background:var(--card);border-radius:20px;padding:24px;}
+  .ask .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+  .ask b{display:block;font-size:16px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px;line-height:1.25;}
+  .ask p{font-size:14px;color:var(--ink-soft);line-height:1.5;}
+  .ask .straight{background:var(--ink);color:var(--cream);}
+  .ask .straight .k{color:var(--yellow);}
+  .ask .straight p{color:rgba(232,229,222,.8);}
+
+  /* ===== Communal Release mockups, in her own visual language ===== */
+  :root{--np:#D9CCB5;--tp:#AEA497;--bone:#F1EFE6;--moss:#83945F;--forest:#263B29;--slate:#75849B;--char:#171717;--cob:#2929D0;--acid:#C5F77A;--phos:#47DC38;--sulf:#F9E45C;--orch:#AD6BB7;--lilac:#EEDAF3;--peach:#F2AD83;--aqua:#65D9C0;
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");}
+  .an{font-family:'Anton','Inter Tight',Impact,sans-serif;text-transform:uppercase;font-weight:400;line-height:.9;letter-spacing:.005em;}
+  .mo{font-family:'IBM Plex Mono','JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;}
+  .se{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;line-height:1;}
+  .cr{position:relative;overflow:hidden;isolation:isolate;}
+  .cq{container-type:inline-size;min-width:0;}
+  .cr:after{content:"";position:absolute;inset:0;background-image:var(--grain);background-size:160px 160px;mix-blend-mode:multiply;opacity:.5;pointer-events:none;z-index:5;}
+  .cr.dk:after{mix-blend-mode:screen;opacity:.22;filter:invert(1);}
+  .ht{position:absolute;pointer-events:none;background-image:radial-gradient(circle,currentColor 32%,transparent 36%);background-size:6px 6px;z-index:0;}
+  .cr>*{position:relative;z-index:1;}
+  .cr>.ht,.cr>.orb,.cr>.spiral,.cr>svg.bg{position:absolute;z-index:0;}
+
+  .samples{display:grid;grid-template-columns:340px 1fr;gap:30px;margin-top:50px;align-items:start;}
+  .samples .full{grid-column:1 / -1;}
+  .right{display:flex;flex-direction:column;gap:28px;min-width:0;}
+  .ph{background:var(--ink);border-radius:42px;padding:12px;max-width:340px;margin:0 auto;box-shadow:0 30px 60px -30px rgba(10,10,10,.45);}
+  .ph .scr{background:var(--bone);border-radius:32px;overflow:hidden;}
+  .ph .sb{display:flex;justify-content:space-between;align-items:center;padding:10px 22px 4px;font-size:11px;font-weight:700;}
+  .ph .sb i{width:70px;height:18px;background:var(--ink);border-radius:99px;display:block;}
+  .ig{padding:6px 14px 0;}
+  .ig .hdl{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:14px;padding-bottom:10px;}
+  .ig .hdl small{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);font-weight:400;}
+  .ig .top{display:flex;gap:14px;align-items:center;}
+  .ig .av{width:62px;height:62px;border-radius:50%;background:var(--cob);color:var(--acid);display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:21px;flex:none;outline:2px solid var(--char);outline-offset:2px;}
+  .ig .nm b{display:block;font-size:13px;}
+  .ig .nm p{font-size:11.5px;color:var(--ink-soft);line-height:1.4;}
+  .ig .hl{display:flex;gap:10px;padding:12px 0 10px;overflow:hidden;}
+  .ig .hl div{text-align:center;font-size:9.5px;color:var(--ink-soft);flex:none;width:46px;}
+  .ig .hl i{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;margin:0 auto 4px;font-style:normal;font-family:'Anton',sans-serif;font-size:15px;border:1.5px solid var(--char);}
+  .ig .tabs{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #DAD6CB;}
+  .ig .tabs span{height:28px;display:flex;align-items:center;justify-content:center;}
+  .ig .tabs span i{width:12px;height:12px;border:1.5px solid #9A968F;border-radius:2px;display:block;}
+  .ig .tabs span.on{border-bottom:1.5px solid var(--ink);}
+  .ig .tabs span.on i{border-color:var(--ink);}
+  .grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--bone);}
+  .grid9 .t{aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:space-between;}
+  .grid9 .t{padding:8px;}
+  .grid9 .t .mo{font-size:6.5px;line-height:1.3;}
+  .grid9 .t .an{font-size:23px;}
+  .grid9 .t .se{font-size:19px;}
+  .phcap{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);text-align:center;margin-top:14px;letter-spacing:.04em;line-height:1.5;}
+  .orb{border-radius:50%;background:radial-gradient(circle,#fff 0,var(--sulf) 22%,var(--peach) 42%,rgba(242,173,131,0) 70%);}
+  .spiral{border-radius:50%;background:repeating-radial-gradient(circle at 46% 54%,var(--char) 0 3px,transparent 3px 7px);}
+  .stk{display:inline-block;background:var(--sulf);color:var(--char);padding:.25em .55em;transform:rotate(-4deg);}
+
+  /* carousel */
+  .car>.cq{box-shadow:0 12px 24px -16px rgba(10,10,10,.5);}
+  .car{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .sl{aspect-ratio:4/5;padding:9cqw;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 12px 24px -16px rgba(10,10,10,.5);}
+  .sl .mo{font-size:4.6cqw;line-height:1.35;}
+  .sl .an{font-size:22cqw;}
+  .sl .se{font-size:13cqw;}
+  .sl .bd{font-family:'Inter Tight','Inter',sans-serif;font-weight:700;font-size:7.4cqw;line-height:1.18;letter-spacing:-.01em;}
+  .sl .tg{display:inline-block;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:4.6cqw;letter-spacing:.06em;padding:.3em .6em;margin-bottom:.5em;}
+  .sl .blk + .blk{margin-top:6cqw;padding-top:6cqw;border-top:1px dashed rgba(23,23,23,.5);}
+  .sl svg{width:78%;display:block;margin:0 auto;}
+
+  /* kit */
+  .kit{background:var(--np);color:var(--char);border-radius:6px;padding:22px;display:grid;grid-template-columns:1.1fr 1fr;gap:22px;box-shadow:0 12px 24px -16px rgba(10,10,10,.5);}
+  .kit .mo{font-size:10px;line-height:1.5;}
+  .kit h5{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;border-bottom:1.5px solid var(--char);padding-bottom:6px;margin-bottom:10px;}
+  .kit .sw{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin-bottom:6px;}
+  .kit .sw i{display:block;aspect-ratio:1;border:1px solid rgba(23,23,23,.35);}
+  .kit .ty{display:grid;gap:4px;margin-top:14px;}
+  .kit .ty .an{font-size:34px;}
+  .kit .ty .se{font-size:26px;}
+  .kit .ty .mo{font-size:11px;}
+  .kit .tx{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px;}
+  .kit .tx div{aspect-ratio:1.5;border:1px solid rgba(23,23,23,.4);position:relative;overflow:hidden;color:var(--char);}
+  .kit .tx small{position:absolute;left:4px;bottom:3px;font-family:'IBM Plex Mono',monospace;font-size:8px;background:var(--np);padding:0 3px;z-index:6;}
+  .leg{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .leg .cr{aspect-ratio:1.5;display:flex;flex-direction:column;justify-content:center;padding:8px;border:1px solid rgba(23,23,23,.4);}
+  .leg .bad{background:var(--tp);color:#6f675c;}
+  .leg .bad .ht{inset:0;color:var(--char);opacity:.38;z-index:3;}
+  .leg .bad b{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:400;line-height:1.3;}
+  .leg .good{background:var(--cob);color:var(--bone);}
+  .leg .good .ht{right:-16px;top:-22px;width:52px;height:52px;border-radius:50%;color:var(--acid);}
+  .leg .good b{font-family:'Anton',sans-serif;font-weight:400;font-size:17px;max-width:80%;line-height:.95;text-transform:uppercase;}
+  .leg p{font-family:'IBM Plex Mono',monospace;font-size:9.5px;line-height:1.4;margin-top:5px;}
+  .leg p i{font-style:normal;font-weight:700;}
+
+  /* flyer / story / checklist row */
+  .trio{display:grid;grid-template-columns:1fr .72fr 1.1fr;gap:28px;align-items:start;}
+  .fly{aspect-ratio:4/5;background:var(--cob);color:var(--bone);padding:7cqw;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 16px 30px -18px rgba(10,10,10,.6);}
+  .fly .mo{font-size:3.1cqw;line-height:1.45;}
+  .fly .an.big{font-size:27cqw;margin-top:3cqw;color:var(--acid);line-height:.82;margin-left:-.5cqw;}
+  .fly .an.big span{display:block;color:transparent;-webkit-text-stroke:.45cqw var(--acid);}
+  .fly .strip{background:var(--sulf);color:var(--char);margin:0 -7cqw;padding:2.6cqw 7cqw;display:grid;grid-template-columns:repeat(3,1fr);gap:2cqw;transform:rotate(-1.5deg) scale(1.03);}
+  .fly .strip b{display:block;font-family:'Anton',sans-serif;font-weight:400;font-size:6.2cqw;line-height:1;text-transform:uppercase;}
+  .fly .se{font-size:8.4cqw;color:var(--bone);line-height:1.02;max-width:80%;}
+  .fly .ft{display:flex;justify-content:space-between;align-items:flex-end;gap:3cqw;}
+  .fly .ht{right:-12cqw;top:-10cqw;width:52cqw;height:52cqw;border-radius:50%;color:var(--aqua);opacity:.9;}
+  .sty{aspect-ratio:9/16;background:var(--char);color:var(--bone);padding:9cqw 8cqw;display:flex;flex-direction:column;justify-content:space-between;border-radius:14px;box-shadow:0 16px 30px -18px rgba(10,10,10,.6);}
+  .sty .orb{left:50%;top:39%;width:92cqw;height:92cqw;transform:translate(-50%,-50%);}
+  .sty .ht{left:50%;top:39%;width:92cqw;height:92cqw;transform:translate(-50%,-50%);border-radius:50%;color:var(--char);opacity:.55;background-size:5px 5px;}
+  .sty .mo{font-size:4.2cqw;line-height:1.4;}
+  .sty .se{font-size:13.5cqw;line-height:1;text-shadow:0 0 6cqw rgba(23,23,23,.9);}
+  .sty .plate{background:var(--char);padding:5cqw;margin:0 -2cqw;border:1px solid rgba(241,239,230,.35);}
+  .sty .safe{position:absolute;left:0;right:0;border:0 dashed rgba(197,247,122,.8);font-family:'IBM Plex Mono',monospace;font-size:3.3cqw;color:var(--acid);padding:1cqw 4cqw;z-index:6;}
+  .sty .safe.t{top:0;height:12%;border-bottom-width:1px;}
+  .sty .safe.b{bottom:0;height:15%;border-top-width:1px;display:flex;align-items:flex-end;}
+  .chk{background:var(--bone);color:var(--char);padding:26px 26px 22px;border:1.5px solid var(--char);box-shadow:6px 6px 0 var(--char);position:relative;}
+  .chk .hd{display:flex;justify-content:space-between;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1.5px solid var(--char);padding-bottom:8px;margin-bottom:12px;flex-wrap:wrap;}
+  .chk h4{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:34px;line-height:1.22;margin-bottom:12px;}
+  .chk h4 span{background:var(--acid);padding:0 .15em;display:inline-block;line-height:1.05;}
+  .chk ol{list-style:none;display:grid;gap:9px;}
+  .chk li{display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:13px;line-height:1.4;color:var(--char);}
+  .chk li:before{content:"";width:13px;height:13px;border:1.5px solid var(--char);margin-top:3px;background:linear-gradient(135deg,transparent 44%,var(--char) 45% 55%,transparent 56%);}
+  .chk li b{font-weight:700;}
+  .chk .fn{margin-top:14px;padding-top:10px;border-top:1px dashed var(--char);font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.5;}
+  .optag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;background:var(--ink);color:var(--yellow);padding:3px 9px;border-radius:999px;margin-left:8px;vertical-align:1px;}
+
+  @media(max-width:980px){
+    .samples{grid-template-columns:1fr;}
+    .trio{grid-template-columns:1fr 1fr;}
+    .trio .ckw{grid-column:1 / -1;}
+  }
+  @media(max-width:900px){
+    .stats{grid-template-columns:repeat(2,1fr);gap:26px;}
+    .pains,.get,.yes{grid-template-columns:1fr;}
+    .yes .wide{grid-column:auto;}
+    .sys{grid-template-columns:1fr;gap:12px;}
+    .frow{grid-template-columns:1fr;gap:8px;}
+    .frow .ar,.frow.h,.rrow.h{display:none;}
+    .rrow{grid-template-columns:1fr 1fr;gap:16px;}
+    .rrow .m{grid-column:1 / -1;}
+    .tiers,.ms{grid-template-columns:1fr;}
+    .tier.feat{transform:none;}
+    .tier .who{min-height:0;}
+    .ask{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 16px;}
+    .find,.get>div,.yes>div{padding:26px;}
+    .roinote{padding:28px;}
+    .tier{padding:28px 26px;}
+    .ask{grid-template-columns:1fr;}
+    .ask>div{padding:22px;}
+    .f2{display:none;}
+    .ph{max-width:310px;}
+    .car{grid-template-columns:repeat(2,1fr);}
+    .kit{grid-template-columns:1fr;padding:18px;}
+    .trio{grid-template-columns:1fr;}
+    .trio .stw{max-width:250px;margin:0 auto;width:100%;}
+    .topbar .pill{white-space:normal;text-align:left;}
+    .close .cta{flex-direction:column;align-items:stretch;}
+  }
+  @media print{
+    @page{size:A3;margin:14mm;}
+    body{background:#fff;font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .pains,.yes{grid-template-columns:repeat(2,1fr)!important;}
+    .get{grid-template-columns:repeat(3,1fr)!important;}
+    .ask{grid-template-columns:repeat(4,1fr)!important;}
+    .samples{grid-template-columns:340px 1fr!important;}
+    .trio{grid-template-columns:1fr .72fr 1.1fr!important;}
+    .car{grid-template-columns:repeat(4,1fr)!important;}
+    .kit{grid-template-columns:1.1fr 1fr!important;}
+    .frow{grid-template-columns:1fr 36px 1.25fr!important;}
+    .frow.h,.rrow.h{display:grid!important;}
+    .rrow{grid-template-columns:1.35fr 1fr 1fr!important;}
+    .tiers{grid-template-columns:repeat(3,1fr)!important;}
+    .ms{grid-template-columns:repeat(2,1fr)!important;}
+    .tier.feat{transform:none;}
+    section{padding:34px 0;}
+    .find,.roinote,.get>div,.yes>div,.sys,.frow,.rrow,.close,.quote,.tier,.ms>div,.ask>div,.ph,.car,.kit,.fly,.sty,.chk,.trio{break-inside:avoid;}
+    h2,.label,.mockcap{break-after:avoid;}
+    h2{break-inside:avoid;}
+    #result,#build,#yes,#invest{break-before:page;}
+    .close{margin:20px 0 0;}
+    .divider,.flourish{display:none;}
+    .pill,.btn{display:none!important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">D<span class="brand-dot">.</span></div>
+      <div class="status"><span class="dot"></span> Available to start this week</div>
+    </div>
+    <a class="pill client" href="https://wa.me/2348143046516?text=Hi%20Emerald%2C%20add%20me%20to%20your%20client%20base" target="_blank" rel="noopener"><i></i>Message me to be added to my client base</a>
+  </div>
+
+  <div class="hero">
+    <span class="flourish f1"></span><span class="flourish f2"></span><span class="flourish f3"></span>
+    <span class="label">01 · Proposal for Caitlin Grant · Communal Release · Instagram graphics</span>
+    <h1>Your brand lives in a PDF.<br>Turn it into a <span class="serif blue">template system</span>,<br>that <span class="serif coral">still reads on a phone</span>.</h1>
+    <p class="subhead">I read the whole Communal Release brand identity document. This proposal turns it into <strong>12 editable Instagram templates in Canva and Figma</strong>, a <strong>texture and type kit</strong> taken from your own palette and fonts, and <strong>three carousels laid out with your content</strong>. Two things are handled on purpose: lo-fi texture that stays legible on a small screen, and harm reduction posts designed so they read as education. Every mockup below is drawn in your direction, The Counterculture of Care, not in mine.</p>
+    <div class="cta">
+      <a class="pill blue-fill" href="#result">See your feed in your style</a>
+      <a class="pill ghost" href="#invest">See the three options</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n">12</div><div class="l">editable templates on the recommended option, each one in Canva and in Figma</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">visual modes from your document: the experiential, the educational, the communal</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">carousels laid out with your own content, ready to post</div></div>
+    <div class="stat"><div class="n">$240</div><div class="l">for the full system, inside the US$100 to 250 you posted</div></div>
+  </div>
+
+  <div class="ask">
+    <div><div class="k">You asked · Instagram-ready graphics</div><b>Sized and checked for the phone</b><p>Posts at 1080 by 1350, stories at 1080 by 1920, with text kept clear of Instagram's own buttons. Every template is viewed at phone size before you get it.</p></div>
+    <div><div class="k">You asked · Editable source files</div><b>Canva and Figma, in your accounts</b><p>You change words, colours and photos yourself. The three fonts your document recommends are free Google fonts, so there is no licence to buy.</p></div>
+    <div><div class="k">Your document · three modes</div><b>One system, not one look</b><p>The templates share type, textures and image treatment, and split across your experiential, educational and communal modes.</p></div>
+    <div class="straight"><div class="k">The honest part</div><b>New to your field, not to systems</b><p>I have not designed for a somatic or harm reduction practice before, and I am not a clinician. Your wording and facts stay yours. I build the visual system. My brand and interface work is at behance.net/emeraldjnr.</p></div>
+  </div>
+
+  <div class="divider"><span>XEROX · HALFTONE · GRAIN · COBALT · CARE</span></div>
+
+  <section id="problem">
+    <span class="label">02 · Your problem</span>
+    <h2>A clear direction, and <span class="serif coral">no posts</span> built from it yet.</h2>
+    <div class="quote">
+      <p>"The visuals should support clear, engaging social-media communication for my services and audience."</p>
+      <span>Your post, Behance</span>
+    </div>
+    <div class="quote" style="border-left-color:var(--blue);margin-top:26px">
+      <p>"Embrace imperfection, resist sanitization, invite curiosity and make room for the full spectrum of human experience."</p>
+      <span>Communal Release Brand Identity, section 10, creative philosophy</span>
+    </div>
+    <div class="pains">
+      <div class="find">
+        <div class="k">Pain 01</div>
+        <h3>The direction is written down, the graphics are not</h3>
+        <p>Your document names the look precisely: "countercultural spirituality meets analog editorial design, underground music culture, and experimental visual art". It also names what to avoid, starting with "generic beige minimalist wellness branding". A designer who skims it and opens a stock wellness template gives you exactly that.</p>
+        <div class="cost">Cost today: <b>21 pages of direction and nothing to post from them</b>.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 02</div>
+        <h3>Lo-fi texture can bury the message on a phone</h3>
+        <p>You want "visible film grain and paper textures", "halftone printing and dithering" and "photocopy degradation". Your document also says activist design must "prioritize communication over decoration". On a small screen, grain laid over small type does the opposite: the post looks right and nobody can read it.</p>
+        <div class="cost">Cost today: <b>a post people scroll past because the words do not land in two seconds</b>.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 03</div>
+        <h3>Harm reduction posts sit close to Instagram's drug rules</h3>
+        <p>Meta's published rules bar content that sells or promotes non-medical drugs, or gives instructions for using them. Harm reduction education sits near that line, and review is partly automated, so an image or a phrase that looks like promotion can get a post removed or shown to fewer people. Nobody outside Meta controls that outcome.</p>
+        <div class="cost">Cost today: <b>your most useful posts carry the most risk of being limited</b>.</div>
+      </div>
+      <div class="find">
+        <div class="k">Pain 04</div>
+        <h3>One-off graphics mean coming back to a designer every time</h3>
+        <p>You asked for "editable source files". Your document asks for three modes that "coexist within one brand through consistent typography, image treatments and a shared visual vocabulary, without every piece of content needing to look identical". A folder of finished images cannot do that. A system can.</p>
+        <div class="cost">Cost today: <b>every new workshop, reminder or carousel is a new design job</b>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fix">
+    <span class="label">03 · The fix</span>
+    <h2>One pain, <span class="serif blue">one answer</span>, no extras.</h2>
+    <div class="fix">
+      <div class="frow h"><div>What hurts</div><div></div><div>What removes it</div></div>
+      <div class="frow"><div class="p">Direction with no graphics<small>Pain 01</small></div><div class="ar">→</div><div class="s"><b>12 templates built from your document, line by line.</b> Your 15 colours, your three-font system (a bold grotesque, Instrument Serif, IBM Plex Mono) and your motifs: hands, spirals and orbits, light and shadow, diagrams. Nothing from the "what I would avoid" list.</div></div>
+      <div class="frow"><div class="p">Texture burying the message<small>Pain 02</small></div><div class="ar">→</div><div class="s"><b>Legibility rules built into every template.</b> Texture sits behind and around the words, never across them. Headlines sit on a solid plate, body type has a minimum size, colour pairs are checked for contrast, and each template is viewed on a phone before handover.</div></div>
+      <div class="frow"><div class="p">Harm reduction near the drug rules<small>Pain 03</small></div><div class="ar">→</div><div class="s"><b>Education-first templates and a one-page safe-posting checklist.</b> The myth versus fact and educational layouts use diagrams and type, with no substances or paraphernalia pictured, and a sources slot on the last slide. The checklist covers wording and imagery. It lowers avoidable risk. It cannot promise how Meta treats a post.</div></div>
+      <div class="frow"><div class="p">A new design job every post<small>Pain 04</small></div><div class="ar">→</div><div class="s"><b>A system you run yourself.</b> Carousel cover and inside pages, quote, service or offering, event flyer, myth versus fact, gentle reminder and story frames, in Canva and Figma, with a texture and type kit. You swap the words and post.</div></div>
+    </div>
+  </section>
+
+  <div class="divider"><span>EXPERIENTIAL · EDUCATIONAL · COMMUNAL</span></div>
+
+  <section id="result">
+    <span class="label">04 · The end result</span>
+    <h2>Your feed, drawn here in <span class="serif blue">your own language</span>.</h2>
+    <p class="lede">Everything below is a <strong>concept built in code for this proposal</strong>, using the colours, fonts and motifs from your document. The profile, the event and all the wording are <strong>placeholders</strong>: your own words, facts and photos replace them. The real templates are built in Canva and Figma with proper scanned textures and your photography.</p>
+
+    <div class="samples">
+      <div>
+        <div class="mockcap">Profile grid · three modes, one brand</div>
+        <div class="ph">
+          <div class="scr">
+            <div class="sb"><span>9:41</span><i></i><span>5G</span></div>
+            <div class="ig">
+              <div class="hdl">communalrelease <small>placeholder profile</small></div>
+              <div class="top">
+                <div class="av">CR</div>
+                <div class="nm"><b>Communal Release</b><p>Somatic therapy and harm reduction<br>The Counterculture of Care</p></div>
+              </div>
+              <div class="hl">
+                <div><i style="background:var(--cob);color:var(--acid)">S</i>Sessions</div>
+                <div><i style="background:var(--np)">E</i>Events</div>
+                <div><i style="background:var(--acid)">L</i>Learn</div>
+                <div><i style="background:var(--char);color:var(--sulf)">C</i>Care</div>
+                <div><i style="background:var(--lilac)">A</i>About</div>
+              </div>
+            </div>
+            <div class="ig" style="padding:0"><div class="tabs"><span class="on"><i></i></span><span><i></i></span><span><i></i></span></div></div>
+            <div class="grid9">
+              <div class="t cr dk" style="background:var(--cob);color:var(--bone)"><span class="ht" style="right:-18px;top:-18px;width:70px;height:70px;border-radius:50%;color:var(--aqua)"></span><span class="mo">Event · 03</span><span class="an" style="color:var(--acid)">Open<br>circle</span></div>
+              <div class="t cr" style="background:var(--np);color:var(--char)"><span class="mo">Fig. 01 · 1/6</span><svg viewBox="0 0 100 60" style="width:62%;margin:0 auto"><g fill="none" stroke="#171717" stroke-width="1.6"><circle cx="36" cy="30" r="22"/><circle cx="64" cy="30" r="22"/><circle cx="50" cy="30" r="8" stroke-dasharray="2 2"/></g></svg><span class="an" style="font-size:15px">What is<br>somatic work?</span></div>
+              <div class="t cr dk" style="background:var(--char);color:var(--bone)"><span class="orb" style="left:50%;top:38%;width:90px;height:90px;transform:translate(-50%,-50%)"></span><span class="ht" style="left:50%;top:38%;width:90px;height:90px;transform:translate(-50%,-50%);border-radius:50%;color:var(--char);opacity:.5;background-size:4px 4px"></span><span class="mo">Reminder</span><span class="se">a gentle<br>reminder</span></div>
+              <div class="t cr" style="background:var(--acid);color:var(--char)"><span class="mo">Learn · 1/5</span><span class="an">Myth<br><span style="color:var(--cob)">/ fact</span></span></div>
+              <div class="t cr" style="background:var(--bone);color:var(--char)"><span class="mo">Quote</span><span class="se" style="font-size:17px;line-height:1.02">rest can belong to counter&shy;culture, too</span></div>
+              <div class="t cr" style="background:var(--orch);color:var(--char)"><span class="ht" style="left:0;right:0;bottom:0;height:46%;color:var(--peach);background-size:5px 5px"></span><span class="mo">Offering</span><span class="an">Somatic<br>sessions</span></div>
+              <div class="t cr dk" style="background:var(--char);color:var(--sulf)"><span class="mo" style="color:var(--bone)">Care · 1/4</span><span class="an" style="font-size:21px">Care is<br>counter&shy;<br>culture</span></div>
+              <div class="t cr" style="background:var(--np);color:var(--char)"><span class="mo">Fig. 02 · 1/6</span><span class="mo" style="font-size:7px;font-weight:700;border-top:1px solid var(--char);border-bottom:1px solid var(--char);padding:4px 0">01 notice<br>02 name<br>03 stay with</span><span class="an" style="font-size:15px">Nervous system literacy</span></div>
+              <div class="t cr" style="background:var(--moss);color:var(--bone)"><span class="spiral" style="left:50%;top:40%;width:84px;height:84px;transform:translate(-50%,-50%)"></span><span class="mo" style="color:var(--char)">Release</span><span class="se" style="font-size:22px;color:var(--bone);text-shadow:0 0 6px var(--forest)">release</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="phcap">Earthy next to electric, as your palette asks.<br>Wording is placeholder.</div>
+      </div>
+
+      <div class="right">
+        <div>
+          <div class="mockcap">Educational carousel · cover and inside pages</div>
+          <div class="car">
+            <div class="cq"><div class="sl cr" style="background:var(--np);color:var(--char)">
+              <span class="mo">Fig. 01<br>Communal Release</span>
+              <svg viewBox="0 0 100 62"><g fill="none" stroke="#171717" stroke-width="1.3"><circle cx="36" cy="31" r="24"/><circle cx="64" cy="31" r="24"/><circle cx="50" cy="31" r="9" stroke-dasharray="2 2"/><path d="M4 31h92" stroke-width=".6"/></g></svg>
+              <div><div class="an">What is somatic work?</div><span class="mo" style="display:block;margin-top:4cqw">1/6 · swipe →</span></div>
+            </div></div>
+            <div class="cq"><div class="sl cr" style="background:var(--bone);color:var(--char)">
+              <span class="mo">02 · In plain words</span>
+              <div class="bd">Your definition goes here, in your words. Two or three lines, set large on a clean plate.</div>
+              <span class="mo" style="border-top:1.5px solid var(--char);padding-top:3cqw">Texture stays at the edges · 2/6</span>
+            </div></div>
+            <div class="cq"><div class="sl cr" style="background:var(--np);color:var(--char)">
+              <span class="mo">03 · What we know</span>
+              <div>
+                <div class="blk"><span class="tg" style="background:var(--char);color:var(--bone)">ESTABLISHED</span><div class="bd" style="font-size:6.4cqw">A claim you can point to a source for.</div></div>
+                <div class="blk"><span class="tg" style="background:var(--acid);color:var(--char)">METAPHOR</span><div class="se" style="font-size:9cqw;line-height:1.05">An image that helps it land.</div></div>
+              </div>
+              <span class="mo">3/6</span>
+            </div></div>
+            <div class="cq"><div class="sl cr dk" style="background:var(--cob);color:var(--bone)">
+              <span class="ht" style="right:-14cqw;bottom:-14cqw;width:60cqw;height:60cqw;border-radius:50%;color:var(--acid)"></span>
+              <span class="mo">06 · Sources on this slide</span>
+              <div class="an" style="color:var(--acid);font-size:25cqw">Save it. Send it on.</div>
+              <span class="mo"><span style="background:var(--cob);padding:.2em .5em .2em 0">@yourhandle · 6/6</span></span>
+            </div></div>
+          </div>
+        </div>
+        <div>
+          <div class="mockcap">Texture and type kit · with the legibility rule</div>
+          <div class="kit">
+            <div>
+              <h5>Palette · from your document</h5>
+              <div class="sw"><i style="background:#D9CCB5"></i><i style="background:#AEA497"></i><i style="background:#F1EFE6"></i><i style="background:#83945F"></i><i style="background:#263B29"></i><i style="background:#75849B"></i><i style="background:#171717"></i><i style="background:#2929D0"></i></div>
+              <div class="sw"><i style="background:#C5F77A"></i><i style="background:#47DC38"></i><i style="background:#F9E45C"></i><i style="background:#AD6BB7"></i><i style="background:#EEDAF3"></i><i style="background:#F2AD83"></i><i style="background:#65D9C0"></i><i style="background:none;border-style:dashed"></i></div>
+              <div class="mo">15 colours · earthy + electric · tested pairs marked</div>
+              <div class="ty">
+                <div class="an">Poster headline</div>
+                <div class="se">the intimate, contemplative voice</div>
+                <div class="mo">IBM Plex Mono · labels, figures, dates</div>
+              </div>
+            </div>
+            <div>
+              <h5>Textures · scanned, reusable</h5>
+              <div class="tx">
+                <div class="cr" style="background:var(--bone)"><small>grain</small></div>
+                <div style="background:var(--bone)"><span class="ht" style="inset:0;color:var(--char);opacity:.8"></span><small>halftone</small></div>
+                <div class="cr" style="background:linear-gradient(100deg,#171717 0 12%,#F1EFE6 13% 58%,#AEA497 59% 63%,#F1EFE6 64% 92%,#171717 93%)"><small>xerox edge</small></div>
+              </div>
+              <h5>Legibility on a phone</h5>
+              <div class="leg">
+                <div><div class="cr bad"><span class="ht"></span><b>Small type under heavy halftone, low contrast.</b></div><p><i>No.</i> Texture over words.</p></div>
+                <div><div class="cr dk good"><span class="ht"></span><b>Words on a clean plate</b></div><p><i>Yes.</i> Texture around words.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="full">
+        <div class="trio">
+          <div>
+            <div class="mockcap">Event flyer post · the communal mode</div>
+            <div class="cq"><div class="fly cr dk">
+              <span class="ht"></span>
+              <div class="mo">Communal Release presents<br>Placeholder event</div>
+              <div class="an big">Open<span>circle</span></div>
+              <div class="strip mo"><div>Date<b>Your date</b></div><div>Time<b>Your time</b></div><div>Place<b>Your venue</b></div></div>
+              <div class="ft"><div class="se">come as you are, leave a little lighter</div><div class="mo" style="text-align:right">The<br>Counterculture<br>of Care</div></div>
+            </div></div>
+          </div>
+          <div class="stw">
+            <div class="mockcap">Story frame · the experiential mode</div>
+            <div class="cq"><div class="sty cr dk">
+              <span class="orb"></span><span class="ht"></span>
+              <span class="safe t">kept clear</span><span class="safe b">kept clear for the reply bar</span>
+              <span class="mo" style="margin-top:14%">Gentle reminder · 03</span>
+              <div class="plate" style="margin-bottom:18%"><div class="se">You don't need to be perfectly regulated to take part.</div><span class="mo" style="display:block;margin-top:4cqw;color:var(--acid)">Communal Release</span></div>
+            </div></div>
+          </div>
+          <div class="ckw">
+            <div class="mockcap">Safe-posting checklist<span class="optag">FREE ON OPTION 02</span></div>
+            <div class="chk">
+              <div class="hd"><span>Communal Release</span><span>1 page · before you post</span></div>
+              <h4>Does it read as <span>education</span>?</h4>
+              <ol>
+                <li><span><b>Image:</b> no substances, paraphernalia or use pictured.</span></li>
+                <li><span><b>Words on the image:</b> checked like the caption, because both get read.</span></li>
+                <li><span><b>Wording:</b> informs and cares. No prices, offers, or where to get anything.</span></li>
+                <li><span><b>First caption line:</b> states the purpose, education and care.</span></li>
+                <li><span><b>Sources:</b> listed on the last slide.</span></li>
+                <li><span><b>Alt text:</b> written, plain and descriptive.</span></li>
+                <li><span><b>Original file:</b> saved, so a removed post can be appealed or revised.</span></li>
+              </ol>
+              <div class="fn">Lowers avoidable risk. It is not legal advice and cannot promise how Meta reviews any post.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="roi">
+      <div class="rrow h"><div>What changes</div><div>Today</div><div>With the template system</div></div>
+      <div class="rrow"><div class="m">Your brand direction<small>Colours, fonts, motifs, three modes</small></div><div class="rv was">A 21-page PDF</div><div class="rv now">12 templates<span>BUILT FROM THE DOCUMENT</span></div></div>
+      <div class="rrow"><div class="m">Making a new post<small>Workshop, reminder, offering, carousel</small></div><div class="rv was">From blank</div><div class="rv now">Swap the words<span>IN CANVA OR FIGMA, YOURSELF</span></div></div>
+      <div class="rrow"><div class="m">Readability on a phone<small>Grain, halftone and photocopy texture</small></div><div class="rv was">Unchecked</div><div class="rv now">Checked<span>EVERY TEMPLATE, AT PHONE SIZE</span></div></div>
+      <div class="rrow"><div class="m">Harm reduction posts<small>Imagery and wording before posting</small></div><div class="rv was">No check</div><div class="rv now">7 checks<span>ONE PAGE, NO PROMISE ABOUT META</span></div></div>
+      <div class="rrow"><div class="m">Source files<small>What you asked for in the post</small></div><div class="rv was">None yet</div><div class="rv now">Canva + Figma<span>IN YOUR OWN ACCOUNTS</span></div></div>
+    </div>
+    <div class="roinote">
+      <div class="k">The maths against your own budget</div>
+      <p>You posted <b>US$100 to 250</b>. The recommended option is <b>$240</b>, inside that range. For 12 templates that is <b>$20 a template</b>, before counting the texture and type kit, the three carousels laid out with your content, and the checklist. A finished graphic is used once. A template is used every time you run another workshop, share another reminder or teach another idea, at no further cost.</p>
+    </div>
+    <div class="get">
+      <div><div class="k">You get 01</div><b>A feed that looks like your document</b><p>Analog, countercultural and tender at once, across your three modes, with the earthy and electric colours side by side.</p></div>
+      <div><div class="k">You get 02</div><b>Posts people can read</b><p>The texture you love, kept off the words, with type sizes and colour pairs tested on a phone screen.</p></div>
+      <div><div class="k">You get 03</div><b>Files you own and edit</b><p>Canva and Figma sources in your accounts, plus the kit and the checklist, so the next post never waits on a designer.</p></div>
+    </div>
+  </section>
+
+  <section id="build">
+    <span class="label">05 · How the work runs</span>
+    <h2>Three steps, about <span class="serif blue">ten working days</span>.</h2>
+    <div class="sys">
+      <div class="num">01</div>
+      <div>
+        <h3>Days 1 to 3 · kit and the first three templates</h3>
+        <p>You send your logo or wordmark if you have one, any photos you want used, and the content for three carousels. I build the foundation and show it to you early.</p>
+        <ul>
+          <li><b>Texture and type kit</b>: your palette with tested pairs, the three fonts, grain, halftone and photocopy textures</li>
+          <li><b>Three templates</b>, one from each mode: a gentle reminder, a carousel cover, an event flyer</li>
+          <li>You view them on your own phone and tell me what feels like Communal Release and what does not</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sys">
+      <div class="num">02</div>
+      <div>
+        <h3>Days 4 to 8 · the other nine templates and your carousels</h3>
+        <p>With the direction confirmed, the rest of the system is built on the same kit, so it holds together.</p>
+        <ul>
+          <li>Carousel inside pages, quote, service or offering, myth versus fact, and story frames</li>
+          <li><b>Three carousels laid out with your content</b>, exported ready to post</li>
+          <li>One round of changes across the full set</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sys">
+      <div class="num">03</div>
+      <div>
+        <h3>Days 9 to 10 · handover</h3>
+        <p>Everything moves into your accounts, with a short written guide on how to use it.</p>
+        <ul>
+          <li>Canva templates shared to your account, Figma file transferred to you</li>
+          <li>Exported PNGs of everything, sized for posts and stories</li>
+          <li><b>The one-page safe-posting checklist</b> and a one-page "how to make a new post" guide</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span>TENDER · REBELLIOUS · READABLE</span></div>
+
+  <section id="yes">
+    <span class="label">06 · Why this is an easy yes</span>
+    <h2>Low risk by <span class="serif blue">design</span>, not by promise.</h2>
+    <div class="yes">
+      <div><div class="k">The value maths</div><b>$20 a template, reused for as long as you post</b><p>$240 sits inside your posted budget and covers 12 templates in two formats, the kit and three finished carousels. Each new post after that costs you a few minutes, not a new brief.</p></div>
+      <div><div class="k">What you keep</div><b>Every file, in your accounts</b><p>Canva templates, the Figma file, the textures, the exported images, the checklist and the guide. The fonts are free Google fonts. Nothing depends on me after handover.</p></div>
+      <div><div class="k">Milestone order</div><b>You see your brand before most of the budget moves</b><p>The first milestone is $100 for the kit and three templates, one per mode. You judge the direction on your own phone before the remaining $140 is due.</p></div>
+      <div><div class="k">The stop rule</div><b>Stop after milestone one, keep the work</b><p>If the first three templates do not feel like Communal Release, say so and we end there. You keep the kit and those three templates, and the second milestone is never released.</p></div>
+      <div class="wide"><div class="k">Free on the recommended option</div><b>The one-page safe-posting checklist</b><p>Seven checks on wording and imagery for harm reduction posts, written against Meta's published rules on drug content and laid out in your brand so you can keep it by your desk. It is there to remove avoidable triggers. It is not legal advice, and no checklist can promise how Instagram reviews or distributes a post.</p></div>
+    </div>
+  </section>
+
+  <section id="invest">
+    <span class="label">07 · Investment</span>
+    <h2>Three ways to start. <span class="serif coral">Most people pick the middle.</span></h2>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tag">Option 01</div>
+        <h3>Starter</h3>
+        <div class="who">For when you want a small set to begin posting with.</div>
+        <div class="amt">$120</div>
+        <div class="cur">USD · fixed</div>
+        <ul>
+          <li>6 editable post templates</li>
+          <li>Built in your colours and fonts</li>
+          <li>Editable source files</li>
+          <li class="no">No texture and type kit</li>
+          <li class="no">No story frames</li>
+          <li class="no">No carousels laid out with your content</li>
+          <li class="no">No safe-posting checklist</li>
+        </ul>
+        <a class="btn" href="#next">Choose Starter</a>
+      </div>
+      <div class="tier feat">
+        <div class="tag">Option 02 · Recommended</div>
+        <h3>The template system</h3>
+        <div class="who">The whole brand direction, turned into a system you run yourself.</div>
+        <div class="amt">$240</div>
+        <div class="cur">USD · fixed · two milestones</div>
+        <ul>
+          <li>12 editable templates in Canva and Figma</li>
+          <li>Carousel cover and inside pages</li>
+          <li>Quote, and service or offering</li>
+          <li>Event flyer, and myth versus fact</li>
+          <li>Gentle reminder, and story frames</li>
+          <li>Texture and type kit from your brand direction</li>
+          <li>3 carousels laid out with your content</li>
+          <li>Editable source files</li>
+          <li>One-page safe-posting checklist (free)</li>
+        </ul>
+        <a class="btn" href="#next">Choose The template system</a>
+      </div>
+      <div class="tier">
+        <div class="tag">Option 03</div>
+        <h3>System + first month</h3>
+        <div class="who">For when you want the system built and the first month of posts made for you.</div>
+        <div class="amt">$450</div>
+        <div class="cur">USD · fixed · system and month one</div>
+        <ul>
+          <li>Everything in The template system</li>
+          <li>12 finished posts a month, made for you from your content</li>
+          <li>Highlight covers</li>
+          <li>A profile grid plan</li>
+        </ul>
+        <a class="btn" href="#next">Choose System + first month</a>
+      </div>
+    </div>
+    <p class="note"><b>Milestones for the recommended option.</b> You write the words and supply the facts and photos. I design, lay out and check. Posting stays with you.</p>
+    <div class="ms">
+      <div><div class="k">MILESTONE 1 · $100</div><b>Kit and first three templates</b><p>Texture and type kit, plus one template from each mode, for you to judge on your phone. Days 1 to 3.</p></div>
+      <div><div class="k">MILESTONE 2 · $140</div><b>Full system and handover</b><p>The other nine templates, three carousels with your content, source files, checklist and guide. Days 4 to 10.</p></div>
+    </div>
+  </section>
+
+  <div class="close" id="next">
+    <span class="label" style="color:var(--yellow)">08 · Next step</span>
+    <h2>Pick an option and send your <span class="serif" style="color:var(--yellow)">first three topics</span>.</h2>
+    <p>Reply on Behance with the option you want and the three subjects you most want to post about. Within three days you get <b>the kit and the first three templates</b>, one from each mode, to look at on your own phone.</p>
+    <div class="cta">
+      <a class="pill" style="background:var(--yellow);color:var(--ink)" href="https://www.behance.net/joblist/freelance/576361/Instagram-Graphics-for-a-Somatic-Therapy-and-Harm-Reduction-Business" target="_blank" rel="noopener">Reply on Behance</a>
+      <a class="pill ghost" href="https://wa.me/2348143046516?text=Hi%20Emerald%2C%20add%20me%20to%20your%20client%20base" target="_blank" rel="noopener">Message me to be added to my client base</a>
+    </div>
+    <div class="valid">Valid 14 days · All amounts in USD · Updated 28 November 2026 · Emerald, Denver No Code</div>
+  </div>
+
+</div>
+</body>
+</html>
